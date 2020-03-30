@@ -39,6 +39,12 @@ import EmprestimoRoute from "./Gerenciar/Emprestimo";
 import ReservaInternoRoute from "./Reservas/ReservaInterno";
 import RelatorioEmprestimoRoute from "./Relatorios/RelatorioEmprestimo";
 import RelatorioInternoRoute from "./Relatorios/RelatorioInterno";
+import SaidaSupRoute from "./Suprimentos/Saida";
+import GerenciarEstoqueSupRoute from "./Suprimentos/Ger.Estoque";
+import GerenciarCadastrosSupRoute from "./Suprimentos/Ger.Cadastros";
+import EntradaSupRoute from "./Suprimentos/Entrada";
+import CadastroProdutosSupRoute from "./Suprimentos/Cad.Produtos";
+import CadastroFornecedorSupRoute from "./Suprimentos/Cad.Fornecedor";
 
 class PagesRoute extends Component {
   state = {
@@ -156,6 +162,25 @@ class PagesRoute extends Component {
             component={RelatorioInternoRoute}
           />
           <Route path="/logged/notificacao" component={NotificacaoRoute} />
+
+          <Route path="/logged/saidaSup" component={SaidaSupRoute} />
+          <Route
+            path="/logged/gerenciarEstoqueSup"
+            component={GerenciarEstoqueSupRoute}
+          />
+          <Route
+            path="/logged/gerenciarCadastrosSup"
+            component={GerenciarCadastrosSupRoute}
+          />
+          <Route path="/logged/entradaSup" component={EntradaSupRoute} />
+          <Route
+            path="/logged/cadastroProdutosSup"
+            component={CadastroProdutosSupRoute}
+          />
+          <Route
+            path="/logged/cadastroFornecedorSup"
+            component={CadastroFornecedorSupRoute}
+          />
         </Switch>
       );
     } else {

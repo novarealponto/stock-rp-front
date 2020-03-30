@@ -428,6 +428,66 @@ class SideBar extends Component {
               }}
             />
           );
+        case "gerenciarCadastrosSup_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/gerenciarCadastrosSup/dash",
+                state: { from: this.props.location }
+              }}
+            />
+          );
+        case "gerenciarEstoqueSup_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/gerenciarEstoqueSup/dash",
+                state: { from: this.props.location }
+              }}
+            />
+          );
+        case "cadastroFornecedorSup_add":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/cadastroFornecedorSup/add",
+                state: { from: this.props.location }
+              }}
+            />
+          );
+        case "cadastroProdutosSup_add":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/cadastroProdutosSup/add",
+                state: { from: this.props.location }
+              }}
+            />
+          );
+        case "entradaSup_add":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/entradaSup/add",
+                state: { from: this.props.location }
+              }}
+            />
+          );
+        case "saidaSup_add":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/saidaSup/add",
+                state: { from: this.props.location }
+              }}
+            />
+          );
         case "logout":
           return <Redirect to="/login" />;
         default:
@@ -635,6 +695,41 @@ class SideBar extends Component {
             <Menu.Item key="relatorioML_dash">
               <Icon type="ie" />
               E-Commerce
+            </Menu.Item>
+          </SubMenu>
+
+          <SubMenu
+            key="Suprimentos"
+            title={
+              <span>
+                <Icon type="apple" />
+                <span>Suprimentos</span>
+              </span>
+            }
+          >
+            <Menu.Item key="cadastroProdutosSup_add">
+              <Icon type="unordered-list" />
+              Cad. Produtos
+            </Menu.Item>
+            <Menu.Item key="cadastroFornecedorSup_add">
+              <Icon type="unordered-list" />
+              Cad. Fornecedor
+            </Menu.Item>
+            <Menu.Item key="entradaSup_add">
+              <Icon type="unordered-list" />
+              Entrada
+            </Menu.Item>
+            <Menu.Item key="saidaSup_add">
+              <Icon type="unordered-list" />
+              Saida
+            </Menu.Item>
+            <Menu.Item key="gerenciarCadastrosSup_dash">
+              <Icon type="unordered-list" />
+              Ger. Cadastros
+            </Menu.Item>
+            <Menu.Item key="gerenciarEstoqueSup_dash">
+              <Icon type="unordered-list" />
+              Ger. Estoque
             </Menu.Item>
           </SubMenu>
         </Menu>
