@@ -339,9 +339,12 @@ export const createPDF = async (technician, data) => {
           item.products.map(product => {
             let equips = "";
             if (product.serial) {
+              // console.log(product.serialNumbers);
               product.serialNumbers.map((equip, idx) => {
-                equips = `${equips}${idx > 0 ? " " : ""}${equip.serialNumber}`;
+                // console.log(equip);
+                equips = `${equips}${idx > 0 ? ", " : ""}${equip.serialNumber}`;
               });
+              // console.log(equips);
             }
 
             const textEquip = `${product.amount} - ${product.name}${
