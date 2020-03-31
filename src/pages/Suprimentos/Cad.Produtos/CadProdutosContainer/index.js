@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Input, Select, Modal, Button } from "antd";
+import { Input, Select, Modal, Button, message } from "antd";
+
+import {
+  NewSupProduct,
+  NewManufacturer,
+  GetManufacturer
+} from "../../../../services/Suprimentos/product";
 
 const { Option } = Select;
 
@@ -12,15 +18,38 @@ class CadProdutosPage extends Component {
     fabricante: "NÃO SELECIONADO",
     fornecedor: "NÃO SELECIONADO",
     newFabricante: "",
-    modalFabricante: false
+    modalFabricante: false,
+    manufacturerList: []
+  };
+
+  clearState = () => {
+    this.setState({
+      loading: false,
+      produto: "",
+      uniMedida: "NÃO SELECIONADO",
+      fabricante: "NÃO SELECIONADO",
+      fornecedor: "NÃO SELECIONADO",
+      newFabricante: "",
+      modalFabricante: false
+    });
+  };
+
+  componentDidMount = async () => {
+    await this.getManufacturer();
+  };
+
+  getManufacturer = async () => {
+    const { status, data } = await GetManufacturer();
+
+    if (status === 200) this.setState({ manufacturerList: data.rows });
   };
 
   ModalFabricante = () => (
     <Modal
       title="Novo fabricante"
       visible={this.state.modalFabricante}
-      onOk={this.handleOk}
-      onCancel={this.handleOk}
+      onOk={this.NovoFabricante}
+      onCancel={() => this.setState({ modalFabricante: false })}
       okText="Salvar"
       cancelText="Cancelar"
     >
@@ -39,10 +68,20 @@ class CadProdutosPage extends Component {
     </Modal>
   );
 
-  handleOk = () => {
-    this.setState({
-      modalFabricante: false
-    });
+  NovoFabricante = async () => {
+    const { newFabricante: id } = this.state;
+
+    const { status } = await NewManufacturer({ id });
+
+    if (status === 200) {
+      message.success("Fabricante cadastrado comn sucesso");
+      await this.getManufacturer();
+      this.setState({
+        modalFabricante: false
+      });
+    } else {
+      message.error("Erro ao cadastrar novo fabricante");
+    }
   };
 
   openModal = () => {
@@ -58,9 +97,28 @@ class CadProdutosPage extends Component {
   };
 
   onChangeSelect = (e, value) => {
+    console.log(e, value);
     this.setState({
       [e.target.name]: value
     });
+  };
+
+  saveTargetNewProduct = async () => {
+    const {
+      produto: name,
+      uniMedida: unit,
+      fabricante: manufacturerId
+    } = this.state;
+
+    const value = { name, unit, manufacturerId };
+    const { status, data } = await NewSupProduct(value);
+
+    if (status === 200) {
+      message.success("Produto cadastrado com sucesso");
+      this.clearState();
+    } else {
+      message.error("Erro ao cadastrar novo produto");
+    }
   };
 
   render() {
@@ -88,8 +146,7 @@ class CadProdutosPage extends Component {
             <Select
               value={this.state.uniMedida}
               style={{ width: "100%" }}
-              name="uniMedida"
-              onChange={this.onChangeSelect}
+              onChange={value => this.setState({ uniMedida: value })}
             >
               <Option value="UNID">UNID</Option>
               <Option value="PÇ">PÇ</Option>
@@ -105,26 +162,15 @@ class CadProdutosPage extends Component {
             <Select
               value={this.state.fabricante}
               style={{ width: "100%" }}
-              name="fabricante"
-              onChange={this.onChangeSelect}
+              onChange={value => this.setState({ fabricante: value })}
             >
-              <Option value="TESTE">TESTE</Option>
+              {this.state.manufacturerList.map(manufacturer => (
+                <Option value={manufacturer.id}>{manufacturer.id}</Option>
+              ))}
             </Select>
             <div className="button-mais-cadProd" onClick={this.openModal}>
               +
             </div>
-          </div>
-
-          <div className="div-fornecedor-cadProd">
-            <div className="div-textProduto-cadProd">Fornecedor:</div>
-            <Select
-              value={this.state.fornecedor}
-              style={{ width: "100%" }}
-              name="fornecedor"
-              onChange={this.onChangeSelect}
-            >
-              <Option value="TESTE">TESTE</Option>
-            </Select>
           </div>
         </div>
         <div className="linha-button-fornecedor">
@@ -132,6 +178,7 @@ class CadProdutosPage extends Component {
             type="primary"
             className="button"
             loading={this.state.loading}
+            onClick={this.saveTargetNewProduct}
           >
             Salvar
           </Button>
