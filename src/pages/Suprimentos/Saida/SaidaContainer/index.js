@@ -1,23 +1,42 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Select, Input, InputNumber, Button } from "antd";
+import { Select, Input, InputNumber, Button, message } from "antd";
+import { GetSupProduct } from "../../../../services/Suprimentos/product";
+import { NovaSaida } from "../../../../services/Suprimentos/saida";
 
 const { Option } = Select;
 
 class SaidaSupPage extends Component {
   state = {
-    produto: "NÃO SELECIONADO",
+    produto: undefined,
     quant: 1,
     solicitante: "",
     solicitanteEmail: "",
     responsaEmail: "",
-    loading: false
+    loading: false,
+    products: [],
+    supProductId: ""
   };
 
-  onChangeSelect = value => {
+  clearState = () => {
     this.setState({
-      produto: value
+      produto: undefined,
+      quant: 1,
+      solicitante: "",
+      solicitanteEmail: "",
+      responsaEmail: "",
+      supProductId: ""
     });
+  };
+
+  componentDidMount = async () => {
+    await this.getSupProduct();
+  };
+
+  getSupProduct = async () => {
+    const { status, data } = await GetSupProduct();
+
+    if (status === 200) this.setState({ products: data.rows });
   };
 
   onChangeQuant = value => {
@@ -32,6 +51,27 @@ class SaidaSupPage extends Component {
     });
   };
 
+  saveTargetNewOut = async () => {
+    const {
+      quant: amount,
+      solicitante,
+      responsaEmail: emailResp,
+      solicitanteEmail: emailSolic,
+      supProductId
+    } = this.state;
+
+    const value = { amount, solicitante, emailResp, emailSolic, supProductId };
+
+    const { status } = await NovaSaida(value);
+
+    if (status === 200) {
+      message.success("Entrada efetuada com sucesso");
+      this.clearState();
+    } else {
+      message.error("Erro ao efetuar entrada");
+    }
+  };
+
   render() {
     return (
       <div className="div-card-Gentrada">
@@ -43,11 +83,18 @@ class SaidaSupPage extends Component {
           <div className="div-produto-saidaSup">
             <div className="div-textProduto-cadProd">Produto:</div>
             <Select
+              placeholder="NÃO SELECIONADO"
               value={this.state.produto}
               style={{ width: "100%" }}
-              onChange={this.onChangeSelect}
+              onChange={(value, props) =>
+                this.setState({ supProductId: props.key, produto: value })
+              }
             >
-              <Option value="teste">TESTE</Option>
+              {this.state.products.map(product => (
+                <Option value={product.name} key={product.id}>
+                  {product.name}
+                </Option>
+              ))}
             </Select>
           </div>
           <div className="div-quant-saidaSup">
@@ -98,6 +145,7 @@ class SaidaSupPage extends Component {
             type="primary"
             className="button"
             loading={this.state.loading}
+            onClick={this.saveTargetNewOut}
           >
             Salvar
           </Button>

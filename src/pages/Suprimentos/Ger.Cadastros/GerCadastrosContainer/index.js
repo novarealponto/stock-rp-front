@@ -2,6 +2,12 @@ import React, { Component } from "react";
 import "./index.css";
 import { Select, Button, Input, Spin } from "antd";
 
+import {
+  GetSupProduct,
+  GetManufacturer
+} from "../../../../services/Suprimentos/product";
+import { GetProvider } from "../../../../services/Suprimentos/fornecedor";
+
 const { Option } = Select;
 
 class GerenciarCadastrosSupPage extends Component {
@@ -13,7 +19,34 @@ class GerenciarCadastrosSupPage extends Component {
     page: 1,
     count: 1,
     show: 1,
-    total: 10
+    total: 10,
+    products: [],
+    fabricantes: [],
+    fornecedores: []
+  };
+
+  componentDidMount = async () => {
+    await this.getSupProduct();
+    await this.getManufacturer();
+    await this.getProvider();
+  };
+
+  getSupProduct = async () => {
+    const { status, data } = await GetSupProduct();
+
+    if (status === 200) this.setState({ products: data.rows });
+  };
+
+  getManufacturer = async () => {
+    const { status, data } = await GetManufacturer();
+
+    if (status === 200) this.setState({ fabricantes: data.rows });
+  };
+
+  getProvider = async () => {
+    const { status, data } = await GetProvider();
+
+    if (status === 200) this.setState({ fornecedores: data.rows });
   };
 
   onChangeSelect = async value => {
@@ -340,9 +373,22 @@ class GerenciarCadastrosSupPage extends Component {
               <div className="spin">
                 <Spin spinning={this.state.loading} />
               </div>
-            ) : null
-            // this.tableReserved()
-            }
+            ) : null}
+            {this.state.products.map(product => (
+              <div className="div-cabecalho-estoque">
+                <div className="cel-cod-cabecalho-gerCad">{product.id}</div>
+                <div className="cel-produto-cabecalho-gerCad">
+                  {product.name}
+                </div>
+                <div className="cel-fabricante-cabecalho-gerCad">
+                  {product.manufacturerId}
+                </div>
+                <div className="cel-data-cabecalho-gerCad">
+                  {product.createdAt}
+                </div>
+                <div className="cel-acao-cabecalho-gerCad-reservados" />
+              </div>
+            ))}
             <div className="footer-ROs">
               <this.Pages />
             </div>
@@ -360,9 +406,19 @@ class GerenciarCadastrosSupPage extends Component {
               <div className="spin">
                 <Spin spinning={this.state.loading} />
               </div>
-            ) : null
-            // this.tableReserved()
-            }
+            ) : null}
+            {this.state.fabricantes.map(fabricante => (
+              <div className="div-cabecalho-estoque">
+                <div className="cel-fabricanteF-cabecalho-gerCad">
+                  {fabricante.id}
+                </div>
+                <div className="cel-dataF-cabecalho-gerCad">
+                  {fabricante.createdAt}
+                </div>
+                <div className="cel-acao-cabecalho-gerCad-reservados" />
+              </div>
+            ))}
+
             <div className="footer-ROs">
               <this.Pages />
             </div>
@@ -385,9 +441,23 @@ class GerenciarCadastrosSupPage extends Component {
               <div className="spin">
                 <Spin spinning={this.state.loading} />
               </div>
-            ) : null
-            // this.tableReserved()
-            }
+            ) : null}
+            {this.state.fornecedores.map(fornecedore => (
+              <div className="div-cabecalho-estoque">
+                {console.log(fornecedore)}
+                <div className="cel-produto-cabecalho-gerCad">
+                  {fornecedore.razaoSocial}
+                </div>
+                <div className="cel-fabricante-cabecalho-gerCad">
+                  {fornecedore.cnpj}
+                </div>
+                <div className="cel-data-cabecalho-gerCad">?????</div>
+                <div className="cel-data-cabecalho-gerCad">
+                  {fornecedore.createdAt}
+                </div>
+                <div className="cel-acao-cabecalho-gerCad-reservados" />
+              </div>
+            ))}
             <div className="footer-ROs">
               <this.Pages />
             </div>
