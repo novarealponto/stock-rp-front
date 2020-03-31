@@ -37,7 +37,8 @@ class NovoUsuario extends Component {
       gerROs: false,
       delROs: false,
       updateRos: false,
-      tecnico: false
+      tecnico: false,
+      suprimentos: false
     },
     typeAccountArray: [],
     typeName: "Selecione um tipo de conta"
@@ -158,7 +159,8 @@ class NovoUsuario extends Component {
           addEntry: resposta.data.addEntry,
           addEquip: resposta.data.addEquip,
           addEquipType: resposta.data.addEquipType,
-          addPart: resposta.data.addPart
+          addPart: resposta.data.addPart,
+          suprimentos: resposta.data.suprimentos
         }
       })
     );
@@ -199,7 +201,8 @@ class NovoUsuario extends Component {
       addEquip: this.state.permission.addEquip,
       addEquipType: this.state.permission.addEquipType,
       addPart: this.state.permission.addPart,
-      addAccessories: this.state.permission.addAccessories
+      addAccessories: this.state.permission.addAccessories,
+      suprimentos: this.state.permission.suprimentos
     };
 
     const resposta = await NovoUsuarioService(values);
@@ -241,7 +244,8 @@ class NovoUsuario extends Component {
           gerROs: false,
           delROs: false,
           updateRos: false,
-          tecnico: false
+          tecnico: false,
+          suprimentos: false
         }
       });
       await this.success();
@@ -387,8 +391,6 @@ class NovoUsuario extends Component {
                     >
                       Adicionar entrada
                     </Checkbox>
-                  </div>
-                  <div className="checkbox-card-tipo" disabled>
                     <Checkbox
                       onChange={this.onChangePermission}
                       checked={this.state.permission.addStatus}
@@ -396,6 +398,16 @@ class NovoUsuario extends Component {
                       disabled
                     >
                       Adicionar status
+                    </Checkbox>
+                  </div>
+                  <div className="checkbox-card-tipo" disabled>
+                    <Checkbox
+                      onChange={this.onChangePermission}
+                      checked={this.state.permission.suprimentos}
+                      name="suprimentos"
+                      disabled
+                    >
+                      Página de suprimentos
                     </Checkbox>
                     <Checkbox
                       onChange={this.onChangePermission}
@@ -529,14 +541,21 @@ class NovoUsuario extends Component {
                     >
                       Adicionar entrada
                     </Checkbox>
-                  </div>
-                  <div className="checkbox-card-tipo">
                     <Checkbox
                       onChange={this.onChangePermission}
                       checked={this.state.permission.addStatus}
                       name="addStatus"
                     >
                       Adicionar status
+                    </Checkbox>
+                  </div>
+                  <div className="checkbox-card-tipo">
+                    <Checkbox
+                      onChange={this.onChangePermission}
+                      checked={this.state.permission.suprimentos}
+                      name="suprimentos"
+                    >
+                      Página de suprimentos
                     </Checkbox>
                     <Checkbox
                       onChange={this.onChangePermission}

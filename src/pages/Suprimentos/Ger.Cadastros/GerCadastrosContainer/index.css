@@ -1,0 +1,170 @@
+.cel-cod-cabecalho-gerCad {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 10%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-produto-cabecalho-gerCad {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 30%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-fabricante-cabecalho-gerCad {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 25%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-fornecedor-cabecalho-gerCad {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 25%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-data-cabecalho-gerCad {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 10%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-fabricanteF-cabecalho-gerCad {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 80%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-dataF-cabecalho-gerCad {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 20%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-cod-cabecalho-gerCad-search {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 15%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-fabricante-cabecalho-gerCad-search {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 40%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-fornecedor-cabecalho-gerCad-search {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 75%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-data-cabecalho-gerCad-search {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 20%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-razao-cabecalho-gerCad-search {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 65%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-cnpj-cabecalho-gerCad-search {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 30%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-fornecedorF-cabecalho-gerCad-search {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 60%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-tel-cabecalho-gerCad-search {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 20%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-dataFF-cabecalho-gerCad-search {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 15%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-acao-cabecalho-gerCad-reservados {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 5%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}

@@ -1,0 +1,30 @@
+.div-produto-saidaSup {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+.div-quant-saidaSup {
+  width: 20%;
+  display: flex;
+  align-items: center;
+}
+.div-solicitante-saidaSup {
+  width: 33%;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+.div-emailSoli-saidaSup {
+  width: 33%;
+  display: flex;
+  align-items: center;
+}
+.div-textEmailSoli-cadProd {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 16px;
+  color: rgb(90, 90, 90);
+  margin-right: 5px;
+  width: 42%;
+}

@@ -707,27 +707,45 @@ class SideBar extends Component {
               </span>
             }
           >
-            <Menu.Item key="cadastroProdutosSup_add">
+            <Menu.Item
+              key="cadastroProdutosSup_add"
+              // disabled={!this.props.auth.suprimentos}
+            >
               <Icon type="unordered-list" />
               Cad. Produtos
             </Menu.Item>
-            <Menu.Item key="cadastroFornecedorSup_add">
+            <Menu.Item
+              key="cadastroFornecedorSup_add"
+              // disabled={!this.props.auth.suprimentos}
+            >
               <Icon type="unordered-list" />
               Cad. Fornecedor
             </Menu.Item>
-            <Menu.Item key="entradaSup_add">
+            <Menu.Item
+              key="entradaSup_add"
+              // disabled={!this.props.auth.suprimentos}
+            >
               <Icon type="unordered-list" />
               Entrada
             </Menu.Item>
-            <Menu.Item key="saidaSup_add">
+            <Menu.Item
+              key="saidaSup_add"
+              // disabled={!this.props.auth.suprimentos}
+            >
               <Icon type="unordered-list" />
               Saida
             </Menu.Item>
-            <Menu.Item key="gerenciarCadastrosSup_dash">
+            <Menu.Item
+              key="gerenciarCadastrosSup_dash"
+              // disabled={!this.props.auth.suprimentos}
+            >
               <Icon type="unordered-list" />
               Ger. Cadastros
             </Menu.Item>
-            <Menu.Item key="gerenciarEstoqueSup_dash">
+            <Menu.Item
+              key="gerenciarEstoqueSup_dash"
+              // disabled={!this.props.auth.suprimentos}
+            >
               <Icon type="unordered-list" />
               Ger. Estoque
             </Menu.Item>
