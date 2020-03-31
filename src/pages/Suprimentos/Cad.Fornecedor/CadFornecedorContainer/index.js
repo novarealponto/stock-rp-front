@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import "./index.css";
 import { Input, Button, message } from "antd";
+import * as R from "ramda";
 
 import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import { NovoFornecedor } from "../../../../services/Suprimentos/fornecedor";
+import { getAddressByZipCode } from "../../../../services/fornecedores";
+import { masks } from "./validators";
 
 class CadFornecedorPage extends Component {
   state = {
@@ -37,17 +40,20 @@ class CadFornecedorPage extends Component {
   };
 
   onChange = e => {
+    const { name, value } = e.target;
+    const { nome, valor } = masks(name, value);
     this.setState({
-      [e.target.name]: e.target.value
+      [nome]: valor
     });
   };
 
   onChangeContact = e => {
     const { name, id, value } = e.target;
+    const { nome, valor } = masks(name, value);
 
     const { contacts } = this.state;
 
-    contacts[id] = { ...contacts[id], [name]: value };
+    contacts[id] = { ...contacts[id], [nome]: valor };
 
     this.setState({ contacts });
   };
@@ -56,6 +62,21 @@ class CadFornecedorPage extends Component {
     this.setState({
       [e.target.name]: value
     });
+  };
+
+  getAddress = async e => {
+    const cep = e.target.value;
+
+    const address = await getAddressByZipCode(cep);
+
+    if (!R.has("erro", address.data)) {
+      this.setState({
+        rua: address.data.logradouro,
+        cidade: address.data.localidade,
+        bairro: address.data.bairro,
+        uf: address.data.uf
+      });
+    }
   };
 
   saveTargetNewProvider = async () => {
@@ -138,6 +159,7 @@ class CadFornecedorPage extends Component {
                 name="cep"
                 value={this.state.cep}
                 onChange={this.onChange}
+                onBlur={this.getAddress}
               />
             </div>
 
@@ -251,16 +273,14 @@ class CadFornecedorPage extends Component {
                   onChange={this.onChangeContact}
                 />
               </div>
-              {index > 0 && (
+              {this.state.contacts.length > 1 && (
                 <CloseOutlined
                   onClick={() => {
                     const contacts = this.state.contacts;
 
                     contacts.splice(index, 1);
 
-                    this.setState({
-                      contacts: contacts
-                    });
+                    this.setState({ contacts });
                   }}
                 />
               )}
