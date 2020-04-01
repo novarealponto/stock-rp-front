@@ -69,9 +69,9 @@ class CadProdutosPage extends Component {
   );
 
   NovoFabricante = async () => {
-    const { newFabricante: id } = this.state;
+    const { newFabricante: name } = this.state;
 
-    const { status } = await NewManufacturer({ id });
+    const { status } = await NewManufacturer({ name });
 
     if (status === 200) {
       message.success("Fabricante cadastrado comn sucesso");
@@ -165,7 +165,7 @@ class CadProdutosPage extends Component {
               onChange={value => this.setState({ fabricante: value })}
             >
               {this.state.manufacturerList.map(manufacturer => (
-                <Option value={manufacturer.id}>{manufacturer.id}</Option>
+                <Option value={manufacturer.id}>{manufacturer.name}</Option>
               ))}
             </Select>
             <div className="button-mais-cadProd" onClick={this.openModal}>

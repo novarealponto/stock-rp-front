@@ -1,9 +1,17 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import "./index.css";
-import { Select, Button, Input, Spin } from "antd";
+import { Select, Button, Input, Spin, Modal, message } from "antd";
+import { EditOutlined } from "@ant-design/icons";
+import { split } from "ramda";
 
+import { redirectValueProvider } from "../../Edit.Fornecedor/Redux/action";
 import {
+  UpdateSupProduct,
   GetSupProduct,
+  UpdateManufacturer,
   GetManufacturer
 } from "../../../../services/Suprimentos/product";
 import { GetProvider } from "../../../../services/Suprimentos/fornecedor";
@@ -12,6 +20,9 @@ const { Option } = Select;
 
 class GerenciarCadastrosSupPage extends Component {
   state = {
+    redirect: false,
+    visibleFabricante: false,
+    visibleProduto: false,
     avancado: true,
     select: "produtos",
     loading: false,
@@ -22,7 +33,48 @@ class GerenciarCadastrosSupPage extends Component {
     total: 10,
     products: [],
     fabricantes: [],
-    fornecedores: []
+    fornecedores: [],
+    manufacturerList: [],
+    manufacturer: {
+      id: "",
+      name: ""
+    },
+    product: {
+      id: "",
+      name: "",
+      unit: "",
+      manufacturerId: "",
+      manufacturer: {
+        name: ""
+      }
+    }
+  };
+
+  clearState = () => {
+    this.setState({
+      visibleFabricante: false,
+      visibleProduto: false,
+      avancado: true,
+      loading: false,
+      search: false,
+      page: 1,
+      count: 1,
+      show: 1,
+      total: 10,
+      manufacturer: {
+        id: "",
+        name: ""
+      },
+      product: {
+        id: "",
+        name: "",
+        unit: "",
+        manufacturerId: "",
+        manufacturer: {
+          name: ""
+        }
+      }
+    });
   };
 
   componentDidMount = async () => {
@@ -37,16 +89,58 @@ class GerenciarCadastrosSupPage extends Component {
     if (status === 200) this.setState({ products: data.rows });
   };
 
+  updateSupProduct = async () => {
+    const { id, name, unit, manufacturerId } = this.state.product;
+    const value = { id, name, unit, manufacturerId };
+    const { status } = await UpdateSupProduct(value);
+
+    if (status === 200) {
+      message.success("Produto atualizado com sucesso");
+      await this.getSupProduct();
+      this.clearState();
+    } else {
+      message.error("Erro ao atualizar produto");
+    }
+  };
+
   getManufacturer = async () => {
     const { status, data } = await GetManufacturer();
 
-    if (status === 200) this.setState({ fabricantes: data.rows });
+    if (status === 200) {
+      this.setState({
+        fabricantes: this.state.product.id ? this.state.fabricantes : data.rows,
+        manufacturerList: data.rows
+      });
+    }
+  };
+
+  updateManufacturer = async () => {
+    const { name, id } = this.state.manufacturer;
+    const { status } = await UpdateManufacturer({ id, name });
+
+    if (status === 200) {
+      message.success("Fabricante atualizado com sucesso");
+      await this.getManufacturer();
+      this.clearState();
+    } else {
+      message.error("Erro ao atualizar fabricante");
+    }
   };
 
   getProvider = async () => {
     const { status, data } = await GetProvider();
 
     if (status === 200) this.setState({ fornecedores: data.rows });
+  };
+
+  onChange = e => {
+    const { name, value } = e.target;
+
+    const nameArry = split(" ", name);
+
+    this.setState({
+      [nameArry[0]]: { ...this.state[nameArry[0]], [nameArry[1]]: value }
+    });
   };
 
   onChangeSelect = async value => {
@@ -293,7 +387,92 @@ class GerenciarCadastrosSupPage extends Component {
     }
   };
 
+  handleCancel = () => {
+    this.setState({
+      visibleFabricante: false,
+      visibleProduto: false
+    });
+  };
+
+  ModalProduto = () => (
+    <Modal
+      title="Atualizar Produto"
+      visible={this.state.visibleProduto}
+      onOk={this.updateSupProduct}
+      onCancel={this.handleCancel}
+    >
+      <Input
+        value={this.state.product.name}
+        name="product name"
+        onChange={this.onChange}
+      />
+      <Select
+        value={this.state.product.unit}
+        style={{ width: "100%" }}
+        onChange={value =>
+          this.setState({ product: { ...this.state.product, unit: value } })
+        }
+      >
+        <Option value="UNID">UNID</Option>
+        <Option value="PÇ">PÇ</Option>
+        <Option value="CX">CX</Option>
+        <Option value="LT">LT</Option>
+      </Select>
+      <Select
+        value={this.state.product.manufacturer.name}
+        style={{ width: "100%" }}
+        onChange={(value, props) =>
+          this.setState({
+            product: {
+              ...this.state.product,
+              manufacturerId: props.key,
+              manufacturer: { ...this.state.product.manufacturer, name: value }
+            }
+          })
+        }
+      >
+        {this.state.manufacturerList.map(manufacturer => (
+          <Option key={manufacturer.id} value={manufacturer.name}>
+            {manufacturer.name}
+          </Option>
+        ))}
+      </Select>
+    </Modal>
+  );
+
+  ModalFabriante = () => (
+    <Modal
+      title="Atualizar Fabricante"
+      visible={this.state.visibleFabricante}
+      onOk={this.updateManufacturer}
+      onCancel={this.handleCancel}
+    >
+      <Input
+        value={this.state.manufacturer.name}
+        name="manufacturer name"
+        onChange={this.onChange}
+      />
+    </Modal>
+  );
+
+  redirect = () => {
+    if (this.state.redirect) {
+      this.props.redirectValueProvider(this.state.fornecedor);
+      return (
+        <Redirect
+          push
+          to={{
+            pathname: "/logged/fornecedorSup/atializar",
+            state: { from: this.props.location }
+          }}
+        />
+      );
+    }
+    return null;
+  };
+
   render() {
+    console.log(this.state);
     return (
       <div className="div-card-Gentrada">
         <div className="linhaTexto-Gentrada">
@@ -358,12 +537,21 @@ class GerenciarCadastrosSupPage extends Component {
                   {product.name}
                 </div>
                 <div className="cel-fabricante-cabecalho-gerCad">
-                  {product.manufacturerId}
+                  {product.manufacturer.name}
                 </div>
                 <div className="cel-data-cabecalho-gerCad">
                   {product.createdAt}
                 </div>
-                <div className="cel-acao-cabecalho-gerCad-reservados" />
+                <div className="cel-acao-cabecalho-gerCad-reservados">
+                  <EditOutlined
+                    onClick={() =>
+                      this.setState({
+                        visibleProduto: true,
+                        product
+                      })
+                    }
+                  />
+                </div>
               </div>
             ))}
             <div className="footer-ROs">
@@ -387,12 +575,21 @@ class GerenciarCadastrosSupPage extends Component {
             {this.state.fabricantes.map(fabricante => (
               <div className="div-cabecalho-estoque">
                 <div className="cel-fabricanteF-cabecalho-gerCad">
-                  {fabricante.id}
+                  {fabricante.name}
                 </div>
                 <div className="cel-dataF-cabecalho-gerCad">
                   {fabricante.createdAt}
                 </div>
-                <div className="cel-acao-cabecalho-gerCad-reservados" />
+                <div className="cel-acao-cabecalho-gerCad-reservados">
+                  <EditOutlined
+                    onClick={() =>
+                      this.setState({
+                        visibleFabricante: true,
+                        manufacturer: fabricante
+                      })
+                    }
+                  />
+                </div>
               </div>
             ))}
 
@@ -418,19 +615,28 @@ class GerenciarCadastrosSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.fornecedores.map(fornecedore => (
+            {this.state.fornecedores.map(fornecedor => (
               <div className="div-cabecalho-estoque">
                 <div className="cel-produto-cabecalho-gerCad">
-                  {fornecedore.razaoSocial}
+                  {fornecedor.razaoSocial}
                 </div>
                 <div className="cel-fabricante-cabecalho-gerCad">
-                  {fornecedore.cnpj}
+                  {fornecedor.cnpj}
                 </div>
                 <div className="cel-data-cabecalho-gerCad">?????</div>
                 <div className="cel-data-cabecalho-gerCad">
-                  {fornecedore.createdAt}
+                  {fornecedor.createdAt}
                 </div>
-                <div className="cel-acao-cabecalho-gerCad-reservados" />
+                <div className="cel-acao-cabecalho-gerCad-reservados">
+                  <EditOutlined
+                    onClick={() =>
+                      this.setState({
+                        fornecedor,
+                        redirect: true
+                      })
+                    }
+                  />
+                </div>
               </div>
             ))}
             <div className="footer-ROs">
@@ -438,9 +644,23 @@ class GerenciarCadastrosSupPage extends Component {
             </div>
           </div>
         )}
+        <this.ModalFabriante />
+        <this.ModalProduto />
+        <this.redirect />
       </div>
     );
   }
 }
 
-export default GerenciarCadastrosSupPage;
+function mapDispacthToProps(dispach) {
+  return bindActionCreators({ redirectValueProvider }, dispach);
+}
+
+function mapStateToProps(state) {
+  return null;
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(GerenciarCadastrosSupPage);

@@ -45,6 +45,7 @@ import GerenciarCadastrosSupRoute from "./Suprimentos/Ger.Cadastros";
 import EntradaSupRoute from "./Suprimentos/Entrada";
 import CadastroProdutosSupRoute from "./Suprimentos/Cad.Produtos";
 import CadastroFornecedorSupRoute from "./Suprimentos/Cad.Fornecedor";
+import EditarFornecedorSupRoute from "./Suprimentos/Edit.Fornecedor";
 
 class PagesRoute extends Component {
   state = {
@@ -181,6 +182,10 @@ class PagesRoute extends Component {
             path="/logged/cadastroFornecedorSup"
             component={CadastroFornecedorSupRoute}
           />
+          <Route
+            path="/logged/fornecedorSup/atializar"
+            component={EditarFornecedorSupRoute}
+          />
         </Switch>
       );
     } else {
@@ -200,7 +205,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(PagesRoute);
+export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);

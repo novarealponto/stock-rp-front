@@ -29,6 +29,33 @@ export const NewSupProduct = async values => {
   return response;
 };
 
+export const UpdateSupProduct = async values => {
+  const storeObject = store.getState();
+
+  const headers = {
+    token: storeObject.auth.token,
+    username: storeObject.auth.username
+  };
+
+  let response = {};
+
+  await axios
+    .put(`${BACKEND_URL}/api/suprimentos/product`, values, {
+      headers: headers
+    })
+    .then(resp => {
+      response = resp;
+    })
+    .catch(error => {
+      if (error.response) {
+        response = error.response;
+      } else {
+        console.log("Error", error.message);
+      }
+    });
+  return response;
+};
+
 export const GetSupProduct = async query => {
   const storeObject = store.getState();
 
@@ -56,6 +83,7 @@ export const GetSupProduct = async query => {
     });
   return response;
 };
+
 export const NewManufacturer = async values => {
   const storeObject = store.getState();
 
@@ -68,6 +96,33 @@ export const NewManufacturer = async values => {
 
   await axios
     .post(`${BACKEND_URL}/api/suprimentos/manufacturer`, values, {
+      headers: headers
+    })
+    .then(resp => {
+      response = resp;
+    })
+    .catch(error => {
+      if (error.response) {
+        response = error.response;
+      } else {
+        console.log("Error", error.message);
+      }
+    });
+  return response;
+};
+
+export const UpdateManufacturer = async values => {
+  const storeObject = store.getState();
+
+  const headers = {
+    token: storeObject.auth.token,
+    username: storeObject.auth.username
+  };
+
+  let response = {};
+
+  await axios
+    .put(`${BACKEND_URL}/api/suprimentos/manufacturer`, values, {
       headers: headers
     })
     .then(resp => {
