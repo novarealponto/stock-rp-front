@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Input, Button, message } from "antd";
+import { Input, Button, message, Icon } from "antd";
 import * as R from "ramda";
 
-import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
+// import { PlusOutlined,  } from "@ant-design/icons";
 import { NovoFornecedor } from "../../../../services/Suprimentos/fornecedor";
 import { getAddressByZipCode } from "../../../../services/fornecedores";
 import { masks } from "./validators";
@@ -274,7 +274,9 @@ class CadFornecedorPage extends Component {
                 />
               </div>
               {this.state.contacts.length > 1 && (
-                <CloseOutlined
+                <Icon
+                  type="close"
+                  oultined
                   onClick={() => {
                     const contacts = this.state.contacts;
 
@@ -292,7 +294,9 @@ class CadFornecedorPage extends Component {
           className="div-endereco-cadForn"
           style={{ alignItems: "flex-end", margin: "10px" }}
         >
-          <PlusOutlined
+          <Icon
+            type="plus"
+            outlined
             onClick={() =>
               this.setState({
                 contacts: [

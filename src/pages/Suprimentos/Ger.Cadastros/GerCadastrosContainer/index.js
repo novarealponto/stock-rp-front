@@ -208,17 +208,6 @@ class GerenciarCadastrosSupPage extends Component {
                   onChange={this.onChange}
                 />
               </div>
-            </div>
-            <div className="div-linha1-avancado-Rtecnico">
-              <div className="cel-fornecedor-cabecalho-gerCad-search">
-                <Input
-                  placeholder="Digite o fornecedor"
-                  name="nomeProdutoSearch"
-                  style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
-                  onChange={this.onChange}
-                />
-              </div>
               <div className="cel-data-cabecalho-gerCad-search">
                 <Input
                   placeholder="20/11/2020"
@@ -275,17 +264,6 @@ class GerenciarCadastrosSupPage extends Component {
                   name="fabricanteSearch"
                   style={{ width: "100%" }}
                   // value={fabricanteSearch}
-                  onChange={this.onChange}
-                />
-              </div>
-            </div>
-            <div className="div-linha1-avancado-Rtecnico">
-              <div className="cel-fornecedorF-cabecalho-gerCad-search">
-                <Input
-                  placeholder="Digite o fornecedor"
-                  name="nomeProdutoSearch"
-                  style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
                   onChange={this.onChange}
                 />
               </div>
@@ -364,7 +342,6 @@ class GerenciarCadastrosSupPage extends Component {
               <div className="cel-cod-cabecalho-gerCad">Cod.</div>
               <div className="cel-produto-cabecalho-gerCad">Produto</div>
               <div className="cel-fabricante-cabecalho-gerCad">Fabricante</div>
-              <div className="cel-fornecedor-cabecalho-gerCad">Fornecedor</div>
               <div className="cel-data-cabecalho-gerCad">Data incl.</div>
               <div className="cel-acao-cabecalho-gerCad-reservados" />
             </div>
@@ -427,11 +404,10 @@ class GerenciarCadastrosSupPage extends Component {
         {this.state.select === "fornecedor" && (
           <div className="div-main-emprestimo">
             <div className="div-cabecalho-estoque">
-              <div className="cel-produto-cabecalho-gerCad">
+              <div className="cel-razaoNome-cabecalho-gerCad">
                 Razão social/ Nome
               </div>
               <div className="cel-fabricante-cabecalho-gerCad">Cnpj/ Cpf</div>
-              <div className="cel-fornecedor-cabecalho-gerCad">Fornecedor</div>
               <div className="cel-data-cabecalho-gerCad">Telefone</div>
               <div className="cel-data-cabecalho-gerCad">Data Incl.</div>
               <div className="cel-acao-cabecalho-gerCad-reservados" />
@@ -444,7 +420,6 @@ class GerenciarCadastrosSupPage extends Component {
             ) : null}
             {this.state.fornecedores.map(fornecedore => (
               <div className="div-cabecalho-estoque">
-                {console.log(fornecedore)}
                 <div className="cel-produto-cabecalho-gerCad">
                   {fornecedore.razaoSocial}
                 </div>
