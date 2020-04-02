@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
+import { connect } from "react-redux";
 import { Select, Input, InputNumber, Button, message } from "antd";
 import { GetSupProduct } from "../../../../services/Suprimentos/product";
 import { NovaSaida } from "../../../../services/Suprimentos/saida";
@@ -60,7 +61,16 @@ class SaidaSupPage extends Component {
       supProductId
     } = this.state;
 
-    const value = { amount, solicitante, emailResp, emailSolic, supProductId };
+    const { username: responsibleUser } = this.props.auth;
+
+    const value = {
+      amount,
+      solicitante,
+      emailResp,
+      emailSolic,
+      supProductId,
+      responsibleUser
+    };
 
     const { status } = await NovaSaida(value);
 
@@ -155,4 +165,10 @@ class SaidaSupPage extends Component {
   }
 }
 
-export default SaidaSupPage;
+function mapStateToProps(state) {
+  return {
+    auth: state.auth
+  };
+}
+
+export default connect(mapStateToProps)(SaidaSupPage);

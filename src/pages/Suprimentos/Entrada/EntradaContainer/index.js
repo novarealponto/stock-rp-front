@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
+import { connect } from "react-redux";
 import { Input, Select, Button, InputNumber, message } from "antd";
 
 import { GetSupProduct } from "../../../../services/Suprimentos/product";
@@ -88,7 +89,16 @@ class EntradaSupPage extends Component {
       supProductId
     } = this.state;
 
-    const value = { amount, priceUnit, discount, supProviderId, supProductId };
+    const { username: responsibleUser } = this.props.auth;
+
+    const value = {
+      amount,
+      priceUnit,
+      discount,
+      supProviderId,
+      supProductId,
+      responsibleUser
+    };
 
     const { status } = await NovaEntrada(value);
 
@@ -209,4 +219,10 @@ class EntradaSupPage extends Component {
   }
 }
 
-export default EntradaSupPage;
+function mapStateToProps(state) {
+  return {
+    auth: state.auth
+  };
+}
+
+export default connect(mapStateToProps)(EntradaSupPage);
