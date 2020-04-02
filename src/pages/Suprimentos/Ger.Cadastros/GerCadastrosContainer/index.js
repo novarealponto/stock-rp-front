@@ -6,6 +6,7 @@ import "./index.css";
 import { Select, Button, Input, Spin, Modal, message } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { split } from "ramda";
+import moment from "moment";
 
 import { redirectValueProvider } from "../../Edit.Fornecedor/Redux/action";
 import {
@@ -47,6 +48,20 @@ class GerenciarCadastrosSupPage extends Component {
       manufacturer: {
         name: ""
       }
+    },
+    produtoSearch: {
+      codigo: "",
+      nome: "",
+      fabricante: "",
+      data: ""
+    },
+    fabricanteSearch: {
+      nome: ""
+    },
+    fornecedorSearch: {
+      razaosocial: "",
+      cnpj: "",
+      telefone: ""
     }
   };
 
@@ -84,7 +99,24 @@ class GerenciarCadastrosSupPage extends Component {
   };
 
   getSupProduct = async () => {
-    const { status, data } = await GetSupProduct();
+    const query = {
+      filters: {
+        supProduct: {
+          specific: {
+            name: this.state.produtoSearch.nome,
+            code: this.state.produtoSearch.codigo
+          }
+        },
+        manufacturer: {
+          specific: {
+            name: this.state.produtoSearch.fabricante
+          }
+        }
+      },
+      page: this.state.page,
+      total: this.state.total
+    };
+    const { status, data } = await GetSupProduct(query);
 
     if (status === 200) this.setState({ products: data.rows });
   };
@@ -104,7 +136,18 @@ class GerenciarCadastrosSupPage extends Component {
   };
 
   getManufacturer = async () => {
-    const { status, data } = await GetManufacturer();
+    const query = {
+      filters: {
+        manufacturer: {
+          specific: {
+            name: this.state.fabricanteSearch.nome
+          }
+        }
+      },
+      page: this.state.page,
+      total: this.state.total
+    };
+    const { status, data } = await GetManufacturer(query);
 
     if (status === 200) {
       this.setState({
@@ -128,19 +171,46 @@ class GerenciarCadastrosSupPage extends Component {
   };
 
   getProvider = async () => {
-    const { status, data } = await GetProvider();
+    const query = {
+      filters: {
+        supProvider: {
+          specific: {
+            razaoSocial: this.state.fornecedorSearch.razaosocial,
+            cnpj: this.state.fornecedorSearch.cnpj
+            // telphone: this.state.fornecedorSearch.telefone
+          }
+        }
+      },
+      page: this.state.page,
+      total: this.state.total
+    };
+    const { status, data } = await GetProvider(query);
 
     if (status === 200) this.setState({ fornecedores: data.rows });
   };
 
-  onChange = e => {
+  onChange = async e => {
     const { name, value } = e.target;
 
     const nameArry = split(" ", name);
 
-    this.setState({
+    await this.setState({
       [nameArry[0]]: { ...this.state[nameArry[0]], [nameArry[1]]: value }
     });
+
+    switch (this.state.select) {
+      case "produtos":
+        await this.getSupProduct();
+        break;
+      case "fabricante":
+        await this.getManufacturer();
+        break;
+      case "fornecedor":
+        await this.getProvider();
+        break;
+      default:
+        break;
+    }
   };
 
   onChangeSelect = async value => {
@@ -278,36 +348,36 @@ class GerenciarCadastrosSupPage extends Component {
               <div className="cel-cod-cabecalho-gerCad-search">
                 <Input
                   placeholder="111"
-                  name="nomeProdutoSearch"
+                  name="produtoSearch codigo"
                   style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
+                  value={this.state.produtoSearch.codigo}
                   onChange={this.onChange}
                 />
               </div>
               <div className="cel-fabricante-cabecalho-gerCad-search">
                 <Input
                   placeholder="Nome do produto"
-                  name="nomeProdutoSearch"
+                  name="produtoSearch nome"
                   style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
+                  value={this.state.produtoSearch.nome}
                   onChange={this.onChange}
                 />
               </div>
               <div className="cel-fabricante-cabecalho-gerCad-search">
                 <Input
                   placeholder="Digite o fabricante"
-                  name="nomeProdutoSearch"
+                  name="produtoSearch fabricante"
                   style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
+                  value={this.state.produtoSearch.fabricante}
                   onChange={this.onChange}
                 />
               </div>
               <div className="cel-data-cabecalho-gerCad-search">
                 <Input
                   placeholder="20/11/2020"
-                  name="nomeProdutoSearch"
+                  name="produtoSearch data"
                   style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
+                  value={this.state.produtoSearch.data}
                   onChange={this.onChange}
                 />
               </div>
@@ -321,16 +391,16 @@ class GerenciarCadastrosSupPage extends Component {
               <div className="cel-fornecedor-cabecalho-gerCad-search">
                 <Input
                   placeholder="Digite o fabricante"
-                  name="nomeProdutoSearch"
+                  name="fabricanteSearch nome"
                   style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
+                  value={this.state.fabricanteSearch.nome}
                   onChange={this.onChange}
                 />
               </div>
               <div className="cel-numSerie-cabecalho-estoque-search">
                 <Input
                   placeholder="20/11/2020"
-                  name="serialNumberSearch"
+                  name="fabricanteSearch data"
                   style={{ width: "100%" }}
                   // value={serialNumberSearch}
                   onChange={this.onChange}
@@ -346,27 +416,27 @@ class GerenciarCadastrosSupPage extends Component {
               <div className="cel-razao-cabecalho-gerCad-search">
                 <Input
                   placeholder="Digite a razão social/ nome"
-                  name="nomeProdutoSearch"
+                  name="fornecedorSearch razaosocial"
                   style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
+                  value={this.state.fornecedorSearch.razaosocial}
                   onChange={this.onChange}
                 />
               </div>
               <div className="cel-cnpj-cabecalho-gerCad-search">
                 <Input
                   placeholder="Digite o cnpj/ cpf"
-                  name="fabricanteSearch"
+                  name="fornecedorSearch cnpj"
                   style={{ width: "100%" }}
-                  // value={fabricanteSearch}
+                  value={this.state.fornecedorSearch.cnpj}
                   onChange={this.onChange}
                 />
               </div>
               <div className="cel-tel-cabecalho-gerCad-search">
                 <Input
                   placeholder="(11) 92310-3432"
-                  name="fabricanteSearch"
+                  name="fornecedorSearch telefone"
                   style={{ width: "100%" }}
-                  // value={fabricanteSearch}
+                  value={this.state.fornecedorSearch.telefone}
                   onChange={this.onChange}
                 />
               </div>
@@ -540,7 +610,7 @@ class GerenciarCadastrosSupPage extends Component {
                   {product.manufacturer.name}
                 </div>
                 <div className="cel-data-cabecalho-gerCad">
-                  {product.createdAt}
+                  {moment(product.createdAt).format("L")}
                 </div>
                 <div className="cel-acao-cabecalho-gerCad-reservados">
                   <EditOutlined
@@ -578,7 +648,7 @@ class GerenciarCadastrosSupPage extends Component {
                   {fabricante.name}
                 </div>
                 <div className="cel-dataF-cabecalho-gerCad">
-                  {fabricante.createdAt}
+                  {moment(fabricante.createdAt).format("L")}
                 </div>
                 <div className="cel-acao-cabecalho-gerCad-reservados">
                   <EditOutlined
@@ -625,7 +695,7 @@ class GerenciarCadastrosSupPage extends Component {
                 </div>
                 <div className="cel-data-cabecalho-gerCad">?????</div>
                 <div className="cel-data-cabecalho-gerCad">
-                  {fornecedor.createdAt}
+                  {moment(fornecedor.createdAt).format("L")}
                 </div>
                 <div className="cel-acao-cabecalho-gerCad-reservados">
                   <EditOutlined

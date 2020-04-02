@@ -26,7 +26,7 @@ class EditFornecedorPage extends Component {
     numero: this.props.providerUpdateValue.number,
     uf: this.props.providerUpdateValue.state,
     complemento: this.props.providerUpdateValue.complement,
-    contacts: [{ name: "", telphone: "", email: "" }]
+    contacts: this.props.providerUpdateValue.supContacts
   };
 
   clearState = () => {
