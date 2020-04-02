@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import "./index.css";
 import { Select, Button, Input, Spin, InputNumber } from "antd";
+import { split } from "ramda";
+import moment from "moment";
+
+import { GetSupProduct } from "../../../../services/Suprimentos/product";
+import { GetEntrance } from "../../../../services/Suprimentos/entrada";
+import { GetOut } from "../../../../services/Suprimentos/saida";
 
 const { Option } = Select;
 
@@ -14,7 +20,93 @@ class GerenciarEstoqueSupPage extends Component {
     page: 1,
     count: 1,
     show: 1,
-    total: 10
+    total: 10,
+    products: [],
+    entradas: [],
+    saidas: [],
+    produtoSearch: {
+      nome: ""
+    },
+    entradaSearch: {
+      data: "",
+      produto: "",
+      resp: ""
+    },
+    saidaSearch: {
+      data: "",
+      produto: "",
+      solicitante: "",
+      resp: ""
+    }
+  };
+
+  componentDidMount = async () => {
+    await this.getSupProduct();
+    await this.getEntrance();
+    await this.getOut();
+  };
+
+  getSupProduct = async () => {
+    const query = {
+      filters: {
+        supProduct: {
+          specific: {
+            name: this.state.produtoSearch.nome
+            // code: this.state.produtoSearch.codigo
+          }
+        }
+      },
+      page: this.state.page,
+      total: this.state.total
+    };
+    const { status, data } = await GetSupProduct(query);
+
+    if (status === 200) this.setState({ products: data.rows });
+  };
+
+  getEntrance = async () => {
+    const query = {
+      filters: {
+        supEntrance: {
+          specific: {
+            responsibleUser: this.state.entradaSearch.resp
+          }
+        },
+        supProduct: {
+          specific: {
+            name: this.state.entradaSearch.produto
+          }
+        }
+      },
+      page: this.state.page,
+      total: this.state.total
+    };
+    const { status, data } = await GetEntrance(query);
+
+    if (status === 200) this.setState({ entradas: data.rows });
+  };
+
+  getOut = async () => {
+    const query = {
+      filters: {
+        supOut: {
+          specific: {
+            solicitante: this.state.saidaSearch.solicitante,
+            responsibleUser: this.state.saidaSearch.resp
+          }
+        },
+        supProduct: {
+          specific: {
+            name: this.state.saidaSearch.produto
+          }
+        }
+      },
+      page: this.state.page,
+      total: this.state.total
+    };
+    const { status, data } = await GetOut(query);
+
+    if (status === 200) this.setState({ saidas: data.rows });
   };
 
   changePages = async pages => {
@@ -31,6 +123,30 @@ class GerenciarEstoqueSupPage extends Component {
         // await this.getAllEquips();
         break;
       default:
+    }
+  };
+
+  onChange = async e => {
+    const { name, value } = e.target;
+
+    const nameArry = split(" ", name);
+
+    await this.setState({
+      [nameArry[0]]: { ...this.state[nameArry[0]], [nameArry[1]]: value }
+    });
+
+    switch (this.state.select) {
+      case "estoque":
+        await this.getSupProduct();
+        break;
+      case "entrada":
+        await this.getEntrance();
+        break;
+      case "saida":
+        await this.getOut();
+        break;
+      default:
+        break;
     }
   };
 
@@ -132,29 +248,29 @@ class GerenciarEstoqueSupPage extends Component {
               <div className="cel-produto-cabecalho-gerEst-search">
                 <Input
                   placeholder="Nome do produto"
-                  name="nomeProdutoSearch"
                   style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
+                  name="produtoSearch nome"
+                  value={this.state.produtoSearch.nome}
                   onChange={this.onChange}
                 />
               </div>
               <div className="cel-quant-cabecalho-gerEst-search">
-                <InputNumber
+                {/* <InputNumber
                   placeholder="Quant"
                   value={this.state.quant}
                   style={{ width: "100%" }}
                   // value={nomeProdutoSearch}
                   onChange={this.onChangeQuant}
-                />
+                /> */}
               </div>
               <div className="cel-data-cabecalho-gerEst-search">
-                <Input
+                {/* <Input
                   placeholder="20/11/2020"
                   name="nomeProdutoSearch"
                   style={{ width: "100%" }}
                   // value={nomeProdutoSearch}
                   onChange={this.onChange}
-                />
+                /> */}
               </div>
             </div>
           </div>
@@ -164,38 +280,38 @@ class GerenciarEstoqueSupPage extends Component {
           <div className="div-linha-avancado-Rtecnico">
             <div className="div-linha1-avancado-Rtecnico">
               <div className="cel-data-cabecalho-gerEst-search">
-                <Input
+                {/* <Input
                   placeholder="20/11/2020"
-                  name="nomeProdutoSearch"
                   style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
+                  name="entradaSearch data"
+                  value={this.state.entradaSearch.data}
                   onChange={this.onChange}
-                />
+                /> */}
               </div>
               <div className="cel-produtoEnt-cabecalho-gerEst-search">
                 <Input
                   placeholder="Nome do produto"
-                  name="nomeProdutoSearch"
                   style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
+                  name="entradaSearch produto"
+                  value={this.state.entradaSearch.produto}
                   onChange={this.onChange}
                 />
               </div>
               <div className="cel-quant-cabecalho-gerEst-search">
-                <InputNumber
+                {/* <InputNumber
                   placeholder="Quant"
                   value={this.state.quant}
                   style={{ width: "100%" }}
                   // value={nomeProdutoSearch}
                   onChange={this.onChangeQuant}
-                />
+                /> */}
               </div>
               <div className="cel-user-cabecalho-gerEst-search">
                 <Input
                   placeholder="Usuário"
-                  name="serialNumberSearch"
                   style={{ width: "100%" }}
-                  // value={serialNumberSearch}
+                  name="entradaSearch resp"
+                  value={this.state.entradaSearch.resp}
                   onChange={this.onChange}
                 />
               </div>
@@ -207,38 +323,38 @@ class GerenciarEstoqueSupPage extends Component {
           <div className="div-linha-avancado-Rtecnico">
             <div className="div-linha1-avancado-Rtecnico">
               <div className="cel-data-cabecalho-gerEst-search">
-                <Input
+                {/* <Input
                   placeholder="20/11/2020"
-                  name="nomeProdutoSearch"
                   style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
+                  name="saidaSearch data"
+                  value={this.state.saidaSearch.data}
                   onChange={this.onChange}
-                />
+                /> */}
               </div>
               <div className="cel-produtoSai-cabecalho-gerEst-search">
                 <Input
                   placeholder="Nome do produto"
-                  name="nomeProdutoSearch"
                   style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
+                  name="saidaSearch produto"
+                  value={this.state.saidaSearch.produto}
                   onChange={this.onChange}
                 />
               </div>
               <div className="cel-solicitante-cabecalho-gerEst-search">
                 <Input
                   placeholder="Solicitante"
-                  name="nomeProdutoSearch"
                   style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
+                  name="saidaSearch solicitante"
+                  value={this.state.saidaSearch.solicitante}
                   onChange={this.onChange}
                 />
               </div>
               <div className="cel-user-cabecalho-gerEst-search">
                 <Input
                   placeholder="Usuário"
-                  name="serialNumberSearch"
                   style={{ width: "100%" }}
-                  // value={serialNumberSearch}
+                  name="saidaSearch resp"
+                  value={this.state.saidaSearch.resp}
                   onChange={this.onChange}
                 />
               </div>
@@ -334,30 +450,21 @@ class GerenciarEstoqueSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {/* {this.state.products.map(product => (
+            {this.state.products.map(product => (
               <div className="div-cabecalho-estoque">
-                <div className="cel-cod-cabecalho-gerCad">{product.id}</div>
-                <div className="cel-produto-cabecalho-gerCad">
+                <div className="cel-produto-cabecalho-gerEst">
                   {product.name}
                 </div>
-                <div className="cel-fabricante-cabecalho-gerCad">
-                  {product.manufacturer.name}
+                <div className="cel-quant-cabecalho-gerEst">
+                  {`${product.amount} ${product.unit}`}
                 </div>
-                <div className="cel-data-cabecalho-gerCad">
-                  {product.createdAt}
+                <div className="cel-data-cabecalho-gerEst">
+                  {moment(product.updatedAt).format("L")}
                 </div>
-                <div className="cel-acao-cabecalho-gerCad-reservados">
-                  <EditOutlined
-                    onClick={() =>
-                      this.setState({
-                        visibleProduto: true,
-                        product
-                      })
-                    }
-                  />
-                </div>
+
+                <div className="cel-acao-cabecalho-gerCad-reservados" />
               </div>
-            ))} */}
+            ))}
             <div className="footer-ROs">
               <this.Pages />
             </div>
@@ -379,30 +486,24 @@ class GerenciarEstoqueSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {/* {this.state.products.map(product => (
+            {this.state.entradas.map(entrada => (
               <div className="div-cabecalho-estoque">
-                <div className="cel-cod-cabecalho-gerCad">{product.id}</div>
-                <div className="cel-produto-cabecalho-gerCad">
-                  {product.name}
+                <div className="cel-data-cabecalho-gerEst">
+                  {moment(entrada.createdAt).format("L")}
                 </div>
-                <div className="cel-fabricante-cabecalho-gerCad">
-                  {product.manufacturer.name}
+                <div className="cel-produto-cabecalho-gerEst">
+                  {entrada.supProduct.name}
                 </div>
-                <div className="cel-data-cabecalho-gerCad">
-                  {product.createdAt}
+                <div className="cel-quantEnt-cabecalho-gerEst">
+                  {entrada.amount}
                 </div>
-                <div className="cel-acao-cabecalho-gerCad-reservados">
-                  <EditOutlined
-                    onClick={() =>
-                      this.setState({
-                        visibleProduto: true,
-                        product
-                      })
-                    }
-                  />
+                <div className="cel-data-cabecalho-gerEst">
+                  {entrada.responsibleUser}
                 </div>
+
+                <div className="cel-acao-cabecalho-gerCad-reservados" />
               </div>
-            ))} */}
+            ))}
             <div className="footer-ROs">
               <this.Pages />
             </div>
@@ -428,30 +529,24 @@ class GerenciarEstoqueSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {/* {this.state.products.map(product => (
+            {this.state.saidas.map(saida => (
               <div className="div-cabecalho-estoque">
-                <div className="cel-cod-cabecalho-gerCad">{product.id}</div>
-                <div className="cel-produto-cabecalho-gerCad">
-                  {product.name}
+                <div className="cel-data-cabecalho-gerEst">
+                  {moment(saida.createdAt).format("L")}
                 </div>
-                <div className="cel-fabricante-cabecalho-gerCad">
-                  {product.manufacturer.name}
+                <div className="cel-produtoSai-cabecalho-gerEst">
+                  {saida.supProduct.name}
                 </div>
-                <div className="cel-data-cabecalho-gerCad">
-                  {product.createdAt}
+                <div className="cel-solicitante-cabecalho-gerEst">
+                  {saida.solicitante}
                 </div>
-                <div className="cel-acao-cabecalho-gerCad-reservados">
-                  <EditOutlined
-                    onClick={() =>
-                      this.setState({
-                        visibleProduto: true,
-                        product
-                      })
-                    }
-                  />
+                <div className="cel-solicitante-cabecalho-gerEst">
+                  {saida.responsibleUser}
                 </div>
+
+                <div className="cel-acao-cabecalho-gerCad-reservados" />
               </div>
-            ))} */}
+            ))}
             <div className="footer-ROs">
               <this.Pages />
             </div>
