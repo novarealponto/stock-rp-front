@@ -542,7 +542,6 @@ class GerenciarCadastrosSupPage extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div className="div-card-Gentrada">
         <div className="linhaTexto-Gentrada">
