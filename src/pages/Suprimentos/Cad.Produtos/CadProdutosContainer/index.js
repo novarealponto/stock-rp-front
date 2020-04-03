@@ -5,7 +5,7 @@ import { Input, Select, Modal, Button, message } from "antd";
 import {
   NewSupProduct,
   NewManufacturer,
-  GetManufacturer
+  GetManufacturer,
 } from "../../../../services/Suprimentos/product";
 
 const { Option } = Select;
@@ -15,11 +15,11 @@ class CadProdutosPage extends Component {
     loading: false,
     produto: "",
     uniMedida: "NÃO SELECIONADO",
-    fabricante: "NÃO SELECIONADO",
+    fabricante: undefined,
     fornecedor: "NÃO SELECIONADO",
     newFabricante: "",
     modalFabricante: false,
-    manufacturerList: []
+    manufacturerList: [],
   };
 
   clearState = () => {
@@ -27,10 +27,10 @@ class CadProdutosPage extends Component {
       loading: false,
       produto: "",
       uniMedida: "NÃO SELECIONADO",
-      fabricante: "NÃO SELECIONADO",
+      fabricante: undefined,
       fornecedor: "NÃO SELECIONADO",
       newFabricante: "",
-      modalFabricante: false
+      modalFabricante: false,
     });
   };
 
@@ -38,8 +38,18 @@ class CadProdutosPage extends Component {
     await this.getManufacturer();
   };
 
-  getManufacturer = async () => {
-    const { status, data } = await GetManufacturer();
+  getManufacturer = async (name) => {
+    const query = {
+      filters: {
+        manufacturer: {
+          specific: {
+            name,
+          },
+        },
+      },
+    };
+
+    const { status, data } = await GetManufacturer(query);
 
     if (status === 200) this.setState({ manufacturerList: data.rows });
   };
@@ -77,7 +87,8 @@ class CadProdutosPage extends Component {
       message.success("Fabricante cadastrado comn sucesso");
       await this.getManufacturer();
       this.setState({
-        modalFabricante: false
+        modalFabricante: false,
+        newFabricante: "",
       });
     } else {
       message.error("Erro ao cadastrar novo fabricante");
@@ -86,20 +97,20 @@ class CadProdutosPage extends Component {
 
   openModal = () => {
     this.setState({
-      modalFabricante: true
+      modalFabricante: true,
     });
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   onChangeSelect = (e, value) => {
     console.log(e, value);
     this.setState({
-      [e.target.name]: value
+      [e.target.name]: value,
     });
   };
 
@@ -107,11 +118,11 @@ class CadProdutosPage extends Component {
     const {
       produto: name,
       uniMedida: unit,
-      fabricante: manufacturerId
+      fabricante: manufacturerId,
     } = this.state;
 
     const value = { name, unit, manufacturerId };
-    const { status, data } = await NewSupProduct(value);
+    const { status } = await NewSupProduct(value);
 
     if (status === 200) {
       message.success("Produto cadastrado com sucesso");
@@ -146,7 +157,7 @@ class CadProdutosPage extends Component {
             <Select
               value={this.state.uniMedida}
               style={{ width: "100%" }}
-              onChange={value => this.setState({ uniMedida: value })}
+              onChange={(value) => this.setState({ uniMedida: value })}
             >
               <Option value="UNID">UNID</Option>
               <Option value="PÇ">PÇ</Option>
@@ -160,11 +171,20 @@ class CadProdutosPage extends Component {
           <div className="div-fabricante-cadProd">
             <div className="div-textProduto-cadProd">Fabricante:</div>
             <Select
+              showSearch
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option.props.children
+                  .toLowerCase()
+                  .indexOf(input.toLowerCase()) >= 0
+              }
+              placeholder="NÃO SELECIONADO"
+              onSearch={(name) => this.getManufacturer(name)}
               value={this.state.fabricante}
               style={{ width: "100%" }}
-              onChange={value => this.setState({ fabricante: value })}
+              onChange={(value) => this.setState({ fabricante: value })}
             >
-              {this.state.manufacturerList.map(manufacturer => (
+              {this.state.manufacturerList.map((manufacturer) => (
                 <Option value={manufacturer.id}>{manufacturer.name}</Option>
               ))}
             </Select>

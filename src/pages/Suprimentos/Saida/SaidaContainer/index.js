@@ -16,7 +16,7 @@ class SaidaSupPage extends Component {
     responsaEmail: "",
     loading: false,
     products: [],
-    supProductId: ""
+    supProductId: "",
   };
 
   clearState = () => {
@@ -26,7 +26,7 @@ class SaidaSupPage extends Component {
       solicitante: "",
       solicitanteEmail: "",
       responsaEmail: "",
-      supProductId: ""
+      supProductId: "",
     });
   };
 
@@ -34,21 +34,30 @@ class SaidaSupPage extends Component {
     await this.getSupProduct();
   };
 
-  getSupProduct = async () => {
-    const { status, data } = await GetSupProduct();
+  getSupProduct = async (name) => {
+    const query = {
+      filters: {
+        supProduct: {
+          specific: {
+            name,
+          },
+        },
+      },
+    };
+    const { status, data } = await GetSupProduct(query);
 
     if (status === 200) this.setState({ products: data.rows });
   };
 
-  onChangeQuant = value => {
+  onChangeQuant = (value) => {
     this.setState({
-      quant: value
+      quant: value,
     });
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -58,7 +67,7 @@ class SaidaSupPage extends Component {
       solicitante,
       responsaEmail: emailResp,
       solicitanteEmail: emailSolic,
-      supProductId
+      supProductId,
     } = this.state;
 
     const { username: responsibleUser } = this.props.auth;
@@ -69,7 +78,7 @@ class SaidaSupPage extends Component {
       emailResp,
       emailSolic,
       supProductId,
-      responsibleUser
+      responsibleUser,
     };
 
     const { status } = await NovaSaida(value);
@@ -93,6 +102,14 @@ class SaidaSupPage extends Component {
           <div className="div-produto-saidaSup">
             <div className="div-textProduto-cadProd">Produto:</div>
             <Select
+              showSearch
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option.props.children
+                  .toLowerCase()
+                  .indexOf(input.toLowerCase()) >= 0
+              }
+              onSearch={(name) => this.getSupProduct(name)}
               placeholder="NÃO SELECIONADO"
               value={this.state.produto}
               style={{ width: "100%" }}
@@ -100,7 +117,7 @@ class SaidaSupPage extends Component {
                 this.setState({ supProductId: props.key, produto: value })
               }
             >
-              {this.state.products.map(product => (
+              {this.state.products.map((product) => (
                 <Option value={product.name} key={product.id}>
                   {product.name}
                 </Option>
@@ -167,7 +184,7 @@ class SaidaSupPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 

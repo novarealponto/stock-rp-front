@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Select, Button, Input, Spin, InputNumber } from "antd";
+import { Select, Button, Input, Spin, InputNumber, DatePicker } from "antd";
 import { split } from "ramda";
 import moment from "moment";
 
@@ -25,19 +25,20 @@ class GerenciarEstoqueSupPage extends Component {
     entradas: [],
     saidas: [],
     produtoSearch: {
-      nome: ""
+      nome: "",
     },
     entradaSearch: {
       data: "",
       produto: "",
-      resp: ""
+      resp: "",
     },
     saidaSearch: {
       data: "",
       produto: "",
       solicitante: "",
-      resp: ""
-    }
+      resp: "",
+    },
+    valueDate: { start: "2019/01/01" },
   };
 
   componentDidMount = async () => {
@@ -51,13 +52,14 @@ class GerenciarEstoqueSupPage extends Component {
       filters: {
         supProduct: {
           specific: {
-            name: this.state.produtoSearch.nome
+            name: this.state.produtoSearch.nome,
             // code: this.state.produtoSearch.codigo
-          }
-        }
+            updatedAt: this.state.valueDate,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
     const { status, data } = await GetSupProduct(query);
 
@@ -69,17 +71,18 @@ class GerenciarEstoqueSupPage extends Component {
       filters: {
         supEntrance: {
           specific: {
-            responsibleUser: this.state.entradaSearch.resp
-          }
+            responsibleUser: this.state.entradaSearch.resp,
+            createdAt: this.state.valueDate,
+          },
         },
         supProduct: {
           specific: {
-            name: this.state.entradaSearch.produto
-          }
-        }
+            name: this.state.entradaSearch.produto,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
     const { status, data } = await GetEntrance(query);
 
@@ -92,26 +95,27 @@ class GerenciarEstoqueSupPage extends Component {
         supOut: {
           specific: {
             solicitante: this.state.saidaSearch.solicitante,
-            responsibleUser: this.state.saidaSearch.resp
-          }
+            responsibleUser: this.state.saidaSearch.resp,
+            createdAt: this.state.valueDate,
+          },
         },
         supProduct: {
           specific: {
-            name: this.state.saidaSearch.produto
-          }
-        }
+            name: this.state.saidaSearch.produto,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
     const { status, data } = await GetOut(query);
 
     if (status === 200) this.setState({ saidas: data.rows });
   };
 
-  changePages = async pages => {
+  changePages = async (pages) => {
     await this.setState({
-      page: pages
+      page: pages,
     });
 
     switch (this.state.select) {
@@ -126,13 +130,34 @@ class GerenciarEstoqueSupPage extends Component {
     }
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     const { name, value } = e.target;
 
     const nameArry = split(" ", name);
 
     await this.setState({
-      [nameArry[0]]: { ...this.state[nameArry[0]], [nameArry[1]]: value }
+      [nameArry[0]]: { ...this.state[nameArry[0]], [nameArry[1]]: value },
+    });
+
+    switch (this.state.select) {
+      case "estoque":
+        await this.getSupProduct();
+        break;
+      case "entrada":
+        await this.getEntrance();
+        break;
+      case "saida":
+        await this.getOut();
+        break;
+      default:
+        break;
+    }
+  };
+
+  searchDate = async (e) => {
+    if (!e[0] || !e[1]) return;
+    await this.setState({
+      valueDate: { start: e[0]._d, end: e[1]._d },
     });
 
     switch (this.state.select) {
@@ -233,9 +258,9 @@ class GerenciarEstoqueSupPage extends Component {
     </div>
   );
 
-  onChangeQuant = value => {
+  onChangeQuant = (value) => {
     this.setState({
-      quant: value
+      quant: value,
     });
   };
 
@@ -264,13 +289,13 @@ class GerenciarEstoqueSupPage extends Component {
                 /> */}
               </div>
               <div className="cel-data-cabecalho-gerEst-search">
-                {/* <Input
-                  placeholder="20/11/2020"
-                  name="nomeProdutoSearch"
-                  style={{ width: "100%" }}
-                  // value={nomeProdutoSearch}
-                  onChange={this.onChange}
-                /> */}
+                <DatePicker.RangePicker
+                  placeholder="Digite a data"
+                  format="DD/MM/YYYY"
+                  dropdownClassName="poucas"
+                  onChange={this.searchDate}
+                  onOk={this.searchDate}
+                />
               </div>
             </div>
           </div>
@@ -280,13 +305,13 @@ class GerenciarEstoqueSupPage extends Component {
           <div className="div-linha-avancado-Rtecnico">
             <div className="div-linha1-avancado-Rtecnico">
               <div className="cel-data-cabecalho-gerEst-search">
-                {/* <Input
-                  placeholder="20/11/2020"
-                  style={{ width: "100%" }}
-                  name="entradaSearch data"
-                  value={this.state.entradaSearch.data}
-                  onChange={this.onChange}
-                /> */}
+                <DatePicker.RangePicker
+                  placeholder="Digite a data"
+                  format="DD/MM/YYYY"
+                  dropdownClassName="poucas"
+                  onChange={this.searchDate}
+                  onOk={this.searchDate}
+                />
               </div>
               <div className="cel-produtoEnt-cabecalho-gerEst-search">
                 <Input
@@ -323,13 +348,13 @@ class GerenciarEstoqueSupPage extends Component {
           <div className="div-linha-avancado-Rtecnico">
             <div className="div-linha1-avancado-Rtecnico">
               <div className="cel-data-cabecalho-gerEst-search">
-                {/* <Input
-                  placeholder="20/11/2020"
-                  style={{ width: "100%" }}
-                  name="saidaSearch data"
-                  value={this.state.saidaSearch.data}
-                  onChange={this.onChange}
-                /> */}
+                <DatePicker.RangePicker
+                  placeholder="Digite a data"
+                  format="DD/MM/YYYY"
+                  dropdownClassName="poucas"
+                  onChange={this.searchDate}
+                  onOk={this.searchDate}
+                />
               </div>
               <div className="cel-produtoSai-cabecalho-gerEst-search">
                 <Input
@@ -366,14 +391,14 @@ class GerenciarEstoqueSupPage extends Component {
     }
   };
 
-  onChangeSelect = async value => {
+  onChangeSelect = async (value) => {
     await this.setState({
       select: value,
       loading: true,
       page: 1,
       count: 1,
       show: 1,
-      total: 10
+      total: 10,
     });
 
     switch (value) {
@@ -388,7 +413,7 @@ class GerenciarEstoqueSupPage extends Component {
     }
 
     this.setState({
-      loading: false
+      loading: false,
     });
   };
 
@@ -414,7 +439,7 @@ class GerenciarEstoqueSupPage extends Component {
             onClick={async () => {
               await this.setState({
                 search: !this.state.search,
-                avancado: !this.state.avancado
+                avancado: !this.state.avancado,
               });
 
               switch (this.state.select) {
@@ -450,7 +475,7 @@ class GerenciarEstoqueSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.products.map(product => (
+            {this.state.products.map((product) => (
               <div className="div-cabecalho-estoque">
                 <div className="cel-produto-cabecalho-gerEst">
                   {product.name}
@@ -486,7 +511,7 @@ class GerenciarEstoqueSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.entradas.map(entrada => (
+            {this.state.entradas.map((entrada) => (
               <div className="div-cabecalho-estoque">
                 <div className="cel-data-cabecalho-gerEst">
                   {moment(entrada.createdAt).format("L")}
@@ -529,7 +554,7 @@ class GerenciarEstoqueSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.saidas.map(saida => (
+            {this.state.saidas.map((saida) => (
               <div className="div-cabecalho-estoque">
                 <div className="cel-data-cabecalho-gerEst">
                   {moment(saida.createdAt).format("L")}

@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import "./index.css";
-import { Select, Button, Input, Spin, Modal, message } from "antd";
+import { Select, Button, Input, Spin, Modal, message, DatePicker } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { split } from "ramda";
 import moment from "moment";
@@ -13,7 +13,7 @@ import {
   UpdateSupProduct,
   GetSupProduct,
   UpdateManufacturer,
-  GetManufacturer
+  GetManufacturer,
 } from "../../../../services/Suprimentos/product";
 import { GetProvider } from "../../../../services/Suprimentos/fornecedor";
 
@@ -38,7 +38,7 @@ class GerenciarCadastrosSupPage extends Component {
     manufacturerList: [],
     manufacturer: {
       id: "",
-      name: ""
+      name: "",
     },
     product: {
       id: "",
@@ -46,23 +46,24 @@ class GerenciarCadastrosSupPage extends Component {
       unit: "",
       manufacturerId: "",
       manufacturer: {
-        name: ""
-      }
+        name: "",
+      },
     },
     produtoSearch: {
       codigo: "",
       nome: "",
       fabricante: "",
-      data: ""
+      data: "",
     },
     fabricanteSearch: {
-      nome: ""
+      nome: "",
     },
     fornecedorSearch: {
       razaosocial: "",
       cnpj: "",
-      telefone: ""
-    }
+      telefone: "",
+    },
+    valueDate: { start: "2019/01/01" },
   };
 
   clearState = () => {
@@ -78,7 +79,7 @@ class GerenciarCadastrosSupPage extends Component {
       total: 10,
       manufacturer: {
         id: "",
-        name: ""
+        name: "",
       },
       product: {
         id: "",
@@ -86,9 +87,10 @@ class GerenciarCadastrosSupPage extends Component {
         unit: "",
         manufacturerId: "",
         manufacturer: {
-          name: ""
-        }
-      }
+          name: "",
+        },
+      },
+      valueDate: { start: "2019/01/01" },
     });
   };
 
@@ -104,17 +106,18 @@ class GerenciarCadastrosSupPage extends Component {
         supProduct: {
           specific: {
             name: this.state.produtoSearch.nome,
-            code: this.state.produtoSearch.codigo
-          }
+            code: this.state.produtoSearch.codigo,
+            createdAt: this.state.valueDate,
+          },
         },
         manufacturer: {
           specific: {
-            name: this.state.produtoSearch.fabricante
-          }
-        }
+            name: this.state.produtoSearch.fabricante,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
     const { status, data } = await GetSupProduct(query);
 
@@ -135,24 +138,25 @@ class GerenciarCadastrosSupPage extends Component {
     }
   };
 
-  getManufacturer = async () => {
+  getManufacturer = async (name) => {
     const query = {
       filters: {
         manufacturer: {
           specific: {
-            name: this.state.fabricanteSearch.nome
-          }
-        }
+            name: name || this.state.fabricanteSearch.nome,
+            createdAt: this.state.valueDate,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
     const { status, data } = await GetManufacturer(query);
 
     if (status === 200) {
       this.setState({
         fabricantes: this.state.product.id ? this.state.fabricantes : data.rows,
-        manufacturerList: data.rows
+        manufacturerList: data.rows,
       });
     }
   };
@@ -176,26 +180,27 @@ class GerenciarCadastrosSupPage extends Component {
         supProvider: {
           specific: {
             razaoSocial: this.state.fornecedorSearch.razaosocial,
-            cnpj: this.state.fornecedorSearch.cnpj
+            cnpj: this.state.fornecedorSearch.cnpj,
             // telphone: this.state.fornecedorSearch.telefone
-          }
-        }
+            createdAt: this.state.valueDate,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
     const { status, data } = await GetProvider(query);
 
     if (status === 200) this.setState({ fornecedores: data.rows });
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     const { name, value } = e.target;
 
     const nameArry = split(" ", name);
 
     await this.setState({
-      [nameArry[0]]: { ...this.state[nameArry[0]], [nameArry[1]]: value }
+      [nameArry[0]]: { ...this.state[nameArry[0]], [nameArry[1]]: value },
     });
 
     switch (this.state.select) {
@@ -213,46 +218,73 @@ class GerenciarCadastrosSupPage extends Component {
     }
   };
 
-  onChangeSelect = async value => {
+  onChangeSelect = async (value) => {
     await this.setState({
       select: value,
       loading: true,
       page: 1,
       count: 1,
       show: 1,
-      total: 10
-    });
-
-    switch (value) {
-      case "produtos":
-      case "fabricante":
-        // await this.getEprestimo();
-        break;
-      case "fornecedor":
-        // await this.getAllEquips();
-        break;
-      default:
-    }
-
-    this.setState({
-      loading: false
-    });
-  };
-
-  changePages = async pages => {
-    await this.setState({
-      page: pages
+      total: 10,
     });
 
     switch (this.state.select) {
       case "produtos":
+        await this.getSupProduct();
+        break;
       case "fabricante":
-        // await this.getEprestimo();
+        await this.getManufacturer();
         break;
       case "fornecedor":
-        // await this.getAllEquips();
+        await this.getProvider();
         break;
       default:
+        break;
+    }
+
+    this.setState({
+      loading: false,
+    });
+  };
+
+  changePages = async (pages) => {
+    await this.setState({
+      page: pages,
+    });
+
+    switch (this.state.select) {
+      case "produtos":
+        await this.getSupProduct();
+        break;
+      case "fabricante":
+        await this.getManufacturer();
+        break;
+      case "fornecedor":
+        await this.getProvider();
+        break;
+      default:
+        break;
+    }
+  };
+
+  searchDate = async (e) => {
+    if (!e[0] || !e[1]) return;
+    await this.setState({
+      valueDate: { start: e[0]._d, end: e[1]._d },
+    });
+
+    switch (this.state.select) {
+      case "produtos":
+        await this.getSupProduct();
+        break;
+      case "fabricante":
+        await this.getManufacturer();
+        break;
+      case "fornecedor":
+        await this.getProvider();
+        break;
+      default:
+        break;
     }
   };
 
@@ -373,12 +405,12 @@ class GerenciarCadastrosSupPage extends Component {
                 />
               </div>
               <div className="cel-data-cabecalho-gerCad-search">
-                <Input
-                  placeholder="20/11/2020"
-                  name="produtoSearch data"
-                  style={{ width: "100%" }}
-                  value={this.state.produtoSearch.data}
-                  onChange={this.onChange}
+                <DatePicker.RangePicker
+                  placeholder="Digite a data"
+                  format="DD/MM/YYYY"
+                  dropdownClassName="poucas"
+                  onChange={this.searchDate}
+                  onOk={this.searchDate}
                 />
               </div>
             </div>
@@ -398,12 +430,12 @@ class GerenciarCadastrosSupPage extends Component {
                 />
               </div>
               <div className="cel-numSerie-cabecalho-estoque-search">
-                <Input
-                  placeholder="20/11/2020"
-                  name="fabricanteSearch data"
-                  style={{ width: "100%" }}
-                  // value={serialNumberSearch}
-                  onChange={this.onChange}
+                <DatePicker.RangePicker
+                  placeholder="Digite a data"
+                  format="DD/MM/YYYY"
+                  dropdownClassName="poucas"
+                  onChange={this.searchDate}
+                  onOk={this.searchDate}
                 />
               </div>
             </div>
@@ -441,12 +473,12 @@ class GerenciarCadastrosSupPage extends Component {
                 />
               </div>
               <div className="cel-dataFF-cabecalho-gerCad-search">
-                <Input
-                  placeholder="20/11/2020"
-                  name="serialNumberSearch"
-                  style={{ width: "100%" }}
-                  // value={serialNumberSearch}
-                  onChange={this.onChange}
+                <DatePicker.RangePicker
+                  placeholder="Digite a data"
+                  format="DD/MM/YYYY"
+                  dropdownClassName="poucas"
+                  onChange={this.searchDate}
+                  onOk={this.searchDate}
                 />
               </div>
             </div>
@@ -460,7 +492,7 @@ class GerenciarCadastrosSupPage extends Component {
   handleCancel = () => {
     this.setState({
       visibleFabricante: false,
-      visibleProduto: false
+      visibleProduto: false,
     });
   };
 
@@ -479,7 +511,7 @@ class GerenciarCadastrosSupPage extends Component {
       <Select
         value={this.state.product.unit}
         style={{ width: "100%" }}
-        onChange={value =>
+        onChange={(value) =>
           this.setState({ product: { ...this.state.product, unit: value } })
         }
       >
@@ -489,6 +521,12 @@ class GerenciarCadastrosSupPage extends Component {
         <Option value="LT">LT</Option>
       </Select>
       <Select
+        showSearch
+        optionFilterProp="children"
+        filterOption={(input, option) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+        onSearch={(name) => this.getManufacturer(name)}
         value={this.state.product.manufacturer.name}
         style={{ width: "100%" }}
         onChange={(value, props) =>
@@ -496,12 +534,12 @@ class GerenciarCadastrosSupPage extends Component {
             product: {
               ...this.state.product,
               manufacturerId: props.key,
-              manufacturer: { ...this.state.product.manufacturer, name: value }
-            }
+              manufacturer: { ...this.state.product.manufacturer, name: value },
+            },
           })
         }
       >
-        {this.state.manufacturerList.map(manufacturer => (
+        {this.state.manufacturerList.map((manufacturer) => (
           <Option key={manufacturer.id} value={manufacturer.name}>
             {manufacturer.name}
           </Option>
@@ -533,7 +571,7 @@ class GerenciarCadastrosSupPage extends Component {
           push
           to={{
             pathname: "/logged/fornecedorSup/atializar",
-            state: { from: this.props.location }
+            state: { from: this.props.location },
           }}
         />
       );
@@ -563,7 +601,7 @@ class GerenciarCadastrosSupPage extends Component {
             onClick={async () => {
               await this.setState({
                 search: !this.state.search,
-                avancado: !this.state.avancado
+                avancado: !this.state.avancado,
               });
 
               switch (this.state.select) {
@@ -599,7 +637,7 @@ class GerenciarCadastrosSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.products.map(product => (
+            {this.state.products.map((product) => (
               <div className="div-cabecalho-estoque">
                 <div className="cel-cod-cabecalho-gerCad">{product.id}</div>
                 <div className="cel-produto-cabecalho-gerCad">
@@ -616,7 +654,7 @@ class GerenciarCadastrosSupPage extends Component {
                     onClick={() =>
                       this.setState({
                         visibleProduto: true,
-                        product
+                        product,
                       })
                     }
                   />
@@ -641,7 +679,7 @@ class GerenciarCadastrosSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.fabricantes.map(fabricante => (
+            {this.state.fabricantes.map((fabricante) => (
               <div className="div-cabecalho-estoque">
                 <div className="cel-fabricanteF-cabecalho-gerCad">
                   {fabricante.name}
@@ -654,7 +692,7 @@ class GerenciarCadastrosSupPage extends Component {
                     onClick={() =>
                       this.setState({
                         visibleFabricante: true,
-                        manufacturer: fabricante
+                        manufacturer: fabricante,
                       })
                     }
                   />
@@ -684,7 +722,7 @@ class GerenciarCadastrosSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.fornecedores.map(fornecedor => (
+            {this.state.fornecedores.map((fornecedor) => (
               <div className="div-cabecalho-estoque">
                 <div className="cel-produto-cabecalho-gerCad">
                   {fornecedor.razaoSocial}
@@ -701,7 +739,7 @@ class GerenciarCadastrosSupPage extends Component {
                     onClick={() =>
                       this.setState({
                         fornecedor,
-                        redirect: true
+                        redirect: true,
                       })
                     }
                   />
