@@ -18,6 +18,81 @@
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
+.div-mais-gerEst {
+  margin-top: 10px;
+  width: 90%;
+  background-color: #fafafa;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.div-forn-mais-gerEst {
+  width: 50%;
+  height: 100%;
+}
+.div-email-mais-gerEst {
+  width: 42%;
+  height: 100%;
+}
+.div-quant-mais-gerEst {
+  width: 15%;
+  height: 100%;
+}
+.div-razao-mais-gerEst {
+  width: 70%;
+  height: 100%;
+}
+.div-preco-mais-gerEst {
+  width: 15%;
+  height: 100%;
+}
+.div-data-mais-gerEst {
+  width: 15%;
+  height: 100%;
+}
+.div-linhaMais-gerEst {
+  width: 100%;
+  display: flex;
+  margin-top: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+.div-linhaMap-gerEst {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.div-linhaMaisInfo-gerEst {
+  width: 100%;
+  padding: 10px 0;
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  align-items: center;
+}
+.div-linhaMaisInfoMap-gerEst {
+  width: 100%;
+  padding: 10px 0;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+  align-items: center;
+}
+.div-total-mais-gerEst {
+  width: 15%;
+  height: 100%;
+}
+.div-cabecalhoLinha-gerEst {
+  margin-top: 10px;
+  width: 90%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
 .cel-data-cabecalho-gerEst {
   align-items: center;
   cursor: pointer;
