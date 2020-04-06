@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./index.css";
 import { Select, Button, Input, Spin, InputNumber, DatePicker } from "antd";
 import { split } from "ramda";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 import { GetSupProduct } from "../../../../services/Suprimentos/product";
@@ -21,6 +22,7 @@ class GerenciarEstoqueSupPage extends Component {
     count: 1,
     show: 1,
     total: 10,
+    index: -1,
     products: [],
     entradas: [],
     saidas: [],
@@ -43,8 +45,6 @@ class GerenciarEstoqueSupPage extends Component {
 
   componentDidMount = async () => {
     await this.getSupProduct();
-    await this.getEntrance();
-    await this.getOut();
   };
 
   getSupProduct = async () => {
@@ -63,7 +63,8 @@ class GerenciarEstoqueSupPage extends Component {
     };
     const { status, data } = await GetSupProduct(query);
 
-    if (status === 200) this.setState({ products: data.rows });
+    if (status === 200)
+      this.setState({ products: data.rows, count: data.count, index: -1 });
   };
 
   getEntrance = async () => {
@@ -86,7 +87,8 @@ class GerenciarEstoqueSupPage extends Component {
     };
     const { status, data } = await GetEntrance(query);
 
-    if (status === 200) this.setState({ entradas: data.rows });
+    if (status === 200)
+      this.setState({ entradas: data.rows, count: data.count, index: -1 });
   };
 
   getOut = async () => {
@@ -110,7 +112,8 @@ class GerenciarEstoqueSupPage extends Component {
     };
     const { status, data } = await GetOut(query);
 
-    if (status === 200) this.setState({ saidas: data.rows });
+    if (status === 200)
+      this.setState({ saidas: data.rows, count: data.count, index: -1 });
   };
 
   changePages = async (pages) => {
@@ -120,13 +123,16 @@ class GerenciarEstoqueSupPage extends Component {
 
     switch (this.state.select) {
       case "estoque":
+        await this.getSupProduct();
+        break;
       case "entrada":
-        // await this.getEprestimo();
+        await this.getEntrance();
         break;
       case "saida":
-        // await this.getAllEquips();
+        await this.getOut();
         break;
       default:
+        break;
     }
   };
 
@@ -401,15 +407,18 @@ class GerenciarEstoqueSupPage extends Component {
       total: 10,
     });
 
-    switch (value) {
+    switch (this.state.select) {
       case "estoque":
+        await this.getSupProduct();
+        break;
       case "entrada":
-        // await this.getEprestimo();
+        await this.getEntrance();
         break;
       case "saida":
-        // await this.getAllEquips();
+        await this.getOut();
         break;
       default:
+        break;
     }
 
     this.setState({
@@ -444,13 +453,16 @@ class GerenciarEstoqueSupPage extends Component {
 
               switch (this.state.select) {
                 case "estoque":
+                  await this.getSupProduct();
+                  break;
                 case "entrada":
-                  // await this.getEprestimo();
+                  await this.getEntrance();
                   break;
                 case "saida":
-                  // await this.getAllEquips();
+                  await this.getOut();
                   break;
                 default:
+                  break;
               }
             }}
           >
@@ -475,20 +487,42 @@ class GerenciarEstoqueSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.products.map((product) => (
-              <div className="div-cabecalho-estoque">
-                <div className="cel-produto-cabecalho-gerEst">
-                  {product.name}
-                </div>
-                <div className="cel-quant-cabecalho-gerEst">
-                  {`${product.amount} ${product.unit}`}
-                </div>
-                <div className="cel-data-cabecalho-gerEst">
-                  {moment(product.updatedAt).format("L")}
-                </div>
+            {this.state.products.map((product, idx) => (
+              <>
+                <div className="div-cabecalho-estoque">
+                  {console.log(product)}
+                  <div className="cel-produto-cabecalho-gerEst">
+                    {product.name}
+                  </div>
+                  <div className="cel-quant-cabecalho-gerEst">
+                    {`${product.amount} ${product.unit}`}
+                  </div>
+                  <div className="cel-data-cabecalho-gerEst">
+                    {moment(product.updatedAt).format("L")}
+                  </div>
 
-                <div className="cel-acao-cabecalho-gerCad-reservados" />
-              </div>
+                  <div className="cel-acao-cabecalho-gerCad-reservados">
+                    <QuestionCircleOutlined
+                      onClick={() =>
+                        this.setState({
+                          index: this.state.index === idx ? -1 : idx,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                {this.state.index === idx && (
+                  <div className="div-cabecalho-estoque">
+                    {product.supEntrances.map((supEntrance) => (
+                      <div style={{ margin: 20 }}>{`${
+                        supEntrance.supProvider.razaoSocial
+                      } / ${supEntrance.amount} / ${moment(
+                        supEntrance.createdAt
+                      ).format("L")}`}</div>
+                    ))}
+                  </div>
+                )}
+              </>
             ))}
             <div className="footer-ROs">
               <this.Pages />
@@ -511,23 +545,38 @@ class GerenciarEstoqueSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.entradas.map((entrada) => (
-              <div className="div-cabecalho-estoque">
-                <div className="cel-data-cabecalho-gerEst">
-                  {moment(entrada.createdAt).format("L")}
-                </div>
-                <div className="cel-produto-cabecalho-gerEst">
-                  {entrada.supProduct.name}
-                </div>
-                <div className="cel-quantEnt-cabecalho-gerEst">
-                  {entrada.amount}
-                </div>
-                <div className="cel-data-cabecalho-gerEst">
-                  {entrada.responsibleUser}
-                </div>
+            {this.state.entradas.map((entrada, idx) => (
+              <>
+                <div className="div-cabecalho-estoque">
+                  <div className="cel-data-cabecalho-gerEst">
+                    {moment(entrada.createdAt).format("L")}
+                  </div>
+                  <div className="cel-produto-cabecalho-gerEst">
+                    {entrada.supProduct.name}
+                  </div>
+                  <div className="cel-quantEnt-cabecalho-gerEst">
+                    {entrada.amount}
+                  </div>
+                  <div className="cel-data-cabecalho-gerEst">
+                    {entrada.responsibleUser}
+                  </div>
 
-                <div className="cel-acao-cabecalho-gerCad-reservados" />
-              </div>
+                  <div className="cel-acao-cabecalho-gerCad-reservados">
+                    <QuestionCircleOutlined
+                      onClick={() =>
+                        this.setState({
+                          index: this.state.index === idx ? -1 : idx,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                {this.state.index === idx && (
+                  <div className="div-cabecalho-estoque">
+                    {`${entrada.supProvider.razaoSocial} / ${entrada.priceUnit} / ${entrada.total}`}
+                  </div>
+                )}
+              </>
             ))}
             <div className="footer-ROs">
               <this.Pages />
@@ -554,23 +603,38 @@ class GerenciarEstoqueSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.saidas.map((saida) => (
-              <div className="div-cabecalho-estoque">
-                <div className="cel-data-cabecalho-gerEst">
-                  {moment(saida.createdAt).format("L")}
-                </div>
-                <div className="cel-produtoSai-cabecalho-gerEst">
-                  {saida.supProduct.name}
-                </div>
-                <div className="cel-solicitante-cabecalho-gerEst">
-                  {saida.solicitante}
-                </div>
-                <div className="cel-solicitante-cabecalho-gerEst">
-                  {saida.responsibleUser}
-                </div>
+            {this.state.saidas.map((saida, idx) => (
+              <>
+                <div className="div-cabecalho-estoque">
+                  <div className="cel-data-cabecalho-gerEst">
+                    {moment(saida.createdAt).format("L")}
+                  </div>
+                  <div className="cel-produtoSai-cabecalho-gerEst">
+                    {saida.supProduct.name}
+                  </div>
+                  <div className="cel-solicitante-cabecalho-gerEst">
+                    {saida.solicitante}
+                  </div>
+                  <div className="cel-solicitante-cabecalho-gerEst">
+                    {saida.responsibleUser}
+                  </div>
 
-                <div className="cel-acao-cabecalho-gerCad-reservados" />
-              </div>
+                  <div className="cel-acao-cabecalho-gerCad-reservados">
+                    <QuestionCircleOutlined
+                      onClick={() =>
+                        this.setState({
+                          index: this.state.index === idx ? -1 : idx,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                {this.state.index === idx && (
+                  <div className="div-cabecalho-estoque">
+                    {`${saida.emailSolic} / ${saida.emailResp} / ${saida.amount}`}
+                  </div>
+                )}
+              </>
             ))}
             <div className="footer-ROs">
               <this.Pages />

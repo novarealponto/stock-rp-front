@@ -96,8 +96,6 @@ class GerenciarCadastrosSupPage extends Component {
 
   componentDidMount = async () => {
     await this.getSupProduct();
-    await this.getManufacturer();
-    await this.getProvider();
   };
 
   getSupProduct = async () => {
@@ -121,7 +119,8 @@ class GerenciarCadastrosSupPage extends Component {
     };
     const { status, data } = await GetSupProduct(query);
 
-    if (status === 200) this.setState({ products: data.rows });
+    if (status === 200)
+      this.setState({ products: data.rows, count: data.count });
   };
 
   updateSupProduct = async () => {
@@ -156,6 +155,7 @@ class GerenciarCadastrosSupPage extends Component {
     if (status === 200) {
       this.setState({
         fabricantes: this.state.product.id ? this.state.fabricantes : data.rows,
+        count: data.count,
         manufacturerList: data.rows,
       });
     }
@@ -191,7 +191,8 @@ class GerenciarCadastrosSupPage extends Component {
     };
     const { status, data } = await GetProvider(query);
 
-    if (status === 200) this.setState({ fornecedores: data.rows });
+    if (status === 200)
+      this.setState({ fornecedores: data.rows, count: data.count });
   };
 
   onChange = async (e) => {
