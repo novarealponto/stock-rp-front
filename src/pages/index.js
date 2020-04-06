@@ -49,7 +49,7 @@ import EditarFornecedorSupRoute from "./Suprimentos/Edit.Fornecedor";
 
 class PagesRoute extends Component {
   state = {
-    auth: true
+    auth: true,
   };
 
   hasAuth = R.has("auth");
@@ -72,14 +72,14 @@ class PagesRoute extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username
+      username: this.props.auth.username,
     };
 
     let response = {};
 
-    response = await auth(value).then(resp =>
+    response = await auth(value).then((resp) =>
       this.setState({
-        auth: resp ? resp.data : false
+        auth: resp ? resp.data : false,
       })
     );
 
@@ -164,28 +164,33 @@ class PagesRoute extends Component {
           />
           <Route path="/logged/notificacao" component={NotificacaoRoute} />
 
-          <Route path="/logged/saidaSup" component={SaidaSupRoute} />
-          <Route
-            path="/logged/gerenciarEstoqueSup"
-            component={GerenciarEstoqueSupRoute}
-          />
-          <Route
-            path="/logged/gerenciarCadastrosSup"
-            component={GerenciarCadastrosSupRoute}
-          />
-          <Route path="/logged/entradaSup" component={EntradaSupRoute} />
-          <Route
-            path="/logged/cadastroProdutosSup"
-            component={CadastroProdutosSupRoute}
-          />
-          <Route
-            path="/logged/cadastroFornecedorSup"
-            component={CadastroFornecedorSupRoute}
-          />
-          <Route
-            path="/logged/fornecedorSup/atializar"
-            component={EditarFornecedorSupRoute}
-          />
+          {this.props.auth.suprimento && (
+            <Switch>
+              <Route path="/logged/saidaSup" component={SaidaSupRoute} />
+              <Route
+                path="/logged/gerenciarEstoqueSup"
+                component={GerenciarEstoqueSupRoute}
+              />
+              <Route
+                path="/logged/gerenciarCadastrosSup"
+                component={GerenciarCadastrosSupRoute}
+              />
+              <Route path="/logged/entradaSup" component={EntradaSupRoute} />
+              <Route
+                path="/logged/cadastroProdutosSup"
+                component={CadastroProdutosSupRoute}
+              />
+              <Route
+                path="/logged/cadastroFornecedorSup"
+                component={CadastroFornecedorSupRoute}
+              />
+              <Route
+                path="/logged/fornecedorSup/atializar"
+                component={EditarFornecedorSupRoute}
+              />
+            </Switch>
+          )}
+          <Redirect to="/logged/dash" />
         </Switch>
       );
     } else {
@@ -201,7 +206,7 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 

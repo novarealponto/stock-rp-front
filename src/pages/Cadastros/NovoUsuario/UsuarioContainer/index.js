@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import {
   getTypeAccount,
   getResourcesByTypeAccount,
-  NovoUsuarioService
+  NovoUsuarioService,
 } from "../../../../services/usuario";
 
 const { Option } = Select;
@@ -38,10 +38,10 @@ class NovoUsuario extends Component {
       delROs: false,
       updateRos: false,
       tecnico: false,
-      suprimentos: false
+      suprimento: false,
     },
     typeAccountArray: [],
-    typeName: "Selecione um tipo de conta"
+    typeName: "Selecione um tipo de conta",
   };
 
   success = () => {
@@ -54,7 +54,7 @@ class NovoUsuario extends Component {
 
   redirectReservaOs = () => {
     this.setState({
-      redirect: true
+      redirect: true,
     });
   };
 
@@ -63,15 +63,15 @@ class NovoUsuario extends Component {
       filters: {
         typeAccount: {
           specific: {
-            stock: true
-          }
-        }
-      }
+            stock: true,
+          },
+        },
+      },
     };
 
-    await getTypeAccount(query).then(resposta =>
+    await getTypeAccount(query).then((resposta) =>
       this.setState({
-        typeAccountArray: resposta.data.rows
+        typeAccountArray: resposta.data.rows,
       })
     );
   };
@@ -90,24 +90,24 @@ class NovoUsuario extends Component {
     }
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  onChangePermission = e => {
+  onChangePermission = (e) => {
     this.setState({
       permission: {
         ...this.state.permission,
-        [e.target.name]: e.target.checked
-      }
+        [e.target.name]: e.target.checked,
+      },
     });
   };
 
   onChangeAble = async () => {
     await this.setState({
-      checkboxAble: !this.state.checkboxAble
+      checkboxAble: !this.state.checkboxAble,
     });
 
     if (!this.state.checkboxAble) {
@@ -115,23 +115,23 @@ class NovoUsuario extends Component {
     }
   };
 
-  handleChange = async value => {
+  handleChange = async (value) => {
     await this.setState({
       typeName: value,
-      checkboxAble: false
+      checkboxAble: false,
     });
 
     const query = {
       filters: {
         typeAccount: {
           specific: {
-            typeName: value
-          }
-        }
-      }
+            typeName: value,
+          },
+        },
+      },
     };
 
-    await getResourcesByTypeAccount(query).then(resposta =>
+    await getResourcesByTypeAccount(query).then((resposta) =>
       this.setState({
         permission: {
           addUser: resposta.data.addUser,
@@ -160,15 +160,15 @@ class NovoUsuario extends Component {
           addEquip: resposta.data.addEquip,
           addEquipType: resposta.data.addEquipType,
           addPart: resposta.data.addPart,
-          suprimentos: resposta.data.suprimentos
-        }
+          suprimento: resposta.data.suprimento,
+        },
       })
     );
   };
 
   saveTargetNewUser = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const values = {
@@ -202,19 +202,19 @@ class NovoUsuario extends Component {
       addEquipType: this.state.permission.addEquipType,
       addPart: this.state.permission.addPart,
       addAccessories: this.state.permission.addAccessories,
-      suprimentos: this.state.permission.suprimentos
+      suprimento: this.state.permission.suprimento,
     };
 
     const resposta = await NovoUsuarioService(values);
 
     if (resposta.status === 422) {
       this.setState({
-        messageError: true
+        messageError: true,
       });
       await this.error();
       this.setState({
         loading: false,
-        messageError: false
+        messageError: false,
       });
     }
     if (resposta.status === 200) {
@@ -245,13 +245,13 @@ class NovoUsuario extends Component {
           delROs: false,
           updateRos: false,
           tecnico: false,
-          suprimentos: false
-        }
+          suprimento: false,
+        },
       });
       await this.success();
       this.setState({
         loading: false,
-        messageSuccess: false
+        messageSuccess: false,
       });
     }
   };
@@ -283,7 +283,7 @@ class NovoUsuario extends Component {
                 style={{ width: "100%" }}
                 onChange={this.handleChange}
               >
-                {this.state.typeAccountArray.map(valor => (
+                {this.state.typeAccountArray.map((valor) => (
                   <Option value={valor.typeName}>{valor.typeName}</Option>
                 ))}
               </Select>
@@ -403,8 +403,8 @@ class NovoUsuario extends Component {
                   <div className="checkbox-card-tipo" disabled>
                     <Checkbox
                       onChange={this.onChangePermission}
-                      checked={this.state.permission.suprimentos}
-                      name="suprimentos"
+                      checked={this.state.permission.suprimento}
+                      name="suprimento"
                       disabled
                     >
                       Página de suprimentos
@@ -552,8 +552,8 @@ class NovoUsuario extends Component {
                   <div className="checkbox-card-tipo">
                     <Checkbox
                       onChange={this.onChangePermission}
-                      checked={this.state.permission.suprimentos}
-                      name="suprimentos"
+                      checked={this.state.permission.suprimento}
+                      name="suprimento"
                     >
                       Página de suprimentos
                     </Checkbox>
@@ -639,7 +639,7 @@ class NovoUsuario extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 

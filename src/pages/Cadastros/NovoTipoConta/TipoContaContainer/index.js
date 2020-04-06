@@ -34,15 +34,16 @@ class NovoTipoConta extends Component {
       addRML: false,
       gerROs: false,
       delROs: false,
-      updateRos: false
-    }
+      updateRos: false,
+      suprimento: false,
+    },
   };
 
   todas = async () => {
     await this.setState({
       permission: {
-        todas: !this.state.permission.todas
-      }
+        todas: !this.state.permission.todas,
+      },
     });
 
     if (this.state.permission.todas) {
@@ -69,8 +70,9 @@ class NovoTipoConta extends Component {
           addRML: true,
           gerROs: true,
           delROs: true,
-          updateRos: true
-        }
+          updateRos: true,
+          suprimento: true,
+        },
       });
     } else if (!this.state.permission.todas) {
       await this.setState({
@@ -96,8 +98,9 @@ class NovoTipoConta extends Component {
           addRML: false,
           gerROs: false,
           delROs: false,
-          updateRos: false
-        }
+          updateRos: false,
+          suprimento: false,
+        },
       });
     }
   };
@@ -112,7 +115,7 @@ class NovoTipoConta extends Component {
 
   redirectReservaOs = () => {
     this.setState({
-      redirect: true
+      redirect: true,
     });
   };
 
@@ -126,24 +129,24 @@ class NovoTipoConta extends Component {
     }
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  onChangePermission = async e => {
+  onChangePermission = async (e) => {
     await this.setState({
       permission: {
         ...this.state.permission,
-        [e.target.name]: e.target.checked
-      }
+        [e.target.name]: e.target.checked,
+      },
     });
   };
 
   saveTargetNewType = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const values = {
@@ -176,19 +179,20 @@ class NovoTipoConta extends Component {
       addRML: this.state.permission.addRML,
       gerROs: this.state.permission.gerROs,
       delROs: this.state.permission.delROs,
-      updateRos: this.state.permission.updateRos
+      updateRos: this.state.permission.updateRos,
+      suprimento: this.state.permission.suprimento,
     };
 
     const resposta = await NovoTipoContaService(values);
 
     if (resposta.status === 422) {
       this.setState({
-        messageError: true
+        messageError: true,
       });
       await this.error();
       this.setState({
         loading: false,
-        messageError: false
+        messageError: false,
       });
     }
     if (resposta.status === 200) {
@@ -215,13 +219,14 @@ class NovoTipoConta extends Component {
           addRML: false,
           gerROs: false,
           delROs: false,
-          updateRos: false
-        }
+          updateRos: false,
+          suprimento: false,
+        },
       });
       await this.success();
       this.setState({
         loading: false,
-        messageSuccess: false
+        messageSuccess: false,
       });
     }
   };
@@ -335,6 +340,13 @@ class NovoTipoConta extends Component {
               <div className="checkbox-card-tipo">
                 <Checkbox
                   onChange={this.onChangePermission}
+                  checked={this.state.permission.suprimento}
+                  name="suprimento"
+                >
+                  Página de suprimentos
+                </Checkbox>
+                <Checkbox
+                  onChange={this.onChangePermission}
                   checked={this.state.permission.addStatus}
                   name="addStatus"
                 >
@@ -418,7 +430,7 @@ class NovoTipoConta extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 
