@@ -20,7 +20,7 @@ class EntradaSupPage extends Component {
     products: [],
     providers: [],
     supProviderId: "",
-    supProductId: "",
+    supProductId: ""
   };
 
   clearState = () => {
@@ -32,7 +32,7 @@ class EntradaSupPage extends Component {
       desconto: 0,
       valorTotal: 0,
       supProviderId: "",
-      supProductId: "",
+      supProductId: ""
     });
   };
 
@@ -41,15 +41,15 @@ class EntradaSupPage extends Component {
     await this.getProvider();
   };
 
-  getSupProduct = async (name) => {
+  getSupProduct = async name => {
     const query = {
       filters: {
         supProduct: {
           specific: {
-            name,
-          },
-        },
-      },
+            name
+          }
+        }
+      }
     };
 
     const { status, data } = await GetSupProduct(query);
@@ -57,15 +57,15 @@ class EntradaSupPage extends Component {
     if (status === 200) this.setState({ products: data.rows });
   };
 
-  getProvider = async (razaoSocial) => {
+  getProvider = async razaoSocial => {
     const query = {
       filters: {
         supProvider: {
           specific: {
-            razaoSocial,
-          },
-        },
-      },
+            razaoSocial
+          }
+        }
+      }
     };
     const { status, data } = await GetProvider(query);
 
@@ -74,25 +74,25 @@ class EntradaSupPage extends Component {
 
   contaValorTotal = () => {
     this.setState({
-      valorTotal: this.state.valor * this.state.quant - this.state.desconto,
+      valorTotal: this.state.valor * this.state.quant - this.state.desconto
     });
   };
 
-  onChange = (e) => {
+  onChange = e => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
   onChangeSelect = (e, value) => {
     this.setState({
-      [e.target.name]: value,
+      [e.target.name]: value
     });
   };
 
-  onChangeQuant = (value) => {
+  onChangeQuant = value => {
     this.setState({
-      quant: value,
+      quant: value
     });
   };
 
@@ -103,7 +103,7 @@ class EntradaSupPage extends Component {
       valor: priceUnit,
       desconto: discount,
       supProviderId,
-      supProductId,
+      supProductId
     } = this.state;
 
     const { username: responsibleUser } = this.props.auth;
@@ -114,7 +114,7 @@ class EntradaSupPage extends Component {
       discount,
       supProviderId,
       supProductId,
-      responsibleUser,
+      responsibleUser
     };
 
     const { status } = await NovaEntrada(value);
@@ -146,7 +146,7 @@ class EntradaSupPage extends Component {
                   .toLowerCase()
                   .indexOf(input.toLowerCase()) >= 0
               }
-              onSearch={(name) => this.getSupProduct(name)}
+              onSearch={name => this.getSupProduct(name)}
               placeholder="NÃO SELECIONADO"
               value={this.state.produto}
               style={{ width: "100%" }}
@@ -154,7 +154,7 @@ class EntradaSupPage extends Component {
                 this.setState({ supProductId: props.key, produto: value })
               }
             >
-              {this.state.products.map((product) => (
+              {this.state.products.map(product => (
                 <Option value={product.name} key={product.id}>
                   {product.name}
                 </Option>
@@ -173,14 +173,14 @@ class EntradaSupPage extends Component {
                   .indexOf(input.toLowerCase()) >= 0
               }
               placeholder="NÃO SELECIONADO"
-              onSearch={(razaoSocial) => this.getProvider(razaoSocial)}
+              onSearch={razaoSocial => this.getProvider(razaoSocial)}
               value={this.state.fornecedor}
               style={{ width: "100%" }}
               onChange={(value, props) =>
                 this.setState({ supProviderId: props.key, fornecedor: value })
               }
             >
-              {this.state.providers.map((provider) => (
+              {this.state.providers.map(provider => (
                 <Option value={provider.razaoSocial} key={provider.id}>
                   {provider.razaoSocial}
                 </Option>
@@ -204,22 +204,22 @@ class EntradaSupPage extends Component {
           <div className="div-valor-entradaSup">
             <div className="div-textProduto-cadProd">Valor:</div>
             <InputNumber
-              // value={this.state.valor}
+              value={this.state.valor}
               min={0}
               placeholder="R$ 0,00"
               className="input-100"
-              onChange={(valor) => this.setState({ valor })}
+              onChange={valor => this.setState({ valor })}
             />
           </div>
 
           <div className="div-desconto-entradaSup">
             <div className="div-textProduto-cadProd">Desconto:</div>
             <InputNumber
-              // value={this.state.desconto}
+              value={this.state.desconto}
               min={0}
               placeholder="R$ 0,00"
               className="input-100"
-              onChange={(desconto) => this.setState({ desconto })}
+              onChange={desconto => this.setState({ desconto })}
               onBlur={this.contaValorTotal}
             />
           </div>
@@ -254,7 +254,7 @@ class EntradaSupPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    auth: state.auth
   };
 }
 
