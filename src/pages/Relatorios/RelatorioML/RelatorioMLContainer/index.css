@@ -121,15 +121,7 @@
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 1em;
 }
-.div-mais-gerEst {
-  margin-top: 10px;
-  width: 90%;
-  background-color: #fafafa;
-  height: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+
 .div-quant-mais-ML {
   display: flex;
   flex-direction: column;

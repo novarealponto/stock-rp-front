@@ -31,6 +31,10 @@ class NovoProduto extends Component {
     messageSuccess: false,
     itemArray: [],
     item: "",
+    corredor: "",
+    coluna: "",
+    prateleira: "",
+    gaveta: "",
     categoria: "Equipamento",
     marca: "Não selecionado",
     tipo: "Não selecionado",
@@ -624,6 +628,84 @@ class NovoProduto extends Component {
               checked={this.state.serial}
               onChange={this.onChangeSerial}
             />
+          </div>
+        </div>
+
+        <div className="linhaSemEspaco-produtos">
+          <div className="div-codigo-produtos">
+            <div className="div-text-produtos">Corredor:</div>
+            <div className="div-inputs">
+              <Input
+                // allowClear={!this.state.fieldFalha.codigo}
+                className="input-100"
+                placeholder="12345"
+                name="corredor"
+                value={this.state.corredor}
+                onChange={this.onChange}
+                // onBlur={this.onBlurValidator}
+                // onFocus={this.onFocus}
+              />
+              {/* {this.state.fieldFalha.codigo ? (
+                <p className="div-feedbackError">{this.state.message.codigo}</p>
+              ) : null} */}
+            </div>
+          </div>
+
+          <div className="div-codigo-produtos">
+            <div className="div-text-produtos">Coluna:</div>
+            <div className="div-inputs">
+              <Input
+                // allowClear={!this.state.fieldFalha.codigo}
+                className="input-100"
+                placeholder="12345"
+                name="coluna"
+                value={this.state.coluna}
+                onChange={this.onChange}
+                // onBlur={this.onBlurValidator}
+                // onFocus={this.onFocus}
+              />
+              {/* {this.state.fieldFalha.codigo ? (
+                <p className="div-feedbackError">{this.state.message.codigo}</p>
+              ) : null} */}
+            </div>
+          </div>
+
+          <div className="div-codigo-produtos">
+            <div className="div-text-produtos">Prateleira:</div>
+            <div className="div-inputs">
+              <Input
+                // allowClear={!this.state.fieldFalha.codigo}
+                className="input-100"
+                placeholder="12345"
+                name="prateleira"
+                value={this.state.prateleira}
+                onChange={this.onChange}
+                // onBlur={this.onBlurValidator}
+                // onFocus={this.onFocus}
+              />
+              {/* {this.state.fieldFalha.codigo ? (
+                <p className="div-feedbackError">{this.state.message.codigo}</p>
+              ) : null} */}
+            </div>
+          </div>
+
+          <div className="div-codigo-produtos">
+            <div className="div-text-produtos">Gaveta:</div>
+            <div className="div-inputs">
+              <Input
+                // allowClear={!this.state.fieldFalha.codigo}
+                className="input-100"
+                placeholder="12345"
+                name="gaveta"
+                value={this.state.gaveta}
+                onChange={this.onChange}
+                // onBlur={this.onBlurValidator}
+                // onFocus={this.onFocus}
+              />
+              {/* {this.state.fieldFalha.codigo ? (
+                <p className="div-feedbackError">{this.state.message.codigo}</p>
+              ) : null} */}
+            </div>
           </div>
         </div>
 
