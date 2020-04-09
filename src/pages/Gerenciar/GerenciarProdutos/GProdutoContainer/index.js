@@ -7,7 +7,7 @@ import {
   Modal,
   Switch,
   message,
-  Icon
+  Icon,
 } from "antd";
 import { connect } from "react-redux";
 import { validators, masks } from "./validators";
@@ -16,7 +16,7 @@ import {
   newTipo,
   updateProduto,
   getTipo,
-  getMarca
+  getMarca,
 } from "../../../../services/produto";
 import { Redirect } from "react-router-dom";
 
@@ -31,10 +31,10 @@ class GerenciarProdutos extends Component {
     marcaArray: [],
     messageSuccess: false,
     itemArray: [],
-    corredor: "",
-    coluna: "",
-    prateleira: "",
-    gaveta: "",
+    corredor: this.props.produtoUpdateValue.corredor,
+    coluna: this.props.produtoUpdateValue.coluna,
+    prateleira: this.props.produtoUpdateValue.prateleira,
+    gaveta: this.props.produtoUpdateValue.gaveta,
     item: this.props.produtoUpdateValue.name,
     categoria: this.props.produtoUpdateValue.category,
     marca: this.props.produtoUpdateValue.mark,
@@ -55,18 +55,18 @@ class GerenciarProdutos extends Component {
     fieldFalha: {
       item: false,
       codigo: false,
-      quantMin: false
+      quantMin: false,
     },
     message: {
       item: "",
       codigo: "",
-      quantMin: ""
-    }
+      quantMin: "",
+    },
   };
 
   redirectGerenciarCadastros = () => {
     this.setState({
-      redirect: true
+      redirect: true,
     });
   };
 
@@ -76,22 +76,22 @@ class GerenciarProdutos extends Component {
     }
   };
 
-  onChangeQuantMin = value => {
+  onChangeQuantMin = (value) => {
     this.setState({
-      quantMin: value ? value : 1
+      quantMin: value ? value : 1,
     });
   };
 
-  handleChangeTipo = value => {
+  handleChangeTipo = (value) => {
     this.setState({
-      tipo: value
+      tipo: value,
     });
   };
 
-  handleChangeMarca = async value => {
+  handleChangeMarca = async (value) => {
     await this.setState({
       marca: value,
-      fabricante: value
+      fabricante: value,
     });
   };
 
@@ -114,34 +114,34 @@ class GerenciarProdutos extends Component {
   };
 
   getAllTipo = async () => {
-    await getTipo().then(resposta =>
+    await getTipo().then((resposta) =>
       this.setState({
-        tipoArray: resposta.data
+        tipoArray: resposta.data,
       })
     );
   };
 
-  getAllMarca = async mark => {
+  getAllMarca = async (mark) => {
     const query = {
       filters: {
         mark: {
           specific: {
-            mark
-          }
-        }
-      }
+            mark,
+          },
+        },
+      },
     };
 
-    await getMarca(query).then(resposta =>
+    await getMarca(query).then((resposta) =>
       this.setState({
-        marcaArray: resposta.data
+        marcaArray: resposta.data,
       })
     );
   };
 
   saveTargetUpdateProduto = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const values = {
@@ -154,7 +154,11 @@ class GerenciarProdutos extends Component {
       name: this.state.item,
       type: this.state.tipo,
       serial: this.state.serial,
-      responsibleUser: "modrp"
+      responsibleUser: "modrp",
+      corredor: this.state.corredor,
+      coluna: this.state.coluna,
+      prateleira: this.state.prateleira,
+      gaveta: this.state.gaveta,
     };
 
     const resposta = await updateProduto(values);
@@ -163,22 +167,22 @@ class GerenciarProdutos extends Component {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
+        message: resposta.data.fields[0].message,
       });
       await this.error();
       this.setState({
         loading: false,
-        messageError: false
+        messageError: false,
       });
     }
     if (resposta.status === 200) {
       this.setState({
-        messageSuccess: true
+        messageSuccess: true,
       });
       await this.success();
       this.setState({
         loading: false,
-        messageSuccess: false
+        messageSuccess: false,
       });
     }
   };
@@ -187,7 +191,7 @@ class GerenciarProdutos extends Component {
     const values = {
       manufacturer: this.state.newFabricante,
       mark: this.state.newMarca,
-      responsibleUser: "modrp"
+      responsibleUser: "modrp",
     };
 
     const resposta = await newMarca(values);
@@ -196,43 +200,43 @@ class GerenciarProdutos extends Component {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
+        message: resposta.data.fields[0].message,
       });
       await this.error();
       this.setState({
-        messageError: false
+        messageError: false,
       });
     }
     if (resposta.status === 200) {
       this.setState({
         newMarca: "",
         newFabricante: "",
-        messageSuccess: true
+        messageSuccess: true,
       });
       await this.success();
       this.setState({
         messageSuccess: false,
-        modalMarca: false
+        modalMarca: false,
       });
     }
 
     await this.getAllMarca();
   };
 
-  onChangeMarcaAndFabricante = async e => {
+  onChangeMarcaAndFabricante = async (e) => {
     await this.setState({
-      newMarca: e.target.value
+      newMarca: e.target.value,
     });
 
     await this.setState({
-      newFabricante: this.state.newMarca
+      newFabricante: this.state.newMarca,
     });
   };
 
   saveTargetNewTipo = async () => {
     const values = {
       type: this.state.newTipo,
-      responsibleUser: "modrp"
+      responsibleUser: "modrp",
     };
 
     const resposta = await newTipo(values);
@@ -241,22 +245,22 @@ class GerenciarProdutos extends Component {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
+        message: resposta.data.fields[0].message,
       });
       await this.error();
       this.setState({
-        messageError: false
+        messageError: false,
       });
     }
     if (resposta.status === 200) {
       this.setState({
         newTipo: "",
-        messageSuccess: true
+        messageSuccess: true,
       });
       await this.success();
       this.setState({
         messageSuccess: false,
-        modalTipo: false
+        modalTipo: false,
       });
     }
 
@@ -265,7 +269,7 @@ class GerenciarProdutos extends Component {
 
   onChangeSerial = () => {
     this.setState({
-      serial: !this.state.serial
+      serial: !this.state.serial,
     });
   };
 
@@ -273,48 +277,48 @@ class GerenciarProdutos extends Component {
     this.setState({
       modalMarca: false,
       modalFabricante: false,
-      modalTipo: false
+      modalTipo: false,
     });
   };
 
   handleCancel = () => {
     this.setState({
-      modalMarca: false
+      modalMarca: false,
     });
   };
 
-  openModais = e => {
+  openModais = (e) => {
     this.setState({
-      [e.target.name]: true
+      [e.target.name]: true,
     });
   };
 
-  handleChange = value => {
+  handleChange = (value) => {
     this.setState({
       categoria: value,
       marca: "Não selecionado",
       fabricante: "",
-      tipo: "Não selecionado"
+      tipo: "Não selecionado",
     });
 
     this.getAllMarca();
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const { nome, valor } = masks(e.target.name, e.target.value);
 
     this.setState({
-      [nome]: valor
+      [nome]: valor,
     });
   };
 
-  onChangeCodigo = e => {
+  onChangeCodigo = (e) => {
     this.setState({
-      codigo: e.target.value.replace(/\D/gi, "")
+      codigo: e.target.value.replace(/\D/gi, ""),
     });
   };
 
-  onBlurValidator = async e => {
+  onBlurValidator = async (e) => {
     const { nome, valor, fieldFalha, message } = validators(
       e.target.name,
       e.target.value,
@@ -324,20 +328,20 @@ class GerenciarProdutos extends Component {
     await this.setState({
       [nome]: valor,
       fieldFalha,
-      message
+      message,
     });
   };
 
-  onFocus = async e => {
+  onFocus = async (e) => {
     await this.setState({
       fieldFalha: {
         ...this.state.fieldFalha,
-        [e.target.name]: false
+        [e.target.name]: false,
       },
       message: {
         ...this.state.message,
-        [e.target.name]: false
-      }
+        [e.target.name]: false,
+      },
     });
   };
 
@@ -345,12 +349,12 @@ class GerenciarProdutos extends Component {
     this.setState({
       fieldFalha: {
         ...this.state.fieldFalha,
-        mark: false
+        mark: false,
       },
       message: {
         ...this.state.message,
-        mark: false
-      }
+        mark: false,
+      },
     });
   };
 
@@ -358,12 +362,12 @@ class GerenciarProdutos extends Component {
     this.setState({
       fieldFalha: {
         ...this.state.fieldFalha,
-        type: false
+        type: false,
       },
       message: {
         ...this.state.message,
-        type: false
-      }
+        type: false,
+      },
     });
   };
 
@@ -486,7 +490,7 @@ class GerenciarProdutos extends Component {
             <div className="div-inputs">
               <Select
                 showSearch
-                onSearch={mark => this.getAllMarca(mark)}
+                onSearch={(mark) => this.getAllMarca(mark)}
                 placeholder="Selecione o produto"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
@@ -505,7 +509,7 @@ class GerenciarProdutos extends Component {
                     : "input-100"
                 }
               >
-                {this.state.marcaArray.map(valor => (
+                {this.state.marcaArray.map((valor) => (
                   <Option value={valor.mark}>{valor.mark}</Option>
                 ))}
               </Select>
@@ -545,7 +549,7 @@ class GerenciarProdutos extends Component {
                     }
                     onChange={this.handleChangeTipo}
                   >
-                    {this.state.tipoArray.map(valor => (
+                    {this.state.tipoArray.map((valor) => (
                       <Option value={valor.type}>{valor.type}</Option>
                     ))}
                   </Select>
@@ -753,7 +757,7 @@ class GerenciarProdutos extends Component {
 function mapStateToProps(state) {
   return {
     auth: state.auth,
-    produtoUpdateValue: state.produtoUpdateValue
+    produtoUpdateValue: state.produtoUpdateValue,
   };
 }
 

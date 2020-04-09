@@ -13,7 +13,7 @@ import {
   redirectValueProduto,
   redirectValueFornecedor,
   redirectValueUsuario,
-  redirectValueTecnico
+  redirectValueTecnico,
 } from "../ProdutoRedux/action";
 
 const { Option } = Select;
@@ -39,76 +39,76 @@ class GerenciarProdutoDash extends Component {
     categoria: "",
     loading: false,
     userArray: {
-      rows: []
+      rows: [],
     },
     tecnicoArray: {
-      rows: []
+      rows: [],
     },
     fornecedorArray: {
-      rows: []
+      rows: [],
     },
     OsArray: {
-      rows: []
+      rows: [],
     },
     avancado: false,
     page: 1,
     total: 10,
     count: 0,
-    show: 0
+    show: 0,
   };
 
-  onChangeUsuario = async e => {
+  onChangeUsuario = async (e) => {
     const { nome, valor } = masks(e.target.name, e.target.value);
 
     await this.setState({
-      [nome]: valor
+      [nome]: valor,
     });
 
     await this.getAllUsers();
   };
 
-  onChangeTecnico = async e => {
+  onChangeTecnico = async (e) => {
     const { nome, valor } = masks(e.target.name, e.target.value);
 
     await this.setState({
-      [nome]: valor
+      [nome]: valor,
     });
 
     await this.getAllTecnicos();
   };
 
-  onChangeFornecedor = async e => {
+  onChangeFornecedor = async (e) => {
     const { nome, valor } = masks(e.target.name, e.target.value);
 
     await this.setState({
-      [nome]: valor
+      [nome]: valor,
     });
 
     await this.getAllFornecedor();
   };
 
-  onChangeProduto = async e => {
+  onChangeProduto = async (e) => {
     const { nome, valor } = masks(e.target.name, e.target.value);
 
     await this.setState({
-      [nome]: valor
+      [nome]: valor,
     });
 
     await this.getAllProdutos();
   };
 
-  handleChange = async value => {
+  handleChange = async (value) => {
     await this.setState({
-      categoria: value
+      categoria: value,
     });
 
     await this.getAllProdutos();
   };
 
-  handleChangeGerenciar = async value => {
+  handleChangeGerenciar = async (value) => {
     await this.setState({
       gerenciar: value,
-      page: 1
+      page: 1,
     });
 
     switch (value) {
@@ -149,14 +149,14 @@ class GerenciarProdutoDash extends Component {
       produto: "",
       marca: "",
       tipo: "",
-      categoria: ""
+      categoria: "",
     });
   };
 
-  changePages = pages => {
+  changePages = (pages) => {
     this.setState(
       {
-        page: pages
+        page: pages,
       },
       async () => {
         switch (this.state.gerenciar) {
@@ -181,7 +181,7 @@ class GerenciarProdutoDash extends Component {
 
   getAllFornecedor = async () => {
     await this.setState({
-      loading: true
+      loading: true,
     });
 
     const query = {
@@ -192,31 +192,31 @@ class GerenciarProdutoDash extends Component {
             razaoSocial: this.state.razaoSocial,
             state: this.state.uf,
             nameContact: this.state.nome,
-            telphone: this.state.telefone.replace(/\D/gi, "")
-          }
-        }
+            telphone: this.state.telefone.replace(/\D/gi, ""),
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
 
-    await getAllFornecedor(query).then(resposta =>
+    await getAllFornecedor(query).then((resposta) =>
       this.setState({
         fornecedorArray: resposta.data,
         count: resposta.data.count,
         page: resposta.data.page,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
     );
 
     await this.setState({
-      loading: false
+      loading: false,
     });
   };
 
   getAllTecnicos = async () => {
     await this.setState({
-      loading: true
+      loading: true,
     });
 
     const query = {
@@ -224,72 +224,72 @@ class GerenciarProdutoDash extends Component {
         technician: {
           specific: {
             name: this.state.tecnico,
-            CNH: this.state.cnh.replace(/\D/gi, "")
-          }
+            CNH: this.state.cnh.replace(/\D/gi, ""),
+          },
         },
         car: {
           specific: {
-            plate: this.state.placa
-          }
-        }
+            plate: this.state.placa,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
 
-    await getAllTecnico(query).then(resposta => {
+    await getAllTecnico(query).then((resposta) => {
       this.setState({
         tecnicoArray: resposta.data,
         count: resposta.data.count,
         page: resposta.data.page,
-        show: resposta.data.show
+        show: resposta.data.show,
       });
     });
 
     await this.setState({
-      loading: false
+      loading: false,
     });
   };
 
   getAllUsers = async () => {
     await this.setState({
-      loading: true
+      loading: true,
     });
 
     const query = {
       filters: {
         user: {
           specific: {
-            username: this.state.usuario
-          }
+            username: this.state.usuario,
+          },
         },
         typeAccount: {
           specific: {
-            typeName: this.state.tipoConta
-          }
-        }
+            typeName: this.state.tipoConta,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
 
-    await getUsers(query).then(resposta =>
+    await getUsers(query).then((resposta) =>
       this.setState({
         userArray: resposta.data,
         count: resposta.data.count,
         page: resposta.data.page,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
     );
 
     await this.setState({
-      loading: false
+      loading: false,
     });
   };
 
   getAllProdutos = async () => {
     await this.setState({
-      loading: true
+      loading: true,
     });
 
     const query = {
@@ -298,35 +298,35 @@ class GerenciarProdutoDash extends Component {
           specific: {
             name: this.state.produto,
             SKU: this.state.sku,
-            category: this.state.categoria
-          }
+            category: this.state.categoria,
+          },
         },
         mark: {
           specific: {
-            mark: this.state.marca
-          }
+            mark: this.state.marca,
+          },
         },
         equipType: {
           specific: {
-            type: this.state.tipo
-          }
-        }
+            type: this.state.tipo,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
 
-    await getProdutos(query).then(resposta =>
+    await getProdutos(query).then((resposta) =>
       this.setState({
         OsArray: resposta.data,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
     );
 
     await this.setState({
-      loading: false
+      loading: false,
     });
   };
 
@@ -419,7 +419,7 @@ class GerenciarProdutoDash extends Component {
 
   produtos = () => {
     if (this.state.OsArray.rows.length !== 0) {
-      return this.state.OsArray.rows.map(line => (
+      return this.state.OsArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div className="div-lines-Rtecnico">
             <div className="cel-os-cabecalho-GCadastros">{line.sku}</div>
@@ -453,7 +453,7 @@ class GerenciarProdutoDash extends Component {
 
   usuario = () => {
     if (this.state.userArray.rows.length !== 0) {
-      return this.state.userArray.rows.map(line => (
+      return this.state.userArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div className="div-lines-Rtecnico">
             <div className="cel-usuario-cabecalho-GCadastros">
@@ -503,7 +503,7 @@ class GerenciarProdutoDash extends Component {
 
   tecnico = () => {
     if (this.state.tecnicoArray.rows.length !== 0) {
-      return this.state.tecnicoArray.rows.map(line => (
+      return this.state.tecnicoArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div className="div-lines-Rtecnico">
             <div className="cel-tecnico-cabecalho-GCadastros">{line.name}</div>
@@ -552,7 +552,7 @@ class GerenciarProdutoDash extends Component {
 
   fornecedor = () => {
     if (this.state.fornecedorArray.rows.length !== 0) {
-      return this.state.fornecedorArray.rows.map(line => (
+      return this.state.fornecedorArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div className="div-lines-Rtecnico">
             <div className="cel-cnpj-cabecalho-GCadastros">
@@ -597,7 +597,7 @@ class GerenciarProdutoDash extends Component {
     }
   };
 
-  redirectProduto = async produto => {
+  redirectProduto = async (produto) => {
     const value = {
       id: produto.id,
       name: produto.name,
@@ -608,16 +608,20 @@ class GerenciarProdutoDash extends Component {
       description: produto.description,
       sku: produto.sku,
       minimumStock: produto.minimumStock,
-      serial: produto.serial
+      serial: produto.serial,
+      corredor: produto.corredor,
+      coluna: produto.coluna,
+      prateleira: produto.prateleira,
+      gaveta: produto.gaveta,
     };
     await this.props.redirectValueProduto(value);
 
     await this.setState({
-      redirect: "produto"
+      redirect: "produto",
     });
   };
 
-  redirectFornecedor = async fornecedor => {
+  redirectFornecedor = async (fornecedor) => {
     const value = {
       id: fornecedor.id,
       cnpj: fornecedor.cnpj,
@@ -632,45 +636,45 @@ class GerenciarProdutoDash extends Component {
       referencePoint: fornecedor.referencePoint,
       nameContact: fornecedor.nameContact,
       email: fornecedor.email,
-      telphone: fornecedor.telphone
+      telphone: fornecedor.telphone,
     };
 
     await this.props.redirectValueFornecedor(value);
 
     await this.setState({
-      redirect: "fornecedor"
+      redirect: "fornecedor",
     });
   };
 
-  redirectUsuario = async usuario => {
+  redirectUsuario = async (usuario) => {
     const value = {
       id: usuario.id,
       customized: usuario.customized,
       typeName: usuario.typeName,
       username: usuario.username,
-      resource: usuario.resource
+      resource: usuario.resource,
     };
 
     await this.props.redirectValueUsuario(value);
 
     await this.setState({
-      redirect: "usuario"
+      redirect: "usuario",
     });
   };
 
-  redirectTecnico = async tecnico => {
+  redirectTecnico = async (tecnico) => {
     const value = {
       id: tecnico.id,
       name: tecnico.name,
       CNH: tecnico.CNH,
       plate: tecnico.plate,
-      external: tecnico.external
+      external: tecnico.external,
     };
 
     await this.props.redirectValueTecnico(value);
 
     await this.setState({
-      redirect: "tecnico"
+      redirect: "tecnico",
     });
   };
 
@@ -1079,7 +1083,7 @@ function mapDispacthToProps(dispach) {
       redirectValueProduto,
       redirectValueFornecedor,
       redirectValueUsuario,
-      redirectValueTecnico
+      redirectValueTecnico,
     },
     dispach
   );
@@ -1087,7 +1091,7 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 

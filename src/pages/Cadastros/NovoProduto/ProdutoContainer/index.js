@@ -6,7 +6,7 @@ import {
   Button,
   Modal,
   Switch,
-  message
+  message,
 } from "antd";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
@@ -17,7 +17,7 @@ import {
   newTipo,
   newProduto,
   getTipo,
-  getMarca
+  getMarca,
 } from "../../../../services/produto";
 
 const { Option } = Select;
@@ -51,28 +51,28 @@ class NovoProduto extends Component {
     fieldFalha: {
       item: false,
       codigo: false,
-      quantMin: false
+      quantMin: false,
     },
     message: {
       item: "",
       codigo: "",
-      quantMin: ""
-    }
+      quantMin: "",
+    },
   };
 
-  onChangeQuantMin = value => {
+  onChangeQuantMin = (value) => {
     this.setState({
-      quantMin: value ? value : 1
+      quantMin: value ? value : 1,
     });
   };
 
-  handleChangeTipo = value => {
+  handleChangeTipo = (value) => {
     this.setState({
-      tipo: value
+      tipo: value,
     });
   };
 
-  handleChangeMarca = async value => {
+  handleChangeMarca = async (value) => {
     // const {
     //   nome,
     //   valor,
@@ -87,7 +87,7 @@ class NovoProduto extends Component {
     // })
 
     await this.setState({
-      marca: value
+      marca: value,
     });
   };
 
@@ -110,34 +110,34 @@ class NovoProduto extends Component {
   };
 
   getAllTipo = async () => {
-    await getTipo().then(resposta =>
+    await getTipo().then((resposta) =>
       this.setState({
-        tipoArray: resposta.data
+        tipoArray: resposta.data,
       })
     );
   };
 
-  getAllMarca = async mark => {
+  getAllMarca = async (mark) => {
     const query = {
       filters: {
         mark: {
           specific: {
-            mark
-          }
-        }
-      }
+            mark,
+          },
+        },
+      },
     };
 
-    await getMarca(query).then(resposta =>
+    await getMarca(query).then((resposta) =>
       this.setState({
-        marcaArray: resposta.data
+        marcaArray: resposta.data,
       })
     );
   };
 
   saveTargetNewProduto = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const values = {
@@ -149,7 +149,11 @@ class NovoProduto extends Component {
       name: this.state.item,
       type: this.state.tipo,
       serial: this.state.serial,
-      responsibleUser: "modrp"
+      responsibleUser: "modrp",
+      corredor: this.state.corredor,
+      coluna: this.state.coluna,
+      prateleira: this.state.prateleira,
+      gaveta: this.state.gaveta,
     };
 
     const resposta = await newProduto(values);
@@ -158,12 +162,12 @@ class NovoProduto extends Component {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
+        message: resposta.data.fields[0].message,
       });
       await this.error();
       this.setState({
         loading: false,
-        messageError: false
+        messageError: false,
       });
     }
     if (resposta.status === 200) {
@@ -176,12 +180,16 @@ class NovoProduto extends Component {
         codigo: "",
         quantMin: 1,
         serial: false,
-        messageSuccess: true
+        messageSuccess: true,
+        corredor: "",
+        coluna: "",
+        prateleira: "",
+        gaveta: "",
       });
       await this.success();
       this.setState({
         loading: false,
-        messageSuccess: false
+        messageSuccess: false,
       });
     }
   };
@@ -190,7 +198,7 @@ class NovoProduto extends Component {
     const values = {
       manufacturer: this.state.newMarca,
       mark: this.state.newMarca,
-      responsibleUser: "modrp"
+      responsibleUser: "modrp",
     };
 
     const resposta = await newMarca(values);
@@ -199,22 +207,22 @@ class NovoProduto extends Component {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
+        message: resposta.data.fields[0].message,
       });
       await this.error();
       this.setState({
-        messageError: false
+        messageError: false,
       });
     }
     if (resposta.status === 200) {
       this.setState({
         newMarca: "",
-        messageSuccess: true
+        messageSuccess: true,
       });
       await this.success();
       this.setState({
         messageSuccess: false,
-        modalMarca: false
+        modalMarca: false,
       });
     }
 
@@ -224,7 +232,7 @@ class NovoProduto extends Component {
   saveTargetNewTipo = async () => {
     const values = {
       type: this.state.newTipo,
-      responsibleUser: "modrp"
+      responsibleUser: "modrp",
     };
 
     const resposta = await newTipo(values);
@@ -233,22 +241,22 @@ class NovoProduto extends Component {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
+        message: resposta.data.fields[0].message,
       });
       await this.error();
       this.setState({
-        messageError: false
+        messageError: false,
       });
     }
     if (resposta.status === 200) {
       this.setState({
         newTipo: "",
-        messageSuccess: true
+        messageSuccess: true,
       });
       await this.success();
       this.setState({
         messageSuccess: false,
-        modalTipo: false
+        modalTipo: false,
       });
     }
 
@@ -257,53 +265,53 @@ class NovoProduto extends Component {
 
   onChangeSerial = () => {
     this.setState({
-      serial: !this.state.serial
+      serial: !this.state.serial,
     });
   };
 
   handleOk = () => {
     this.setState({
       modalMarca: false,
-      modalTipo: false
+      modalTipo: false,
     });
   };
 
   handleCancel = () => {
     this.setState({
-      modalMarca: false
+      modalMarca: false,
     });
   };
 
-  openModais = e => {
+  openModais = (e) => {
     this.setState({
-      [e.target.name]: true
+      [e.target.name]: true,
     });
   };
 
-  handleChange = value => {
+  handleChange = (value) => {
     this.setState({
       categoria: value,
-      tipo: "Não selecionado"
+      tipo: "Não selecionado",
     });
 
     this.getAllMarca();
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const { nome, valor } = masks(e.target.name, e.target.value);
 
     this.setState({
-      [nome]: valor
+      [nome]: valor,
     });
   };
 
-  onChangeCodigo = e => {
+  onChangeCodigo = (e) => {
     this.setState({
-      codigo: e.target.value.replace(/\D/gi, "")
+      codigo: e.target.value.replace(/\D/gi, ""),
     });
   };
 
-  onBlurValidator = async e => {
+  onBlurValidator = async (e) => {
     const { nome, valor, fieldFalha, message } = validators(
       e.target.name,
       e.target.value,
@@ -313,20 +321,20 @@ class NovoProduto extends Component {
     await this.setState({
       [nome]: valor,
       fieldFalha,
-      message
+      message,
     });
   };
 
-  onFocus = async e => {
+  onFocus = async (e) => {
     await this.setState({
       fieldFalha: {
         ...this.state.fieldFalha,
-        [e.target.name]: false
+        [e.target.name]: false,
       },
       message: {
         ...this.state.message,
-        [e.target.name]: false
-      }
+        [e.target.name]: false,
+      },
     });
   };
 
@@ -334,12 +342,12 @@ class NovoProduto extends Component {
     this.setState({
       fieldFalha: {
         ...this.state.fieldFalha,
-        mark: false
+        mark: false,
       },
       message: {
         ...this.state.message,
-        mark: false
-      }
+        mark: false,
+      },
     });
   };
 
@@ -347,12 +355,12 @@ class NovoProduto extends Component {
     this.setState({
       fieldFalha: {
         ...this.state.fieldFalha,
-        type: false
+        type: false,
       },
       message: {
         ...this.state.message,
-        type: false
-      }
+        type: false,
+      },
     });
   };
 
@@ -482,7 +490,7 @@ class NovoProduto extends Component {
                 value={this.state.marca}
                 style={{ width: "100%" }}
                 onChange={this.handleChangeMarca}
-                onSearch={mark => this.getAllMarca(mark)}
+                onSearch={(mark) => this.getAllMarca(mark)}
                 onFocus={this.onFocusMark}
                 className={
                   this.state.fieldFalha.mark
@@ -490,7 +498,7 @@ class NovoProduto extends Component {
                     : "input-100"
                 }
               >
-                {this.state.marcaArray.map(valor => (
+                {this.state.marcaArray.map((valor) => (
                   <Option value={valor.mark}>{valor.mark}</Option>
                 ))}
               </Select>
@@ -530,7 +538,7 @@ class NovoProduto extends Component {
                     }
                     onChange={this.handleChangeTipo}
                   >
-                    {this.state.tipoArray.map(valor => (
+                    {this.state.tipoArray.map((valor) => (
                       <Option value={valor.type}>{valor.type}</Option>
                     ))}
                   </Select>
@@ -726,7 +734,7 @@ class NovoProduto extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 
