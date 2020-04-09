@@ -46,10 +46,11 @@ import EntradaSupRoute from "./Suprimentos/Entrada";
 import CadastroProdutosSupRoute from "./Suprimentos/Cad.Produtos";
 import CadastroFornecedorSupRoute from "./Suprimentos/Cad.Fornecedor";
 import EditarFornecedorSupRoute from "./Suprimentos/Edit.Fornecedor";
+import RelatorioMapRoute from "./Relatorios/RelatorioMapeamento";
 
 class PagesRoute extends Component {
   state = {
-    auth: true,
+    auth: true
   };
 
   hasAuth = R.has("auth");
@@ -72,14 +73,14 @@ class PagesRoute extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username,
+      username: this.props.auth.username
     };
 
     let response = {};
 
-    response = await auth(value).then((resp) =>
+    response = await auth(value).then(resp =>
       this.setState({
-        auth: resp ? resp.data : false,
+        auth: resp ? resp.data : false
       })
     );
 
@@ -133,6 +134,7 @@ class PagesRoute extends Component {
             path="/logged/relatorioPerda"
             component={RelatorioPerdaRoute}
           />
+          <Route path="/logged/relatorioMap" component={RelatorioMapRoute} />
           <Route path="/logged/relatorioML" component={RelatorioMLRoute} />
           <Route path="/logged/searchOs" component={SearchOsRoute} />
           <Route path="/logged/Os" component={OsDashRoute} />
@@ -206,8 +208,11 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    auth: state.auth
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(PagesRoute);

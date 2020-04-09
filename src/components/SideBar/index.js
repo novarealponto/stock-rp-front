@@ -348,6 +348,16 @@ class SideBar extends Component {
               }}
             />
           );
+        case "relatorioMap_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/relatorioMap/dash",
+                state: { from: this.props.location }
+              }}
+            />
+          );
         case "relatorioInterno_dash":
           return (
             <Redirect
@@ -696,6 +706,10 @@ class SideBar extends Component {
             <Menu.Item key="relatorioML_dash">
               <Icon type="ie" />
               E-Commerce
+            </Menu.Item>
+            <Menu.Item key="relatorioMap_dash">
+              <Icon type="file-search" />
+              Mapeamento
             </Menu.Item>
           </SubMenu>
 
