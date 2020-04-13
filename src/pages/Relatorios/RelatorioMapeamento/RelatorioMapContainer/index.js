@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./index.css";
 import { Button, Spin, Input, Icon, Modal } from "antd";
+import { getProdutos, CreatePDF } from "../../../../services/produto";
 
 class RelatorioMapContainer extends Component {
   state = {
@@ -11,33 +12,112 @@ class RelatorioMapContainer extends Component {
     marca: "",
     corredor: "",
     coluna: "",
-    modalImprimir: false
+    prateleira: "",
+    gaveta: "",
+    modalImprimir: false,
+    products: [],
+  };
+
+  componentDidMount = async () => {
+    await this.getAllProdutos();
+  };
+
+  getAllProdutos = async () => {
+    const query = {
+      filters: {
+        product: {
+          specific: {
+            name: this.state.produto,
+            SKU: this.state.sku,
+            corredor: this.state.corredor,
+            coluna: this.state.coluna,
+            prateleira: this.state.prateleira,
+            gaveta: this.state.gaveta,
+          },
+        },
+        mark: {
+          specific: {
+            mark: this.state.marca,
+          },
+        },
+        equipType: {
+          specific: {
+            type: "",
+          },
+        },
+      },
+      page: this.state.page,
+      total: 10,
+    };
+
+    await getProdutos(query).then((resposta) =>
+      this.setState({
+        products: resposta.data.rows,
+        page: resposta.data.page,
+        count: resposta.data.count,
+        show: resposta.data.show,
+      })
+    );
   };
 
   openModal = () => {
     this.setState({
-      modalImprimir: true
+      modalImprimir: true,
     });
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  onOk = () => {
+  onCancel = () => {
     this.setState({
-      modalImprimir: false
+      modalImprimir: false,
     });
+  };
+
+  createPDF = async () => {
+    const query = {
+      filters: {
+        product: {
+          specific: {
+            name: this.state.produto,
+            SKU: this.state.sku,
+            corredor: this.state.corredor,
+            coluna: this.state.coluna,
+            prateleira: this.state.prateleira,
+            gaveta: this.state.gaveta,
+          },
+        },
+        mark: {
+          specific: {
+            mark: this.state.marca,
+          },
+        },
+        equipType: {
+          specific: {
+            type: "",
+          },
+        },
+      },
+      // total: 400,
+      total: undefined,
+    };
+
+    const { status, data } = await getProdutos(query);
+    if (status === 200) {
+      await CreatePDF(data.rows);
+    }
   };
 
   modalImprimir = () => (
     <Modal
       title="Confirmar impressão"
       visible={this.state.modalImprimir}
-      onOk={this.onOk}
-      onCancel={this.onOk}
+      onOk={this.createPDF}
+      onCancel={this.onCancel}
       okText="Confirmar"
       cancelText="Cancelar"
     >
@@ -155,7 +235,6 @@ class RelatorioMapContainer extends Component {
             </Button>
           </div>
         )}
-
         <div className="div-cabecalho-RPerda">
           <div className="cel-map-cabecalho-RMap">SKU</div>
           <div className="cel-produto-cabecalho-RMap">Produto</div>
@@ -165,15 +244,23 @@ class RelatorioMapContainer extends Component {
           <div className="cel-map-cabecalho-RMap">Prateleira</div>
           <div className="cel-map-cabecalho-RMap">Gaveta</div>
         </div>
-
         <div className=" div-separate-ROs" />
         {this.state.loading ? (
           <div className="spin">
             <Spin spinning={this.state.loading} />
           </div>
-        ) : null
-        // this.test()
-        }
+        ) : null}
+        {this.state.products.map((product) => (
+          <div className="div-cabecalho-RPerda">
+            <div className="cel-map-cabecalho-RMap">{product.sku}</div>
+            <div className="cel-produto-cabecalho-RMap">{product.name}</div>
+            <div className="cel-marca-cabecalho-RMap">{product.mark}</div>
+            <div className="cel-map-cabecalho-RMap">{product.corredor}</div>
+            <div className="cel-map-cabecalho-RMap">{product.coluna}</div>
+            <div className="cel-map-cabecalho-RMap">{product.prateleira}</div>
+            <div className="cel-map-cabecalho-RMap">{product.gaveta}</div>
+          </div>
+        ))}
       </div>
     );
   }

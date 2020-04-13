@@ -27,20 +27,20 @@ class GerenciarEstoqueSupPage extends Component {
     entradas: [],
     saidas: [],
     produtoSearch: {
-      nome: ""
+      nome: "",
     },
     entradaSearch: {
       data: "",
       produto: "",
-      resp: ""
+      resp: "",
     },
     saidaSearch: {
       data: "",
       produto: "",
       solicitante: "",
-      resp: ""
+      resp: "",
     },
-    valueDate: { start: "2019/01/01" }
+    valueDate: { start: "2019/01/01" },
   };
 
   componentDidMount = async () => {
@@ -54,12 +54,12 @@ class GerenciarEstoqueSupPage extends Component {
           specific: {
             name: this.state.produtoSearch.nome,
             // code: this.state.produtoSearch.codigo
-            updatedAt: this.state.valueDate
-          }
-        }
+            updatedAt: this.state.valueDate,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
     const { status, data } = await GetSupProduct(query);
 
@@ -73,17 +73,17 @@ class GerenciarEstoqueSupPage extends Component {
         supEntrance: {
           specific: {
             responsibleUser: this.state.entradaSearch.resp,
-            createdAt: this.state.valueDate
-          }
+            createdAt: this.state.valueDate,
+          },
         },
         supProduct: {
           specific: {
-            name: this.state.entradaSearch.produto
-          }
-        }
+            name: this.state.entradaSearch.produto,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
     const { status, data } = await GetEntrance(query);
 
@@ -98,17 +98,17 @@ class GerenciarEstoqueSupPage extends Component {
           specific: {
             solicitante: this.state.saidaSearch.solicitante,
             responsibleUser: this.state.saidaSearch.resp,
-            createdAt: this.state.valueDate
-          }
+            createdAt: this.state.valueDate,
+          },
         },
         supProduct: {
           specific: {
-            name: this.state.saidaSearch.produto
-          }
-        }
+            name: this.state.saidaSearch.produto,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
     const { status, data } = await GetOut(query);
 
@@ -116,9 +116,9 @@ class GerenciarEstoqueSupPage extends Component {
       this.setState({ saidas: data.rows, count: data.count, index: -1 });
   };
 
-  changePages = async pages => {
+  changePages = async (pages) => {
     await this.setState({
-      page: pages
+      page: pages,
     });
 
     switch (this.state.select) {
@@ -136,13 +136,13 @@ class GerenciarEstoqueSupPage extends Component {
     }
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     const { name, value } = e.target;
 
     const nameArry = split(" ", name);
 
     await this.setState({
-      [nameArry[0]]: { ...this.state[nameArry[0]], [nameArry[1]]: value }
+      [nameArry[0]]: { ...this.state[nameArry[0]], [nameArry[1]]: value },
     });
 
     switch (this.state.select) {
@@ -160,10 +160,10 @@ class GerenciarEstoqueSupPage extends Component {
     }
   };
 
-  searchDate = async e => {
+  searchDate = async (e) => {
     if (!e[0] || !e[1]) return;
     await this.setState({
-      valueDate: { start: e[0]._d, end: e[1]._d }
+      valueDate: { start: e[0]._d, end: e[1]._d },
     });
 
     switch (this.state.select) {
@@ -264,9 +264,9 @@ class GerenciarEstoqueSupPage extends Component {
     </div>
   );
 
-  onChangeQuant = value => {
+  onChangeQuant = (value) => {
     this.setState({
-      quant: value
+      quant: value,
     });
   };
 
@@ -397,14 +397,14 @@ class GerenciarEstoqueSupPage extends Component {
     }
   };
 
-  onChangeSelect = async value => {
+  onChangeSelect = async (value) => {
     await this.setState({
       select: value,
       loading: true,
       page: 1,
       count: 1,
       show: 1,
-      total: 10
+      total: 10,
     });
 
     switch (this.state.select) {
@@ -422,7 +422,7 @@ class GerenciarEstoqueSupPage extends Component {
     }
 
     this.setState({
-      loading: false
+      loading: false,
     });
   };
 
@@ -448,7 +448,7 @@ class GerenciarEstoqueSupPage extends Component {
             onClick={async () => {
               await this.setState({
                 search: !this.state.search,
-                avancado: !this.state.avancado
+                avancado: !this.state.avancado,
               });
 
               switch (this.state.select) {
@@ -490,7 +490,6 @@ class GerenciarEstoqueSupPage extends Component {
             {this.state.products.map((product, idx) => (
               <>
                 <div className="div-cabecalhoLinha-gerEst">
-                  {console.log(product)}
                   <div className="cel-produto-cabecalho-gerEst">
                     {product.name}
                   </div>
@@ -505,7 +504,7 @@ class GerenciarEstoqueSupPage extends Component {
                     <QuestionCircleOutlined
                       onClick={() =>
                         this.setState({
-                          index: this.state.index === idx ? -1 : idx
+                          index: this.state.index === idx ? -1 : idx,
                         })
                       }
                     />
@@ -519,7 +518,7 @@ class GerenciarEstoqueSupPage extends Component {
                       <div className="div-data-mais-gerEst">Data</div>
                     </div>
                     <div className="div-linhaMaisInfoMap-gerEst">
-                      {product.supEntrances.map(supEntrance => (
+                      {product.supEntrances.map((supEntrance) => (
                         <div className="div-linhaMap-gerEst">
                           <div className="div-razao-mais-gerEst">
                             {supEntrance.supProvider.razaoSocial}
@@ -578,7 +577,7 @@ class GerenciarEstoqueSupPage extends Component {
                     <QuestionCircleOutlined
                       onClick={() =>
                         this.setState({
-                          index: this.state.index === idx ? -1 : idx
+                          index: this.state.index === idx ? -1 : idx,
                         })
                       }
                     />
@@ -651,7 +650,7 @@ class GerenciarEstoqueSupPage extends Component {
                     <QuestionCircleOutlined
                       onClick={() =>
                         this.setState({
-                          index: this.state.index === idx ? -1 : idx
+                          index: this.state.index === idx ? -1 : idx,
                         })
                       }
                     />

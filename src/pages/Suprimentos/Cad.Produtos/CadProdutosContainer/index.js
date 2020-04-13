@@ -108,7 +108,6 @@ class CadProdutosPage extends Component {
   };
 
   onChangeSelect = (e, value) => {
-    console.log(e, value);
     this.setState({
       [e.target.name]: value,
     });

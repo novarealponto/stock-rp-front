@@ -12,7 +12,7 @@ import {
   InputNumber,
   DatePicker,
   Select,
-  message
+  message,
 } from "antd";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -24,7 +24,7 @@ import { getTecnico, createPDF, getCarro } from "../../../../services/tecnico";
 import {
   getTodasOs,
   baixaReservaOs,
-  removeReservaOs
+  removeReservaOs,
 } from "../../../../services/reservaOs";
 import { getSerial } from "../../../../services/serialNumber";
 import moment from "moment";
@@ -55,32 +55,32 @@ class ReservaTecnico extends Component {
     tecnicoName: "",
     valueDate: { start: "2019/01/01" },
     OsArray: {
-      rows: []
+      rows: [],
     },
     produtoSelecionado: {
-      products: {}
+      products: {},
     },
     mais: {},
     lineSelected: {
-      rows: []
+      rows: [],
     },
     quantModal: NaN,
     teste: NaN,
     page: 1,
     total: 10,
     count: 0,
-    show: 0
+    show: 0,
   };
 
   getAllCarro = async () => {
-    await getCarro().then(resposta =>
+    await getCarro().then((resposta) =>
       this.setState({
-        carroArray: resposta.data
+        carroArray: resposta.data,
       })
     );
   };
 
-  errorNumeroSerie = value => {
+  errorNumeroSerie = (value) => {
     message.error(value, 10);
   };
 
@@ -88,11 +88,11 @@ class ReservaTecnico extends Component {
     await this.getAllTecnico();
 
     await this.setState({
-      buttonImprimir: !this.state.buttonImprimir
+      buttonImprimir: !this.state.buttonImprimir,
     });
   };
 
-  onChangeTecnicoImprimir = e => {
+  onChangeTecnicoImprimir = (e) => {
     const tecnicos = this.state.tecnicos;
 
     const index = tecnicos.indexOf(e.target.value);
@@ -111,13 +111,13 @@ class ReservaTecnico extends Component {
 
     this.setState({
       tecnicos: tecnicos,
-      tecnicosArray
+      tecnicosArray,
     });
   };
 
-  filter = async e => {
+  filter = async (e) => {
     await this.setState({
-      numeroSerieTest: e.target.value
+      numeroSerieTest: e.target.value,
     });
 
     const teste = this.state.numeroSerieTest.split(/\n/, 10);
@@ -130,7 +130,7 @@ class ReservaTecnico extends Component {
       let count = 0;
 
       // eslint-disable-next-line array-callback-return
-      teste.map(valor => {
+      teste.map((valor) => {
         if (valor === teste[teste.length - 2]) count++;
       });
 
@@ -164,16 +164,16 @@ class ReservaTecnico extends Component {
         const testeArray = teste.toString();
 
         this.setState({
-          numeroSerieTest: testeArray.replace(/,/gi, "\n")
+          numeroSerieTest: testeArray.replace(/,/gi, "\n"),
         });
       }
     }
   };
 
-  changePages = pages => {
+  changePages = (pages) => {
     this.setState(
       {
-        page: pages
+        page: pages,
       },
       () => {
         this.getAllOs();
@@ -182,30 +182,30 @@ class ReservaTecnico extends Component {
   };
 
   getAllTecnico = async () => {
-    await getTecnico().then(resposta =>
+    await getTecnico().then((resposta) =>
       this.setState({
-        tecnicoArray: resposta.data
+        tecnicoArray: resposta.data,
       })
     );
   };
 
-  copy = async acessorio => {
+  copy = async (acessorio) => {
     await this.setState({
       numeroSerieTest: this.state.numeroSerieTest
         ? `${this.state.numeroSerieTest}\n${acessorio}`
-        : acessorio
+        : acessorio,
     });
 
     const teste = this.state.numeroSerieTest.split(/\n/);
 
     await this.setState({
-      teste: teste.length
+      teste: teste.length,
     });
 
     let count = 0;
 
     // eslint-disable-next-line array-callback-return
-    teste.map(valor => {
+    teste.map((valor) => {
       if (valor === teste[teste.length - 1]) count++;
     });
 
@@ -218,7 +218,7 @@ class ReservaTecnico extends Component {
 
       await this.setState({
         numeroSerieTest: testeArray.replace(/,/gi, "\n"),
-        teste: teste.length
+        teste: teste.length,
       });
     } else {
       await this.setState({
@@ -226,29 +226,29 @@ class ReservaTecnico extends Component {
           products: {
             ...this.state.produtoSelecionado.products,
             serialNumbers: this.state.produtoSelecionado.products.serialNumbers.filter(
-              serial => serial.serialNumber !== acessorio.toString()
-            )
-          }
-        }
+              (serial) => serial.serialNumber !== acessorio.toString()
+            ),
+          },
+        },
       });
     }
   };
 
   getAllOs = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     await this.getAllOsSemLoading();
 
     this.setState({
-      loading: false
+      loading: false,
     });
   };
 
   removeOs = async () => {
     const query = {
-      osId: this.state.idLine
+      osId: this.state.idLine,
     };
 
     await removeReservaOs(query);
@@ -257,14 +257,14 @@ class ReservaTecnico extends Component {
 
     await this.setState({
       modalRemove: false,
-      idLine: ""
+      idLine: "",
     });
   };
 
-  removerLinha = line => {
+  removerLinha = (line) => {
     this.setState({
       modalRemove: true,
-      idLine: line
+      idLine: line,
     });
   };
 
@@ -273,45 +273,45 @@ class ReservaTecnico extends Component {
       filters: {
         technician: {
           specific: {
-            name: this.state.tecnico
-          }
+            name: this.state.tecnico,
+          },
         },
         os: {
           specific: {
             os: this.state.Os,
             razaoSocial: this.state.razaoSocial,
             cnpj: this.state.cnpj,
-            date: this.state.valueDate
-          }
-        }
+            date: this.state.valueDate,
+          },
+        },
       },
       page: this.state.page,
       total: this.state.total,
       required: true,
-      paranoid: true
+      paranoid: true,
     };
 
-    await getTodasOs(query).then(resposta =>
+    await getTodasOs(query).then((resposta) =>
       this.setState({
         OsArray: resposta.data,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
     );
   };
 
-  searchDate = async e => {
+  searchDate = async (e) => {
     if (!e[0] || !e[1]) return;
     await this.setState({
-      valueDate: { start: e[0]._d, end: e[1]._d }
+      valueDate: { start: e[0]._d, end: e[1]._d },
     });
     await this.getAllOs();
   };
 
-  onChangeModal = value => {
+  onChangeModal = (value) => {
     this.setState({
-      teste: value
+      teste: value,
     });
   };
 
@@ -326,34 +326,34 @@ class ReservaTecnico extends Component {
           quantMax: menos,
           return:
             parseInt(this.state.produtoSelecionado.products.return, 10) +
-            this.state.teste
-        }
-      }
+            this.state.teste,
+        },
+      },
     });
 
     const value = {
       osPartsId: this.state.produtoSelecionado.products.id,
       add: {
-        return: this.state.teste
+        return: this.state.teste,
       },
       serialNumberArray:
         this.state.numeroSerieTest.length > 0
           ? this.state.numeroSerieTest
               .split(/\n/)
-              .filter(item => (item ? item : null))
-          : null
+              .filter((item) => (item ? item : null))
+          : null,
     };
 
     const resposta = await baixaReservaOs(value);
 
     if (resposta.status === 200) {
       this.setState({
-        teste: menos
+        teste: menos,
       });
     }
 
     // eslint-disable-next-line array-callback-return
-    const x = this.state.OsArray.rows.filter(item => {
+    const x = this.state.OsArray.rows.filter((item) => {
       if (item.id === R.keys(this.state.mais)[0]) {
         return item;
       }
@@ -362,10 +362,10 @@ class ReservaTecnico extends Component {
     await this.setState(
       {
         lineSelected: {
-          rows: x
+          rows: x,
         },
         teste: 0,
-        numeroSerieTest: ""
+        numeroSerieTest: "",
       },
       await this.getAllOsSemLoading()
     );
@@ -382,22 +382,22 @@ class ReservaTecnico extends Component {
           quantMax: menos,
           missOut:
             parseInt(this.state.produtoSelecionado.products.missOut, 10) +
-            this.state.teste
-        }
-      }
+            this.state.teste,
+        },
+      },
     });
 
     const value = {
       osPartsId: this.state.produtoSelecionado.products.id,
       add: {
-        missOut: this.state.teste
+        missOut: this.state.teste,
       },
       serialNumberArray:
         this.state.numeroSerieTest.length > 0
           ? this.state.numeroSerieTest
               .split(/\n/)
-              .filter(item => (item ? item : null))
-          : null
+              .filter((item) => (item ? item : null))
+          : null,
     };
 
     const resposta = await baixaReservaOs(value);
@@ -405,14 +405,14 @@ class ReservaTecnico extends Component {
     if (resposta.status === 200) {
       this.setState(
         {
-          teste: menos
+          teste: menos,
         },
         await this.getAllOsSemLoading()
       );
     }
 
     // eslint-disable-next-line array-callback-return
-    const x = this.state.OsArray.rows.filter(item => {
+    const x = this.state.OsArray.rows.filter((item) => {
       if (item.id === R.keys(this.state.mais)[0]) {
         return item;
       }
@@ -421,10 +421,10 @@ class ReservaTecnico extends Component {
     await this.setState(
       {
         lineSelected: {
-          rows: x
+          rows: x,
         },
         teste: 0,
-        numeroSerieTest: ""
+        numeroSerieTest: "",
       },
       await this.getAllOsSemLoading()
     );
@@ -441,9 +441,9 @@ class ReservaTecnico extends Component {
           quantMax: menos,
           output:
             parseInt(this.state.produtoSelecionado.products.output, 10) +
-            this.state.teste
-        }
-      }
+            this.state.teste,
+        },
+      },
     });
 
     let value = null;
@@ -452,27 +452,27 @@ class ReservaTecnico extends Component {
       value = {
         osPartsId: this.state.produtoSelecionado.products.id,
         add: {
-          output: this.state.teste
+          output: this.state.teste,
         },
         serialNumberArray:
           this.state.numeroSerieTest.length > 0
             ? this.state.numeroSerieTest
                 .split(/\n/)
-                .filter(item => (item ? item : null))
-            : null
+                .filter((item) => (item ? item : null))
+            : null,
       };
     } else {
       value = {
         osPartsId: this.state.produtoSelecionado.products.id,
         add: {
-          output: this.state.teste
+          output: this.state.teste,
         },
         serialNumberArray:
           this.state.numeroSerieTest.length > 0
             ? this.state.numeroSerieTest
                 .split(/\n/)
-                .filter(item => (item ? item : null))
-            : null
+                .filter((item) => (item ? item : null))
+            : null,
       };
     }
 
@@ -482,14 +482,14 @@ class ReservaTecnico extends Component {
       this.setState(
         {
           teste: 0,
-          numeroSerieTest: ""
+          numeroSerieTest: "",
         },
         await this.getAllOsSemLoading()
       );
     }
 
     // eslint-disable-next-line array-callback-return
-    const x = this.state.OsArray.rows.filter(item => {
+    const x = this.state.OsArray.rows.filter((item) => {
       if (item.id === R.keys(this.state.mais)[0]) {
         return item;
       }
@@ -497,15 +497,15 @@ class ReservaTecnico extends Component {
 
     await this.setState({
       lineSelected: {
-        rows: x
-      }
+        rows: x,
+      },
     });
     await this.getAllOsSemLoading();
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     await this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
 
     await this.getAllOs();
@@ -513,7 +513,7 @@ class ReservaTecnico extends Component {
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado
+      avancado: !this.state.avancado,
     });
   };
 
@@ -521,7 +521,7 @@ class ReservaTecnico extends Component {
     await this.getAllTecnico();
 
     await this.setState({
-      tecnico: ""
+      tecnico: "",
     });
 
     await this.getAllOs();
@@ -529,16 +529,16 @@ class ReservaTecnico extends Component {
     await this.getAllCarro();
   };
 
-  onChangeSelect = async value => {
+  onChangeSelect = async (value) => {
     await this.setState({
-      tecnico: value
+      tecnico: value,
     });
   };
 
-  onChangeTecnico = value => {
+  onChangeTecnico = (value) => {
     this.setState(
       {
-        tecnico: value
+        tecnico: value,
       },
       this.getAllOs
     );
@@ -548,48 +548,48 @@ class ReservaTecnico extends Component {
     await this.setState({
       modalDetalhes: false,
       produtoSelecionado: {
-        products: {}
+        products: {},
       },
       mais: {},
       lineSelected: {
-        rows: []
+        rows: [],
       },
       numeroSerieTest: "",
-      teste: 0
+      teste: 0,
     });
   };
 
-  openModalDetalhes = async valor => {
+  openModalDetalhes = async (valor) => {
     await this.setState({
       modalDetalhes: true,
       produtoSelecionado: {
-        products: valor
+        products: valor,
       },
-      total: this.state.produtoSelecionado.products.quantMax
+      total: this.state.produtoSelecionado.products.quantMax,
     });
 
     await this.setState({
       teste: this.state.produtoSelecionado.products.serial
         ? 0
-        : this.state.produtoSelecionado.products.quantMax
+        : this.state.produtoSelecionado.products.quantMax,
     });
   };
 
-  mais = async line => {
+  mais = async (line) => {
     await this.setState({
       mais: {
-        [line.id]: !this.state.mais[line.id]
+        [line.id]: !this.state.mais[line.id],
       },
       lineSelected: {
-        rows: [line]
-      }
+        rows: [line],
+      },
     });
   };
 
   handleOk = () => {
     this.setState({
       modalDetalhes: false,
-      modalRemove: false
+      modalRemove: false,
     });
   };
 
@@ -655,7 +655,7 @@ class ReservaTecnico extends Component {
           <div className="div-text-modal">
             <div className="div-numSerie-modal">
               {this.state.produtoSelecionado.products.serialNumbers.map(
-                valor => (
+                (valor) => (
                   <div
                     onClick={() => {
                       this.copy(valor.serialNumber);
@@ -727,7 +727,7 @@ class ReservaTecnico extends Component {
         this.setState({
           buttonImprimir: false,
           tecnicos: [],
-          dataModal: Date.now()
+          dataModal: Date.now(),
         })
       }
       okText="Confirmar"
@@ -756,7 +756,7 @@ class ReservaTecnico extends Component {
               }
               locale={locale}
               style={{ width: "150px", margin: "0 0 20px" }}
-              onChange={e => this.setState({ dataModal: e && e._d })}
+              onChange={(e) => this.setState({ dataModal: e && e._d })}
             />
           </div>
         </div>
@@ -764,7 +764,7 @@ class ReservaTecnico extends Component {
           style={{
             background: "rgba(99, 99, 99, 0.4)",
             width: "100%",
-            height: "0.5px"
+            height: "0.5px",
           }}
         />
 
@@ -787,21 +787,21 @@ class ReservaTecnico extends Component {
                   <Select
                     value={tecnico.cars[0].plate}
                     style={{ width: "30%", margin: "10px 15px 0 5px" }}
-                    onChange={plate => {
+                    onChange={(plate) => {
                       const tecnicoArray = this.state.tecnicoArray;
 
                       tecnicoArray[index].cars.push({
-                        plate: tecnicoArray[index].cars[0].plate
+                        plate: tecnicoArray[index].cars[0].plate,
                       });
                       tecnicoArray[index].cars[0].plate = plate;
 
                       this.setState({
                         tecnicoName: "",
-                        tecnicoArray
+                        tecnicoArray,
                       });
                     }}
                   >
-                    {this.state.carroArray.map(valor => (
+                    {this.state.carroArray.map((valor) => (
                       <Option value={valor.plate}>{valor.plate}</Option>
                     ))}
                   </Select>
@@ -905,7 +905,7 @@ class ReservaTecnico extends Component {
 
   test = () => {
     if (this.state.OsArray.rows.length !== 0) {
-      return this.state.OsArray.rows.map(line => (
+      return this.state.OsArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div className="div-lines-Rtecnico">
             <div className="cel-mais-cabecalho-Rtecnico">
@@ -957,11 +957,10 @@ class ReservaTecnico extends Component {
                   <Spin spinning={this.state.loading} />
                 </div>
               ) : (
-                this.state.lineSelected.rows.map(line => (
+                this.state.lineSelected.rows.map((line) => (
                   <div className="div-branco-mais">
-                    {console.log(line)}
                     <div className="div-produtos-mais">
-                      {line.products.map(valor => (
+                      {line.products.map((valor) => (
                         <div
                           className="div-peca"
                           onClick={
@@ -975,7 +974,7 @@ class ReservaTecnico extends Component {
                       ))}
                     </div>
                     <div className="div-quant-mais">
-                      {line.products.map(valor => (
+                      {line.products.map((valor) => (
                         <div
                           className="div-peca"
                           onClick={
@@ -1015,29 +1014,32 @@ class ReservaTecnico extends Component {
     await this.setState({
       buttonImprimir: false,
       tecnicos: [],
-      dataModal: Date.now()
+      dataModal: Date.now(),
     });
   };
 
-  createPDF = async value => {
+  createPDF = async (value) => {
     const tecnicosFormatted = Promise.all(
-      value.map(async item => {
+      value.map(async (item) => {
         const query = {
           filters: {
             technician: {
               specific: {
-                name: item.name
-              }
+                name: item.name,
+              },
             },
             os: {
               specific: {
-                date: { start: this.state.dataModal, end: this.state.dataModal }
-              }
-            }
+                date: {
+                  start: this.state.dataModal,
+                  end: this.state.dataModal,
+                },
+              },
+            },
           },
           required: true,
           paranoid: true,
-          total: null
+          total: null,
         };
 
         const rows = await getTodasOs(query);
@@ -1046,18 +1048,18 @@ class ReservaTecnico extends Component {
           filters: {
             technician: {
               specific: {
-                name: item.name
-              }
+                name: item.name,
+              },
             },
             emprestimo: {
               specific: {
                 dateExpedition: {
                   start: this.state.dataModal,
-                  end: this.state.dataModal
-                }
-              }
-            }
-          }
+                  end: this.state.dataModal,
+                },
+              },
+            },
+          },
         };
 
         const { status, data } = await getEprestimoService(queryEprestimo);
@@ -1069,7 +1071,7 @@ class ReservaTecnico extends Component {
         item = {
           name: item.name,
           plate: item.cars[0].plate,
-          rows: rows.data.rows
+          rows: rows.data.rows,
         };
 
         return item;
@@ -1079,15 +1081,15 @@ class ReservaTecnico extends Component {
     createPDF(await tecnicosFormatted, this.state.dataModal);
 
     await this.setState({
-      tecnicoArray: []
+      tecnicoArray: [],
     });
   };
 
-  onClikIconCar = tecnicoName => {
+  onClikIconCar = (tecnicoName) => {
     tecnicoName = tecnicoName === this.state.tecnicoName ? "" : tecnicoName;
 
     this.setState({
-      tecnicoName
+      tecnicoName,
     });
   };
 
@@ -1172,7 +1174,7 @@ class ReservaTecnico extends Component {
                     onChange={this.onChangeTecnico}
                   >
                     <Option value="">TODOS</Option>
-                    {this.state.tecnicoArray.map(valor => (
+                    {this.state.tecnicoArray.map((valor) => (
                       <Option value={valor.name}>{valor.name}</Option>
                     ))}
                   </Select>
@@ -1221,7 +1223,7 @@ class ReservaTecnico extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 

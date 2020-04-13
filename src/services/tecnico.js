@@ -372,7 +372,7 @@ export const createPDF = async (technician, data) => {
             }
 
             addWrappedText({
-              text: item.razaoSocial, // Put a really long string here
+              text: item.razaoSocial.trim(), // Put a really long string here
               textWidth: 95,
               doc,
               fontSize: "12",
@@ -386,7 +386,7 @@ export const createPDF = async (technician, data) => {
             });
 
             addWrappedText({
-              text: product.status.toUpperCase(), // Put a really long string here
+              text: product.status.trim().toUpperCase(), // Put a really long string here
               textWidth: 35,
               doc,
               fontSize: "12",
@@ -459,7 +459,7 @@ export const createPDF = async (technician, data) => {
           }
 
           addWrappedText({
-            text: item.razaoSocial, // Put a really long string here
+            text: item.razaoSocial.trim(), // Put a really long string here
             textWidth: 95,
             doc,
             fontSize: "12",
