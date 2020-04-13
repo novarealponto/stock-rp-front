@@ -14,8 +14,12 @@ class RelatorioMapContainer extends Component {
     coluna: "",
     prateleira: "",
     gaveta: "",
+    page: 1,
+    count: 1,
+    show: 1,
+    total: 10,
     modalImprimir: false,
-    products: [],
+    products: []
   };
 
   componentDidMount = async () => {
@@ -32,51 +36,140 @@ class RelatorioMapContainer extends Component {
             corredor: this.state.corredor,
             coluna: this.state.coluna,
             prateleira: this.state.prateleira,
-            gaveta: this.state.gaveta,
-          },
+            gaveta: this.state.gaveta
+          }
         },
         mark: {
           specific: {
-            mark: this.state.marca,
-          },
+            mark: this.state.marca
+          }
         },
         equipType: {
           specific: {
-            type: "",
-          },
-        },
+            type: ""
+          }
+        }
       },
       page: this.state.page,
-      total: 10,
+      total: 10
     };
 
-    await getProdutos(query).then((resposta) =>
+    await getProdutos(query).then(resposta =>
       this.setState({
         products: resposta.data.rows,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show,
+        show: resposta.data.show
       })
     );
   };
 
   openModal = () => {
     this.setState({
-      modalImprimir: true,
+      modalImprimir: true
     });
   };
 
-  onChange = (e) => {
+  onChange = e => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
   onCancel = () => {
     this.setState({
-      modalImprimir: false,
+      modalImprimir: false
     });
   };
+
+  changePages = async pages => {
+    await this.setState({
+      page: pages
+    });
+  };
+
+  Pages = () => (
+    <div className="footer-Gentrada100-button">
+      {Math.ceil(this.state.count / this.state.total) >= 5 &&
+      Math.ceil(this.state.count / this.state.total) - this.state.page < 1 ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 4)}
+        >
+          {this.state.page - 4}
+        </Button>
+      ) : null}
+      {Math.ceil(this.state.count / this.state.total) >= 4 &&
+      Math.ceil(this.state.count / this.state.total) - this.state.page < 2 &&
+      this.state.page > 3 ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 3)}
+        >
+          {this.state.page - 3}
+        </Button>
+      ) : null}
+      {this.state.page >= 3 ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 2)}
+        >
+          {this.state.page - 2}
+        </Button>
+      ) : null}
+      {this.state.page >= 2 ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 1)}
+        >
+          {this.state.page - 1}
+        </Button>
+      ) : null}
+      <div className="div-teste">{this.state.page}</div>
+      {this.state.page < this.state.count / this.state.total ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 1)}
+        >
+          {this.state.page + 1}
+        </Button>
+      ) : null}
+      {this.state.page + 1 < this.state.count / this.state.total ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 2)}
+        >
+          {this.state.page + 2}
+        </Button>
+      ) : null}
+      {this.state.page + 2 < this.state.count / this.state.total &&
+      this.state.page < 3 ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 3)}
+        >
+          {this.state.page + 3}
+        </Button>
+      ) : null}
+      {this.state.page + 3 < this.state.count / this.state.total &&
+      this.state.page < 2 ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 4)}
+        >
+          {this.state.page + 4}
+        </Button>
+      ) : null}
+    </div>
+  );
 
   createPDF = async () => {
     const query = {
@@ -88,22 +181,22 @@ class RelatorioMapContainer extends Component {
             corredor: this.state.corredor,
             coluna: this.state.coluna,
             prateleira: this.state.prateleira,
-            gaveta: this.state.gaveta,
-          },
+            gaveta: this.state.gaveta
+          }
         },
         mark: {
           specific: {
-            mark: this.state.marca,
-          },
+            mark: this.state.marca
+          }
         },
         equipType: {
           specific: {
-            type: "",
-          },
-        },
+            type: ""
+          }
+        }
       },
       // total: 400,
-      total: undefined,
+      total: undefined
     };
 
     const { status, data } = await getProdutos(query);
@@ -250,8 +343,8 @@ class RelatorioMapContainer extends Component {
             <Spin spinning={this.state.loading} />
           </div>
         ) : null}
-        {this.state.products.map((product) => (
-          <div className="div-cabecalho-RPerda">
+        {this.state.products.map(product => (
+          <div className="div-cabecalhoLinha-gerEst">
             <div className="cel-map-cabecalho-RMap">{product.sku}</div>
             <div className="cel-produto-cabecalho-RMap">{product.name}</div>
             <div className="cel-marca-cabecalho-RMap">{product.mark}</div>
@@ -261,6 +354,9 @@ class RelatorioMapContainer extends Component {
             <div className="cel-map-cabecalho-RMap">{product.gaveta}</div>
           </div>
         ))}
+        <div className="footer-ROs">
+          <this.Pages />
+        </div>
       </div>
     );
   }
