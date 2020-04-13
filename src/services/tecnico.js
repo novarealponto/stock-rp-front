@@ -10,17 +10,17 @@ export const getCarro = async () => {
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
 
   await axios
     .get(`${BACKEND_URL}/api/car`, { headers: headers, params: {} })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -30,12 +30,12 @@ export const getCarro = async () => {
   return response;
 };
 
-export const getTecnico = async query => {
+export const getTecnico = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
@@ -43,12 +43,12 @@ export const getTecnico = async query => {
   await axios
     .get(`${BACKEND_URL}/api/technician`, {
       headers: headers,
-      params: { query }
+      params: { query },
     })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -58,12 +58,12 @@ export const getTecnico = async query => {
   return response;
 };
 
-export const getAllTecnico = async query => {
+export const getAllTecnico = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
@@ -71,12 +71,12 @@ export const getAllTecnico = async query => {
   await axios
     .get(`${BACKEND_URL}/api/technician/getAllTechnician`, {
       headers: headers,
-      params: { query }
+      params: { query },
     })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -86,22 +86,22 @@ export const getAllTecnico = async query => {
   return response;
 };
 
-export const newTecnico = async values => {
+export const newTecnico = async (values) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
 
   await axios
     .post(`${BACKEND_URL}/api/technician`, values, { headers: headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error.response);
       if (error.response) {
         response = error.response;
@@ -112,22 +112,22 @@ export const newTecnico = async values => {
   return response;
 };
 
-export const updateTecnico = async values => {
+export const updateTecnico = async (values) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
 
   await axios
     .put(`${BACKEND_URL}/api/technician`, values, { headers: headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -137,22 +137,22 @@ export const updateTecnico = async values => {
   return response;
 };
 
-export const newCarro = async values => {
+export const newCarro = async (values) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
 
   await axios
     .post(`${BACKEND_URL}/api/car`, values, { headers: headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -173,7 +173,7 @@ function title(doc) {
     xPosition: 5, // Text offset from left of document
     YPosition: 35,
     initialYPosition: 40, // Initial offset from top of document; set based on prior objects in document
-    pageWrapInitialYPosition: 10 // Initial offset from top of document when page-wrapping
+    pageWrapInitialYPosition: 10, // Initial offset from top of document when page-wrapping
   });
 
   addWrappedText({
@@ -186,7 +186,7 @@ function title(doc) {
     xPosition: 100, // Text offset from left of document
     YPosition: 35,
     initialYPosition: 40, // Initial offset from top of document; set based on prior objects in document
-    pageWrapInitialYPosition: 10 // Initial offset from top of document when page-wrapping
+    pageWrapInitialYPosition: 10, // Initial offset from top of document when page-wrapping
   });
 
   addWrappedText({
@@ -199,7 +199,7 @@ function title(doc) {
     xPosition: 135, // Text offset from left of document
     YPosition: 35,
     initialYPosition: 40, // Initial offset from top of document; set based on prior objects in document
-    pageWrapInitialYPosition: 10 // Initial offset from top of document when page-wrapping
+    pageWrapInitialYPosition: 10, // Initial offset from top of document when page-wrapping
   });
 
   addWrappedText({
@@ -212,7 +212,7 @@ function title(doc) {
     xPosition: 235, // Text offset from left of document
     YPosition: 35,
     initialYPosition: 40, // Initial offset from top of document; set based on prior objects in document
-    pageWrapInitialYPosition: 10 // Initial offset from top of document when page-wrapping
+    pageWrapInitialYPosition: 10, // Initial offset from top of document when page-wrapping
   });
 }
 
@@ -228,7 +228,7 @@ function addWrappedText({
   initialYPosition = 10,
   pageWrapInitialYPosition = 10,
   index = 0,
-  rows = 1
+  rows = 1,
 }) {
   if (!!text) {
     var textLines = doc.splitTextToSize(text, textWidth); // Split the text into lines
@@ -237,7 +237,7 @@ function addWrappedText({
     doc.setFontSize(fontSize);
     var cursorY = initialYPosition + 7 * index;
 
-    textLines.forEach(lineText => {
+    textLines.forEach((lineText) => {
       if (cursorY > pageHeight) {
         // Auto-paging
         doc.addPage();
@@ -309,10 +309,7 @@ function header(doc, tecnico, data) {
     .setFontSize(14)
     .text(100, 28, "Horário saída:")
     .text(190, 28, "Horário retorno:");
-  doc
-    .setLineWidth(0.1)
-    .line(132, 28, 182, 28)
-    .line(230, 28, 280, 28);
+  doc.setLineWidth(0.1).line(132, 28, 182, 28).line(230, 28, 280, 28);
 }
 
 export const createPDF = async (technician, data) => {
@@ -320,7 +317,7 @@ export const createPDF = async (technician, data) => {
     orientation: "l",
     unit: "mm",
     format: "a4",
-    hotfixes: [] // an array of hotfix strings to enable
+    hotfixes: [], // an array of hotfix strings to enable
   });
 
   moment.locale("pt");
@@ -334,9 +331,9 @@ export const createPDF = async (technician, data) => {
     let page = false;
 
     tecnico.rows &&
-      tecnico.rows.map(item => {
+      tecnico.rows.map((item) => {
         if (R.has("products", item)) {
-          item.products.map(product => {
+          item.products.map((product) => {
             let equips = "";
             if (product.serial) {
               // console.log(product.serialNumbers);
@@ -358,7 +355,7 @@ export const createPDF = async (technician, data) => {
             const rows = Math.max.apply(null, [
               doc.splitTextToSize(item.razaoSocial, 95).length,
               doc.splitTextToSize(product.status, 35).length,
-              doc.splitTextToSize(textEquip, 100).length
+              doc.splitTextToSize(textEquip, 100).length,
             ]);
 
             if (index + rows > 22) {
@@ -385,7 +382,7 @@ export const createPDF = async (technician, data) => {
               initialYPosition: 47, // Initial offset from top of document; set based on prior objects in document
               pageWrapInitialYPosition: 10, // Initial offset from top of document when page-wrapping
               index,
-              rows
+              rows,
             });
 
             addWrappedText({
@@ -399,7 +396,7 @@ export const createPDF = async (technician, data) => {
               initialYPosition: 47, // Initial offset from top of document; set based on prior objects in document
               pageWrapInitialYPosition: 10, // Initial offset from top of document when page-wrapping
               index,
-              rows
+              rows,
             });
 
             addWrappedText({
@@ -413,7 +410,7 @@ export const createPDF = async (technician, data) => {
               initialYPosition: 47, // Initial offset from top of document; set based on prior objects in document
               pageWrapInitialYPosition: 10, // Initial offset from top of document when page-wrapping
               index,
-              rows
+              rows,
             });
 
             addWrappedText({
@@ -427,7 +424,7 @@ export const createPDF = async (technician, data) => {
               initialYPosition: 47, // Initial offset from top of document; set based on prior objects in document
               pageWrapInitialYPosition: 10, // Initial offset from top of document when page-wrapping
               index,
-              rows
+              rows,
             });
 
             index = index + rows;
@@ -443,7 +440,7 @@ export const createPDF = async (technician, data) => {
             doc.splitTextToSize(item.razaoSocial, 95).length,
             doc.splitTextToSize("EMPRÉSTIMO", 35).length,
             doc.splitTextToSize(`1 - ${item.name} Nº ${item.serialNumber}`, 100)
-              .length
+              .length,
           ]);
 
           if (index + rows > 22) {
@@ -472,7 +469,7 @@ export const createPDF = async (technician, data) => {
             initialYPosition: 47, // Initial offset from top of document; set based on prior objects in document
             pageWrapInitialYPosition: 10, // Initial offset from top of document when page-wrapping
             index,
-            rows
+            rows,
           });
 
           addWrappedText({
@@ -486,7 +483,7 @@ export const createPDF = async (technician, data) => {
             initialYPosition: 47, // Initial offset from top of document; set based on prior objects in document
             pageWrapInitialYPosition: 10, // Initial offset from top of document when page-wrapping
             index,
-            rows
+            rows,
           });
 
           addWrappedText({
@@ -500,7 +497,7 @@ export const createPDF = async (technician, data) => {
             initialYPosition: 47, // Initial offset from top of document; set based on prior objects in document
             pageWrapInitialYPosition: 10, // Initial offset from top of document when page-wrapping
             index,
-            rows
+            rows,
           });
 
           addWrappedText({
@@ -514,7 +511,7 @@ export const createPDF = async (technician, data) => {
             initialYPosition: 47, // Initial offset from top of document; set based on prior objects in document
             pageWrapInitialYPosition: 10, // Initial offset from top of document when page-wrapping
             index,
-            rows
+            rows,
           });
 
           index = index + rows;
@@ -531,5 +528,5 @@ export const createPDF = async (technician, data) => {
   doc.autoPrint();
   // window.print();
 
-  doc.save(`${moment(data).format("L")}.pdf`);
+  doc.save(`ROMANEIO_${moment(data).format("L")}.pdf`);
 };
