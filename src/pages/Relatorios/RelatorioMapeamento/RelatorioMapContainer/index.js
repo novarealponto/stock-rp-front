@@ -19,7 +19,7 @@ class RelatorioMapContainer extends Component {
     show: 1,
     total: 10,
     modalImprimir: false,
-    products: []
+    products: [],
   };
 
   componentDidMount = async () => {
@@ -36,56 +36,59 @@ class RelatorioMapContainer extends Component {
             corredor: this.state.corredor,
             coluna: this.state.coluna,
             prateleira: this.state.prateleira,
-            gaveta: this.state.gaveta
-          }
+            gaveta: this.state.gaveta,
+          },
         },
         mark: {
           specific: {
-            mark: this.state.marca
-          }
+            mark: this.state.marca,
+          },
         },
         equipType: {
           specific: {
-            type: ""
-          }
-        }
+            type: "",
+          },
+        },
       },
       page: this.state.page,
-      total: 10
+      total: 10,
     };
 
-    await getProdutos(query).then(resposta =>
+    await getProdutos(query).then((resposta) =>
       this.setState({
         products: resposta.data.rows,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
     );
   };
 
   openModal = () => {
     this.setState({
-      modalImprimir: true
+      modalImprimir: true,
     });
   };
 
-  onChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
+  onChange = async (e) => {
+    await this.setState({
+      [e.target.name]: e.target.value,
     });
+
+    await this.getAllProdutos();
   };
 
   onCancel = () => {
     this.setState({
-      modalImprimir: false
+      modalImprimir: false,
     });
   };
 
-  changePages = async pages => {
+  changePages = async (pages) => {
     await this.setState({
-      page: pages
+      page: pages,
     });
+    await this.getAllProdutos();
   };
 
   Pages = () => (
@@ -181,22 +184,22 @@ class RelatorioMapContainer extends Component {
             corredor: this.state.corredor,
             coluna: this.state.coluna,
             prateleira: this.state.prateleira,
-            gaveta: this.state.gaveta
-          }
+            gaveta: this.state.gaveta,
+          },
         },
         mark: {
           specific: {
-            mark: this.state.marca
-          }
+            mark: this.state.marca,
+          },
         },
         equipType: {
           specific: {
-            type: ""
-          }
-        }
+            type: "",
+          },
+        },
       },
       // total: 400,
-      total: undefined
+      total: undefined,
     };
 
     const { status, data } = await getProdutos(query);
@@ -343,7 +346,7 @@ class RelatorioMapContainer extends Component {
             <Spin spinning={this.state.loading} />
           </div>
         ) : null}
-        {this.state.products.map(product => (
+        {this.state.products.map((product) => (
           <div className="div-cabecalhoLinha-gerEst">
             <div className="cel-map-cabecalho-RMap">{product.sku}</div>
             <div className="cel-produto-cabecalho-RMap">{product.name}</div>
