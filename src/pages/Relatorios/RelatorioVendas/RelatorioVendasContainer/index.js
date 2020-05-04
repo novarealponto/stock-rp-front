@@ -1,13 +1,27 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Button } from "antd";
+import { Button, Input } from "antd";
 
 class RelatorioVendasContainer extends Component {
   state = {
     page: 1,
     total: 10,
     count: 0,
-    show: 0
+    show: 0,
+    produto: "",
+    avancado: false
+  };
+
+  onChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  avancado = () => {
+    this.setState({
+      avancado: !this.state.avancado
+    });
   };
 
   changePages = pages => {
@@ -110,6 +124,36 @@ class RelatorioVendasContainer extends Component {
         <div className="linhaTexto-RPerda">
           <h1 className="h1-RPerda">Relatório de vendas</h1>
         </div>
+
+        {this.state.avancado ? (
+          <div className="div-linha-avancado-Rtecnico">
+            <div className="div-ocultar-Rtecnico">
+              <Button type="primary" className="button" onClick={this.avancado}>
+                Ocultar
+              </Button>
+            </div>
+            <div className="div-linha1-avancado-Rtecnico">
+              <div className="div-produto-relVendas">
+                <div className="div-text-Os">Produto:</div>
+                <Input
+                  className="input-100"
+                  style={{ width: "100%" }}
+                  name="produto"
+                  value={this.state.produto}
+                  placeholder="Digite o nome do produto"
+                  onChange={this.onChange}
+                  allowClear
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="div-avancado-Rtecnico">
+            <Button type="primary" className="button" onClick={this.avancado}>
+              Avançado
+            </Button>
+          </div>
+        )}
 
         <div className="div-cabecalho-Gentrada">
           <div className="cel-produto-cabecalho-Gentrada">Produto</div>
