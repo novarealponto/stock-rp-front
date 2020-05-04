@@ -3,6 +3,7 @@ import "./index.css";
 import { DatePicker, Select, Button, Input, Spin } from "antd";
 import { getTecnico } from "../../../../services/tecnico";
 import { getRelatorioPerda } from "../../../../services/realatorioPerda";
+import { getRelatVendas } from "../../../../services/produto";
 
 const { Option } = Select;
 
@@ -15,25 +16,27 @@ class GerenciarEntrada extends Component {
     data: "",
     produto: "",
     relatorioArray: {
-      rows: []
+      rows: [],
     },
-    loading: false
+    loading: false,
   };
 
   getAllTecnico = async () => {
-    await getTecnico().then(resposta =>
+    await getTecnico().then((resposta) =>
       this.setState({
-        tecnicoArray: resposta.data
+        tecnicoArray: resposta.data,
       })
     );
   };
 
   componentDidMount = async () => {
-    await this.getAllTecnico();
+    await getRelatVendas();
 
-    await this.getRelatorio();
+    // await this.getAllTecnico();
 
-    await this.getAllOs();
+    // await this.getRelatorio();
+
+    // await this.getAllOs();
   };
 
   getAllOs = async () => {
@@ -45,31 +48,31 @@ class GerenciarEntrada extends Component {
       filters: {
         os: {
           specific: {
-            deletedAt: { start: "2019/01/01" }
+            deletedAt: { start: "2019/01/01" },
             // os: this.state.os,
             // razaoSocial: this.state.rs,
             // date: this.state.valueDate
-          }
+          },
         },
         technician: {
           specific: {
-            name: this.state.tecnico
-          }
+            name: this.state.tecnico,
+          },
         },
         osParts: {
           specific: {
-            missOut: "1"
-          }
-        }
+            missOut: "1",
+          },
+        },
       },
       order: {
         field: "deletedAt",
-        acendent: true
+        acendent: true,
       },
       page: 1,
       total: 10,
       required: false,
-      paranoid: false
+      paranoid: false,
     };
 
     // await getTodasOs(query)
@@ -90,13 +93,13 @@ class GerenciarEntrada extends Component {
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado
+      avancado: !this.state.avancado,
     });
   };
 
   getRelatorio = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const query = {
@@ -104,58 +107,58 @@ class GerenciarEntrada extends Component {
         kitOut: {
           specific: {
             action: "perda",
-            createdAt: this.state.valueDate
-          }
+            createdAt: this.state.valueDate,
+          },
         },
         technician: {
           specific: {
-            name: this.state.tecnico
-          }
+            name: this.state.tecnico,
+          },
         },
         product: {
           specific: {
-            name: this.state.produto
-          }
+            name: this.state.produto,
+          },
         },
         osParts: {
           specific: {
-            createdAt: this.state.valueDate
-          }
-        }
-      }
+            createdAt: this.state.valueDate,
+          },
+        },
+      },
     };
 
-    await getRelatorioPerda(query).then(resposta =>
+    await getRelatorioPerda(query).then((resposta) =>
       this.setState({
-        relatorioArray: resposta.data
+        relatorioArray: resposta.data,
       })
     );
 
     this.setState({
-      loading: false
+      loading: false,
     });
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     await this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
 
     await this.getRelatorio();
   };
 
-  searchDate = async e => {
+  searchDate = async (e) => {
     if (!e[0] || !e[1]) return;
     await this.setState({
-      valueDate: { start: e[0]._d, end: e[1]._d }
+      valueDate: { start: e[0]._d, end: e[1]._d },
     });
     await this.getRelatorio();
   };
 
-  onChangeTecnico = value => {
+  onChangeTecnico = (value) => {
     this.setState(
       {
-        tecnico: value
+        tecnico: value,
       },
       this.getRelatorio
     );
@@ -163,7 +166,7 @@ class GerenciarEntrada extends Component {
 
   test = () => {
     if (this.state.relatorioArray.rows.length !== 0) {
-      return this.state.relatorioArray.rows.map(line => (
+      return this.state.relatorioArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div className="div-lines-RPerda">
             <div className="cel-produto-cabecalho-RPerda">{line.name}</div>
@@ -239,7 +242,7 @@ class GerenciarEntrada extends Component {
                     onChange={this.onChangeTecnico}
                   >
                     <Option value="">TODOS</Option>
-                    {this.state.tecnicoArray.map(valor => (
+                    {this.state.tecnicoArray.map((valor) => (
                       <Option value={valor.name}>{valor.name}</Option>
                     ))}
                   </Select>
