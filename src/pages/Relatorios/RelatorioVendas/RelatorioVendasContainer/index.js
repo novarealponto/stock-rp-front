@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./index.css";
 import { Button, Input } from "antd";
+import { GetRelatVendas } from "../../../../services/produto";
 
 class RelatorioVendasContainer extends Component {
   state = {
@@ -9,25 +10,35 @@ class RelatorioVendasContainer extends Component {
     count: 0,
     show: 0,
     produto: "",
-    avancado: false
+    avancado: false,
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado
+      avancado: !this.state.avancado,
     });
   };
 
-  changePages = pages => {
+  componentDidMount = async () => {
+    await this.getRelatVendas();
+  };
+
+  getRelatVendas = async () => {
+    const { status, data } = await GetRelatVendas();
+
+    if (status === 200) this.setState({ rows: data.rows });
+  };
+
+  changePages = (pages) => {
     this.setState(
       {
-        page: pages
+        page: pages,
       }
       // () => {
       //   this.getVendas();

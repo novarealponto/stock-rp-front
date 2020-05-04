@@ -30,13 +30,11 @@ class GerenciarEntrada extends Component {
   };
 
   componentDidMount = async () => {
-    await getRelatVendas();
+    await this.getAllTecnico();
 
-    // await this.getAllTecnico();
+    await this.getRelatorio();
 
-    // await this.getRelatorio();
-
-    // await this.getAllOs();
+    await this.getAllOs();
   };
 
   getAllOs = async () => {

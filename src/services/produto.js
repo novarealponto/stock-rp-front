@@ -319,7 +319,7 @@ export const getProdutoByEstoque = async (query) => {
   return response;
 };
 
-export const getRelatVendas = async (query) => {
+export const GetRelatVendas = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
