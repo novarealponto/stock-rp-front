@@ -47,6 +47,7 @@ import CadastroProdutosSupRoute from "./Suprimentos/Cad.Produtos";
 import CadastroFornecedorSupRoute from "./Suprimentos/Cad.Fornecedor";
 import EditarFornecedorSupRoute from "./Suprimentos/Edit.Fornecedor";
 import RelatorioMapRoute from "./Relatorios/RelatorioMapeamento";
+import RelatorioVendasRoute from "./Relatorios/RelatorioVendas";
 
 class PagesRoute extends Component {
   state = {
@@ -136,6 +137,10 @@ class PagesRoute extends Component {
           />
           <Route path="/logged/relatorioMap" component={RelatorioMapRoute} />
           <Route path="/logged/relatorioML" component={RelatorioMLRoute} />
+          <Route
+            path="/logged/relatorioVendas"
+            component={RelatorioVendasRoute}
+          />
           <Route path="/logged/searchOs" component={SearchOsRoute} />
           <Route path="/logged/Os" component={OsDashRoute} />
           <Route path="/logged/perfil" component={PerfilDashRoute} />
