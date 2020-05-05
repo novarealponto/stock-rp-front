@@ -11,6 +11,7 @@ class RelatorioVendasContainer extends Component {
     show: 0,
     produto: "",
     avancado: false,
+    rows: [],
   };
 
   onChange = (e) => {
@@ -172,6 +173,17 @@ class RelatorioVendasContainer extends Component {
           <div className="cel-usuario-cabecalho-Gentrada">Usuário</div>
           <div className="cel-data-cabecalho-Gentrada">Data atualização</div>
         </div>
+
+        {this.state.rows.map((row) => (
+          <div className="div-cabecalho-Gentrada">
+            <div className="cel-produto-cabecalho-Gentrada">{row.name}</div>
+            <div className="cel-quant-cabecalho-Gentrada">
+              {row.quantidadeSaidaTotal}
+            </div>
+            <div className="cel-usuario-cabecalho-Gentrada">Usuário</div>
+            <div className="cel-data-cabecalho-Gentrada">{row.updatedAt}</div>
+          </div>
+        ))}
 
         <this.Pages />
       </div>
