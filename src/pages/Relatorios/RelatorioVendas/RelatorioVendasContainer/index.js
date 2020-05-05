@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "./index.css";
 import { Button, Input } from "antd";
 import { GetRelatVendas } from "../../../../services/produto";
+import { PlusOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 class RelatorioVendasContainer extends Component {
   state = {
@@ -11,18 +13,19 @@ class RelatorioVendasContainer extends Component {
     show: 0,
     produto: "",
     avancado: false,
-    rows: []
+    rows: [],
+    index: -1,
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado
+      avancado: !this.state.avancado,
     });
   };
 
@@ -36,10 +39,10 @@ class RelatorioVendasContainer extends Component {
     if (status === 200) this.setState({ rows: data.rows });
   };
 
-  changePages = pages => {
+  changePages = (pages) => {
     this.setState(
       {
-        page: pages
+        page: pages,
       }
       // () => {
       //   this.getVendas();
@@ -175,31 +178,89 @@ class RelatorioVendasContainer extends Component {
           <div className="cel-edit-cabecalho-Gentrada" />
         </div>
 
-        {this.state.rows.map(row => (
-          <div className="div-100-Gentrada">
-            <div className="div-lines-Gentrada">
-              <div className="cel-produto-cabecalho-Gentrada">
-                <label className="div-table-label-cel-Gentrada">
-                  {row.name}
-                </label>
+        {this.state.rows.map((row, index) => (
+          <>
+            <div className="div-100-Gentrada">
+              <div className="div-lines-Gentrada">
+                <div className="cel-produto-cabecalho-Gentrada">
+                  <label className="div-table-label-cel-Gentrada">
+                    {row.name}
+                  </label>
+                </div>
+                <div className="cel-quant-cabecalho-Gentrada">
+                  <label className="div-table-label-cel-Gentrada">
+                    {row.quantidadeSaidaTotal}
+                  </label>
+                </div>
+                <div className="cel-usuario-cabecalho-Gentrada">
+                  <label className="div-table-label-cel-Gentrada">-</label>
+                </div>
+                <div className="cel-data-cabecalho-Gentrada">
+                  <label className="div-table-label-cel-Gentrada">
+                    {row.updatedAt ? moment(row.updatedAt).format("LLL") : null}
+                  </label>
+                </div>
+                <div className="cel-edit-cabecalho-Gentrada">
+                  <PlusOutlined
+                    onClick={() =>
+                      this.setState({
+                        index: this.state.index === index ? -1 : index,
+                      })
+                    }
+                  />
+                </div>
               </div>
-              <div className="cel-quant-cabecalho-Gentrada">
-                <label className="div-table-label-cel-Gentrada">
-                  {row.quantidadeSaidaTotal}
-                </label>
-              </div>
-              <div className="cel-usuario-cabecalho-Gentrada">
-                <label className="div-table-label-cel-Gentrada">usuario</label>
-              </div>
-              <div className="cel-data-cabecalho-Gentrada">
-                <label className="div-table-label-cel-Gentrada">
-                  {row.updatedAt}
-                </label>
-              </div>
-              <div className="cel-edit-cabecalho-Gentrada">+</div>
+              <div className=" div-separate1-Gentrada" />
             </div>
-            <div className=" div-separate1-Gentrada" />
-          </div>
+
+            {this.state.index === index && (
+              <div className="div-main-mais">
+                <div className="div-mais-ROs">
+                  <div className="div-normal-mais-ROs">
+                    <div className="div-relatVendas-mais-status">Status</div>
+                    <div className="div-relatVendas-mais-total">Total</div>
+                    <div className="div-relatVendas-mais-updated">
+                      Ultima saída
+                    </div>
+                  </div>
+                </div>
+                {[
+                  {
+                    status: "E-Commerce",
+                    total: row.saidaEComerce,
+                    saída: row.createdAtEComerce,
+                  },
+                  {
+                    status: "OS",
+                    total: row.saidaOs,
+                    saída: row.createdAtOs,
+                  },
+                  {
+                    status: "Interno",
+                    total: row.saidaInterno,
+                    saída: row.createdAtInterno,
+                  },
+                  {
+                    status: "Kit",
+                    total: row.saidaKit,
+                    saída: row.createdAtKit,
+                  },
+                ].map((item) => (
+                  <div className="div-normal-mais-ROs">
+                    <div className="div-relatVendas-mais-status">
+                      {item.status}
+                    </div>
+                    <div className="div-relatVendas-mais-total">
+                      {item.total}
+                    </div>
+                    <div className="div-relatVendas-mais-updated">
+                      {item.saída ? moment(item.saída).format("LLL") : null}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         ))}
 
         <this.Pages />

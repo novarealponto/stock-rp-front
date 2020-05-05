@@ -3,3 +3,34 @@
   display: flex;
   align-items: center;
 }
+
+.div-main-mais {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fafafa;
+}
+
+.div-relatVendas-mais-status
+  .div-relatVendas-mais-total
+  .div-relatVendas-mais-updated {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 1em;
+}
+
+.div-relatVendas-mais-status {
+  width: 60%;
+}
+.div-relatVendas-mais-total {
+  width: 20%;
+}
+.div-relatVendas-mais-updated {
+  width: 20%;
+}
