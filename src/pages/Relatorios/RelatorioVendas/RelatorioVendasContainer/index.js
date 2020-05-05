@@ -11,18 +11,18 @@ class RelatorioVendasContainer extends Component {
     show: 0,
     produto: "",
     avancado: false,
-    rows: [],
+    rows: []
   };
 
-  onChange = (e) => {
+  onChange = e => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado,
+      avancado: !this.state.avancado
     });
   };
 
@@ -36,10 +36,10 @@ class RelatorioVendasContainer extends Component {
     if (status === 200) this.setState({ rows: data.rows });
   };
 
-  changePages = (pages) => {
+  changePages = pages => {
     this.setState(
       {
-        page: pages,
+        page: pages
       }
       // () => {
       //   this.getVendas();
@@ -172,16 +172,33 @@ class RelatorioVendasContainer extends Component {
           <div className="cel-quant-cabecalho-Gentrada">Qnt.</div>
           <div className="cel-usuario-cabecalho-Gentrada">Usuário</div>
           <div className="cel-data-cabecalho-Gentrada">Data atualização</div>
+          <div className="cel-edit-cabecalho-Gentrada" />
         </div>
 
-        {this.state.rows.map((row) => (
-          <div className="div-cabecalho-Gentrada">
-            <div className="cel-produto-cabecalho-Gentrada">{row.name}</div>
-            <div className="cel-quant-cabecalho-Gentrada">
-              {row.quantidadeSaidaTotal}
+        {this.state.rows.map(row => (
+          <div className="div-100-Gentrada">
+            <div className="div-lines-Gentrada">
+              <div className="cel-produto-cabecalho-Gentrada">
+                <label className="div-table-label-cel-Gentrada">
+                  {row.name}
+                </label>
+              </div>
+              <div className="cel-quant-cabecalho-Gentrada">
+                <label className="div-table-label-cel-Gentrada">
+                  {row.quantidadeSaidaTotal}
+                </label>
+              </div>
+              <div className="cel-usuario-cabecalho-Gentrada">
+                <label className="div-table-label-cel-Gentrada">usuario</label>
+              </div>
+              <div className="cel-data-cabecalho-Gentrada">
+                <label className="div-table-label-cel-Gentrada">
+                  {row.updatedAt}
+                </label>
+              </div>
+              <div className="cel-edit-cabecalho-Gentrada">+</div>
             </div>
-            <div className="cel-usuario-cabecalho-Gentrada">Usuário</div>
-            <div className="cel-data-cabecalho-Gentrada">{row.updatedAt}</div>
+            <div className=" div-separate1-Gentrada" />
           </div>
         ))}
 
