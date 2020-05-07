@@ -10,6 +10,7 @@
   flex-direction: column;
   align-items: center;
   background-color: #fafafa;
+  padding-bottom: 10px;
 }
 
 .div-relatVendas-mais-status
@@ -25,12 +26,31 @@
   font-size: 1em;
 }
 
+.div-normal-mais-RVendas {
+  width: 90%;
+  display: flex;
+}
 .div-relatVendas-mais-status {
+  background-color: #fafafa;
   width: 60%;
 }
 .div-relatVendas-mais-total {
+  background-color: #fafafa;
   width: 20%;
 }
 .div-relatVendas-mais-updated {
+  background-color: #fafafa;
+  width: 20%;
+}
+.div-relatVendas-mais-status-RV {
+  background-color: white;
+  width: 60%;
+}
+.div-relatVendas-mais-total-RV {
+  background-color: white;
+  width: 20%;
+}
+.div-relatVendas-mais-updated-RV {
+  background-color: white;
   width: 20%;
 }

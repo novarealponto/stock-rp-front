@@ -14,18 +14,18 @@ class RelatorioVendasContainer extends Component {
     produto: "",
     avancado: false,
     rows: [],
-    index: -1,
+    index: -1
   };
 
-  onChange = (e) => {
+  onChange = e => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado,
+      avancado: !this.state.avancado
     });
   };
 
@@ -39,10 +39,10 @@ class RelatorioVendasContainer extends Component {
     if (status === 200) this.setState({ rows: data.rows });
   };
 
-  changePages = (pages) => {
+  changePages = pages => {
     this.setState(
       {
-        page: pages,
+        page: pages
       }
       // () => {
       //   this.getVendas();
@@ -204,7 +204,7 @@ class RelatorioVendasContainer extends Component {
                   <PlusOutlined
                     onClick={() =>
                       this.setState({
-                        index: this.state.index === index ? -1 : index,
+                        index: this.state.index === index ? -1 : index
                       })
                     }
                   />
@@ -216,7 +216,7 @@ class RelatorioVendasContainer extends Component {
             {this.state.index === index && (
               <div className="div-main-mais">
                 <div className="div-mais-ROs">
-                  <div className="div-normal-mais-ROs">
+                  <div className="div-normal-mais-RVendas">
                     <div className="div-relatVendas-mais-status">Status</div>
                     <div className="div-relatVendas-mais-total">Total</div>
                     <div className="div-relatVendas-mais-updated">
@@ -228,33 +228,33 @@ class RelatorioVendasContainer extends Component {
                   {
                     status: "E-Commerce",
                     total: row.saidaEComerce,
-                    saída: row.createdAtEComerce,
+                    saída: row.createdAtEComerce
                   },
                   {
                     status: "OS",
                     total: row.saidaOs,
-                    saída: row.createdAtOs,
+                    saída: row.createdAtOs
                   },
                   {
                     status: "Interno",
                     total: row.saidaInterno,
-                    saída: row.createdAtInterno,
+                    saída: row.createdAtInterno
                   },
                   {
                     status: "Kit",
                     total: row.saidaKit,
-                    saída: row.createdAtKit,
-                  },
-                ].map((item) => (
+                    saída: row.createdAtKit
+                  }
+                ].map(item => (
                   <div className="div-normal-mais-ROs">
-                    <div className="div-relatVendas-mais-status">
+                    <div className="div-relatVendas-mais-status-RV">
                       {item.status}
                     </div>
-                    <div className="div-relatVendas-mais-total">
+                    <div className="div-relatVendas-mais-total-RV">
                       {item.total}
                     </div>
-                    <div className="div-relatVendas-mais-updated">
-                      {item.saída ? moment(item.saída).format("LLL") : null}
+                    <div className="div-relatVendas-mais-updated-RV">
+                      {item.saída ? moment(item.saída).format("LLL") : "-"}
                     </div>
                   </div>
                 ))}
