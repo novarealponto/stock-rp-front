@@ -45,21 +45,25 @@ class RelatorioVendasContainer extends Component {
           },
         },
       },
+      page: this.state.page,
+      total: this.state.total,
     };
     const { status, data } = await GetRelatVendas(query);
 
-    if (status === 200) this.setState({ rows: data.rows });
+    if (status === 200)
+      this.setState({
+        rows: data.rows,
+        page: data.page,
+        count: data.count,
+        show: data.show,
+      });
   };
 
-  changePages = (pages) => {
-    this.setState(
-      {
-        page: pages,
-      }
-      // () => {
-      //   this.getVendas();
-      // }
-    );
+  changePages = async (pages) => {
+    await this.setState({
+      page: pages,
+    });
+    await this.getRelatVendas();
   };
 
   Pages = () => (
