@@ -677,6 +677,19 @@ class EmprestimoContainer extends Component {
           </div>
         </div>
 
+        <div className="div-linha1-emprestimo">
+          <div className="div-produto-entrada">Observação: </div>
+          <TextArea
+            className="input-100"
+            placeholder="Digite a observação"
+            autosize={{ minRows: 2, maxRows: 4 }}
+            rows={4}
+            name="observacao"
+            value={this.state.observacao}
+            onChange={this.filter}
+          />
+        </div>
+
         <div className="div-tecnico-update-emprestimo">
           <div>Técnico:</div>
           <div className="div-inputs">
