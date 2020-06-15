@@ -7,7 +7,7 @@ import {
   message,
   Icon,
   DatePicker,
-  Spin,
+  Spin
 } from "antd";
 import moment from "moment";
 
@@ -18,7 +18,7 @@ import {
   updateEprestimo,
   getEprestimoService,
   deleteEmprestimoService,
-  CreatePDFEmprestimo,
+  CreatePDFEmprestimo
 } from "../../../../services/emprestimo";
 import { getItens } from "../../../../services/produto";
 import { getSerial } from "../../../../services/serialNumber";
@@ -26,6 +26,7 @@ import { getTecnico } from "../../../../services/tecnico";
 import { validator, masks } from "./validator";
 
 const { Option } = Select;
+const { TextArea } = Input;
 
 class EmprestimoContainer extends Component {
   state = {
@@ -35,6 +36,7 @@ class EmprestimoContainer extends Component {
     reservados: [],
     avancado: true,
     loading: false,
+    observacao: "",
     modalInClient: false,
     modalReservados: false,
     modalDisp: false,
@@ -47,7 +49,7 @@ class EmprestimoContainer extends Component {
     retorno: {},
     atualizar: {},
     fieldFalha: {
-      cnpj: false,
+      cnpj: false
     },
     tecnico: "Não selecionado",
     razaoSocial: "",
@@ -62,23 +64,23 @@ class EmprestimoContainer extends Component {
     fabricanteSearch: "",
     razaoSocialSearch: "",
     nomeProdutoSearch: "",
-    serialNumberSearch: "",
+    serialNumberSearch: ""
   };
 
   onChangeTechnician = (value, props) => {
     this.setState({
       tecnico: value,
-      technicianId: props.props.props.id,
+      technicianId: props.props.props.id
     });
   };
 
   showModal = () => {
     this.setState({
-      visible: true,
+      visible: true
     });
   };
 
-  handleCancel = (e) => {
+  handleCancel = e => {
     this.setState({
       modalDisp: false,
       modalInClient: false,
@@ -89,24 +91,24 @@ class EmprestimoContainer extends Component {
       data: "",
       tecnico: "Não  selecionado",
       retorno: {},
-      atualizar: {},
+      atualizar: {}
     });
   };
 
-  getAllTecnico = async (name) => {
+  getAllTecnico = async name => {
     const query = {
       filters: {
         technician: {
           specific: {
-            name,
-          },
-        },
-      },
+            name
+          }
+        }
+      }
     };
 
-    await getTecnico(query).then((resposta) =>
+    await getTecnico(query).then(resposta =>
       this.setState({
-        tecnicoArray: resposta.data,
+        tecnicoArray: resposta.data
       })
     );
   };
@@ -119,7 +121,7 @@ class EmprestimoContainer extends Component {
 
   getEprestimo = async () => {
     await this.setState({
-      loading: true,
+      loading: true
     });
     const { select } = this.state;
 
@@ -128,11 +130,11 @@ class EmprestimoContainer extends Component {
     if (select === "emCliente") {
       dateExpedition = {
         start: "2019/01/01",
-        end: new Date(),
+        end: new Date()
       };
     } else {
       dateExpedition = {
-        start: new Date(),
+        start: new Date()
       };
     }
 
@@ -141,22 +143,22 @@ class EmprestimoContainer extends Component {
         emprestimo: {
           specific: {
             dateExpedition,
-            razaoSocial: this.state.razaoSocialSearch,
-          },
+            razaoSocial: this.state.razaoSocialSearch
+          }
         },
         product: {
           specific: {
-            name: this.state.nomeProdutoSearch,
-          },
+            name: this.state.nomeProdutoSearch
+          }
         },
         equip: {
           specific: {
-            serialNumber: this.state.serialNumberSearch,
-          },
-        },
+            serialNumber: this.state.serialNumberSearch
+          }
+        }
       },
       page: this.state.page,
-      total: this.state.total,
+      total: this.state.total
     };
     const { status, data } = await getEprestimoService(query);
 
@@ -165,17 +167,17 @@ class EmprestimoContainer extends Component {
         reservados: data.rows,
         page: data.page,
         count: data.count,
-        show: data.show,
+        show: data.show
       });
     }
     await this.setState({
-      loading: false,
+      loading: false
     });
   };
 
   getAllEquips = async () => {
     await this.setState({
-      loading: true,
+      loading: true
     });
 
     const query = {
@@ -184,22 +186,22 @@ class EmprestimoContainer extends Component {
           specific: {
             loan: true,
             inClient: false,
-            serialNumber: this.state.serialNumberSearch,
-          },
+            serialNumber: this.state.serialNumberSearch
+          }
         },
         product: {
           specific: {
-            name: this.state.nomeProdutoSearch,
-          },
+            name: this.state.nomeProdutoSearch
+          }
         },
         mark: {
           specific: {
-            mark: this.state.fabricanteSearch,
-          },
-        },
+            mark: this.state.fabricanteSearch
+          }
+        }
       },
       page: this.state.page,
-      total: this.state.total,
+      total: this.state.total
     };
 
     const { status, data } = await getAllEquipsService(query);
@@ -209,17 +211,17 @@ class EmprestimoContainer extends Component {
         disponiveis: data.rows,
         page: data.page,
         count: data.count,
-        show: data.show,
+        show: data.show
       });
     }
     this.setState({
-      loading: false,
+      loading: false
     });
   };
 
-  changePages = async (pages) => {
+  changePages = async pages => {
     await this.setState({
-      page: pages,
+      page: pages
     });
 
     switch (this.state.select) {
@@ -239,15 +241,15 @@ class EmprestimoContainer extends Component {
       filters: {
         product: {
           specific: {
-            serial: true,
-          },
-        },
-      },
+            serial: true
+          }
+        }
+      }
     };
 
-    await getItens(query).then((resposta) => {
+    await getItens(query).then(resposta => {
       this.setState({
-        itemArray: resposta.data,
+        itemArray: resposta.data
       });
     });
   };
@@ -255,7 +257,7 @@ class EmprestimoContainer extends Component {
   onChangeItem = (value, product) => {
     this.setState({
       nomeProduto: value,
-      productId: product.props.product.id,
+      productId: product.props.product.id
     });
   };
 
@@ -263,11 +265,11 @@ class EmprestimoContainer extends Component {
     message.error("Este equipamento ja foi registrado");
   };
 
-  filter = async (e) => {
+  filter = async e => {
     const { value } = e.target;
 
     await this.setState({
-      textArea: value,
+      textArea: value
     });
 
     const teste = value.split(/\n/);
@@ -276,7 +278,7 @@ class EmprestimoContainer extends Component {
       let count = 0;
 
       // eslint-disable-next-line array-callback-return
-      teste.map((valor) => {
+      teste.map(valor => {
         if (valor === teste[teste.length - 2]) count++;
       });
 
@@ -292,15 +294,15 @@ class EmprestimoContainer extends Component {
         const testeArray = teste.toString();
 
         this.setState({
-          textArea: testeArray.replace(/,/gi, "\n"),
+          textArea: testeArray.replace(/,/gi, "\n")
         });
       }
     }
   };
 
-  onChangeTecnico = async (value) => {
+  onChangeTecnico = async value => {
     await this.setState({
-      tecnico: value,
+      tecnico: value
     });
   };
 
@@ -310,7 +312,7 @@ class EmprestimoContainer extends Component {
       cnpj,
       data: dateExpedition,
       serialNumber,
-      technicianId,
+      technicianId
     } = this.state;
 
     const value = {
@@ -318,7 +320,7 @@ class EmprestimoContainer extends Component {
       razaoSocial,
       dateExpedition,
       serialNumber,
-      technicianId,
+      technicianId
     };
 
     // eslint-disable-next-line no-unused-vars
@@ -333,7 +335,7 @@ class EmprestimoContainer extends Component {
         serialNumber: "",
         technicianId: "",
         tecnico: undefined,
-        data: undefined,
+        data: undefined
       });
       await this.getAllEquips();
 
@@ -341,11 +343,11 @@ class EmprestimoContainer extends Component {
     }
   };
 
-  onChange = async (e) => {
+  onChange = async e => {
     const { name, value } = masks(e.target.name, e.target.value);
 
     await this.setState({
-      [name]: value,
+      [name]: value
     });
 
     if (name.indexOf("Search") !== -1) {
@@ -364,32 +366,32 @@ class EmprestimoContainer extends Component {
     }
   };
 
-  onBlur = (e) => {
+  onBlur = e => {
     const { fieldFalha } = validator(e.target.name, e.target.value, this.state);
 
     this.setState({
-      fieldFalha,
+      fieldFalha
     });
   };
 
-  onFocus = (e) => {
+  onFocus = e => {
     const { name } = e.target;
     const { fieldFalha } = this.state;
 
     fieldFalha[name] = false;
 
     this.setState({
-      fieldFalha,
+      fieldFalha
     });
   };
 
-  onChangeData = (date) => {
+  onChangeData = date => {
     this.setState({
-      data: date,
+      data: date
     });
   };
 
-  disabledDate = (current) => {
+  disabledDate = current => {
     return current && current < moment().subtract(1, "day");
   };
 
@@ -424,9 +426,8 @@ class EmprestimoContainer extends Component {
           <div className="div-text-Os">Cnpj:</div>
           <div className="div-inputs">
             <Input
-              className={`input-100 ${
-                this.state.fieldFalha.cnpj && "div-inputError"
-              }`}
+              className={`input-100 ${this.state.fieldFalha.cnpj &&
+                "div-inputError"}`}
               style={{ width: "100%" }}
               name="cnpj"
               value={this.state.cnpj}
@@ -455,6 +456,19 @@ class EmprestimoContainer extends Component {
       </div>
 
       <div className="div-linha1-emprestimo">
+        <div className="div-produto-entrada">Observação: </div>
+        <TextArea
+          className="input-100"
+          placeholder="Digite a observação"
+          autosize={{ minRows: 2, maxRows: 4 }}
+          rows={4}
+          name="observacao"
+          value={this.state.observacao}
+          onChange={this.filter}
+        />
+      </div>
+
+      <div className="div-linha1-emprestimo">
         <div className="div-tecnico-emprestimo">
           <div className="div-text-Os">Técnico:</div>
           <div className="div-inputs">
@@ -464,7 +478,7 @@ class EmprestimoContainer extends Component {
               style={{ width: "100%" }}
               onChange={this.onChangeTechnician}
               showSearch
-              onSearch={(name) => this.getAllTecnico(name)}
+              onSearch={name => this.getAllTecnico(name)}
               placeholder="Nenhum tecnicos cadastrado"
               optionFilterProp="children"
               value={this.state.tecnico}
@@ -476,7 +490,7 @@ class EmprestimoContainer extends Component {
                   .indexOf(input.toLowerCase()) >= 0
               }
             >
-              {this.state.tecnicoArray.map((valor) => (
+              {this.state.tecnicoArray.map(valor => (
                 <Option props={valor} value={valor.name}>
                   {valor.name}
                 </Option>
@@ -499,7 +513,7 @@ class EmprestimoContainer extends Component {
       await this.getEprestimo();
     }
     this.setState({
-      modalInClient: false,
+      modalInClient: false
     });
   };
 
@@ -633,9 +647,9 @@ class EmprestimoContainer extends Component {
           <div className="div-inputs">
             <DatePicker
               className="input-100"
-              onChange={(data) =>
+              onChange={data =>
                 this.setState({
-                  atualizar: { ...this.state.atualizar, dateExpedition: data },
+                  atualizar: { ...this.state.atualizar, dateExpedition: data }
                 })
               }
               format="DD/MM/YYYY"
@@ -672,7 +686,7 @@ class EmprestimoContainer extends Component {
               style={{ width: "100%" }}
               onChange={this.onChangeTechnician}
               showSearch
-              onSearch={(name) => this.getAllTecnico(name)}
+              onSearch={name => this.getAllTecnico(name)}
               placeholder="Nenhum tecnicos cadastrado"
               optionFilterProp="children"
               value={this.state.tecnico}
@@ -684,7 +698,7 @@ class EmprestimoContainer extends Component {
                   .indexOf(input.toLowerCase()) >= 0
               }
             >
-              {this.state.tecnicoArray.map((valor) => (
+              {this.state.tecnicoArray.map(valor => (
                 <Option props={valor} value={valor.name}>
                   {valor.name}
                 </Option>
@@ -698,7 +712,7 @@ class EmprestimoContainer extends Component {
 
   testDisponivel = () => {
     if (this.state.disponiveis.length !== 0) {
-      return this.state.disponiveis.map((item) => {
+      return this.state.disponiveis.map(item => {
         return (
           <div className="div-100-Gentrada">
             <div className="div-lines-RPerda">
@@ -718,7 +732,7 @@ class EmprestimoContainer extends Component {
                   onClick={() =>
                     this.setState({
                       modalDisp: true,
-                      serialNumber: item.serialNumber,
+                      serialNumber: item.serialNumber
                     })
                   }
                 >
@@ -744,7 +758,7 @@ class EmprestimoContainer extends Component {
 
     await updateEprestimo({
       ...atualizar,
-      technicianId,
+      technicianId
     });
 
     this.handleCancel();
@@ -756,7 +770,7 @@ class EmprestimoContainer extends Component {
 
     this.setState({
       modalConfirmDelet: false,
-      emprestimoId: "",
+      emprestimoId: ""
     });
 
     const value = { id, force: true };
@@ -766,7 +780,7 @@ class EmprestimoContainer extends Component {
     await this.getAllEquips();
   };
 
-  update = async (item) => {
+  update = async item => {
     const {
       razaoSocial,
       cnpj,
@@ -774,7 +788,7 @@ class EmprestimoContainer extends Component {
       dateExpedition,
       id,
       technician,
-      technicianId,
+      technicianId
     } = item;
 
     const { name, value } = masks("cnpj", cnpj);
@@ -786,16 +800,16 @@ class EmprestimoContainer extends Component {
         createdAt,
         dateExpedition: moment(dateExpedition.replace(/\D/gi, ""), "DDMMYYYY"),
         [name]: value,
-        id,
+        id
       },
       tecnico: technician,
-      technicianId,
+      technicianId
     });
   };
 
   tableReserved = () => {
     if (this.state.reservados.length !== 0) {
-      return this.state.reservados.map((item) => {
+      return this.state.reservados.map(item => {
         return (
           <div className="div-100-Gentrada">
             <div className="div-lines-RPerda">
@@ -822,7 +836,7 @@ class EmprestimoContainer extends Component {
                   onClick={() =>
                     this.setState({
                       modalConfirmDelet: true,
-                      emprestimoId: item.id,
+                      emprestimoId: item.id
                     })
                   }
                 >
@@ -845,7 +859,7 @@ class EmprestimoContainer extends Component {
 
   tableInClient = () => {
     if (this.state.reservados.length !== 0) {
-      return this.state.reservados.map((item) => {
+      return this.state.reservados.map(item => {
         return (
           <div className="div-100-Gentrada">
             <div className="div-lines-RPerda">
@@ -962,7 +976,7 @@ class EmprestimoContainer extends Component {
     </div>
   );
 
-  onChangeSelect = async (value) => {
+  onChangeSelect = async value => {
     await this.setState({
       select: value,
       loading: true,
@@ -973,7 +987,7 @@ class EmprestimoContainer extends Component {
       fabricanteSearch: "",
       razaoSocialSearch: "",
       nomeProdutoSearch: "",
-      serialNumberSearch: "",
+      serialNumberSearch: ""
     });
 
     switch (value) {
@@ -988,11 +1002,11 @@ class EmprestimoContainer extends Component {
     }
 
     this.setState({
-      loading: false,
+      loading: false
     });
   };
 
-  retorno = (item) => {
+  retorno = item => {
     const { razaoSocial, cnpj, createdAt, dateExpedition, id } = item;
 
     const { name, value } = masks("cnpj", cnpj);
@@ -1004,8 +1018,8 @@ class EmprestimoContainer extends Component {
         createdAt,
         dateExpedition,
         [name]: value,
-        id,
-      },
+        id
+      }
     });
   };
 
@@ -1022,14 +1036,14 @@ class EmprestimoContainer extends Component {
       case "reservados":
         type = "Reservados";
         dateExpedition = {
-          start: new Date(),
+          start: new Date()
         };
         break;
       case "emCliente":
         type = "Em Cliente";
         dateExpedition = {
           start: "2019/01/01",
-          end: new Date(),
+          end: new Date()
         };
         break;
       default:
@@ -1043,12 +1057,12 @@ class EmprestimoContainer extends Component {
           filters: {
             emprestimo: {
               specific: {
-                dateExpedition,
-              },
-            },
+                dateExpedition
+              }
+            }
           },
           page: 1,
-          total: null,
+          total: null
         };
 
         const { status, data } = await getEprestimoService(query);
@@ -1062,12 +1076,12 @@ class EmprestimoContainer extends Component {
             equip: {
               specific: {
                 loan: true,
-                inClient: false,
-              },
-            },
+                inClient: false
+              }
+            }
           },
           page: 1,
-          total: null,
+          total: null
         };
         const response = await getAllEquipsService(query);
 
@@ -1087,7 +1101,7 @@ class EmprestimoContainer extends Component {
       fabricanteSearch,
       razaoSocialSearch,
       nomeProdutoSearch,
-      serialNumberSearch,
+      serialNumberSearch
     } = this.state;
 
     switch (this.state.select) {
@@ -1233,7 +1247,7 @@ class EmprestimoContainer extends Component {
                 onClick={async () => {
                   await this.setState({
                     search: !this.state.search,
-                    avancado: !this.state.avancado,
+                    avancado: !this.state.avancado
                   });
 
                   switch (this.state.select) {
