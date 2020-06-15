@@ -46,26 +46,26 @@ class RelatorioVendasContainer extends Component {
           },
         },
 
-        // freeMarketParts: {
-        //   specific: {
-        //     createdAt: this.state.valueDate,
-        //   },
-        // },
-        // osParts: {
-        //   specific: {
-        //     deletedAt: this.state.valueDate,
-        //   },
-        // },
-        // technicianReserveParts: {
-        //   specific: {
-        //     createdAt: this.state.valueDate,
-        //   },
-        // },
-        // kitOut: {
-        //   specific: {
-        //     updatedAt: this.state.valueDate,
-        //   },
-        // },
+        freeMarketParts: {
+          specific: {
+            createdAt: this.state.valueDate,
+          },
+        },
+        osParts: {
+          specific: {
+            deletedAt: this.state.valueDate,
+          },
+        },
+        technicianReserveParts: {
+          specific: {
+            createdAt: this.state.valueDate,
+          },
+        },
+        kitOut: {
+          specific: {
+            updatedAt: this.state.valueDate,
+          },
+        },
       },
       page: this.state.page,
       total: this.state.total,

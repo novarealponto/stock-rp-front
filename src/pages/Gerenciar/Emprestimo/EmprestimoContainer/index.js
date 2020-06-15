@@ -628,6 +628,19 @@ class EmprestimoContainer extends Component {
         </div>
       </div>
 
+      <div className="div-linha1-emprestimo">
+        <div className="div-produto-entrada">Observação: </div>
+        <TextArea
+          className="input-100"
+          placeholder="Digite a observação"
+          autosize={{ minRows: 2, maxRows: 4 }}
+          rows={4}
+          name="observation"
+          value={this.state.atualizar.observation}
+          onChange={this.onChange}
+        />
+      </div>
+
       <div className="div-linha-emprestimo">
         <div className="div-cnpj-emprestimo">
           <div className="div-text-Os">Cnpj:</div>
@@ -641,19 +654,6 @@ class EmprestimoContainer extends Component {
               onChange={this.onChange}
             />
           </div>
-        </div>
-
-        <div className="div-linha1-emprestimo">
-          <div className="div-produto-entrada">Observação: </div>
-          <TextArea
-            className="input-100"
-            placeholder="Digite a observação"
-            autosize={{ minRows: 2, maxRows: 4 }}
-            rows={4}
-            name="observacao"
-            value={this.state.observacao}
-            onChange={this.filter}
-          />
         </div>
 
         <div className="div-tecnico-update-emprestimo">
@@ -766,6 +766,7 @@ class EmprestimoContainer extends Component {
       createdAt,
       dateExpedition,
       id,
+      observation,
       technician,
       technicianId,
     } = item;
@@ -779,6 +780,7 @@ class EmprestimoContainer extends Component {
         createdAt,
         dateExpedition: moment(dateExpedition.replace(/\D/gi, ""), "DDMMYYYY"),
         [name]: value,
+        observation,
         id,
       },
       tecnico: technician,
