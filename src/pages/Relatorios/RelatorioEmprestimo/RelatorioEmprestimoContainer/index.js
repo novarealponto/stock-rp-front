@@ -180,6 +180,9 @@ class RelatorioEmprestimoContainer extends Component {
             <div className="cel-razaoSocial-cabecalho-emprestimo-report">
               <label>{row.razaoSocial}</label>
             </div>
+            <div className="cel-produto-cabecalho-emprestimo-report">
+              <label>{row.product}</label>
+            </div>
             <div className="cel-serialNumber-cabecalho-emprestimo-report">
               <label>{row.serialNumber}</label>
             </div>
@@ -274,6 +277,9 @@ class RelatorioEmprestimoContainer extends Component {
             <div className="div-emprestimo-report">
               <div className="cel-razaoSocial-cabecalho-emprestimo-report">
                 Razão social
+              </div>
+              <div className="cel-produto-cabecalho-emprestimo-report">
+                Produto
               </div>
               <div className="cel-serialNumber-cabecalho-emprestimo-report">
                 Número de série

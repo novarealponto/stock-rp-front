@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Button, Input } from "antd";
+import { Button, Input, DatePicker } from "antd";
 import { GetRelatVendas } from "../../../../services/produto";
 import { PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
@@ -11,16 +11,17 @@ class RelatorioVendasContainer extends Component {
     total: 10,
     count: 0,
     show: 0,
+    valueDate: { start: "2019/01/01" },
     produto: "",
     avancado: false,
     rows: [],
-    index: -1,
+    index: -1
   };
 
-  onChange = async (e) => {
+  onChange = async e => {
     const { name, value } = e.target;
     this.setState({
-      [name]: value,
+      [name]: value
     });
 
     await this.getRelatVendas(value);
@@ -28,7 +29,7 @@ class RelatorioVendasContainer extends Component {
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado,
+      avancado: !this.state.avancado
     });
   };
 
@@ -36,17 +37,17 @@ class RelatorioVendasContainer extends Component {
     await this.getRelatVendas();
   };
 
-  getRelatVendas = async (name) => {
+  getRelatVendas = async name => {
     const query = {
       filters: {
         product: {
           specific: {
-            name,
-          },
-        },
+            name
+          }
+        }
       },
       page: this.state.page,
-      total: this.state.total,
+      total: this.state.total
     };
     const { status, data } = await GetRelatVendas(query);
 
@@ -55,13 +56,22 @@ class RelatorioVendasContainer extends Component {
         rows: data.rows,
         page: data.page,
         count: data.count,
-        show: data.show,
+        show: data.show
       });
   };
 
-  changePages = async (pages) => {
+  searchDate = async e => {
+    if (!e[0] || !e[1]) return;
     await this.setState({
-      page: pages,
+      valueDate: { start: e[0]._d, end: e[1]._d }
+    });
+
+    // await this.getAllOs();
+  };
+
+  changePages = async pages => {
+    await this.setState({
+      page: pages
     });
     await this.getRelatVendas();
   };
@@ -176,6 +186,17 @@ class RelatorioVendasContainer extends Component {
                   allowClear
                 />
               </div>
+
+              <div className="div-data-relVendas">
+                <div className="div-text-Os">Data:</div>
+                <DatePicker.RangePicker
+                  placeholder="Digite a data"
+                  format="DD/MM/YYYY"
+                  dropdownClassName="poucas"
+                  onChange={this.searchDate}
+                  onOk={this.searchDate}
+                />
+              </div>
             </div>
           </div>
         ) : (
@@ -220,7 +241,7 @@ class RelatorioVendasContainer extends Component {
                   <PlusOutlined
                     onClick={() =>
                       this.setState({
-                        index: this.state.index === index ? -1 : index,
+                        index: this.state.index === index ? -1 : index
                       })
                     }
                   />
@@ -244,24 +265,24 @@ class RelatorioVendasContainer extends Component {
                   {
                     status: "E-Commerce",
                     total: row.saidaEComerce,
-                    saída: row.createdAtEComerce,
+                    saída: row.createdAtEComerce
                   },
                   {
                     status: "OS",
                     total: row.saidaOs,
-                    saída: row.createdAtOs,
+                    saída: row.createdAtOs
                   },
                   {
                     status: "Interno",
                     total: row.saidaInterno,
-                    saída: row.createdAtInterno,
+                    saída: row.createdAtInterno
                   },
                   {
                     status: "Kit",
                     total: row.saidaKit,
-                    saída: row.createdAtKit,
-                  },
-                ].map((item) => (
+                    saída: row.createdAtKit
+                  }
+                ].map(item => (
                   <div className="div-normal-mais-ROs">
                     <div className="div-relatVendas-mais-status-RV">
                       {item.status}
