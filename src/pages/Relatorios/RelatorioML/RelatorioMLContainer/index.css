@@ -41,6 +41,7 @@
   width: 100%;
   margin: 10px 0 10px 0;
   display: flex;
+  justify-content: space-between;
 }
 .cel-cep-cabecalho-RML {
   align-items: center;
