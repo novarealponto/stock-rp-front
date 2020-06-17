@@ -16,22 +16,23 @@ class RelatorioEmprestimoContainer extends Component {
     avancado: false,
     serialNumber: "",
     razaoSocial: "",
-    valueDate: { start: "2019/01/01" }
+    valueDate: { start: "2019/01/01" },
+    index: -1,
   };
 
   componentDidMount = async () => {
     await this.getEprestimo();
   };
 
-  searchDate = async e => {
+  searchDate = async (e) => {
     if (!e[0] || !e[1]) return;
     await this.setState({
-      valueDate: { start: e[0]._d, end: e[1]._d }
+      valueDate: { start: e[0]._d, end: e[1]._d },
     });
     await this.getEprestimo();
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     let { name, value } = e.target;
 
     if (name === "serialNumber") {
@@ -39,7 +40,7 @@ class RelatorioEmprestimoContainer extends Component {
     }
 
     await this.setState({
-      [name]: value
+      [name]: value,
     });
 
     await this.getEprestimo();
@@ -47,7 +48,7 @@ class RelatorioEmprestimoContainer extends Component {
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado
+      avancado: !this.state.avancado,
     });
   };
 
@@ -57,18 +58,18 @@ class RelatorioEmprestimoContainer extends Component {
         emprestimo: {
           specific: {
             razaoSocial: this.state.razaoSocial,
-            createdAt: this.state.valueDate
-          }
+            createdAt: this.state.valueDate,
+          },
         },
         equip: {
           specific: {
-            serialNumber: this.state.serialNumber
-          }
-        }
+            serialNumber: this.state.serialNumber,
+          },
+        },
       },
       page: this.state.page,
       total: this.state.total,
-      paranoid: false
+      paranoid: false,
     };
     const { status, data } = await getEprestimoService(query);
 
@@ -78,10 +79,10 @@ class RelatorioEmprestimoContainer extends Component {
     }
   };
 
-  changePages = pages => {
+  changePages = (pages) => {
     this.setState(
       {
-        page: pages
+        page: pages,
       },
       () => {
         this.getEprestimo();
@@ -174,15 +175,20 @@ class RelatorioEmprestimoContainer extends Component {
 
   rows = () => {
     if (this.state.rows.length !== 0) {
-      return this.state.rows.map(row => (
+      return this.state.rows.map((row, index) => (
         <div className="div-100-emprestimo-report">
-          <div className="div-lines-emprestimo-report">
+          <div
+            className="div-lines-emprestimo-report"
+            onClick={() =>
+              this.setState({ index: index === this.state.index ? -1 : index })
+            }
+          >
             <div className="cel-razaoSocial-cabecalho-emprestimo-report">
               <label>{row.razaoSocial}</label>
             </div>
-            <div className="cel-produto-cabecalho-emprestimo-report">
+            {/* <div className="cel-produto-cabecalho-emprestimo-report">
               <label>{row.product}</label>
-            </div>
+            </div> */}
             <div className="cel-serialNumber-cabecalho-emprestimo-report">
               <label>{row.serialNumber}</label>
             </div>
@@ -196,6 +202,18 @@ class RelatorioEmprestimoContainer extends Component {
               <label>{row.deletedAt ? row.deletedAt : "-"}</label>
             </div>
           </div>
+          {index === this.state.index && (
+            <div className="div-plus-emprestimo">
+              <div className="div-cabecalho-plus-emprestimo">
+                <label>Produto</label>
+                <label>Descrição</label>
+              </div>
+              <div className="div-content-plus-emprestimo">
+                <label>{row.product}</label>
+                <label>{row.observation}</label>
+              </div>
+            </div>
+          )}
           <div className=" div-separate1-Gentrada" />
         </div>
       ));
@@ -278,9 +296,9 @@ class RelatorioEmprestimoContainer extends Component {
               <div className="cel-razaoSocial-cabecalho-emprestimo-report">
                 Razão social
               </div>
-              <div className="cel-produto-cabecalho-emprestimo-report">
+              {/* <div className="cel-produto-cabecalho-emprestimo-report">
                 Produto
-              </div>
+              </div> */}
               <div className="cel-serialNumber-cabecalho-emprestimo-report">
                 Número de série
               </div>
