@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import "./index.css";
 import { Select, Button, Input, Spin, InputNumber, DatePicker } from "antd";
 import { split } from "ramda";
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import { QuestionCircleOutlined, PrinterOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 import { GetSupProduct } from "../../../../services/Suprimentos/product";
 import { GetEntrance } from "../../../../services/Suprimentos/entrada";
 import { GetOut } from "../../../../services/Suprimentos/saida";
+import { CreatePDFSuprimento } from "../../../../services/Suprimentos/pdf";
 
 const { Option } = Select;
 
@@ -442,6 +443,15 @@ class GerenciarEstoqueSupPage extends Component {
             <Option value="entrada">ENTRADA</Option>
             <Option value="saida">SAÍDA</Option>
           </Select>
+          {(this.state.select === "estoque" ||
+            this.state.select === "entrada") && (
+            <PrinterOutlined
+              style={{ fontSize: "20px" }}
+              onClick={async () =>
+                await CreatePDFSuprimento(this.state.select, [])
+              }
+            />
+          )}
           <Button
             type="primary"
             className="button"

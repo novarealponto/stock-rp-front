@@ -206,7 +206,7 @@ class RelatorioEmprestimoContainer extends Component {
             <div className="div-plus-emprestimo">
               <div className="div-cabecalho-plus-emprestimo">
                 <label>Produto</label>
-                <label>Descrição</label>
+                <label>Observação</label>
               </div>
               <div className="div-content-plus-emprestimo">
                 <label>{row.product}</label>

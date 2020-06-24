@@ -48,10 +48,11 @@ import CadastroFornecedorSupRoute from "./Suprimentos/Cad.Fornecedor";
 import EditarFornecedorSupRoute from "./Suprimentos/Edit.Fornecedor";
 import RelatorioMapRoute from "./Relatorios/RelatorioMapeamento";
 import RelatorioVendasRoute from "./Relatorios/RelatorioVendas";
+import RelatorioSuprimentosRoute from "./Relatorios/RelatorioSuprimentos";
 
 class PagesRoute extends Component {
   state = {
-    auth: true
+    auth: true,
   };
 
   hasAuth = R.has("auth");
@@ -74,14 +75,14 @@ class PagesRoute extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username
+      username: this.props.auth.username,
     };
 
     let response = {};
 
-    response = await auth(value).then(resp =>
+    response = await auth(value).then((resp) =>
       this.setState({
-        auth: resp ? resp.data : false
+        auth: resp ? resp.data : false,
       })
     );
 
@@ -106,7 +107,9 @@ class PagesRoute extends Component {
             component={NovoFornecedorRoute}
           />
           <Route path="/logged/novoProduto" component={NovoProdutoRoute} />
-          <Route path="/logged/novoTecnico" component={NovoTecnicoRoute} />
+          {!this.props.auth.modulo && (
+            <Route path="/logged/novoTecnico" component={NovoTecnicoRoute} />
+          )}
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
@@ -140,6 +143,10 @@ class PagesRoute extends Component {
           <Route
             path="/logged/relatorioVendas"
             component={RelatorioVendasRoute}
+          />
+          <Route
+            path="/logged/relatorioSuprimentos"
+            component={RelatorioSuprimentosRoute}
           />
           <Route path="/logged/searchOs" component={SearchOsRoute} />
           <Route path="/logged/Os" component={OsDashRoute} />
@@ -195,6 +202,7 @@ class PagesRoute extends Component {
                 path="/logged/fornecedorSup/atializar"
                 component={EditarFornecedorSupRoute}
               />
+              <Redirect to="/logged/dash" />
             </Switch>
           )}
           <Redirect to="/logged/dash" />
@@ -213,11 +221,8 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(PagesRoute);
+export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);

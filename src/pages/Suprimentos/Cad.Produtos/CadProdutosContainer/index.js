@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Input, Select, Modal, Button, message } from "antd";
+import { Input, Select, Modal, Button, message, InputNumber } from "antd";
 
 import {
   NewSupProduct,
@@ -20,6 +20,7 @@ class CadProdutosPage extends Component {
     newFabricante: "",
     modalFabricante: false,
     manufacturerList: [],
+    quantidadeMinima: 1,
   };
 
   clearState = () => {
@@ -31,6 +32,7 @@ class CadProdutosPage extends Component {
       fornecedor: "NÃO SELECIONADO",
       newFabricante: "",
       modalFabricante: false,
+      quantidadeMinima: 1,
     });
   };
 
@@ -118,9 +120,10 @@ class CadProdutosPage extends Component {
       produto: name,
       uniMedida: unit,
       fabricante: manufacturerId,
+      quantidadeMinima: minimumQuantity,
     } = this.state;
 
-    const value = { name, unit, manufacturerId };
+    const value = { name, unit, manufacturerId, minimumQuantity };
     const { status } = await NewSupProduct(value);
 
     if (status === 200) {
@@ -190,6 +193,16 @@ class CadProdutosPage extends Component {
             <div className="button-mais-cadProd" onClick={this.openModal}>
               +
             </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div className="div-textProduto-cadProd">Quantidade Mínima:</div>
+            <InputNumber
+              min={1}
+              value={this.state.quantidadeMinima}
+              onChange={(quantidadeMinima) =>
+                this.setState({ quantidadeMinima })
+              }
+            />
           </div>
         </div>
         <div className="linha-button-fornecedor">
