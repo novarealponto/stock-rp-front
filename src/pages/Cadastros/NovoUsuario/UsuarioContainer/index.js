@@ -203,6 +203,7 @@ class NovoUsuario extends Component {
       addPart: this.state.permission.addPart,
       addAccessories: this.state.permission.addAccessories,
       suprimento: this.state.permission.suprimento,
+      modulo: this.props.auth.modulo,
     };
 
     const resposta = await NovoUsuarioService(values);

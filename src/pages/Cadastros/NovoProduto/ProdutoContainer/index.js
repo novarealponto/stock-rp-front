@@ -154,6 +154,7 @@ class NovoProduto extends Component {
       coluna: this.state.coluna,
       prateleira: this.state.prateleira,
       gaveta: this.state.gaveta,
+      modulo: this.props.auth.modulo,
     };
 
     const resposta = await newProduto(values);

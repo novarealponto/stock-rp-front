@@ -261,6 +261,7 @@ class GerenciarProdutoDash extends Component {
         user: {
           specific: {
             username: this.state.usuario,
+            modulo: this.props.auth.modulo,
           },
         },
         typeAccount: {
@@ -299,6 +300,7 @@ class GerenciarProdutoDash extends Component {
             name: this.state.produto,
             SKU: this.state.sku,
             category: this.state.categoria,
+            modulo: this.props.auth.modulo,
           },
         },
         mark: {
@@ -1046,7 +1048,9 @@ class GerenciarProdutoDash extends Component {
             onChange={this.handleChangeGerenciar}
           >
             <Option value="usuario">USUÁRIO</Option>
-            <Option value="tecnico">TÉCNICO</Option>
+            {!this.props.auth.modulo && (
+              <Option value="tecnico">TÉCNICO</Option>
+            )}
             <Option value="produtos">PRODUTOS</Option>
             <Option value="fornecedor">FORNECEDOR</Option>
           </Select>
