@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import "./index.css";
 import {
   Spin,
@@ -137,6 +138,7 @@ class Estoque extends Component {
         product: {
           specific: {
             name: this.state.produto,
+            modulo: this.props.auth.modulo,
           },
         },
         stockBase: {
@@ -592,4 +594,10 @@ class Estoque extends Component {
   }
 }
 
-export default Estoque;
+function mapStateToProps(state) {
+  return {
+    auth: state.auth,
+  };
+}
+
+export default connect(mapStateToProps)(Estoque);

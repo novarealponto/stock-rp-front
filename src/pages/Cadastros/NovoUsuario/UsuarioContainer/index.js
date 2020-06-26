@@ -14,6 +14,7 @@ const { Option } = Select;
 
 class NovoUsuario extends Component {
   state = {
+    modulo: false,
     redirect: false,
     user: "",
     checkboxAble: false,
@@ -203,7 +204,10 @@ class NovoUsuario extends Component {
       addPart: this.state.permission.addPart,
       addAccessories: this.state.permission.addAccessories,
       suprimento: this.state.permission.suprimento,
-      modulo: this.props.auth.modulo,
+      modulo:
+        this.props.auth.typeAccount === "MOD"
+          ? this.state.modulo
+          : this.props.auth.modulo,
     };
 
     const resposta = await NovoUsuarioService(values);
@@ -312,6 +316,16 @@ class NovoUsuario extends Component {
               onChange={this.onChangeAble}
             />
           </div>
+
+          {this.props.auth.typeAccount === "MOD" && (
+            <div className="div-able-usuario">
+              <div className="div-textAble-usuario">Modulo: </div>
+              <Switch
+                checked={this.state.modulo}
+                onChange={(modulo) => this.setState({ modulo })}
+              />
+            </div>
+          )}
         </div>
 
         <div className="linha1-usuario">

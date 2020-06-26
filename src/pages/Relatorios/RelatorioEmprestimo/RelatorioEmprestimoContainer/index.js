@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import "./index.css";
 
 import { Spin, Button, Input, DatePicker } from "antd";
@@ -64,6 +65,11 @@ class RelatorioEmprestimoContainer extends Component {
         equip: {
           specific: {
             serialNumber: this.state.serialNumber,
+          },
+        },
+        product: {
+          specific: {
+            modulo: this.props.auth.modulo,
           },
         },
       },
@@ -331,4 +337,10 @@ class RelatorioEmprestimoContainer extends Component {
   }
 }
 
-export default RelatorioEmprestimoContainer;
+function mapStateToProps(state) {
+  return {
+    auth: state.auth,
+  };
+}
+
+export default connect(mapStateToProps)(RelatorioEmprestimoContainer);

@@ -148,7 +148,7 @@ class NovoProduto extends Component {
       mark: this.state.marca,
       name: this.state.item,
       type: this.state.tipo,
-      serial: this.state.serial,
+      serial: this.props.auth.modulo || this.state.serial,
       responsibleUser: "modrp",
       corredor: this.state.corredor,
       coluna: this.state.coluna,
@@ -634,7 +634,7 @@ class NovoProduto extends Component {
           <div className="div-serial-produtos">
             <div className="div-textSerial-produtos">Número de série:</div>
             <Switch
-              checked={this.state.serial}
+              checked={this.props.auth.modulo || this.state.serial}
               onChange={this.onChangeSerial}
             />
           </div>

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   Button,
   Select,
@@ -147,6 +148,7 @@ class EmprestimoContainer extends Component {
         product: {
           specific: {
             name: this.state.nomeProdutoSearch,
+            modulo: this.props.auth.modulo,
           },
         },
         equip: {
@@ -190,6 +192,7 @@ class EmprestimoContainer extends Component {
         product: {
           specific: {
             name: this.state.nomeProdutoSearch,
+            modulo: this.props.auth.modulo,
           },
         },
         mark: {
@@ -844,7 +847,9 @@ class EmprestimoContainer extends Component {
         return (
           <div className="div-100-Gentrada">
             <div className="div-lines-RPerda">
-              <div className="cel-produto-cabecalho-estoque">{item.name}</div>
+              <div className="cel-produto-cabecalho-estoque">
+                {item.product}
+              </div>
               <div className="cel-razaosocial-cabecalho-emprestimo">
                 {item.razaoSocial}
               </div>
@@ -1325,4 +1330,10 @@ class EmprestimoContainer extends Component {
   }
 }
 
-export default EmprestimoContainer;
+function mapStateToProps(state) {
+  return {
+    auth: state.auth,
+  };
+}
+
+export default connect(mapStateToProps)(EmprestimoContainer);

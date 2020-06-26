@@ -646,46 +646,51 @@ class SideBar extends Component {
             </Menu.Item>
           </SubMenu>
 
-          <SubMenu
-            key="Reserva"
-            title={
-              <span>
-                <Icon type="pushpin" />
-                <span>Reserva</span>
-              </span>
-            }
-          >
-            <Menu.Item
-              disabled={!this.props.auth.addKitOut}
-              key="reservaKit_dash"
+          {!this.props.auth.modulo && (
+            <SubMenu
+              key="Reserva"
+              title={
+                <span>
+                  <Icon type="pushpin" />
+                  <span>Reserva</span>
+                </span>
+              }
             >
-              <Icon type="shopping" />
-              Kit
-            </Menu.Item>
-            <Menu.Item
-              disabled={!this.props.auth.addOutPut}
-              key="reservaTecnico_dash"
-            >
-              <Icon type="file-pdf" />
-              Romaneio
-            </Menu.Item>
-            <Menu.Item disabled={!this.props.auth.addROs} key="Rexterno_dash">
-              <Icon type="file-add" />
-              Externo
-            </Menu.Item>
-            <Menu.Item disabled={!this.props.auth.gerROs} key="Rinterno_dash">
-              <Icon type="file-add" />
-              Interno
-            </Menu.Item>
-            <Menu.Item disabled={!this.props.auth.addRML} key="reservaML_dash">
-              <Icon type="ie" />
-              E-Commerce
-            </Menu.Item>
-            <Menu.Item disabled={!this.props.auth.gerROs} key="Os_dash">
-              <Icon type="unordered-list" />
-              Gerenciar Os
-            </Menu.Item>
-          </SubMenu>
+              <Menu.Item
+                disabled={!this.props.auth.addKitOut}
+                key="reservaKit_dash"
+              >
+                <Icon type="shopping" />
+                Kit
+              </Menu.Item>
+              <Menu.Item
+                disabled={!this.props.auth.addOutPut}
+                key="reservaTecnico_dash"
+              >
+                <Icon type="file-pdf" />
+                Romaneio
+              </Menu.Item>
+              <Menu.Item disabled={!this.props.auth.addROs} key="Rexterno_dash">
+                <Icon type="file-add" />
+                Externo
+              </Menu.Item>
+              <Menu.Item disabled={!this.props.auth.gerROs} key="Rinterno_dash">
+                <Icon type="file-add" />
+                Interno
+              </Menu.Item>
+              <Menu.Item
+                disabled={!this.props.auth.addRML}
+                key="reservaML_dash"
+              >
+                <Icon type="ie" />
+                E-Commerce
+              </Menu.Item>
+              <Menu.Item disabled={!this.props.auth.gerROs} key="Os_dash">
+                <Icon type="unordered-list" />
+                Gerenciar Os
+              </Menu.Item>
+            </SubMenu>
+          )}
 
           <SubMenu
             key="Emprestimo"
@@ -711,92 +716,98 @@ class SideBar extends Component {
               </span>
             }
           >
-            <Menu.Item key="relatorioOs_dash">
-              <Icon type="file-search" />
-              Os
-            </Menu.Item>
+            {!this.props.auth.modulo && (
+              <>
+                <Menu.Item key="relatorioOs_dash">
+                  <Icon type="file-search" />
+                  Os
+                </Menu.Item>
+                <Menu.Item key="relatorioInterno_dash">
+                  <Icon type="user" />
+                  Interno
+                </Menu.Item>
+                <Menu.Item key="relatorioPerda_dash">
+                  <Icon type="alert" />
+                  Perda
+                </Menu.Item>
+                <Menu.Item key="relatorioML_dash">
+                  <Icon type="ie" />
+                  E-Commerce
+                </Menu.Item>
+                <Menu.Item key="relatorioVendas_dash">
+                  <Icon type="shopping-cart" />
+                  Vendas
+                </Menu.Item>
+                <Menu.Item key="relatorioMap_dash">
+                  <Icon type="file-search" />
+                  Mapeamento
+                </Menu.Item>
+                <Menu.Item key="relatorioSup_dash">
+                  <Icon type="apple" />
+                  Suprimentos
+                </Menu.Item>
+              </>
+            )}
             <Menu.Item key="relatorioEmprestimo_dash">
               <Icon type="retweet" />
               Empréstimo
             </Menu.Item>
-            <Menu.Item key="relatorioInterno_dash">
-              <Icon type="user" />
-              Interno
-            </Menu.Item>
-            <Menu.Item key="relatorioPerda_dash">
-              <Icon type="alert" />
-              Perda
-            </Menu.Item>
-            <Menu.Item key="relatorioML_dash">
-              <Icon type="ie" />
-              E-Commerce
-            </Menu.Item>
-            <Menu.Item key="relatorioVendas_dash">
-              <Icon type="shopping-cart" />
-              Vendas
-            </Menu.Item>
-            <Menu.Item key="relatorioMap_dash">
-              <Icon type="file-search" />
-              Mapeamento
-            </Menu.Item>
-            <Menu.Item key="relatorioSup_dash">
-              <Icon type="apple" />
-              Suprimentos
-            </Menu.Item>
           </SubMenu>
 
-          <SubMenu
-            key="Suprimentos"
-            title={
-              <span>
-                <Icon type="apple" />
-                <span>Suprimentos</span>
-              </span>
-            }
-          >
-            <Menu.Item
-              key="cadastroProdutosSup_add"
-              disabled={!this.props.auth.suprimento}
+          {!this.props.auth.modulo && (
+            <SubMenu
+              key="Suprimentos"
+              title={
+                <span>
+                  <Icon type="apple" />
+                  <span>Suprimentos</span>
+                </span>
+              }
             >
-              <Icon type="unordered-list" />
-              Cad. Produtos
-            </Menu.Item>
-            <Menu.Item
-              key="cadastroFornecedorSup_add"
-              disabled={!this.props.auth.suprimento}
-            >
-              <Icon type="unordered-list" />
-              Cad. Fornecedor
-            </Menu.Item>
-            <Menu.Item
-              key="entradaSup_add"
-              disabled={!this.props.auth.suprimento}
-            >
-              <Icon type="unordered-list" />
-              Entrada
-            </Menu.Item>
-            <Menu.Item
-              key="saidaSup_add"
-              disabled={!this.props.auth.suprimento}
-            >
-              <Icon type="unordered-list" />
-              Saida
-            </Menu.Item>
-            <Menu.Item
-              key="gerenciarCadastrosSup_dash"
-              disabled={!this.props.auth.suprimento}
-            >
-              <Icon type="unordered-list" />
-              Ger. Cadastros
-            </Menu.Item>
-            <Menu.Item
-              key="gerenciarEstoqueSup_dash"
-              disabled={!this.props.auth.suprimento}
-            >
-              <Icon type="unordered-list" />
-              Ger. Estoque
-            </Menu.Item>
-          </SubMenu>
+              <Menu.Item
+                key="cadastroProdutosSup_add"
+                disabled={!this.props.auth.suprimento}
+              >
+                <Icon type="unordered-list" />
+                Cad. Produtos
+              </Menu.Item>
+              <Menu.Item
+                key="cadastroFornecedorSup_add"
+                disabled={!this.props.auth.suprimento}
+              >
+                <Icon type="unordered-list" />
+                Cad. Fornecedor
+              </Menu.Item>
+              <Menu.Item
+                key="entradaSup_add"
+                disabled={!this.props.auth.suprimento}
+              >
+                <Icon type="unordered-list" />
+                Entrada
+              </Menu.Item>
+              <Menu.Item
+                key="saidaSup_add"
+                disabled={!this.props.auth.suprimento}
+              >
+                <Icon type="unordered-list" />
+                Saida
+              </Menu.Item>
+              <Menu.Item
+                key="gerenciarCadastrosSup_dash"
+                disabled={!this.props.auth.suprimento}
+              >
+                <Icon type="unordered-list" />
+                Ger. Cadastros
+              </Menu.Item>
+              <Menu.Item
+                key="gerenciarEstoqueSup_dash"
+                disabled={!this.props.auth.suprimento}
+              >
+                <Icon type="unordered-list" />
+                Ger. Estoque
+              </Menu.Item>
+            </SubMenu>
+          )}
         </Menu>
       </div>
     );
