@@ -717,37 +717,48 @@ class SideBar extends Component {
             }
           >
             {!this.props.auth.modulo && (
-              <>
-                <Menu.Item key="relatorioOs_dash">
-                  <Icon type="file-search" />
-                  Os
-                </Menu.Item>
-                <Menu.Item key="relatorioInterno_dash">
-                  <Icon type="user" />
-                  Interno
-                </Menu.Item>
-                <Menu.Item key="relatorioPerda_dash">
-                  <Icon type="alert" />
-                  Perda
-                </Menu.Item>
-                <Menu.Item key="relatorioML_dash">
-                  <Icon type="ie" />
-                  E-Commerce
-                </Menu.Item>
-                <Menu.Item key="relatorioVendas_dash">
-                  <Icon type="shopping-cart" />
-                  Vendas
-                </Menu.Item>
-                <Menu.Item key="relatorioMap_dash">
-                  <Icon type="file-search" />
-                  Mapeamento
-                </Menu.Item>
-                <Menu.Item key="relatorioSup_dash">
-                  <Icon type="apple" />
-                  Suprimentos
-                </Menu.Item>
-              </>
+              <Menu.Item key="relatorioOs_dash">
+                <Icon type="file-search" />
+                Os
+              </Menu.Item>
             )}
+            {!this.props.auth.modulo && (
+              <Menu.Item key="relatorioInterno_dash">
+                <Icon type="user" />
+                Interno
+              </Menu.Item>
+            )}
+            {!this.props.auth.modulo && (
+              <Menu.Item key="relatorioPerda_dash">
+                <Icon type="alert" />
+                Perda
+              </Menu.Item>
+            )}
+            {!this.props.auth.modulo && (
+              <Menu.Item key="relatorioML_dash">
+                <Icon type="ie" />
+                E-Commerce
+              </Menu.Item>
+            )}
+            {!this.props.auth.modulo && (
+              <Menu.Item key="relatorioVendas_dash">
+                <Icon type="shopping-cart" />
+                Vendas
+              </Menu.Item>
+            )}
+            {!this.props.auth.modulo && (
+              <Menu.Item key="relatorioMap_dash">
+                <Icon type="file-search" />
+                Mapeamento
+              </Menu.Item>
+            )}
+            {!this.props.auth.modulo && (
+              <Menu.Item key="relatorioSup_dash">
+                <Icon type="apple" />
+                Suprimentos
+              </Menu.Item>
+            )}
+
             <Menu.Item key="relatorioEmprestimo_dash">
               <Icon type="retweet" />
               Empréstimo
