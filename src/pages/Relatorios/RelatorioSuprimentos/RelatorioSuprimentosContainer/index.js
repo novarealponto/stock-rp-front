@@ -246,7 +246,6 @@ class RelatorioSuprimentosContainer extends Component {
                 : null
             }
           >
-            {console.log(row)}
             <div className="div-cabecalho-cod">
               <label>{row.code}</label>
             </div>

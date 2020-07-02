@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./index.css";
+import * as R from "ramda";
 import {
   Spin,
   Button,
@@ -11,9 +12,11 @@ import {
   Icon,
   message,
 } from "antd";
+
+import { DeleteOutlined } from "@ant-design/icons";
 import { stock, UpdatteProductBase } from "../../../../services/estoque";
 
-import { getAllEquipsService } from "../../../../services/equip";
+import { getAllEquipsService, deteleEquip } from "../../../../services/equip";
 import { getSerial } from "../../../../services/serialNumber";
 
 const { Option } = Select;
@@ -25,11 +28,14 @@ class Estoque extends Component {
     produto: "",
     numeroSerieModal: [],
     fabricante: "",
+    serialNumberDelete: "",
+    serialNumberDeleteId: "",
     quantModal: 1,
     estoqueBase: "TODOS",
     avancado: false,
     loading: false,
     modalStatus: false,
+    modaldelete: false,
     estoque: {
       rows: [],
     },
@@ -272,6 +278,8 @@ class Estoque extends Component {
       serialNumbers,
     };
 
+    if (!serialNumbers) return;
+
     if (serialNumbers.length === amount) {
       const { status } = await UpdatteProductBase(value);
       if (status === 200) {
@@ -289,6 +297,50 @@ class Estoque extends Component {
       );
     }
   };
+
+  DeleteEquip = async () => {
+    const { serialNumberDeleteId, serialNumbers, line } = this.state;
+
+    const index = R.findIndex(R.propEq("id", serialNumberDeleteId))(
+      serialNumbers
+    );
+
+    serialNumbers.splice(index, 1);
+
+    const { status } = await deteleEquip({
+      id: this.state.serialNumberDeleteId,
+      productBaseId: line.id,
+    });
+
+    if (status === 200) {
+      this.setState({ serialNumbers, modaldelete: false });
+    }
+
+    await this.getStock();
+  };
+
+  ModalDelete = () => (
+    <Modal
+      width={650}
+      title="Deletar Equipamento"
+      visible={this.state.modaldelete}
+      okText="Confirmar"
+      cancelText="Cancelar"
+      onOk={this.DeleteEquip}
+      onCancel={() =>
+        this.setState({
+          modaldelete: false,
+          serialNumberDelete: "",
+          serialNumberDeleteId: "",
+        })
+      }
+    >
+      <p>
+        deleja realmente deletar o equipamento cujo número de série é:{" "}
+        {this.state.serialNumberDelete}
+      </p>
+    </Modal>
+  );
 
   ModalStatus = () => (
     <Modal
@@ -346,19 +398,38 @@ class Estoque extends Component {
             this.getAllEquips();
           }}
         />
-        <div
-          style={{
-            marginTop: "15px",
-            height: "250px",
-            overflow: "auto",
-            scrollbarColor: "red",
-          }}
-        >
+        <div className="div-modal-estoque">
           {this.state.serialNumbers.map((item) => {
             return (
-              <p style={item.reserved ? { color: "red" } : null}>
-                {item.serialNumber}
-              </p>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <p
+                  style={
+                    item.reserved || item.inClient ? { color: "red" } : null
+                  }
+                >
+                  {item.serialNumber}
+                </p>
+                {this.props.auth.typeAccount === "MOD" &&
+                  !item.reserved &&
+                  !item.inClient && (
+                    <DeleteOutlined
+                      className="icon-delete"
+                      onClick={() =>
+                        this.setState({
+                          modaldelete: true,
+                          serialNumberDelete: item.serialNumber,
+                          serialNumberDeleteId: item.id,
+                        })
+                      }
+                    />
+                  )}
+              </div>
             );
           })}
         </div>
@@ -589,6 +660,7 @@ class Estoque extends Component {
         )}
         <this.ModalSerialNumbers />
         <this.ModalStatus />
+        <this.ModalDelete />
       </div>
     );
   }

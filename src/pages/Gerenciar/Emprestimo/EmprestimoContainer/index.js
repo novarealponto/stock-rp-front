@@ -798,7 +798,7 @@ class EmprestimoContainer extends Component {
           <div className="div-100-Gentrada">
             <div className="div-lines-RPerda">
               <div className="cel-produto-cabecalho-emprestimo">
-                {item.name}
+                {item.product}
               </div>
               <div className="cel-razaosocial-cabecalho-emprestimo-reservados">
                 {item.razaoSocial}
