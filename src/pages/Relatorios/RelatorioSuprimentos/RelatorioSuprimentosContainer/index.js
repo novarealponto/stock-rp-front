@@ -106,6 +106,97 @@ class RelatorioSuprimentosContainer extends Component {
     if (status === 200) await CreatePDFSuprimento(select, data.rows);
   };
 
+  changePages = async (pages) => {
+    await this.setState({
+      page: pages,
+    });
+
+    await this.getSupProduct();
+  };
+
+  Pages = () => (
+    <div className="footer-Gentrada100-button">
+      {Math.ceil(this.state.count / this.state.total) >= 5 &&
+      Math.ceil(this.state.count / this.state.total) - this.state.page < 1 ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 4)}
+        >
+          {this.state.page - 4}
+        </Button>
+      ) : null}
+      {Math.ceil(this.state.count / this.state.total) >= 4 &&
+      Math.ceil(this.state.count / this.state.total) - this.state.page < 2 &&
+      this.state.page > 3 ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 3)}
+        >
+          {this.state.page - 3}
+        </Button>
+      ) : null}
+      {this.state.page >= 3 ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 2)}
+        >
+          {this.state.page - 2}
+        </Button>
+      ) : null}
+      {this.state.page >= 2 ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 1)}
+        >
+          {this.state.page - 1}
+        </Button>
+      ) : null}
+      <div className="div-teste">{this.state.page}</div>
+      {this.state.page < this.state.count / this.state.total ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 1)}
+        >
+          {this.state.page + 1}
+        </Button>
+      ) : null}
+      {this.state.page + 1 < this.state.count / this.state.total ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 2)}
+        >
+          {this.state.page + 2}
+        </Button>
+      ) : null}
+      {this.state.page + 2 < this.state.count / this.state.total &&
+      this.state.page < 3 ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 3)}
+        >
+          {this.state.page + 3}
+        </Button>
+      ) : null}
+      {this.state.page + 3 < this.state.count / this.state.total &&
+      this.state.page < 2 ? (
+        <Button
+          className="button"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 4)}
+        >
+          {this.state.page + 4}
+        </Button>
+      ) : null}
+    </div>
+  );
+
   render() {
     return (
       <div className="div-card-RPerda">
@@ -238,31 +329,43 @@ class RelatorioSuprimentosContainer extends Component {
         </div>
 
         {this.state.rows.map((row) => (
-          <div
-            className="div-linha"
-            style={
-              row.minimumQuantity >= row.amount
-                ? { backgroundColor: "rgba(255, 0, 0, 0.4)" }
-                : null
-            }
-          >
-            <div className="div-cabecalho-cod">
-              <label>{row.code}</label>
+          <div className="div-block-table-relat-sup">
+            <div
+              className="div-linha"
+              style={
+                row.minimumQuantity >= row.amount
+                  ? { color: "rgba(255, 0, 0, 0.8)" }
+                  : null
+              }
+            >
+              <div className="div-cabecalho-cod">
+                <label>{row.code}</label>
+              </div>
+              <div className="div-cabecalho-prod">
+                <label>{row.name}</label>
+              </div>
+              <div className="div-cabecalho-fabr">
+                <label>{row.manufacturer.name}</label>
+              </div>
+              <div className="div-cabecalho-qtd">
+                <label>{row.amount}</label>
+              </div>
+              <div className="div-cabecalho-data">
+                <label>{moment(row.updatedAt).format("ll")}</label>
+              </div>
             </div>
-            <div className="div-cabecalho-prod">
-              <label>{row.name}</label>
-            </div>
-            <div className="div-cabecalho-fabr">
-              <label>{row.manufacturer.name}</label>
-            </div>
-            <div className="div-cabecalho-qtd">
-              <label>{row.amount}</label>
-            </div>
-            <div className="div-cabecalho-data">
-              <label>{moment(row.updatedAt).format("ll")}</label>
-            </div>
+            <div
+              style={{
+                width: "90%",
+                backgroundColor: "rgb(221, 219, 219)",
+                height: "1px",
+              }}
+            />
           </div>
         ))}
+        <div className="footer-ROs">
+          <this.Pages />
+        </div>
       </div>
     );
   }

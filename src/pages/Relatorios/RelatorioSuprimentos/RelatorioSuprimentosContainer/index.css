@@ -14,18 +14,23 @@
 }
 
 .div-cabecalho-cod {
+  padding: 3px;
   width: 10%;
 }
 .div-cabecalho-prod {
+  padding: 3px;
   width: 30%;
 }
 .div-cabecalho-fabr {
+  padding: 3px;
   width: 20%;
 }
 .div-cabecalho-qtd {
+  padding: 3px;
   width: 20%;
 }
 .div-cabecalho-data {
+  padding: 3px;
   width: 20%;
 }
 
@@ -68,4 +73,11 @@
 .div-cel-search-product label,
 .div-cel-search-fabricante label {
   margin-right: 10px;
+}
+
+.div-block-table-relat-sup {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
 }

@@ -443,48 +443,54 @@ class GerenciarEstoqueSupPage extends Component {
             <Option value="entrada">ENTRADA</Option>
             <Option value="saida">SAÍDA</Option>
           </Select>
-          {(this.state.select === "estoque" ||
-            this.state.select === "entrada") && (
-            <PrinterOutlined
-              style={{ fontSize: "20px" }}
-              onClick={async () =>
-                await CreatePDFSuprimento(this.state.select, [])
-              }
-            />
-          )}
-          <Button
-            type="primary"
-            className="button"
-            onClick={async () => {
-              await this.setState({
-                search: !this.state.search,
-                avancado: !this.state.avancado,
-              });
 
-              switch (this.state.select) {
-                case "estoque":
-                  await this.getSupProduct();
-                  break;
-                case "entrada":
-                  await this.getEntrance();
-                  break;
-                case "saida":
-                  await this.getOut();
-                  break;
-                default:
-                  break;
-              }
-            }}
-          >
-            {this.state.avancado ? "Avançado" : "Ocultar"}
-          </Button>
+          <div className="div-block-printer">
+            {(this.state.select === "estoque" ||
+              this.state.select === "entrada") && (
+              <PrinterOutlined
+                className="icon-printer"
+                onClick={async () =>
+                  await CreatePDFSuprimento(this.state.select, [])
+                }
+              />
+            )}
+            <Button
+              type="primary"
+              className="button"
+              onClick={async () => {
+                await this.setState({
+                  search: !this.state.search,
+                  avancado: !this.state.avancado,
+                });
+
+                switch (this.state.select) {
+                  case "estoque":
+                    await this.getSupProduct();
+                    break;
+                  case "entrada":
+                    await this.getEntrance();
+                    break;
+                  case "saida":
+                    await this.getOut();
+                    break;
+                  default:
+                    break;
+                }
+              }}
+            >
+              {this.state.avancado ? "Avançado" : "Ocultar"}
+            </Button>
+          </div>
         </div>
 
         {this.state.search && <this.Search />}
 
         {this.state.select === "estoque" && (
           <div className="div-main-emprestimo">
-            <div className="div-cabecalho-estoque">
+            <div
+              className="div-cabecalho-estoque"
+              style={{ backgroundColor: "#f0f0f0" }}
+            >
               <div className="cel-produto-cabecalho-gerEst">Produto</div>
               <div className="cel-quant-cabecalho-gerEst">Quant. total</div>
               <div className="cel-data-cabecalho-gerEst">Data atualização</div>
@@ -497,55 +503,70 @@ class GerenciarEstoqueSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.products.map((product, idx) => (
-              <>
-                <div className="div-cabecalhoLinha-gerEst">
-                  <div className="cel-produto-cabecalho-gerEst">
-                    {product.name}
-                  </div>
-                  <div className="cel-quant-cabecalho-gerEst">
-                    {`${product.amount} ${product.unit}`}
-                  </div>
-                  <div className="cel-data-cabecalho-gerEst">
-                    {moment(product.updatedAt).format("L")}
-                  </div>
+            <div className="div-block-table-gerEst">
+              {this.state.products.map((product, idx) => (
+                <div
+                  className="div-block-row-table-gerEst"
+                  style={{
+                    color:
+                      product.minimumQuantity > product.amount ? "red" : null,
+                  }}
+                >
+                  {console.log(product)}
+                  <div className="div-cabecalhoLinha-gerEst">
+                    <div className="cel-produto-cabecalho-gerEst">
+                      {product.name}
+                    </div>
+                    <div className="cel-quant-cabecalho-gerEst">
+                      {`${product.amount} ${product.unit}`}
+                    </div>
+                    <div className="cel-data-cabecalho-gerEst">
+                      {moment(product.updatedAt).format("L")}
+                    </div>
 
-                  <div className="cel-acao-cabecalho-gerCad-reservados">
-                    <QuestionCircleOutlined
-                      onClick={() =>
-                        this.setState({
-                          index: this.state.index === idx ? -1 : idx,
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-                {this.state.index === idx && (
-                  <div className="div-mais-gerEst">
-                    <div className="div-linhaMais-gerEst">
-                      <div className="div-razao-mais-gerEst">Razão social</div>
-                      <div className="div-quant-mais-gerEst">Quant.</div>
-                      <div className="div-data-mais-gerEst">Data</div>
+                    <div className="cel-acao-cabecalho-gerCad-reservados">
+                      <QuestionCircleOutlined
+                        onClick={() =>
+                          this.setState({
+                            index: this.state.index === idx ? -1 : idx,
+                          })
+                        }
+                      />
                     </div>
-                    <div className="div-linhaMaisInfoMap-gerEst">
-                      {product.supEntrances.map((supEntrance) => (
-                        <div className="div-linhaMap-gerEst">
-                          <div className="div-razao-mais-gerEst">
-                            {supEntrance.supProvider.razaoSocial}
-                          </div>
-                          <div className="div-quant-mais-gerEst">
-                            {supEntrance.amount}
-                          </div>
-                          <div className="div-data-mais-gerEst">
-                            {moment(supEntrance.createdAt).format("L")}
-                          </div>
+                  </div>
+                  {this.state.index === idx && (
+                    <div className="div-mais-gerEst">
+                      <div className="div-linhaMais-gerEst">
+                        <div className="div-razao-mais-gerEst">
+                          Razão social
                         </div>
-                      ))}
+                        <div className="div-quant-mais-gerEst">Quant.</div>
+                        <div className="div-data-mais-gerEst">Data</div>
+                      </div>
+                      <div className="div-linhaMaisInfoMap-gerEst">
+                        {product.supEntrances.map((supEntrance) => (
+                          <div className="div-linhaMap-gerEst">
+                            <div className="div-razao-mais-gerEst">
+                              {supEntrance.supProvider.razaoSocial}
+                            </div>
+                            <div className="div-quant-mais-gerEst">
+                              {supEntrance.amount}
+                            </div>
+                            <div className="div-data-mais-gerEst">
+                              {moment(supEntrance.createdAt).format("L")}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </>
-            ))}
+                  )}
+                  <div
+                    className="div-separate-Gentrada"
+                    style={{ width: "100%" }}
+                  />
+                </div>
+              ))}
+            </div>
             <div className="footer-ROs">
               <this.Pages />
             </div>
@@ -553,7 +574,10 @@ class GerenciarEstoqueSupPage extends Component {
         )}
         {this.state.select === "entrada" && (
           <div className="div-main-emprestimo">
-            <div className="div-cabecalho-estoque">
+            <div
+              className="div-cabecalho-estoque"
+              style={{ backgroundColor: "#f0f0f0" }}
+            >
               <div className="cel-data-cabecalho-gerEst">Data</div>
               <div className="cel-produto-cabecalho-gerEst">Produto</div>
               <div className="cel-quantEnt-cabecalho-gerEst">Quant</div>
@@ -561,60 +585,68 @@ class GerenciarEstoqueSupPage extends Component {
 
               <div className="cel-acao-cabecalho-gerCad-reservados" />
             </div>
-            <div className=" div-separate-Gentrada" />
+            <div className="div-separate-Gentrada" />
             {this.state.loading ? (
               <div className="spin">
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.entradas.map((entrada, idx) => (
-              <>
-                <div className="div-cabecalhoLinha-gerEst">
-                  <div className="cel-data-cabecalho-gerEst">
-                    {moment(entrada.createdAt).format("L")}
-                  </div>
-                  <div className="cel-produto-cabecalho-gerEst">
-                    {entrada.supProduct.name}
-                  </div>
-                  <div className="cel-quantEnt-cabecalho-gerEst">
-                    {entrada.amount}
-                  </div>
-                  <div className="cel-data-cabecalho-gerEst">
-                    {entrada.responsibleUser}
-                  </div>
+            <div className="div-block-table-gerEst">
+              {this.state.entradas.map((entrada, idx) => (
+                <div className="div-block-row-table-gerEst">
+                  <div className="div-cabecalhoLinha-gerEst">
+                    <div className="cel-data-cabecalho-gerEst">
+                      {moment(entrada.createdAt).format("L")}
+                    </div>
+                    <div className="cel-produto-cabecalho-gerEst">
+                      {entrada.supProduct.name}
+                    </div>
+                    <div className="cel-quantEnt-cabecalho-gerEst">
+                      {entrada.amount}
+                    </div>
+                    <div className="cel-data-cabecalho-gerEst">
+                      {entrada.responsibleUser}
+                    </div>
 
-                  <div className="cel-acao-cabecalho-gerCad-reservados">
-                    <QuestionCircleOutlined
-                      onClick={() =>
-                        this.setState({
-                          index: this.state.index === idx ? -1 : idx,
-                        })
-                      }
-                    />
+                    <div className="cel-acao-cabecalho-gerCad-reservados">
+                      <QuestionCircleOutlined
+                        onClick={() =>
+                          this.setState({
+                            index: this.state.index === idx ? -1 : idx,
+                          })
+                        }
+                      />
+                    </div>
                   </div>
+                  {this.state.index === idx && (
+                    <div className="div-mais-gerEst">
+                      <div className="div-linhaMais-gerEst">
+                        <div className="div-razao-mais-gerEst">
+                          Razão social
+                        </div>
+                        <div className="div-preco-mais-gerEst">Preço unid.</div>
+                        <div className="div-total-mais-gerEst">Total</div>
+                      </div>
+                      <div className="div-linhaMaisInfo-gerEst">
+                        <div className="div-razao-mais-gerEst">
+                          {entrada.supProvider.razaoSocial}
+                        </div>
+                        <div className="div-preco-mais-gerEst">
+                          {entrada.priceUnit}
+                        </div>
+                        <div className="div-total-mais-gerEst">
+                          {entrada.total}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div
+                    className="div-separate-Gentrada"
+                    style={{ width: "100%" }}
+                  />
                 </div>
-                {this.state.index === idx && (
-                  <div className="div-mais-gerEst">
-                    <div className="div-linhaMais-gerEst">
-                      <div className="div-razao-mais-gerEst">Razão social</div>
-                      <div className="div-preco-mais-gerEst">Preço unid.</div>
-                      <div className="div-total-mais-gerEst">Total</div>
-                    </div>
-                    <div className="div-linhaMaisInfo-gerEst">
-                      <div className="div-razao-mais-gerEst">
-                        {entrada.supProvider.razaoSocial}
-                      </div>
-                      <div className="div-preco-mais-gerEst">
-                        {entrada.priceUnit}
-                      </div>
-                      <div className="div-total-mais-gerEst">
-                        {entrada.total}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </>
-            ))}
+              ))}
+            </div>
             <div className="footer-ROs">
               <this.Pages />
             </div>
@@ -622,7 +654,10 @@ class GerenciarEstoqueSupPage extends Component {
         )}
         {this.state.select === "saida" && (
           <div className="div-main-emprestimo">
-            <div className="div-cabecalho-estoque">
+            <div
+              className="div-cabecalho-estoque"
+              style={{ backgroundColor: "#f0f0f0" }}
+            >
               <div className="cel-data-cabecalho-gerEst">Data</div>
               <div className="cel-produtoSai-cabecalho-gerEst">Produto</div>
               <div className="cel-solicitante-cabecalho-gerEst">
@@ -640,58 +675,66 @@ class GerenciarEstoqueSupPage extends Component {
                 <Spin spinning={this.state.loading} />
               </div>
             ) : null}
-            {this.state.saidas.map((saida, idx) => (
-              <>
-                <div className="div-cabecalhoLinha-gerEst">
-                  <div className="cel-data-cabecalho-gerEst">
-                    {moment(saida.createdAt).format("L")}
-                  </div>
-                  <div className="cel-produtoSai-cabecalho-gerEst">
-                    {saida.supProduct.name}
-                  </div>
-                  <div className="cel-solicitante-cabecalho-gerEst">
-                    {saida.solicitante}
-                  </div>
-                  <div className="cel-solicitante-cabecalho-gerEst">
-                    {saida.responsibleUser}
-                  </div>
+            <div className="div-block-table-gerEst">
+              {this.state.saidas.map((saida, idx) => (
+                <div className="div-block-row-table-gerEst">
+                  <div className="div-cabecalhoLinha-gerEst">
+                    <div className="cel-data-cabecalho-gerEst">
+                      {moment(saida.createdAt).format("L")}
+                    </div>
+                    <div className="cel-produtoSai-cabecalho-gerEst">
+                      {saida.supProduct.name}
+                    </div>
+                    <div className="cel-solicitante-cabecalho-gerEst">
+                      {saida.solicitante}
+                    </div>
+                    <div className="cel-solicitante-cabecalho-gerEst">
+                      {saida.responsibleUser}
+                    </div>
 
-                  <div className="cel-acao-cabecalho-gerCad-reservados">
-                    <QuestionCircleOutlined
-                      onClick={() =>
-                        this.setState({
-                          index: this.state.index === idx ? -1 : idx,
-                        })
-                      }
-                    />
+                    <div className="cel-acao-cabecalho-gerCad-reservados">
+                      <QuestionCircleOutlined
+                        onClick={() =>
+                          this.setState({
+                            index: this.state.index === idx ? -1 : idx,
+                          })
+                        }
+                      />
+                    </div>
                   </div>
+                  {this.state.index === idx && (
+                    <div className="div-mais-gerEst">
+                      <div className="div-linhaMais-gerEst">
+                        <div className="div-email-mais-gerEst">
+                          Email Solicitante
+                        </div>
+                        <div className="div-email-mais-gerEst">
+                          Email responsável
+                        </div>
+                        <div className="div-quant-mais-gerEst">
+                          Quant. saída
+                        </div>
+                      </div>
+                      <div className="div-linhaMaisInfo-gerEst">
+                        <div className="div-email-mais-gerEst">
+                          {saida.emailSolic}
+                        </div>
+                        <div className="div-email-mais-gerEst">
+                          {saida.emailResp}
+                        </div>
+                        <div className="div-quant-mais-gerEst">
+                          {saida.amount}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div
+                    className="div-separate-Gentrada"
+                    style={{ width: "100%" }}
+                  />
                 </div>
-                {this.state.index === idx && (
-                  <div className="div-mais-gerEst">
-                    <div className="div-linhaMais-gerEst">
-                      <div className="div-email-mais-gerEst">
-                        Email Solicitante
-                      </div>
-                      <div className="div-email-mais-gerEst">
-                        Email responsável
-                      </div>
-                      <div className="div-quant-mais-gerEst">Quant. saída</div>
-                    </div>
-                    <div className="div-linhaMaisInfo-gerEst">
-                      <div className="div-email-mais-gerEst">
-                        {saida.emailSolic}
-                      </div>
-                      <div className="div-email-mais-gerEst">
-                        {saida.emailResp}
-                      </div>
-                      <div className="div-quant-mais-gerEst">
-                        {saida.amount}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </>
-            ))}
+              ))}
+            </div>
             <div className="footer-ROs">
               <this.Pages />
             </div>
