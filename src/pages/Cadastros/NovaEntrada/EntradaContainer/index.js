@@ -239,7 +239,7 @@ class NovaEntrada extends Component {
         if (valor === teste[teste.length - 2]) count++;
       });
 
-      const resp = await getSerial(teste[teste.length - 2]);
+      const resp = await getSerial(teste[teste.length - 2], true);
 
       if (resp.data) count++;
 

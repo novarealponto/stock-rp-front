@@ -48,7 +48,7 @@ class GerenciarEstoqueSupPage extends Component {
     await this.getSupProduct();
   };
 
-  getSupProduct = async () => {
+  getSupProduct = async (pdf) => {
     const query = {
       filters: {
         supProduct: {
@@ -60,7 +60,7 @@ class GerenciarEstoqueSupPage extends Component {
         },
       },
       page: this.state.page,
-      total: this.state.total,
+      total: pdf ? null : this.state.total,
     };
     const { status, data } = await GetSupProduct(query);
 
@@ -68,7 +68,7 @@ class GerenciarEstoqueSupPage extends Component {
       this.setState({ products: data.rows, count: data.count, index: -1 });
   };
 
-  getEntrance = async () => {
+  getEntrance = async (pdf) => {
     const query = {
       filters: {
         supEntrance: {
@@ -84,7 +84,7 @@ class GerenciarEstoqueSupPage extends Component {
         },
       },
       page: this.state.page,
-      total: this.state.total,
+      total: pdf ? null : this.state.total,
     };
     const { status, data } = await GetEntrance(query);
 
@@ -445,13 +445,30 @@ class GerenciarEstoqueSupPage extends Component {
           </Select>
 
           <div className="div-block-printer">
-            {(this.state.select === "estoque" ||
-              this.state.select === "entrada") && (
+            {this.state.select === "estoque" && (
+              // ||  this.state.select === "entrada"
               <PrinterOutlined
                 className="icon-printer"
-                onClick={async () =>
-                  await CreatePDFSuprimento(this.state.select, [])
-                }
+                onClick={async () => {
+                  switch (this.state.select) {
+                    case "estoque":
+                      await this.getSupProduct(true);
+                      await CreatePDFSuprimento(
+                        `${this.state.select}-suprimento`,
+                        this.state.products
+                      );
+                      break;
+                    case "entrada":
+                      await this.getEntrance(true);
+                      await CreatePDFSuprimento(
+                        this.state.select,
+                        this.state.entradas
+                      );
+                      break;
+                    default:
+                      break;
+                  }
+                }}
               />
             )}
             <Button

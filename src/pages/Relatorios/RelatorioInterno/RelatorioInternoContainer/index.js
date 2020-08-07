@@ -21,13 +21,13 @@ class RelatorioInterno extends Component {
     show: 0,
     mais: {},
     OsArray: {
-      rows: []
-    }
+      rows: [],
+    },
   };
 
   getAllOs = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const query = {
@@ -35,37 +35,37 @@ class RelatorioInterno extends Component {
         technicianReserve: {
           specific: {
             razaoSocial: this.state.rs,
-            date: this.state.valueDate
-          }
+            date: this.state.valueDate,
+          },
         },
         technician: {
           specific: {
-            name: this.state.tecnico
-          }
-        }
+            name: this.state.tecnico,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
 
-    await getTodasOsInterno(query).then(resposta =>
+    await getTodasOsInterno(query).then((resposta) =>
       this.setState({
         OsArray: resposta.data,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
     );
 
     this.setState({
-      loading: false
+      loading: false,
     });
   };
 
-  changePages = pages => {
+  changePages = (pages) => {
     this.setState(
       {
-        page: pages
+        page: pages,
       },
       () => {
         this.getAllOs();
@@ -74,16 +74,16 @@ class RelatorioInterno extends Component {
   };
 
   getAllTecnico = async () => {
-    await getTecnico().then(resposta =>
+    await getTecnico().then((resposta) =>
       this.setState({
-        tecnicoArray: resposta.data
+        tecnicoArray: resposta.data,
       })
     );
   };
 
-  onChangeTecnico = async value => {
+  onChangeTecnico = async (value) => {
     await this.setState({
-      tecnico: value
+      tecnico: value,
     });
 
     await this.getAllOs();
@@ -97,28 +97,28 @@ class RelatorioInterno extends Component {
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado
+      avancado: !this.state.avancado,
     });
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     await this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
 
     await this.getAllOs();
   };
 
-  searchDate = async e => {
+  searchDate = async (e) => {
     if (!e[0] || !e[1]) return;
     await this.setState({
-      valueDate: { start: e[0]._d, end: e[1]._d }
+      valueDate: { start: e[0]._d, end: e[1]._d },
     });
 
     await this.getAllOs();
   };
 
-  formatDateFunct = date => {
+  formatDateFunct = (date) => {
     moment.locale("pt-br");
     const formatDate = moment(date).format("L");
     const formatHours = moment(date).format("LT");
@@ -126,20 +126,20 @@ class RelatorioInterno extends Component {
     return dateformated;
   };
 
-  mais = async line => {
+  mais = async (line) => {
     await this.setState({
       mais: {
-        [line.id]: !this.state.mais[line.id]
+        [line.id]: !this.state.mais[line.id],
       },
       lineSelected: {
-        rows: [line]
-      }
+        rows: [line],
+      },
     });
   };
 
   test = () => {
     if (this.state.OsArray.rows.length !== 0) {
-      return this.state.OsArray.rows.map(line => (
+      return this.state.OsArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div className="div-lines-ROs">
             <div className="cel-mais-cabecalho-ROs">
@@ -168,35 +168,35 @@ class RelatorioInterno extends Component {
                   <Spin spinning={this.state.loading} />
                 </div>
               ) : (
-                this.state.lineSelected.rows.map(line => (
+                this.state.lineSelected.rows.map((line) => (
                   <div className="div-branco-mais">
                     <div className="div-produtos-mais-ROs">
-                      {line.products.map(valor => (
-                        <div className="div-peca">{valor.name}</div>
-                      ))}
+                      {line.products.map((valor) => {
+                        return <div className="div-peca">{valor.name}</div>;
+                      })}
                     </div>
                     <div className="div-produtos-mais-ROs">
-                      {line.products.map(valor => (
+                      {line.products.map((valor) => (
                         <div className="div-peca">{valor.status}</div>
                       ))}
                     </div>
                     <div className="div-amount-mais-ROs">
-                      {line.products.map(valor => (
+                      {line.products.map((valor) => (
                         <div className="div-peca">{valor.amount}</div>
                       ))}
                     </div>
                     <div className="div-missOut-mais-ROs">
-                      {line.products.map(valor => (
+                      {line.products.map((valor) => (
                         <div className="div-peca">{valor.missOut}</div>
                       ))}
                     </div>
                     <div className="div-output-mais-ROs">
-                      {line.products.map(valor => (
+                      {line.products.map((valor) => (
                         <div className="div-peca">{valor.output}</div>
                       ))}
                     </div>
                     <div className="div-return-mais-ROs">
-                      {line.products.map(valor => (
+                      {line.products.map((valor) => (
                         <div className="div-peca">{valor.return}</div>
                       ))}
                     </div>
@@ -353,7 +353,7 @@ class RelatorioInterno extends Component {
                     onChange={this.onChangeTecnico}
                   >
                     <Option value="">TODOS</Option>
-                    {this.state.tecnicoArray.map(valor => (
+                    {this.state.tecnicoArray.map((valor) => (
                       <Option value={valor.name}>{valor.name}</Option>
                     ))}
                   </Select>
