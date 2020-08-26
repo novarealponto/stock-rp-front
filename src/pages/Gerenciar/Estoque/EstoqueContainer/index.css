@@ -96,7 +96,16 @@
 .cel-fabricante20-cabecalho-estoque {
   align-items: center;
   display: flex;
-  width: 20%;
+  width: 12%;
+  height: 30px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+.cel-AA-cabecalho-estoque {
+  align-items: center;
+  display: flex;
+  width: 13%;
   height: 30px;
   font-size: 1em;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -105,6 +114,18 @@
 .div-table-label-cel-estoque {
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.div-table-label-analise-cel-estoque {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
   cursor: pointer;
   user-select: none; /* supported by Chrome and Opera */
   -webkit-user-select: none; /* Safari */

@@ -672,6 +672,46 @@ class Rexterno extends Component {
         </div>
 
         <div className="div-linha-Os">
+          <div className="div-numeroSerie-Os">
+            <div className="div-text-Os">Estoque:</div>
+            <Select
+              value={this.state.estoque}
+              style={{ width: "100%" }}
+              onChange={this.onChangeEstoque}
+            >
+              <Option value="REALPONTO">REALPONTO</Option>
+              <Option value="NOVAREAL">NOVA REALPONTO</Option>
+              <Option value="PONTOREAL">PONTOREAL</Option>
+            </Select>
+          </div>
+
+          <div className="div-status-Os">
+            <div className="div-text-Os">Status:</div>
+            <div style={{ display: "flex", width: "100%" }}>
+              <Select
+                value={this.state.status}
+                style={{ width: "100%" }}
+                onChange={this.onChangeStatus}
+              >
+                {this.state.allStatus.map(item => {
+                  return <Option value={item}>{item.toUpperCase()}</Option>;
+                })}
+              </Select>
+              <this.modalStatus />
+              {this.props.auth.addStatus ? (
+                <Button
+                  className="buttonadd-marca-produtos"
+                  type="primary"
+                  icon="plus"
+                  name="modalMarca"
+                  onClick={this.openModais}
+                />
+              ) : null}
+            </div>
+          </div>
+        </div>
+
+        <div className="div-linha-Os">
           <div className="div-nome-Os">
             <div className="div-textNome-Os">Nome do produto:</div>
             <Select
@@ -710,46 +750,6 @@ class Rexterno extends Component {
               onChange={this.onChangeQuant}
               onBlur={this.onBlurValidator}
             />
-          </div>
-        </div>
-
-        <div className="div-linha-Os">
-          <div className="div-numeroSerie-Os">
-            <div className="div-text-Os">Estoque:</div>
-            <Select
-              value={this.state.estoque}
-              style={{ width: "100%" }}
-              onChange={this.onChangeEstoque}
-            >
-              <Option value="REALPONTO">REALPONTO</Option>
-              <Option value="NOVAREAL">NOVA REALPONTO</Option>
-              <Option value="PONTOREAL">PONTOREAL</Option>
-            </Select>
-          </div>
-
-          <div className="div-status-Os">
-            <div className="div-text-Os">Status:</div>
-            <div style={{ display: "flex", width: "100%" }}>
-              <Select
-                value={this.state.status}
-                style={{ width: "100%" }}
-                onChange={this.onChangeStatus}
-              >
-                {this.state.allStatus.map(item => {
-                  return <Option value={item}>{item.toUpperCase()}</Option>;
-                })}
-              </Select>
-              <this.modalStatus />
-              {this.props.auth.addStatus ? (
-                <Button
-                  className="buttonadd-marca-produtos"
-                  type="primary"
-                  icon="plus"
-                  name="modalMarca"
-                  onClick={this.openModais}
-                />
-              ) : null}
-            </div>
           </div>
         </div>
 

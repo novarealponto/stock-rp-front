@@ -10,7 +10,7 @@ import {
   Modal,
   InputNumber,
   Icon,
-  message,
+  message
 } from "antd";
 
 import { DeleteOutlined } from "@ant-design/icons";
@@ -37,7 +37,7 @@ class Estoque extends Component {
     modalStatus: false,
     modaldelete: false,
     estoque: {
-      rows: [],
+      rows: []
     },
     page: 1,
     total: 10,
@@ -45,13 +45,13 @@ class Estoque extends Component {
     show: 0,
     serialNumbers: [],
     serialNumber: "",
-    line: {},
+    line: {}
   };
 
-  changePages = (pages) => {
+  changePages = pages => {
     this.setState(
       {
-        page: pages,
+        page: pages
       },
       () => {
         this.getStock();
@@ -59,22 +59,22 @@ class Estoque extends Component {
     );
   };
 
-  onChangeQuant = (value) => {
+  onChangeQuant = value => {
     this.setState({
-      quantModal: value,
+      quantModal: value
     });
   };
 
-  showModalStatus = (line) => {
+  showModalStatus = line => {
     this.setState({
       modalStatus: true,
-      line,
+      line
     });
   };
 
-  onChangeNumeroModal = async (e) => {
+  onChangeNumeroModal = async e => {
     await this.setState({
-      numeroSerieModal: e.target.value,
+      numeroSerieModal: e.target.value
     });
 
     const teste = this.state.numeroSerieModal.split(/\n/);
@@ -87,7 +87,7 @@ class Estoque extends Component {
       let count = 0;
 
       // eslint-disable-next-line array-callback-return
-      teste.map((valor) => {
+      teste.map(valor => {
         if (valor === teste[teste.length - 2]) count++;
       });
 
@@ -103,24 +103,24 @@ class Estoque extends Component {
         const testeArray = teste.toString();
 
         this.setState({
-          numeroSerieModal: testeArray.replace(/,/gi, "\n"),
+          numeroSerieModal: testeArray.replace(/,/gi, "\n")
         });
       }
     }
   };
 
-  onChange = async (e) => {
+  onChange = async e => {
     await this.setState({
       [e.target.name]: e.target.value,
-      page: 1,
+      page: 1
     });
 
     this.getStock();
   };
 
-  onChangeSelect = async (value) => {
+  onChangeSelect = async value => {
     await this.setState({
-      estoqueBase: value,
+      estoqueBase: value
     });
 
     this.getStock();
@@ -128,7 +128,7 @@ class Estoque extends Component {
 
   getStock = async () => {
     this.setState({
-      loading: true,
+      loading: true
     });
 
     const estoqueBase =
@@ -138,42 +138,42 @@ class Estoque extends Component {
       filters: {
         mark: {
           specific: {
-            mark: this.state.fabricante,
-          },
+            mark: this.state.fabricante
+          }
         },
         product: {
           specific: {
             name: this.state.produto,
-            modulo: this.props.auth.modulo,
-          },
+            modulo: this.props.auth.modulo
+          }
         },
         stockBase: {
           specific: {
-            stockBase: estoqueBase,
-          },
-        },
+            stockBase: estoqueBase
+          }
+        }
       },
       page: this.state.page,
-      total: this.state.total,
+      total: this.state.total
     };
 
-    await stock(query).then((resposta) =>
+    await stock(query).then(resposta =>
       this.setState({
         estoque: resposta.data,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show,
+        show: resposta.data.show
       })
     );
 
     this.setState({
-      loading: false,
+      loading: false
     });
   };
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado,
+      avancado: !this.state.avancado
     });
   };
 
@@ -269,13 +269,13 @@ class Estoque extends Component {
 
     const serialNumbers =
       numeroSerieModal.length > 0
-        ? numeroSerieModal.split(/\n/).filter((item) => (item ? item : null))
+        ? numeroSerieModal.split(/\n/).filter(item => (item ? item : null))
         : null;
 
     const value = {
       ...line,
       amount,
-      serialNumbers,
+      serialNumbers
     };
 
     if (!serialNumbers) return;
@@ -288,7 +288,7 @@ class Estoque extends Component {
           modalStatus: false,
           amount: 1,
           numeroSerieModal: [],
-          line: {},
+          line: {}
         });
       }
     } else {
@@ -309,7 +309,7 @@ class Estoque extends Component {
 
     const { status } = await deteleEquip({
       id: this.state.serialNumberDeleteId,
-      productBaseId: line.id,
+      productBaseId: line.id
     });
 
     if (status === 200) {
@@ -331,7 +331,7 @@ class Estoque extends Component {
         this.setState({
           modaldelete: false,
           serialNumberDelete: "",
-          serialNumberDeleteId: "",
+          serialNumberDeleteId: ""
         })
       }
     >
@@ -393,19 +393,19 @@ class Estoque extends Component {
           style={{ width: "100%" }}
           placeholder="número de série"
           value={this.state.serialNumber}
-          onChange={async (e) => {
+          onChange={async e => {
             await this.setState({ serialNumber: e.target.value });
             this.getAllEquips();
           }}
         />
         <div className="div-modal-estoque">
-          {this.state.serialNumbers.map((item) => {
+          {this.state.serialNumbers.map(item => {
             return (
               <div
                 style={{
                   display: "flex",
                   flexDirection: "row",
-                  justifyContent: "space-between",
+                  justifyContent: "space-between"
                 }}
               >
                 <p
@@ -424,7 +424,7 @@ class Estoque extends Component {
                         this.setState({
                           modaldelete: true,
                           serialNumberDelete: item.serialNumber,
-                          serialNumberDeleteId: item.id,
+                          serialNumberDeleteId: item.id
                         })
                       }
                     />
@@ -442,30 +442,30 @@ class Estoque extends Component {
       filters: {
         equip: {
           specific: {
-            serialNumber: this.state.serialNumber,
-          },
+            serialNumber: this.state.serialNumber
+          }
         },
         stockBase: {
           specific: {
-            stockBase: this.state.line.stockBase,
-          },
+            stockBase: this.state.line.stockBase
+          }
         },
         product: {
           specific: {
-            id: this.state.line.productId,
-          },
-        },
+            id: this.state.line.productId
+          }
+        }
       },
-      total: null,
+      total: null
     };
     getAllEquipsService(query)
-      .then((resp) => {
+      .then(resp => {
         this.setState({ serialNumbers: resp.data.rows });
       })
-      .catch((error) => console.log(error));
+      .catch(error => console.log(error));
   };
 
-  showModal = async (line) => {
+  showModal = async line => {
     await this.setState({ line });
     this.setState({ visible: true });
 
@@ -541,8 +541,8 @@ class Estoque extends Component {
           <div className="cel-quant-cabecalho-estoque">Disp.</div>
           <div className="cel-quant-cabecalho-estoque">Min.</div>
           <div className="cel-estoque-cabecalho-estoque">Estoque</div>
+          <div className="cel-AA-cabecalho-estoque">Aguard. Análise</div>
           <div className="cel-status-cabecalho-estoque">Análise</div>
-          <div className="cel-botao-cabecalho-estoque">Ação</div>
         </div>
 
         {this.state.loading ? (
@@ -552,7 +552,7 @@ class Estoque extends Component {
         ) : (
           <div className="div-separate-estoque">
             {this.state.estoque.rows.length !== 0 ? (
-              this.state.estoque.rows.map((line) => (
+              this.state.estoque.rows.map(line => (
                 <div className="div-100-estoque">
                   <div className="div-lines-estoque">
                     <div className="cel-produto-cabecalho-estoque">
@@ -623,21 +623,39 @@ class Estoque extends Component {
                         {line.stockBase}
                       </label>
                     </div>
+                    <div className="cel-AA-cabecalho-estoque">
+                      <label>0</label>
+                    </div>
                     <div className="cel-status-cabecalho-estoque">
-                      <label
-                        className="div-table-label-cel-estoque"
-                        style={
-                          parseInt(line.minimumStock, 10) >
-                          parseInt(line.available, 10)
-                            ? { color: "red" }
-                            : null
-                        }
-                      >
-                        {line.analysis}
-                      </label>
+                      {line.analysis !== "0" ? (
+                        <label
+                          className="div-table-label-analise-cel-estoque"
+                          onClick={() => this.showModalStatus(line)}
+                          style={
+                            parseInt(line.minimumStock, 10) >
+                            parseInt(line.available, 10)
+                              ? { color: "red" }
+                              : null
+                          }
+                        >
+                          {line.analysis}
+                        </label>
+                      ) : (
+                        <label
+                          className="div-table-label-cel-estoque"
+                          style={
+                            parseInt(line.minimumStock, 10) >
+                            parseInt(line.available, 10)
+                              ? { color: "red" }
+                              : null
+                          }
+                        >
+                          {line.analysis}
+                        </label>
+                      )}
                     </div>
 
-                    <div className="cel-botao-cabecalho-estoque">
+                    {/* <div className="cel-botao-cabecalho-estoque">
                       {line.analysis !== "0" ? (
                         <Icon
                           type="info-circle"
@@ -647,7 +665,7 @@ class Estoque extends Component {
                       ) : (
                         "-"
                       )}
-                    </div>
+                    </div> */}
                   </div>
                   <div className=" div-separate1-estoque" />
                 </div>
@@ -668,7 +686,7 @@ class Estoque extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    auth: state.auth
   };
 }
 
