@@ -631,27 +631,31 @@ class OsDash extends Component {
               </div>
             </div>
             <div className="div-linha1-avancado-GOs">
-              <div className="div-text-GOs">Produto:</div>
-              <Input
-                className="input-100"
-                style={{ width: "100%" }}
-                name="produto"
-                value={this.state.produto}
-                placeholder="Digite o produto"
-                onChange={this.onChange}
-                allowClear
-              />
+              <div className="div-produto-GOs">
+                <div className="div-text-GOs">Produto:</div>
+                <Input
+                  className="input-100"
+                  style={{ width: "100%" }}
+                  name="produto"
+                  value={this.state.produto}
+                  placeholder="Digite o produto"
+                  onChange={this.onChange}
+                  allowClear
+                />
+              </div>
 
-              <div className="div-text-GOs">N° Serie:</div>
-              <Input
-                className="input-100"
-                style={{ width: "100%" }}
-                name="nSerie"
-                value={this.state.nSerie}
-                placeholder="Digite o produto"
-                onChange={this.onChange}
-                allowClear
-              />
+              <div className="div-nSerie-GOs">
+                <div className="div-textRs-GOs">N° Serie:</div>
+                <Input
+                  className="input-100"
+                  style={{ width: "100%" }}
+                  name="nSerie"
+                  value={this.state.nSerie}
+                  placeholder="Digite o produto"
+                  onChange={this.onChange}
+                  allowClear
+                />
+              </div>
             </div>
           </div>
         ) : (
