@@ -7,7 +7,7 @@ import {
   Button,
   message,
   Select,
-  Modal
+  Modal,
 } from "antd";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -18,7 +18,7 @@ import { getTecnico } from "../../../../services/tecnico";
 import { getSerial } from "../../../../services/serialNumber";
 import {
   addStatusExpedition,
-  getAllStatusExpedition
+  getAllStatusExpedition,
 } from "../../../../services/statusExpedition";
 import moment from "moment";
 
@@ -58,7 +58,7 @@ class Rexterno extends Component {
       cnpj: false,
       data: false,
       technician: false,
-      serialNumber: false
+      serialNumber: false,
     },
     message: {
       Os: "",
@@ -66,46 +66,46 @@ class Rexterno extends Component {
       cnpj: "",
       data: "",
       technician: "",
-      serialNumber: ""
-    }
+      serialNumber: "",
+    },
   };
 
-  getAllTecnico = async name => {
+  getAllTecnico = async (name) => {
     const query = {
       filters: {
         technician: {
           specific: {
-            name
-          }
-        }
-      }
+            name,
+          },
+        },
+      },
     };
 
-    await getTecnico(query).then(resposta =>
+    await getTecnico(query).then((resposta) =>
       this.setState({
-        tecnicoArray: resposta.data
+        tecnicoArray: resposta.data,
       })
     );
   };
 
-  getAllProducts = async name => {
+  getAllProducts = async (name) => {
     const query = {
       filters: {
         product: {
           specific: {
             serial: true,
-            name
-          }
-        }
-      }
+            name,
+          },
+        },
+      },
     };
 
-    await getProdutos(query).then(resposta =>
+    await getProdutos(query).then((resposta) =>
       this.setState({
-        itemArray: resposta.data.rows.map(item => {
+        itemArray: resposta.data.rows.map((item) => {
           const resp = { name: item.name, id: item.id };
           return resp;
-        })
+        }),
       })
     );
   };
@@ -114,13 +114,13 @@ class Rexterno extends Component {
     message.error("Por favor selecione um status");
   };
 
-  errorNumeroSerie = value => {
+  errorNumeroSerie = (value) => {
     message.error(value, 10);
   };
 
-  filter = async e => {
+  filter = async (e) => {
     await this.setState({
-      numeroSerieTest: e.target.value
+      numeroSerieTest: e.target.value,
     });
 
     const teste = this.state.numeroSerieTest.split(/\n/, 10);
@@ -133,7 +133,7 @@ class Rexterno extends Component {
       let count = 0;
 
       // eslint-disable-next-line array-callback-return
-      teste.map(valor => {
+      teste.map((valor) => {
         if (valor === teste[teste.length - 2]) count++;
       });
 
@@ -173,7 +173,7 @@ class Rexterno extends Component {
         const testeArray = teste.toString();
 
         this.setState({
-          numeroSerieTest: testeArray.replace(/,/gi, "\n")
+          numeroSerieTest: testeArray.replace(/,/gi, "\n"),
         });
       }
     }
@@ -185,8 +185,8 @@ class Rexterno extends Component {
     if (status === 200) {
       this.setState({
         allStatus: data
-          .map(item => item.status)
-          .filter(item => item !== "EMPRESTIMO")
+          .map((item) => item.status)
+          .filter((item) => item !== "EMPRESTIMO"),
       });
     }
   };
@@ -197,25 +197,31 @@ class Rexterno extends Component {
     await this.getAllStatusExpedition();
   };
 
-  getAllItens = async name => {
+  getAllItens = async (name) => {
     const query = {
       filters: {
         product: {
           specific: {
-            name
-          }
+            name,
+          },
         },
         stockBase: {
           specific: {
-            stockBase: this.state.estoque
-          }
-        }
-      }
+            stockBase: this.state.estoque,
+          },
+        },
+        productBase: {
+          specific: {
+            stockBaseId: this.state.estoque ? undefined : null,
+          },
+        },
+      },
+      stockBaseId: this.state.estoque,
     };
 
-    await getProdutoByEstoque(query).then(resposta =>
+    await getProdutoByEstoque(query).then((resposta) =>
       this.setState({
-        itemArray: resposta.data
+        itemArray: resposta.data,
       })
     );
   };
@@ -225,7 +231,7 @@ class Rexterno extends Component {
       nomeProduto: value,
       productBaseId: props.props.props.id,
       serial: props.props.props.serial,
-      disp: parseInt(props.props.props.available, 10)
+      disp: parseInt(props.props.props.available, 10),
     });
   };
 
@@ -233,17 +239,17 @@ class Rexterno extends Component {
     message.success("A reserva foi efetuada");
   };
 
-  error = text => {
+  error = (text) => {
     message.error(text);
   };
 
-  onChangeData = date => {
+  onChangeData = (date) => {
     this.setState({
-      data: date
+      data: date,
     });
   };
 
-  onBlurValidator = e => {
+  onBlurValidator = (e) => {
     const { nome, valor, fieldFalha, message } = validators(
       e.target.name,
       e.target.value,
@@ -253,20 +259,20 @@ class Rexterno extends Component {
     this.setState({
       [nome]: valor,
       fieldFalha,
-      message
+      message,
     });
   };
 
-  onFocus = e => {
+  onFocus = (e) => {
     this.setState({
       fieldFalha: {
         ...this.state.fieldFalha,
-        [e.target.name]: false
+        [e.target.name]: false,
       },
       message: {
         ...this.state.message,
-        [e.target.name]: false
-      }
+        [e.target.name]: false,
+      },
     });
   };
 
@@ -274,18 +280,18 @@ class Rexterno extends Component {
     this.setState({
       fieldFalha: {
         ...this.state.fieldFalha,
-        technician: false
+        technician: false,
       },
       message: {
         ...this.state.message,
-        technician: false
-      }
+        technician: false,
+      },
     });
   };
 
   saveTargetNewReservaOs = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const values = {
@@ -294,7 +300,7 @@ class Rexterno extends Component {
       date: this.state.data,
       technicianId: this.state.technicianId,
       osParts: this.state.carrinho,
-      responsibleUser: "modrp"
+      responsibleUser: "modrp",
     };
 
     const resposta = await newReservaOs(values);
@@ -303,12 +309,12 @@ class Rexterno extends Component {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
+        message: resposta.data.fields[0].message,
       });
       message.error(this.state.message.message);
       this.setState({
         loading: false,
-        messageError: false
+        messageError: false,
       });
     }
     if (resposta.status === 200) {
@@ -322,88 +328,87 @@ class Rexterno extends Component {
         nomeProduto: "Não selecionado",
         tecnico: "Não selecionado",
         messageSuccess: true,
-        status: "Não selecionado"
+        status: "Não selecionado",
       });
       await this.success();
       this.setState({
         loading: false,
-        messageSuccess: false
+        messageSuccess: false,
       });
     }
 
     await this.getAllItens();
   };
 
-  disabledDate = current => {
+  disabledDate = (current) => {
     return current && current < moment().subtract(1, "day");
   };
 
-  onChangeEstoque = async valor => {
+  onChangeEstoque = async (valor) => {
     await this.setState({
       estoque: valor,
       nomeProduto: "Não selecionado",
       productBaseId: "",
       serial: "",
-      disp: 0
+      disp: 0,
     });
 
     await this.getAllItens();
   };
 
-  onChangeStatus = async valor => {
+  onChangeStatus = async (valor) => {
     if (this.state.status === "CONSERTO" || valor === "CONSERTO") {
       await this.setState({
-        serialNumber: "",
         numeroSerieTest: "",
         productBaseId: "",
-        nomeProduto: "Não selecionado"
+        estoque: null,
       });
     }
 
     await this.setState({
-      serialNumber: "",
+      estoque:
+        valor !== "CONSERTO" && this.state.estoque === null
+          ? "REALPONTO"
+          : this.state.estoque,
+      serial: valor === "CONSERTO",
       status: valor,
+      serialNumber: "",
       nomeProduto: "Não selecionado",
-      serial: false
     });
 
-    if (valor === "CONSERTO") {
-      this.getAllProducts();
-    } else {
-      await this.getAllItens();
-    }
+    await this.getAllItens();
   };
 
-  onChangeTecnico = value => {
+  onChangeTecnico = (value) => {
     this.setState({
-      tecnico: value
+      tecnico: value,
     });
   };
 
   onChangeSelect = (value, props) => {
     this.setState({
       tecnico: value,
-      technicianId: props.props.props.id
+      technicianId: props.props.props.id,
     });
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const { nome, valor } = masks(e.target.name, e.target.value);
 
     this.setState({
-      [nome]: valor
+      [nome]: valor,
     });
   };
 
-  onChangeQuant = value => {
+  onChangeQuant = (value) => {
     this.setState({
-      quant: value
+      quant: value,
     });
   };
 
-  openModais = e => {
+  openModais = (e) => {
     this.setState({
-      modalAddStatus: true
+      modalAddStatus: true,
     });
   };
 
@@ -413,15 +418,15 @@ class Rexterno extends Component {
     if (this.state.nomeProduto === "Não selecionado")
       return this.error("O produto é obrigatório para essa ação ser realizada");
 
-    const array = this.state.carrinho.map(value => value.nomeProdutoCarrinho);
+    const array = this.state.carrinho.map((value) => value.nomeProdutoCarrinho);
 
-    if (array.filter(value => value === this.state.nomeProduto).length > 0) {
+    if (array.filter((value) => value === this.state.nomeProduto).length > 0) {
       this.error("Este item já foi selecionado");
       this.setState({
         nomeProduto: "Não selecionado",
         serialNumber: "",
         observacao: "",
-        status: "Não selecionado"
+        status: "Não selecionado",
       });
       return;
     }
@@ -431,7 +436,7 @@ class Rexterno extends Component {
       !this.state.serialNumber &&
       this.state.numeroSerieTest
         .split(/\n/)
-        .filter(item => (item ? item : null)).length !== this.state.quant
+        .filter((item) => (item ? item : null)).length !== this.state.quant
     ) {
       this.error(
         "Quantidade de numero de serie não condiz com a quantidade adicionada"
@@ -441,7 +446,7 @@ class Rexterno extends Component {
 
     let itemAdd = {
       status: this.state.status,
-      nomeProdutoCarrinho: this.state.nomeProduto
+      nomeProdutoCarrinho: this.state.nomeProduto,
     };
 
     if (this.state.status === "CONSERTO") {
@@ -449,15 +454,15 @@ class Rexterno extends Component {
         this.state.numeroSerieTest.length > 0
           ? this.state.numeroSerieTest
               .split(/\n/)
-              .filter(item => (item ? item : null))
+              .filter((item) => (item ? item : null))
           : null;
 
       itemAdd = {
         ...itemAdd,
-        productId: this.state.productBaseId,
+        productBaseId: this.state.productBaseId,
         serialNumbers,
         description: this.state.observacao,
-        amount: serialNumbers.length
+        amount: serialNumbers.length,
       };
     } else {
       itemAdd = {
@@ -467,7 +472,7 @@ class Rexterno extends Component {
         stockBase: this.state.estoque,
         serialNumberArray: this.state.numeroSerieTest
           .split(/\n/)
-          .filter(item => (item ? item : null))
+          .filter((item) => (item ? item : null)),
       };
     }
 
@@ -480,18 +485,18 @@ class Rexterno extends Component {
       serialNumber: "",
       estoque: "REALPONTO",
       status: "Não selecionado",
-      observacao: ""
+      observacao: "",
     });
 
     await this.getAllItens();
   };
 
-  remove = value => {
+  remove = (value) => {
     const oldCarrinho = this.state.carrinho;
-    const newCarrinho = oldCarrinho.filter(valor => valor !== value);
+    const newCarrinho = oldCarrinho.filter((valor) => valor !== value);
 
     this.setState({
-      carrinho: newCarrinho
+      carrinho: newCarrinho,
     });
   };
 
@@ -503,12 +508,12 @@ class Rexterno extends Component {
 
   handleOk = async () => {
     const value = {
-      status: this.state.newStatus
+      status: this.state.newStatus,
     };
 
     await addStatusExpedition(value);
     this.setState({
-      modalAddStatus: false
+      modalAddStatus: false,
     });
 
     await this.getAllStatusExpedition();
@@ -644,7 +649,7 @@ class Rexterno extends Component {
                 defaultValue="Não selecionado"
                 style={{ width: "100%" }}
                 onChange={this.onChangeSelect}
-                onSearch={name => this.getAllTecnico(name)}
+                onSearch={(name) => this.getAllTecnico(name)}
                 showSearch
                 placeholder="Nenhum tecnicos cadastrado"
                 optionFilterProp="children"
@@ -657,7 +662,7 @@ class Rexterno extends Component {
                     .indexOf(input.toLowerCase()) >= 0
                 }
               >
-                {this.state.tecnicoArray.map(valor => (
+                {this.state.tecnicoArray.map((valor) => (
                   <Option props={valor} value={valor.name}>
                     {valor.name}
                   </Option>
@@ -673,16 +678,20 @@ class Rexterno extends Component {
 
         <div className="div-linha-Os">
           <div className="div-numeroSerie-Os">
-            <div className="div-text-Os">Estoque:</div>
-            <Select
-              value={this.state.estoque}
-              style={{ width: "100%" }}
-              onChange={this.onChangeEstoque}
-            >
-              <Option value="REALPONTO">REALPONTO</Option>
-              <Option value="NOVAREAL">NOVA REALPONTO</Option>
-              <Option value="PONTOREAL">PONTOREAL</Option>
-            </Select>
+            {this.state.status !== "CONSERTO" && (
+              <>
+                <div className="div-text-Os">Estoque:</div>
+                <Select
+                  value={this.state.estoque}
+                  style={{ width: "100%" }}
+                  onChange={this.onChangeEstoque}
+                >
+                  <Option value="REALPONTO">REALPONTO</Option>
+                  <Option value="NOVAREAL">NOVA REALPONTO</Option>
+                  <Option value="PONTOREAL">PONTOREAL</Option>
+                </Select>
+              </>
+            )}
           </div>
 
           <div className="div-status-Os">
@@ -693,7 +702,7 @@ class Rexterno extends Component {
                 style={{ width: "100%" }}
                 onChange={this.onChangeStatus}
               >
-                {this.state.allStatus.map(item => {
+                {this.state.allStatus.map((item) => {
                   return <Option value={item}>{item.toUpperCase()}</Option>;
                 })}
               </Select>
@@ -716,11 +725,7 @@ class Rexterno extends Component {
             <div className="div-textNome-Os">Nome do produto:</div>
             <Select
               showSearch
-              onSearch={
-                this.state.status === "CONSERTO"
-                  ? name => this.getAllProducts(name)
-                  : name => this.getAllItens(name)
-              }
+              onSearch={(name) => this.getAllItens(name)}
               style={{ width: "100%" }}
               placeholder="Selecione o produto"
               optionFilterProp="children"
@@ -732,7 +737,7 @@ class Rexterno extends Component {
                   .indexOf(input.toLowerCase()) >= 0
               }
             >
-              {this.state.itemArray.map(value => (
+              {this.state.itemArray.map((value) => (
                 <Option props={value} value={value.name}>
                   {value.name}
                 </Option>
@@ -744,7 +749,9 @@ class Rexterno extends Component {
             <div className="div-text-Os">Quant:</div>
             <InputNumber
               min={1}
-              max={this.state.disp}
+              max={
+                this.state.status !== "CONSERTO" ? this.state.disp : undefined
+              }
               defaultValue={this.state.quant}
               value={this.state.quant}
               onChange={this.onChangeQuant}
@@ -782,7 +789,7 @@ class Rexterno extends Component {
           </div>
         ) : null}
 
-        {this.state.serial ? (
+        {this.state.status !== "CONSERTO" && this.state.serial ? (
           <div className="div-linha-Os">
             <div className="div-serial-AddKit">
               <div className="div-textSerial-AddKit">Número de série:</div>
@@ -832,7 +839,7 @@ class Rexterno extends Component {
               <label className="label-quant-Os">Quantidade</label>
             </div>
             <div className="div-linhaSepareteProdutos-Os"></div>
-            {this.state.carrinho.map(valor => (
+            {this.state.carrinho.map((valor) => (
               <div className="div-linha-Os">
                 <label className="label-produto-Os">
                   {valor.nomeProdutoCarrinho}
@@ -868,7 +875,7 @@ class Rexterno extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 

@@ -10,7 +10,8 @@ import {
   Modal,
   InputNumber,
   Icon,
-  message
+  message,
+  Tabs,
 } from "antd";
 
 import { DeleteOutlined } from "@ant-design/icons";
@@ -19,8 +20,9 @@ import { stock, UpdatteProductBase } from "../../../../services/estoque";
 import { getAllEquipsService, deteleEquip } from "../../../../services/equip";
 import { getSerial } from "../../../../services/serialNumber";
 
-const { Option } = Select;
-const { TextArea } = Input;
+const { Option } = Select,
+  { TextArea } = Input,
+  { TabPane } = Tabs;
 
 class Estoque extends Component {
   state = {
@@ -37,7 +39,7 @@ class Estoque extends Component {
     modalStatus: false,
     modaldelete: false,
     estoque: {
-      rows: []
+      rows: [],
     },
     page: 1,
     total: 10,
@@ -45,13 +47,13 @@ class Estoque extends Component {
     show: 0,
     serialNumbers: [],
     serialNumber: "",
-    line: {}
+    line: {},
   };
 
-  changePages = pages => {
+  changePages = (pages) => {
     this.setState(
       {
-        page: pages
+        page: pages,
       },
       () => {
         this.getStock();
@@ -59,22 +61,22 @@ class Estoque extends Component {
     );
   };
 
-  onChangeQuant = value => {
+  onChangeQuant = (value) => {
     this.setState({
-      quantModal: value
+      quantModal: value,
     });
   };
 
-  showModalStatus = line => {
+  showModalStatus = (line) => {
     this.setState({
       modalStatus: true,
-      line
+      line,
     });
   };
 
-  onChangeNumeroModal = async e => {
+  onChangeNumeroModal = async (e) => {
     await this.setState({
-      numeroSerieModal: e.target.value
+      numeroSerieModal: e.target.value,
     });
 
     const teste = this.state.numeroSerieModal.split(/\n/);
@@ -87,7 +89,7 @@ class Estoque extends Component {
       let count = 0;
 
       // eslint-disable-next-line array-callback-return
-      teste.map(valor => {
+      teste.map((valor) => {
         if (valor === teste[teste.length - 2]) count++;
       });
 
@@ -103,24 +105,24 @@ class Estoque extends Component {
         const testeArray = teste.toString();
 
         this.setState({
-          numeroSerieModal: testeArray.replace(/,/gi, "\n")
+          numeroSerieModal: testeArray.replace(/,/gi, "\n"),
         });
       }
     }
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     await this.setState({
       [e.target.name]: e.target.value,
-      page: 1
+      page: 1,
     });
 
     this.getStock();
   };
 
-  onChangeSelect = async value => {
+  onChangeSelect = async (value) => {
     await this.setState({
-      estoqueBase: value
+      estoqueBase: value,
     });
 
     this.getStock();
@@ -128,7 +130,7 @@ class Estoque extends Component {
 
   getStock = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const estoqueBase =
@@ -138,42 +140,42 @@ class Estoque extends Component {
       filters: {
         mark: {
           specific: {
-            mark: this.state.fabricante
-          }
+            mark: this.state.fabricante,
+          },
         },
         product: {
           specific: {
             name: this.state.produto,
-            modulo: this.props.auth.modulo
-          }
+            modulo: this.props.auth.modulo,
+          },
         },
         stockBase: {
           specific: {
-            stockBase: estoqueBase
-          }
-        }
+            stockBase: estoqueBase,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
 
-    await stock(query).then(resposta =>
+    await stock(query).then((resposta) =>
       this.setState({
         estoque: resposta.data,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
     );
 
     this.setState({
-      loading: false
+      loading: false,
     });
   };
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado
+      avancado: !this.state.avancado,
     });
   };
 
@@ -264,37 +266,55 @@ class Estoque extends Component {
     </div>
   );
 
-  handleOk = async () => {
+  handleOk = async (status) => {
     const { line, quantModal: amount, numeroSerieModal } = this.state;
 
     const serialNumbers =
       numeroSerieModal.length > 0
-        ? numeroSerieModal.split(/\n/).filter(item => (item ? item : null))
+        ? numeroSerieModal.split(/\n/).filter((item) => (item ? item : null))
         : null;
 
     const value = {
       ...line,
       amount,
-      serialNumbers
+      serialNumbers,
+      status,
     };
 
-    if (!serialNumbers) return;
+    if (status === "analysis") {
+      if (!serialNumbers) return;
 
-    if (serialNumbers.length === amount) {
-      const { status } = await UpdatteProductBase(value);
+      if (serialNumbers.length === amount) {
+        const { status } = await UpdatteProductBase(value);
+        if (status === 200) {
+          await this.getStock();
+          this.setState({
+            modalStatus: false,
+            amount: 1,
+            numeroSerieModal: [],
+            line: {},
+          });
+        }
+      } else {
+        message.error(
+          "Quantidade adicinada não condiz com a quantidade de numero de série"
+        );
+      }
+    } else if (status === "preAnalysis") {
+      console.log(serialNumbers);
+      const { status } = await UpdatteProductBase({
+        ...value,
+        serialNumbers: [],
+      });
       if (status === 200) {
         await this.getStock();
         this.setState({
           modalStatus: false,
           amount: 1,
           numeroSerieModal: [],
-          line: {}
+          line: {},
         });
       }
-    } else {
-      message.error(
-        "Quantidade adicinada não condiz com a quantidade de numero de série"
-      );
     }
   };
 
@@ -309,7 +329,7 @@ class Estoque extends Component {
 
     const { status } = await deteleEquip({
       id: this.state.serialNumberDeleteId,
-      productBaseId: line.id
+      productBaseId: line.id,
     });
 
     if (status === 200) {
@@ -331,7 +351,7 @@ class Estoque extends Component {
         this.setState({
           modaldelete: false,
           serialNumberDelete: "",
-          serialNumberDeleteId: ""
+          serialNumberDeleteId: "",
         })
       }
     >
@@ -343,40 +363,102 @@ class Estoque extends Component {
   );
 
   ModalStatus = () => (
-    <Modal
-      width={650}
-      title="Entrada no estoque"
-      visible={this.state.modalStatus}
-      okText="Confirmar"
-      cancelText="Cancelar"
-      onOk={this.handleOk}
-      onCancel={() => this.setState({ modalStatus: false })}
-    >
-      <div className="div-lines-estoque">
-        <div className="div-serial-entrada">
-          <div className="div-textSerial-entrada">Número de série:</div>
-          <TextArea
-            className="input-100"
-            placeholder="Digite o número de série"
-            autosize={{ minRows: 2, maxRows: 4 }}
-            rows={4}
-            onChange={this.onChangeNumeroModal}
-            name="numeroSerieModal"
-            value={this.state.numeroSerieModal}
-          />
-        </div>
-        <div className="div-quantModal-estoque">
-          <div className="div-text-entrada">Quant:</div>
-          <InputNumber
-            min={1}
-            max={parseInt(this.state.line.analysis, 10)}
-            defaultValue={this.state.quantModal}
-            style={{ width: "100%" }}
-            value={this.state.quantModal}
-            onChange={this.onChangeQuant}
-          />
-        </div>
-      </div>
+    <Modal width={650} visible={this.state.modalStatus} footer={null}>
+      <Tabs
+        defaultActiveKey="1"
+        type="card"
+        className="modal-tabs"
+        // style={{ width: "calc(100% + 20px)", position: "relative", left: "0" }}
+      >
+        <TabPane tab="Enviar para análise" key={1}>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div className="div-lines-estoque">
+              <div className="div-serial-entrada">
+                <div className="div-block-label-modal">
+                  <label>{`Produto: ${this.state.line.name}`}</label>
+                  <label>{`Fabricante: ${this.state.line.manufacturer}`}</label>
+                </div>
+              </div>
+              <div className="div-quantModal-estoque">
+                <div className="div-text-entrada">Quant:</div>
+                <InputNumber
+                  min={1}
+                  max={parseInt(this.state.line.preAnalysis, 10)}
+                  defaultValue={this.state.quantModal}
+                  style={{ width: "100%" }}
+                  value={this.state.quantModal}
+                  onChange={this.onChangeQuant}
+                />
+              </div>
+            </div>
+            <div className="div-block-footer">
+              <Button onClick={() => this.setState({ modalStatus: false })}>
+                Cancelar
+              </Button>
+              <Button
+                type="primary"
+                onClick={() => this.handleOk("preAnalysis")}
+              >
+                Confirmar
+              </Button>
+            </div>
+          </div>
+        </TabPane>
+        <TabPane tab="Entrada Estoque" key={2}>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ flexDirection: "column" }}>
+              <div
+                className="div-block-label-modal"
+                style={{ flexDirection: "row" }}
+              >
+                <label
+                  style={{ width: "60%" }}
+                >{`Produto: ${this.state.line.name}`}</label>
+                <label
+                  style={{ width: "40%" }}
+                >{`Fabricante: ${this.state.line.manufacturer}`}</label>
+              </div>
+
+              <div className="div-lines-estoque">
+                <div className="div-serial-entrada">
+                  <div className="div-textSerial-entrada">Número de série:</div>
+                  <TextArea
+                    className="input-100"
+                    placeholder="Digite o número de série"
+                    autosize={{ minRows: 2, maxRows: 4 }}
+                    rows={4}
+                    onChange={this.onChangeNumeroModal}
+                    name="numeroSerieModal"
+                    value={this.state.numeroSerieModal}
+                  />
+                </div>
+                <div className="div-quantModal-estoque">
+                  <div className="div-text-entrada">Quant:</div>
+                  <InputNumber
+                    min={1}
+                    max={parseInt(this.state.line.analysis, 10)}
+                    defaultValue={this.state.quantModal}
+                    style={{ width: "100%" }}
+                    value={this.state.quantModal}
+                    onChange={this.onChangeQuant}
+                  />
+                </div>
+              </div>
+              <div className="div-block-footer">
+                <Button onClick={() => this.setState({ modalStatus: false })}>
+                  Cancelar
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => this.handleOk("analysis")}
+                >
+                  Confirmar
+                </Button>
+              </div>
+            </div>
+          </div>
+        </TabPane>
+      </Tabs>
     </Modal>
   );
 
@@ -393,19 +475,19 @@ class Estoque extends Component {
           style={{ width: "100%" }}
           placeholder="número de série"
           value={this.state.serialNumber}
-          onChange={async e => {
+          onChange={async (e) => {
             await this.setState({ serialNumber: e.target.value });
             this.getAllEquips();
           }}
         />
         <div className="div-modal-estoque">
-          {this.state.serialNumbers.map(item => {
+          {this.state.serialNumbers.map((item) => {
             return (
               <div
                 style={{
                   display: "flex",
                   flexDirection: "row",
-                  justifyContent: "space-between"
+                  justifyContent: "space-between",
                 }}
               >
                 <p
@@ -424,7 +506,7 @@ class Estoque extends Component {
                         this.setState({
                           modaldelete: true,
                           serialNumberDelete: item.serialNumber,
-                          serialNumberDeleteId: item.id
+                          serialNumberDeleteId: item.id,
                         })
                       }
                     />
@@ -442,30 +524,30 @@ class Estoque extends Component {
       filters: {
         equip: {
           specific: {
-            serialNumber: this.state.serialNumber
-          }
+            serialNumber: this.state.serialNumber,
+          },
         },
         stockBase: {
           specific: {
-            stockBase: this.state.line.stockBase
-          }
+            stockBase: this.state.line.stockBase,
+          },
         },
         product: {
           specific: {
-            id: this.state.line.productId
-          }
-        }
+            id: this.state.line.productId,
+          },
+        },
       },
-      total: null
+      total: null,
     };
     getAllEquipsService(query)
-      .then(resp => {
+      .then((resp) => {
         this.setState({ serialNumbers: resp.data.rows });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
-  showModal = async line => {
+  showModal = async (line) => {
     await this.setState({ line });
     this.setState({ visible: true });
 
@@ -552,7 +634,7 @@ class Estoque extends Component {
         ) : (
           <div className="div-separate-estoque">
             {this.state.estoque.rows.length !== 0 ? (
-              this.state.estoque.rows.map(line => (
+              this.state.estoque.rows.map((line) => (
                 <div className="div-100-estoque">
                   <div className="div-lines-estoque">
                     <div className="cel-produto-cabecalho-estoque">
@@ -624,35 +706,48 @@ class Estoque extends Component {
                       </label>
                     </div>
                     <div className="cel-AA-cabecalho-estoque">
-                      <label>0</label>
+                      <label
+                        className={
+                          line.analysis !== "0" || line.preAnalysis !== "0"
+                            ? "div-table-label-analise-cel-estoque"
+                            : "div-table-label-cel-estoque"
+                        }
+                        style={
+                          parseInt(line.minimumStock, 10) >
+                          parseInt(line.available, 10)
+                            ? { color: "red" }
+                            : null
+                        }
+                        onClick={
+                          line.analysis !== "0" || line.preAnalysis !== "0"
+                            ? () => this.showModalStatus(line)
+                            : () => this.showModalStatus(line)
+                        }
+                      >
+                        {line.preAnalysis}
+                      </label>
                     </div>
                     <div className="cel-status-cabecalho-estoque">
-                      {line.analysis !== "0" ? (
-                        <label
-                          className="div-table-label-analise-cel-estoque"
-                          onClick={() => this.showModalStatus(line)}
-                          style={
-                            parseInt(line.minimumStock, 10) >
-                            parseInt(line.available, 10)
-                              ? { color: "red" }
-                              : null
-                          }
-                        >
-                          {line.analysis}
-                        </label>
-                      ) : (
-                        <label
-                          className="div-table-label-cel-estoque"
-                          style={
-                            parseInt(line.minimumStock, 10) >
-                            parseInt(line.available, 10)
-                              ? { color: "red" }
-                              : null
-                          }
-                        >
-                          {line.analysis}
-                        </label>
-                      )}
+                      <label
+                        className={
+                          line.analysis !== "0" || line.preAnalysis !== "0"
+                            ? "div-table-label-analise-cel-estoque"
+                            : "div-table-label-cel-estoque"
+                        }
+                        style={
+                          parseInt(line.minimumStock, 10) >
+                          parseInt(line.available, 10)
+                            ? { color: "red" }
+                            : null
+                        }
+                        onClick={
+                          line.analysis !== "0" || line.preAnalysis !== "0"
+                            ? () => this.showModalStatus(line)
+                            : () => this.showModalStatus(line)
+                        }
+                      >
+                        {line.analysis}
+                      </label>
                     </div>
 
                     {/* <div className="cel-botao-cabecalho-estoque">
@@ -686,7 +781,7 @@ class Estoque extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 

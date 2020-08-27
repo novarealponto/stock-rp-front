@@ -521,51 +521,49 @@ class NovoProduto extends Component {
           <this.modalMarca />
         </div>
 
-        {this.state.categoria === "Equipamento" ? (
-          <div className="linha1-produtos">
-            <div className="div-tipo-produtos">
-              <div className="div-text-produtos">Tipo:</div>
-              <div className="div-inputs">
-                {this.state.tipoArray.length !== 0 ? (
-                  <Select
-                    value={this.state.tipo}
-                    style={{ width: "100%" }}
-                    name="type"
-                    onFocus={this.onFocusType}
-                    className={
-                      this.state.fieldFalha.type
-                        ? "div-inputError-produtos"
-                        : "input-100"
-                    }
-                    onChange={this.handleChangeTipo}
-                  >
-                    {this.state.tipoArray.map((valor) => (
-                      <Option value={valor.type}>{valor.type}</Option>
-                    ))}
-                  </Select>
-                ) : (
-                  <Select
-                    value="Nenhum tipo cadastrado"
-                    style={{ width: "100%" }}
-                  ></Select>
-                )}
-                {this.state.fieldFalha.type ? (
-                  <p className="div-feedbackError">{this.state.message.type}</p>
-                ) : null}
-              </div>
-              {this.props.auth.addType ? (
-                <Button
-                  className="buttonadd-marca-produtos"
-                  type="primary"
-                  name="modalTipo"
-                  icon="plus"
-                  onClick={this.openModais}
-                />
+        <div className="linha1-produtos">
+          <div className="div-tipo-produtos">
+            <div className="div-text-produtos">Tipo:</div>
+            <div className="div-inputs">
+              {this.state.tipoArray.length !== 0 ? (
+                <Select
+                  value={this.state.tipo}
+                  style={{ width: "100%" }}
+                  name="type"
+                  onFocus={this.onFocusType}
+                  className={
+                    this.state.fieldFalha.type
+                      ? "div-inputError-produtos"
+                      : "input-100"
+                  }
+                  onChange={this.handleChangeTipo}
+                >
+                  {this.state.tipoArray.map((valor) => (
+                    <Option value={valor.type}>{valor.type}</Option>
+                  ))}
+                </Select>
+              ) : (
+                <Select
+                  value="Nenhum tipo cadastrado"
+                  style={{ width: "100%" }}
+                ></Select>
+              )}
+              {this.state.fieldFalha.type ? (
+                <p className="div-feedbackError">{this.state.message.type}</p>
               ) : null}
-              <this.modalTipo />
             </div>
+            {this.props.auth.addType ? (
+              <Button
+                className="buttonadd-marca-produtos"
+                type="primary"
+                name="modalTipo"
+                icon="plus"
+                onClick={this.openModais}
+              />
+            ) : null}
+            <this.modalTipo />
           </div>
-        ) : null}
+        </div>
 
         <div className="linha1-produtos">
           <div className="div-descricao-produtos">

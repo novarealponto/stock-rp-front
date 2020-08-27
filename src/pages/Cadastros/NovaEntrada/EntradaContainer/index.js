@@ -478,7 +478,7 @@ class NovaEntrada extends Component {
         <div className="div-button-entrada">
           {this.state.estoque !== "EMPRESTIMO" ? (
             <div className="div-analise-entrada">
-              <div className="div-textAnalise-entrada">Análise:</div>
+              <div className="div-textAnalise-entrada">Aguardando Análise:</div>
               <Switch
                 defaultChecked={this.state.analise}
                 onChange={this.onChangeAnalise}

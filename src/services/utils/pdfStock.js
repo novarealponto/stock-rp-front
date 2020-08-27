@@ -4,6 +4,30 @@ import { store } from "../../App";
 import moment from "moment";
 import jsPDF from "jspdf";
 
+export const getBug = async () => {
+  const storeObject = store.getState();
+
+  const headers = {
+    token: storeObject.auth.token,
+    username: storeObject.auth.username,
+  };
+
+  try {
+    const { status, data } = await axios.get(
+      `${BACKEND_URL}/oapi/util/getBug`,
+      {
+        headers: headers,
+      }
+    );
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    } else {
+      console.log("Error", error.message);
+    }
+  }
+};
+
 export const pdfRelatorioItems = async (values) => {
   const storeObject = store.getState();
 

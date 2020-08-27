@@ -36,9 +36,7 @@ import GerenciarProdutosDashRoute from "./Gerenciar/GerenciarProdutos";
 import GerenciarEntradaDashRoute from "./Gerenciar/GerenciarEntrada";
 import NotificacaoRoute from "./Gerenciar/Notificacoes";
 import EmprestimoRoute from "./Gerenciar/Emprestimo";
-import ReservaInternoRoute from "./Reservas/ReservaInterno";
 import RelatorioEmprestimoRoute from "./Relatorios/RelatorioEmprestimo";
-import RelatorioInternoRoute from "./Relatorios/RelatorioInterno";
 import SaidaSupRoute from "./Suprimentos/Saida";
 import GerenciarEstoqueSupRoute from "./Suprimentos/Ger.Estoque";
 import GerenciarCadastrosSupRoute from "./Suprimentos/Ger.Cadastros";
@@ -126,7 +124,6 @@ class PagesRoute extends Component {
             component={ReservaTecnicoRoute}
           />
           <Route path="/logged/Rexterno" component={ReservaExternoRoute} />
-          <Route path="/logged/Rinterno" component={ReservaInternoRoute} />
           <Route path="/logged/reservaKitAdd" component={AddKitRoute} />
           <Route path="/logged/reservaML" component={ReservaMLRoute} />
           <Route path="/logged/relatorioOs" component={RelatorioOsRoute} />
@@ -172,10 +169,6 @@ class PagesRoute extends Component {
             component={GerenciarEntradaDashRoute}
           />
           <Route path="/logged/emprestimo" component={EmprestimoRoute} />
-          <Route
-            path="/logged/relatorioInterno"
-            component={RelatorioInternoRoute}
-          />
           <Route path="/logged/notificacao" component={NotificacaoRoute} />
 
           {this.props.auth.suprimento && (

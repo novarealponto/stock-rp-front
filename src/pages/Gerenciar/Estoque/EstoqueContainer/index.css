@@ -265,3 +265,28 @@
 .icon-delete:hover {
   color: rgba(255, 0, 0, 0.7);
 }
+
+.modal-tabs {
+  width: calc(100% + 20px);
+  position: relative;
+  left: -10px !important;
+}
+
+.div-block-label-modal {
+  /* margin: 10px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.div-block-footer {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  position: relative;
+  justify-content: flex-end;
+}
+
+.div-block-footer button {
+  margin: 10px 10px 0;
+}

@@ -9,7 +9,7 @@ import { Redirect } from "react-router-dom";
 import {
   getTodasOs,
   baixaReservaOs,
-  removeReservaOs
+  removeReservaOs,
 } from "../../../../services/reservaOs";
 import { redirectValueOs } from "../OsRedux/action";
 
@@ -20,10 +20,10 @@ class OsDash extends Component {
     avancado: false,
     loading: false,
     OsArray: {
-      rows: []
+      rows: [],
     },
     produtoSelecionado: {
-      products: {}
+      products: {},
     },
     mais: {},
     quantModal: NaN,
@@ -36,14 +36,16 @@ class OsDash extends Component {
     razaoSocial: "",
     cnpj: "",
     data: "",
+    produto: "",
+    nSerie: "",
     lineSelected: {
-      rows: []
+      rows: [],
     },
     tecnico: "Não selecionado",
     page: 1,
     total: 10,
     count: 0,
-    show: 0
+    show: 0,
   };
 
   redirectSearchOs = async () => {
@@ -55,12 +57,12 @@ class OsDash extends Component {
       technician: this.state.lineSelected.rows[0].technician,
       technicianId: this.state.lineSelected.rows[0].technicianId,
       date: this.state.lineSelected.rows[0].date,
-      products: this.state.lineSelected.rows[0].products
+      products: this.state.lineSelected.rows[0].products,
     };
     await this.props.redirectValueOs(value);
 
     await this.setState({
-      redirect: true
+      redirect: true,
     });
   };
 
@@ -74,10 +76,10 @@ class OsDash extends Component {
     }
   };
 
-  changePages = pages => {
+  changePages = (pages) => {
     this.setState(
       {
-        page: pages
+        page: pages,
       },
       () => {
         this.getAllOs();
@@ -85,36 +87,36 @@ class OsDash extends Component {
     );
   };
 
-  removerLinha = line => {
+  removerLinha = (line) => {
     this.setState({
       modalRemove: true,
-      idLine: line
+      idLine: line,
     });
   };
 
-  searchDate = async e => {
+  searchDate = async (e) => {
     if (!e[0] || !e[1]) return;
     await this.setState({
-      valueDate: { start: e[0]._d, end: e[1]._d }
+      valueDate: { start: e[0]._d, end: e[1]._d },
     });
     await this.getAllOs();
   };
 
   getAllOs = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     this.getAllOsSemLoading();
 
     this.setState({
-      loading: false
+      loading: false,
     });
   };
 
   removeOs = async () => {
     const query = {
-      osId: this.state.idLine
+      osId: this.state.idLine,
     };
 
     await removeReservaOs(query);
@@ -125,7 +127,7 @@ class OsDash extends Component {
 
     await this.setState({
       modalRemove: false,
-      idLine: ""
+      idLine: "",
     });
   };
 
@@ -137,29 +139,39 @@ class OsDash extends Component {
             os: this.state.Os,
             razaoSocial: this.state.razaoSocial,
             cnpj: this.state.cnpj,
-            date: this.state.valueDate
-          }
-        }
+            date: this.state.valueDate,
+          },
+        },
+        product: {
+          specific: {
+            name: this.state.produto,
+          },
+        },
+        equip: {
+          specific: {
+            serialNumber: this.state.nSerie,
+          },
+        },
       },
       page: this.state.page,
       total: this.state.total,
       required: true,
-      paranoid: true
+      paranoid: true,
     };
 
-    await getTodasOs(query).then(resposta =>
+    await getTodasOs(query).then((resposta) =>
       this.setState({
         OsArray: resposta.data,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
     );
   };
 
-  onChangeModal = value => {
+  onChangeModal = (value) => {
     this.setState({
-      teste: value
+      teste: value,
     });
   };
 
@@ -174,30 +186,30 @@ class OsDash extends Component {
           quantMax: menos,
           return:
             parseInt(this.state.produtoSelecionado.products.return, 10) +
-            this.state.teste
-        }
-      }
+            this.state.teste,
+        },
+      },
     });
 
     const value = {
       osPartsId: this.state.produtoSelecionado.products.osPartsId,
       add: {
-        return: this.state.teste
-      }
+        return: this.state.teste,
+      },
     };
 
     const resposta = await baixaReservaOs(value);
 
     if (resposta.status === 200) {
       this.setState({
-        teste: menos
+        teste: menos,
       });
     }
 
     await this.getAllOsSemLoading();
 
     // eslint-disable-next-line array-callback-return
-    const x = this.state.OsArray.rows.filter(item => {
+    const x = this.state.OsArray.rows.filter((item) => {
       if (item.id === R.keys(this.state.mais)[0]) {
         return item;
       }
@@ -205,8 +217,8 @@ class OsDash extends Component {
 
     await this.setState({
       lineSelected: {
-        rows: x
-      }
+        rows: x,
+      },
     });
   };
 
@@ -221,30 +233,30 @@ class OsDash extends Component {
           quantMax: menos,
           missOut:
             parseInt(this.state.produtoSelecionado.products.missOut, 10) +
-            this.state.teste
-        }
-      }
+            this.state.teste,
+        },
+      },
     });
 
     const value = {
       osPartsId: this.state.produtoSelecionado.products.osPartsId,
       add: {
-        missOut: this.state.teste
-      }
+        missOut: this.state.teste,
+      },
     };
 
     const resposta = await baixaReservaOs(value);
 
     if (resposta.status === 200) {
       this.setState({
-        teste: menos
+        teste: menos,
       });
     }
 
     await this.getAllOsSemLoading();
 
     // eslint-disable-next-line array-callback-return
-    const x = this.state.OsArray.rows.filter(item => {
+    const x = this.state.OsArray.rows.filter((item) => {
       if (item.id === R.keys(this.state.mais)[0]) {
         return item;
       }
@@ -252,8 +264,8 @@ class OsDash extends Component {
 
     await this.setState({
       lineSelected: {
-        rows: x
-      }
+        rows: x,
+      },
     });
   };
 
@@ -268,30 +280,30 @@ class OsDash extends Component {
           quantMax: menos,
           output:
             parseInt(this.state.produtoSelecionado.products.output, 10) +
-            this.state.teste
-        }
-      }
+            this.state.teste,
+        },
+      },
     });
 
     const value = {
       osPartsId: this.state.produtoSelecionado.products.osPartsId,
       add: {
-        output: this.state.teste
-      }
+        output: this.state.teste,
+      },
     };
 
     const resposta = await baixaReservaOs(value);
 
     if (resposta.status === 200) {
       this.setState({
-        teste: menos
+        teste: menos,
       });
     }
 
     await this.getAllOsSemLoading();
 
     // eslint-disable-next-line array-callback-return
-    const x = this.state.OsArray.rows.filter(item => {
+    const x = this.state.OsArray.rows.filter((item) => {
       if (item.id === R.keys(this.state.mais)[0]) {
         return item;
       }
@@ -299,14 +311,14 @@ class OsDash extends Component {
 
     await this.setState({
       lineSelected: {
-        rows: x
-      }
+        rows: x,
+      },
     });
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     await this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
 
     await this.getAllOs();
@@ -314,7 +326,7 @@ class OsDash extends Component {
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado
+      avancado: !this.state.avancado,
     });
   };
 
@@ -322,15 +334,15 @@ class OsDash extends Component {
     await this.getAllOs();
   };
 
-  onChangeSelect = async value => {
+  onChangeSelect = async (value) => {
     await this.setState({
-      tecnico: value
+      tecnico: value,
     });
   };
 
-  onChangeTecnico = value => {
+  onChangeTecnico = (value) => {
     this.setState({
-      tecnico: value
+      tecnico: value,
     });
   };
 
@@ -338,27 +350,27 @@ class OsDash extends Component {
     await this.setState({
       modalDetalhes: false,
       produtoSelecionado: {
-        products: {}
+        products: {},
       },
-      teste: NaN
+      teste: NaN,
     });
   };
 
-  mais = async line => {
+  mais = async (line) => {
     await this.setState({
       mais: {
-        [line.id]: !this.state.mais[line.id]
+        [line.id]: !this.state.mais[line.id],
       },
       lineSelected: {
-        rows: [line]
-      }
+        rows: [line],
+      },
     });
   };
 
   handleOk = () => {
     this.setState({
       modalDetalhes: false,
-      modalRemove: false
+      modalRemove: false,
     });
   };
 
@@ -379,7 +391,7 @@ class OsDash extends Component {
 
   test = () => {
     if (this.state.OsArray.rows.length !== 0) {
-      return this.state.OsArray.rows.map(line => (
+      return this.state.OsArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div className="div-lines-GOs">
             <div className="cel-mais-cabecalho-GOs">
@@ -441,15 +453,15 @@ class OsDash extends Component {
                   <Spin spinning={this.state.loading} />
                 </div>
               ) : (
-                this.state.lineSelected.rows.map(line => (
+                this.state.lineSelected.rows.map((line) => (
                   <div className="div-branco-mais">
                     <div className="div-produtos-mais">
-                      {line.products.map(valor => (
+                      {line.products.map((valor) => (
                         <div className="div-peca-GOs">{valor.name}</div>
                       ))}
                     </div>
                     <div className="div-quant-mais">
-                      {line.products.map(valor => (
+                      {line.products.map((valor) => (
                         <div className="div-peca-GOs">{valor.amount}</div>
                       ))}
                     </div>
@@ -618,6 +630,29 @@ class OsDash extends Component {
                 />
               </div>
             </div>
+            <div className="div-linha1-avancado-GOs">
+              <div className="div-text-GOs">Produto:</div>
+              <Input
+                className="input-100"
+                style={{ width: "100%" }}
+                name="produto"
+                value={this.state.produto}
+                placeholder="Digite o produto"
+                onChange={this.onChange}
+                allowClear
+              />
+
+              <div className="div-text-GOs">N° Serie:</div>
+              <Input
+                className="input-100"
+                style={{ width: "100%" }}
+                name="nSerie"
+                value={this.state.nSerie}
+                placeholder="Digite o produto"
+                onChange={this.onChange}
+                allowClear
+              />
+            </div>
           </div>
         ) : (
           <div className="div-avancado-GOs">
@@ -656,7 +691,7 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 

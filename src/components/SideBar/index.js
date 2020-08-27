@@ -268,16 +268,6 @@ class SideBar extends Component {
               }}
             />
           );
-        case "Rinterno_dash":
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: "/logged/Rinterno/dash",
-                state: { from: this.props.location },
-              }}
-            />
-          );
         case "Os_dash":
           return (
             <Redirect
@@ -374,16 +364,6 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/RelatorioSuprimentos/dash",
-                state: { from: this.props.location },
-              }}
-            />
-          );
-        case "relatorioInterno_dash":
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: "/logged/relatorioInterno/dash",
                 state: { from: this.props.location },
               }}
             />
@@ -674,10 +654,6 @@ class SideBar extends Component {
                 <Icon type="file-add" />
                 Externo
               </Menu.Item>
-              <Menu.Item disabled={!this.props.auth.gerROs} key="Rinterno_dash">
-                <Icon type="file-add" />
-                Interno
-              </Menu.Item>
               <Menu.Item
                 disabled={!this.props.auth.addRML}
                 key="reservaML_dash"
@@ -720,12 +696,6 @@ class SideBar extends Component {
               <Menu.Item key="relatorioOs_dash">
                 <Icon type="file-search" />
                 Os
-              </Menu.Item>
-            )}
-            {!this.props.auth.modulo && (
-              <Menu.Item key="relatorioInterno_dash">
-                <Icon type="user" />
-                Interno
               </Menu.Item>
             )}
             {!this.props.auth.modulo && (
