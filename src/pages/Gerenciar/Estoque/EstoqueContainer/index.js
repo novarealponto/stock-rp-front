@@ -301,7 +301,6 @@ class Estoque extends Component {
         );
       }
     } else if (status === "preAnalysis") {
-      console.log(serialNumbers);
       const { status } = await UpdatteProductBase({
         ...value,
         serialNumbers: [],
@@ -603,9 +602,8 @@ class Estoque extends Component {
                   onChange={this.onChangeSelect}
                 >
                   <Option value="TODOS">TODOS</Option>
-                  <Option value="REALPONTO">REALPONTO</Option>
-                  <Option value="NOVAREAL">NOVA REALPONTO</Option>
-                  <Option value="PONTOREAL">PONTOREAL</Option>
+                  <Option value="ESTOQUE">ESTOQUE</Option>
+                  <Option value="EMPRESTIMO">EMPRESTIMO</Option>
                 </Select>
               </div>
             </div>

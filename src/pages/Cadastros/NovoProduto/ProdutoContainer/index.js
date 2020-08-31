@@ -39,7 +39,6 @@ class NovoProduto extends Component {
     marca: "Não selecionado",
     tipo: "Não selecionado",
     descricao: "",
-    codigo: "",
     quantMin: 1,
     modalMarca: false,
     modalTipo: false,
@@ -50,12 +49,10 @@ class NovoProduto extends Component {
     serial: false,
     fieldFalha: {
       item: false,
-      codigo: false,
       quantMin: false,
     },
     message: {
       item: "",
-      codigo: "",
       quantMin: "",
     },
   };
@@ -142,7 +139,6 @@ class NovoProduto extends Component {
 
     const values = {
       category: this.state.categoria.toLocaleLowerCase(),
-      SKU: this.state.codigo,
       description: this.state.descricao,
       minimumStock: this.state.quantMin.toString(),
       mark: this.state.marca,
@@ -178,7 +174,6 @@ class NovoProduto extends Component {
         marca: "Não selecionado",
         tipo: "Não selecionado",
         descricao: "",
-        codigo: "",
         quantMin: 1,
         serial: false,
         messageSuccess: true,
@@ -303,12 +298,6 @@ class NovoProduto extends Component {
 
     this.setState({
       [nome]: valor,
-    });
-  };
-
-  onChangeCodigo = (e) => {
-    this.setState({
-      codigo: e.target.value.replace(/\D/gi, ""),
     });
   };
 
@@ -563,46 +552,6 @@ class NovoProduto extends Component {
             ) : null}
             <this.modalTipo />
           </div>
-        </div>
-
-        <div className="linha1-produtos">
-          <div className="div-descricao-produtos">
-            <div className="div-text-produtos">Descrição:</div>
-            <TextArea
-              className="input-100"
-              placeholder="Digite a descrição"
-              autosize={{ minRows: 2, maxRows: 4 }}
-              rows={4}
-              name="descricao"
-              value={this.state.descricao}
-              onChange={this.onChange}
-            />
-          </div>
-        </div>
-
-        <div className="linhaSemEspaco-produtos">
-          <div className="div-codigo-produtos">
-            <div className="div-text-produtos">SKU:</div>
-            <div className="div-inputs">
-              <Input
-                allowClear={!this.state.fieldFalha.codigo}
-                className={
-                  this.state.fieldFalha.codigo
-                    ? "div-inputError-produtos"
-                    : "input-100"
-                }
-                placeholder="12345"
-                name="codigo"
-                value={this.state.codigo}
-                onChange={this.onChange}
-                onBlur={this.onBlurValidator}
-                onFocus={this.onFocus}
-              />
-              {this.state.fieldFalha.codigo ? (
-                <p className="div-feedbackError">{this.state.message.codigo}</p>
-              ) : null}
-            </div>
-          </div>
 
           <div className="div-quantMin-produtos">
             <div className="div-textQuant-produtos">Quant. min:</div>
@@ -638,23 +587,32 @@ class NovoProduto extends Component {
           </div>
         </div>
 
+        <div className="linha1-produtos">
+          <div className="div-descricao-produtos">
+            <div className="div-text-produtos">Descrição:</div>
+            <TextArea
+              className="input-100"
+              placeholder="Digite a descrição"
+              autosize={{ minRows: 2, maxRows: 4 }}
+              rows={4}
+              name="descricao"
+              value={this.state.descricao}
+              onChange={this.onChange}
+            />
+          </div>
+        </div>
+
         <div className="linhaSemEspaco-produtos">
           <div className="div-codigo-produtos">
             <div className="div-text-produtos">Corredor:</div>
             <div className="div-inputs">
               <Input
-                // allowClear={!this.state.fieldFalha.codigo}
                 className="input-100"
                 placeholder="12345"
                 name="corredor"
                 value={this.state.corredor}
                 onChange={this.onChange}
-                // onBlur={this.onBlurValidator}
-                // onFocus={this.onFocus}
               />
-              {/* {this.state.fieldFalha.codigo ? (
-                <p className="div-feedbackError">{this.state.message.codigo}</p>
-              ) : null} */}
             </div>
           </div>
 
@@ -662,18 +620,12 @@ class NovoProduto extends Component {
             <div className="div-text-produtos">Coluna:</div>
             <div className="div-inputs">
               <Input
-                // allowClear={!this.state.fieldFalha.codigo}
                 className="input-100"
                 placeholder="12345"
                 name="coluna"
                 value={this.state.coluna}
                 onChange={this.onChange}
-                // onBlur={this.onBlurValidator}
-                // onFocus={this.onFocus}
               />
-              {/* {this.state.fieldFalha.codigo ? (
-                <p className="div-feedbackError">{this.state.message.codigo}</p>
-              ) : null} */}
             </div>
           </div>
 
@@ -681,18 +633,12 @@ class NovoProduto extends Component {
             <div className="div-text-produtos">Prateleira:</div>
             <div className="div-inputs">
               <Input
-                // allowClear={!this.state.fieldFalha.codigo}
                 className="input-100"
                 placeholder="12345"
                 name="prateleira"
                 value={this.state.prateleira}
                 onChange={this.onChange}
-                // onBlur={this.onBlurValidator}
-                // onFocus={this.onFocus}
               />
-              {/* {this.state.fieldFalha.codigo ? (
-                <p className="div-feedbackError">{this.state.message.codigo}</p>
-              ) : null} */}
             </div>
           </div>
 
@@ -700,18 +646,12 @@ class NovoProduto extends Component {
             <div className="div-text-produtos">Gaveta:</div>
             <div className="div-inputs">
               <Input
-                // allowClear={!this.state.fieldFalha.codigo}
                 className="input-100"
                 placeholder="12345"
                 name="gaveta"
                 value={this.state.gaveta}
                 onChange={this.onChange}
-                // onBlur={this.onBlurValidator}
-                // onFocus={this.onFocus}
               />
-              {/* {this.state.fieldFalha.codigo ? (
-                <p className="div-feedbackError">{this.state.message.codigo}</p>
-              ) : null} */}
             </div>
           </div>
         </div>

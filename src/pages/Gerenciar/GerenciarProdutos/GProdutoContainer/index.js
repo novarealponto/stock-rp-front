@@ -54,12 +54,10 @@ class GerenciarProdutos extends Component {
     serial: this.props.produtoUpdateValue.serial,
     fieldFalha: {
       item: false,
-      codigo: false,
       quantMin: false,
     },
     message: {
       item: "",
-      codigo: "",
       quantMin: "",
     },
   };
@@ -147,7 +145,6 @@ class GerenciarProdutos extends Component {
     const values = {
       id: this.props.produtoUpdateValue.id,
       category: this.state.categoria.toLocaleLowerCase(),
-      SKU: this.state.codigo,
       description: this.state.descricao,
       minimumStock: this.state.quantMin.toString(),
       mark: this.state.marca,
@@ -309,12 +306,6 @@ class GerenciarProdutos extends Component {
 
     this.setState({
       [nome]: valor,
-    });
-  };
-
-  onChangeCodigo = (e) => {
-    this.setState({
-      codigo: e.target.value.replace(/\D/gi, ""),
     });
   };
 
@@ -608,6 +599,7 @@ class GerenciarProdutos extends Component {
             <div className="div-text-produtos">SKU:</div>
             <div className="div-inputs">
               <Input
+                disabled
                 allowClear={!this.state.fieldFalha.codigo}
                 className={
                   this.state.fieldFalha.codigo
@@ -666,18 +658,12 @@ class GerenciarProdutos extends Component {
             <div className="div-text-produtos">Corredor:</div>
             <div className="div-inputs">
               <Input
-                // allowClear={!this.state.fieldFalha.codigo}
                 className="input-100"
                 placeholder="12345"
                 name="corredor"
                 value={this.state.corredor}
                 onChange={this.onChange}
-                // onBlur={this.onBlurValidator}
-                // onFocus={this.onFocus}
               />
-              {/* {this.state.fieldFalha.codigo ? (
-                <p className="div-feedbackError">{this.state.message.codigo}</p>
-              ) : null} */}
             </div>
           </div>
 
@@ -685,18 +671,12 @@ class GerenciarProdutos extends Component {
             <div className="div-text-produtos">Coluna:</div>
             <div className="div-inputs">
               <Input
-                // allowClear={!this.state.fieldFalha.codigo}
                 className="input-100"
                 placeholder="12345"
                 name="coluna"
                 value={this.state.coluna}
                 onChange={this.onChange}
-                // onBlur={this.onBlurValidator}
-                // onFocus={this.onFocus}
               />
-              {/* {this.state.fieldFalha.codigo ? (
-                <p className="div-feedbackError">{this.state.message.codigo}</p>
-              ) : null} */}
             </div>
           </div>
 
@@ -704,18 +684,12 @@ class GerenciarProdutos extends Component {
             <div className="div-text-produtos">Prateleira:</div>
             <div className="div-inputs">
               <Input
-                // allowClear={!this.state.fieldFalha.codigo}
                 className="input-100"
                 placeholder="12345"
                 name="prateleira"
                 value={this.state.prateleira}
                 onChange={this.onChange}
-                // onBlur={this.onBlurValidator}
-                // onFocus={this.onFocus}
               />
-              {/* {this.state.fieldFalha.codigo ? (
-                <p className="div-feedbackError">{this.state.message.codigo}</p>
-              ) : null} */}
             </div>
           </div>
 
@@ -723,18 +697,12 @@ class GerenciarProdutos extends Component {
             <div className="div-text-produtos">Gaveta:</div>
             <div className="div-inputs">
               <Input
-                // allowClear={!this.state.fieldFalha.codigo}
                 className="input-100"
                 placeholder="12345"
                 name="gaveta"
                 value={this.state.gaveta}
                 onChange={this.onChange}
-                // onBlur={this.onBlurValidator}
-                // onFocus={this.onFocus}
               />
-              {/* {this.state.fieldFalha.codigo ? (
-                <p className="div-feedbackError">{this.state.message.codigo}</p>
-              ) : null} */}
             </div>
           </div>
         </div>

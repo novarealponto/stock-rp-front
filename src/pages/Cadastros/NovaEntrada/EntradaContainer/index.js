@@ -30,7 +30,7 @@ class NovaEntrada extends Component {
     messageError: false,
     messageSucesso: false,
     analise: false,
-    estoque: this.props.auth.modulo ? "EMPRESTIMO" : "REALPONTO",
+    estoque: this.props.auth.modulo ? "EMPRESTIMO" : "ESTOQUE",
     nomeProduto: "Não selecionado",
     fornecedor: "Não selecionado",
     quant: 1,
@@ -207,7 +207,7 @@ class NovaEntrada extends Component {
     }
     if (resposta.status === 200) {
       this.setState({
-        estoque: "REALPONTO",
+        estoque: "ESTOQUE",
         nomeProduto: "Não selecionado",
         fornecedor: "Não selecionado",
         quant: 1,
@@ -215,6 +215,7 @@ class NovaEntrada extends Component {
         messageSuccess: true,
         serial: false,
         modalConfirm: false,
+        analise: false,
       });
       await this.success();
     }
@@ -424,9 +425,7 @@ class NovaEntrada extends Component {
               onChange={this.onChangeSelect}
               disabled={this.props.auth.modulo}
             >
-              <Option value="REALPONTO">REALPONTO</Option>
-              <Option value="NOVAREAL">NOVA REALPONTO</Option>
-              <Option value="PONTOREAL">PONTOREAL</Option>
+              <Option value="ESTOQUE">ESTOQUE</Option>
               <Option value="EMPRESTIMO">EMPRESTIMO</Option>
             </Select>
           </div>
@@ -480,7 +479,7 @@ class NovaEntrada extends Component {
             <div className="div-analise-entrada">
               <div className="div-textAnalise-entrada">Aguardando Análise:</div>
               <Switch
-                defaultChecked={this.state.analise}
+                checked={this.state.analise}
                 onChange={this.onChangeAnalise}
               />
             </div>

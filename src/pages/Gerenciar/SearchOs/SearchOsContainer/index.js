@@ -52,7 +52,7 @@ class SearchOsDash extends Component {
     quant: 1,
     quantObj: {},
     carrinho: this.props.osUpdateValue.products,
-    estoque: "REALPONTO",
+    estoque: "ESTOQUE",
     disp: 1,
     fieldFalha: {
       Os: false,
@@ -620,7 +620,7 @@ class SearchOsDash extends Component {
         nomeProduto: "Não selecionado",
         status: "Não selecionado",
         quant: 1,
-        estoque: "REALPONTO",
+        estoque: "ESTOQUE",
         serial: false,
         numeroSerieTest: "",
       });
@@ -853,9 +853,7 @@ class SearchOsDash extends Component {
               style={{ width: "100%" }}
               onChange={this.onChangeEstoque}
             >
-              <Option value="REALPONTO">REALPONTO</Option>
-              <Option value="NOVAREAL">NOVA REALPONTO</Option>
-              <Option value="PONTOREAL">PONTOREAL</Option>
+              <Option value="ESTOQUE">ESTOQUE</Option>
             </Select>
           </div>
           <div className="div-status-Os">

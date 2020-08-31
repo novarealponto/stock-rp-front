@@ -529,7 +529,6 @@ class GerenciarEstoqueSupPage extends Component {
                       product.minimumQuantity > product.amount ? "red" : null,
                   }}
                 >
-                  {console.log(product)}
                   <div className="div-cabecalhoLinha-gerEst">
                     <div className="cel-produto-cabecalho-gerEst">
                       {product.name}

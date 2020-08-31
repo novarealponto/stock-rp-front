@@ -75,7 +75,6 @@ class GerenciarEntrada extends Component {
 
     // await getTodasOs(query)
     // .then
-    // resposta => console.log(resposta)
     // this.setState({
     //   OsArray: resposta.data,
     //   page: resposta.data.page,

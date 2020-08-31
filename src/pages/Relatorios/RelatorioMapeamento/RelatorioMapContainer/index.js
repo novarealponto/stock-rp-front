@@ -7,7 +7,6 @@ class RelatorioMapContainer extends Component {
   state = {
     avancado: false,
     loading: false,
-    sku: "",
     produto: "",
     marca: "",
     corredor: "",
@@ -32,7 +31,6 @@ class RelatorioMapContainer extends Component {
         product: {
           specific: {
             name: this.state.produto,
-            SKU: this.state.sku,
             corredor: this.state.corredor,
             coluna: this.state.coluna,
             prateleira: this.state.prateleira,
@@ -180,7 +178,6 @@ class RelatorioMapContainer extends Component {
         product: {
           specific: {
             name: this.state.produto,
-            SKU: this.state.sku,
             corredor: this.state.corredor,
             coluna: this.state.coluna,
             prateleira: this.state.prateleira,
@@ -251,6 +248,7 @@ class RelatorioMapContainer extends Component {
               <div className="div-sku-RMap">
                 <div className="div-text-Os">SKU:</div>
                 <Input
+                  disabled
                   className="input-100"
                   style={{ width: "100%" }}
                   name="sku"
@@ -347,7 +345,7 @@ class RelatorioMapContainer extends Component {
           </div>
         ) : null}
         {this.state.products.map((product) => (
-          <div className="div-cabecalhoLinha-gerEst">
+          <div className="div-cabecalhoLinha-gerEst" style={{ width: "90%" }}>
             <div className="cel-map-cabecalho-RMap">{product.sku}</div>
             <div className="cel-produto-cabecalho-RMap">{product.name}</div>
             <div className="cel-marca-cabecalho-RMap">{product.mark}</div>

@@ -298,7 +298,6 @@ class GerenciarProdutoDash extends Component {
         product: {
           specific: {
             name: this.state.produto,
-            SKU: this.state.sku,
             category: this.state.categoria,
             modulo: this.props.auth.modulo,
           },
@@ -807,6 +806,7 @@ class GerenciarProdutoDash extends Component {
             <div className="div-Os-ROs">
               <div className="div-text-Rtecnico">SKU:</div>
               <Input
+                disabled
                 className="input-100"
                 style={{ width: "100%" }}
                 name="sku"

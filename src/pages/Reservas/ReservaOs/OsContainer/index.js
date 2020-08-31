@@ -51,7 +51,7 @@ class Rexterno extends Component {
     tecnicoId: "",
     quant: 1,
     carrinho: [],
-    estoque: "REALPONTO",
+    estoque: "ESTOQUE",
     fieldFalha: {
       Os: false,
       razaoSocial: false,
@@ -368,7 +368,7 @@ class Rexterno extends Component {
     await this.setState({
       estoque:
         valor !== "CONSERTO" && this.state.estoque === null
-          ? "REALPONTO"
+          ? "ESTOQUE"
           : this.state.estoque,
       serial: valor === "CONSERTO",
       status: valor,
@@ -483,7 +483,7 @@ class Rexterno extends Component {
       serial: false,
       numeroSerieTest: "",
       serialNumber: "",
-      estoque: "REALPONTO",
+      estoque: "ESTOQUE",
       status: "Não selecionado",
       observacao: "",
     });
@@ -686,9 +686,7 @@ class Rexterno extends Component {
                   style={{ width: "100%" }}
                   onChange={this.onChangeEstoque}
                 >
-                  <Option value="REALPONTO">REALPONTO</Option>
-                  <Option value="NOVAREAL">NOVA REALPONTO</Option>
-                  <Option value="PONTOREAL">PONTOREAL</Option>
+                  <Option value="ESTOQUE">ESTOQUE</Option>
                 </Select>
               </>
             )}
