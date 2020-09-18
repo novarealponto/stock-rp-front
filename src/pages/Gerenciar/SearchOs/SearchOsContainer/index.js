@@ -233,6 +233,7 @@ class SearchOsDash extends Component {
           },
         },
       },
+      stockBaseId: this.state.estoque,
     };
 
     await getProdutoByEstoque(query).then((resposta) =>
