@@ -2,22 +2,22 @@ import axios from "axios";
 import { BACKEND_URL } from "./var";
 import { store } from "../App";
 
-export const newReservaTecInt = async value => {
+export const newReservaTecInt = async (value) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
 
   await axios
     .post(`${BACKEND_URL}/api/reserve/RInterno`, value, { headers: headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -27,22 +27,22 @@ export const newReservaTecInt = async value => {
   return response;
 };
 
-export const newReservaOs = async values => {
+export const newReservaOs = async (values) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
 
   await axios
     .post(`${BACKEND_URL}/api/reserve/OS`, values, { headers: headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -52,22 +52,22 @@ export const newReservaOs = async values => {
   return response;
 };
 
-export const updateReservaOs = async values => {
+export const updateReservaOs = async (values) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
 
   await axios
     .put(`${BACKEND_URL}/api/reserve/OS`, values, { headers: headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -77,12 +77,12 @@ export const updateReservaOs = async values => {
   return response;
 };
 
-export const getOsByOs = async value => {
+export const getOsByOs = async (value) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
@@ -90,12 +90,12 @@ export const getOsByOs = async value => {
   await axios
     .get(`${BACKEND_URL}/api/reserve/getOsByOs`, {
       headers,
-      params: { os: value }
+      params: { os: value },
     })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -105,12 +105,12 @@ export const getOsByOs = async value => {
   return response;
 };
 
-export const getTodasOs = async query => {
+export const getTodasOs = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
@@ -118,12 +118,12 @@ export const getTodasOs = async query => {
   await axios
     .get(`${BACKEND_URL}/api/reserve/Os`, {
       headers: headers,
-      params: { query }
+      params: { query },
     })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -133,12 +133,42 @@ export const getTodasOs = async query => {
   return response;
 };
 
-export const getTodasOsInterno = async query => {
+export const getAllOsPartsByParams = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
+  };
+
+  let response = {};
+
+  await axios
+    .get(`${BACKEND_URL}/api/reserve/getAllOsPartsByParams`, {
+      headers: headers,
+      params: { query },
+    })
+    .then((resp) => {
+      response = resp;
+    })
+    .catch((error) => {
+      if (error.response) {
+        response = error.response;
+      } else {
+        console.log("Error", error.message);
+      }
+    });
+
+  console.log(response);
+  return response;
+};
+
+export const getTodasOsInterno = async (query) => {
+  const storeObject = store.getState();
+
+  const headers = {
+    token: storeObject.auth.token,
+    username: storeObject.auth.username,
   };
 
   let response = {};
@@ -146,12 +176,12 @@ export const getTodasOsInterno = async query => {
   await axios
     .get(`${BACKEND_URL}/api/reserve/RInterno`, {
       headers: headers,
-      params: { query }
+      params: { query },
     })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -161,22 +191,22 @@ export const getTodasOsInterno = async query => {
   return response;
 };
 
-export const baixaReservaOs = async values => {
+export const baixaReservaOs = async (values) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
 
   await axios
     .put(`${BACKEND_URL}/api/reserve/output`, values, { headers: headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -186,12 +216,12 @@ export const baixaReservaOs = async values => {
   return response;
 };
 
-export const removeReservaOs = async query => {
+export const removeReservaOs = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
@@ -199,12 +229,12 @@ export const removeReservaOs = async query => {
   await axios
     .delete(`${BACKEND_URL}/api/reserve/Os`, {
       headers: headers,
-      params: query
+      params: query,
     })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {
@@ -214,22 +244,22 @@ export const removeReservaOs = async query => {
   return response;
 };
 
-export const newConserto = async values => {
+export const newConserto = async (values) => {
   const storeObject = store.getState();
 
   const headers = {
     token: storeObject.auth.token,
-    username: storeObject.auth.username
+    username: storeObject.auth.username,
   };
 
   let response = {};
 
   await axios
     .post(`${BACKEND_URL}/api/conserto`, values, { headers: headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
         response = error.response;
       } else {

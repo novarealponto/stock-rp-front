@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from "react";
 import "./index.css";
-import { Input, Icon, Button, message } from "antd";
+import { Input, Button, message } from "antd";
 import "antd/dist/antd.css";
 import * as R from "ramda";
 
@@ -11,48 +11,50 @@ import { changeValue, onSubmit } from "../LoginRedux/action";
 import { authentic } from "../../../services/auth";
 import uuidValidate from "uuid-validate";
 
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+
 class Login extends Component {
   state = {
     fieldFalha: {
       username: false,
-      password: false
-    }
+      password: false,
+    },
   };
   hasAuth = R.has("auth");
   hasToken = R.has("token");
 
-  enterKey = async e => {
+  enterKey = async (e) => {
     if (e.which === 13 || e.keyCode === 13) {
       await this.props.onSubmit({
         ...this.props.value,
-        typeAccount: { stock: true }
+        typeAccount: { stock: true },
       });
     }
   };
 
-  onFocus = e => {
+  onFocus = (e) => {
     const { name } = e.target;
     const { fieldFalha } = this.state;
 
     this.setState({
       fieldFalha: {
         ...fieldFalha,
-        [name]: false
-      }
+        [name]: false,
+      },
     });
   };
 
   onSubmit = async () => {
     const { status, data } = await authentic({
       ...this.props.value,
-      typeAccount: { stock: true }
+      typeAccount: { stock: true },
     });
 
     switch (status) {
       case 200:
         await this.props.onSubmit({
           ...this.props.value,
-          typeAccount: { stock: true }
+          typeAccount: { stock: true },
         });
         if (this.hasAuth(this.props)) {
           if (this.hasToken(this.props.auth)) {
@@ -65,7 +67,7 @@ class Login extends Component {
         const { fieldFalha } = this.state;
 
         this.setState({
-          fieldFalha: { ...fieldFalha, ...data.fields[0].field }
+          fieldFalha: { ...fieldFalha, ...data.fields[0].field },
         });
 
         message.error(data.fields[0].message);
@@ -84,22 +86,24 @@ class Login extends Component {
           </label>
           <img src="../../retina.png" className="img-Login" />
           <Input
-            className={`InputUsernameLogin ${this.state.fieldFalha.username &&
-              "div-inputError"}`}
+            className={`InputUsernameLogin ${
+              this.state.fieldFalha.username && "div-inputError"
+            }`}
             placeholder="Digite seu username"
             name="username"
-            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+            prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
             onFocus={this.onFocus}
             value={this.props.value.username}
             onChange={this.props.changeValue}
             onKeyPress={this.enterKey}
           />
           <Input.Password
-            className={`InputPasswordLogin ${this.state.fieldFalha.password &&
-              "div-inputError"}`}
+            className={`InputPasswordLogin ${
+              this.state.fieldFalha.password && "div-inputError"
+            }`}
             placeholder="Digite a senha"
             name="password"
-            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+            prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
             value={this.props.value.password}
             onChange={this.props.changeValue}
             onKeyPress={this.enterKey}
@@ -123,7 +127,7 @@ function mapDispacthToProps(dispach) {
 function mapStateToProps(state) {
   return {
     value: state.login,
-    auth: state.auth
+    auth: state.auth,
   };
 }
 

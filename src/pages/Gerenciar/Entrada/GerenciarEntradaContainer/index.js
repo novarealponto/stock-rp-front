@@ -3,9 +3,11 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import "./index.css";
-import { Spin, DatePicker, Button, Input, Tooltip, Icon, Modal } from "antd";
+import { Spin, DatePicker, Button, Input, Tooltip, Modal } from "antd";
 import { getEntrada, deleteEntrada } from "../../../../services/entrada";
 import { redirectValueEntrada } from "../GerenciarEntradaRedux/action";
+
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 class GerenciarEntrada extends Component {
   state = {
@@ -253,8 +255,7 @@ class GerenciarEntrada extends Component {
             {this.props.auth.typeAccount === "MOD" ? (
               <div className="cel-edit-cabecalho-Gentrada">
                 <Tooltip placement="topLeft" title="Editar">
-                  <Icon
-                    type="edit"
+                  <EditOutlined
                     className="icon-edit"
                     style={{ fontSize: "20px", color: "#08c" }}
                     onClick={() => this.redirectEntrada(line)}
@@ -262,8 +263,7 @@ class GerenciarEntrada extends Component {
                   />
                 </Tooltip>
                 <Tooltip placement="topLeft" title="Remover">
-                  <Icon
-                    type="delete"
+                  <DeleteOutlined
                     className="icon-lixo"
                     onClick={() => this.removerLinha(line.id)}
                   />

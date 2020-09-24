@@ -15,7 +15,7 @@ import EstoqueRoute from "./Gerenciar/Estoque";
 import ReservaKitRoute from "./Reservas/ReservaKit";
 import NovoUsuarioRoute from "./Cadastros/NovoUsuario";
 import GerenciarEntradaRoute from "./Gerenciar/Entrada";
-import ReservaTecnicoRoute from "./Reservas/ReservaTecnico";
+import RomanieoRoute from "./Reservas/Romaneio";
 import ReservaExternoRoute from "./Reservas/ReservaOs";
 import ReservaMLRoute from "./Reservas/ReservaML";
 import RelatorioOsRoute from "./Relatorios/RelatorioOs";
@@ -51,7 +51,7 @@ import ReservaInternoRoute from "./Reservas/ReservaInterno";
 
 class PagesRoute extends Component {
   state = {
-    auth: true
+    auth: true,
   };
 
   hasAuth = R.has("auth");
@@ -74,14 +74,14 @@ class PagesRoute extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username
+      username: this.props.auth.username,
     };
 
     let response = {};
 
-    response = await auth(value).then(resp =>
+    response = await auth(value).then((resp) =>
       this.setState({
-        auth: resp ? resp.data : false
+        auth: resp ? resp.data : false,
       })
     );
 
@@ -120,15 +120,12 @@ class PagesRoute extends Component {
           />
           <Route path="/logged/estoque" component={EstoqueRoute} />
           <Route path="/logged/reservaKit" component={ReservaKitRoute} />
-          <Route
-            path="/logged/reservaTecnico"
-            component={ReservaTecnicoRoute}
-          />
-          <Route path="/logged/Rinterno" component={ReservaInternoRoute} />
+          <Route path="/logged/romaneio" component={RomanieoRoute} />
           <Route path="/logged/Rexterno" component={ReservaExternoRoute} />
           <Route path="/logged/reservaKitAdd" component={AddKitRoute} />
           <Route path="/logged/reservaML" component={ReservaMLRoute} />
           <Route path="/logged/relatorioOs" component={RelatorioOsRoute} />
+          <Route path="/logged/Rinterno" component={ReservaInternoRoute} />
           <Route
             path="/logged/relatorioEmprestimo"
             component={RelatorioEmprestimoRoute}
@@ -216,11 +213,8 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(PagesRoute);
+export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);

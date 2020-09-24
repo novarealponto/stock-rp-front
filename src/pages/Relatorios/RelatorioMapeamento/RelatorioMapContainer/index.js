@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Button, Spin, Input, Icon, Modal } from "antd";
+import { Button, Spin, Input, Modal } from "antd";
 import { getProdutos, CreatePDF } from "../../../../services/produto";
+import { PrinterOutlined } from "@ant-design/icons";
 
 class RelatorioMapContainer extends Component {
   state = {
@@ -228,11 +229,10 @@ class RelatorioMapContainer extends Component {
         {this.state.avancado ? (
           <div className="div-avancado-RMap">
             <div className="div-linha-avancado-RMap">
-              <Icon
+              <PrinterOutlined
                 id="imprimir"
                 style={{ fontSize: "32px" }}
                 onClick={this.openModal}
-                type="printer"
               />
               <Button
                 type="primary"
@@ -314,10 +314,9 @@ class RelatorioMapContainer extends Component {
           </div>
         ) : (
           <div className="div-linha1-avancado-RMap">
-            <Icon
+            <PrinterOutlined
               id="imprimir"
               style={{ fontSize: "32px" }}
-              type="printer"
               onClick={this.openModal}
             />
             <Button

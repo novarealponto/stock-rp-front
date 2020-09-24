@@ -4,13 +4,12 @@ import {
   Button,
   Select,
   Input,
-  Icon,
   Modal,
   Tooltip,
   InputNumber,
   Spin,
   message,
-  DatePicker
+  DatePicker,
 } from "antd";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -21,6 +20,13 @@ import { getTecnico } from "../../../../services/tecnico";
 import { getKit, baixasKitOut } from "../../../../services/kit";
 import { getOsByOs } from "../../../../services/reservaOs";
 
+import {
+  ArrowRightOutlined,
+  AlertOutlined,
+  PlusOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
+
 const { Option } = Select;
 
 class ReservaKit extends Component {
@@ -28,7 +34,7 @@ class ReservaKit extends Component {
     valueDate: { start: "2019/01/01" },
     modalBaixa: false,
     produtoSelecionado: {
-      products: {}
+      products: {},
     },
     os: "",
     avancado: false,
@@ -42,7 +48,7 @@ class ReservaKit extends Component {
     perdas: 0,
     tecnicoArray: [],
     kitArray: {
-      rows: []
+      rows: [],
     },
     tecnico: "Não selecionado",
     redirect: false,
@@ -51,21 +57,21 @@ class ReservaKit extends Component {
     count: 0,
     show: 0,
     message: {
-      Os: ""
+      Os: "",
     },
     fieldFalha: {
-      Os: false
-    }
+      Os: false,
+    },
   };
 
   aviso = () => {
     message.warning("Finalize ou cancele a expedição!");
   };
 
-  changePages = pages => {
+  changePages = (pages) => {
     this.setState(
       {
-        page: pages
+        page: pages,
       },
       () => {
         this.getAllKit();
@@ -83,42 +89,42 @@ class ReservaKit extends Component {
 
   getAllKit = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const query = {
       filters: {
         technician: {
           specific: {
-            name: this.state.tecnico
-          }
+            name: this.state.tecnico,
+          },
         },
         product: {
           specific: {
-            name: this.state.produto
-          }
+            name: this.state.produto,
+          },
         },
         kitParts: {
           specific: {
-            updatedAt: this.state.valueDate
-          }
-        }
+            updatedAt: this.state.valueDate,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
 
-    await getKit(query).then(resposta =>
+    await getKit(query).then((resposta) =>
       this.setState({
         kitArray: resposta.data,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
     );
 
     this.setState({
-      loading: false
+      loading: false,
     });
   };
 
@@ -130,7 +136,7 @@ class ReservaKit extends Component {
       liberados: 0,
       perdas: 0,
       teste: 0,
-      teste1: 1
+      teste1: 1,
     });
   };
 
@@ -141,7 +147,7 @@ class ReservaKit extends Component {
         expedicao: this.state.liberados.toString(),
         perda: this.state.perdas.toString(),
         os: this.state.os,
-        kitPartId: this.state.produtoSelecionado.products.kitPartId
+        kitPartId: this.state.produtoSelecionado.products.kitPartId,
       };
 
       const resposta = await baixasKitOut(values);
@@ -150,7 +156,7 @@ class ReservaKit extends Component {
         this.setState({
           messageError: true,
           fieldFalha: resposta.data.fields[0].field,
-          message: resposta.data.fields[0].message
+          message: resposta.data.fields[0].message,
         });
         await this.error(
           resposta.data.fields[0].field.message
@@ -162,7 +168,7 @@ class ReservaKit extends Component {
           incluidos: 0,
           liberados: 0,
           perdas: 0,
-          messageError: false
+          messageError: false,
         });
       }
       if (resposta.status === 200) {
@@ -172,11 +178,11 @@ class ReservaKit extends Component {
           incluidos: 0,
           liberados: 0,
           perdas: 0,
-          messageSuccess: true
+          messageSuccess: true,
         });
         await this.success();
         this.setState({
-          messageSuccess: false
+          messageSuccess: false,
         });
 
         await this.getAllKit();
@@ -190,7 +196,7 @@ class ReservaKit extends Component {
     message.success("A reserva foi efetuada");
   };
 
-  error = value => {
+  error = (value) => {
     message.error(value);
   };
 
@@ -198,52 +204,52 @@ class ReservaKit extends Component {
     await this.setState({
       modalBaixa: false,
       produtoSelecionado: {
-        products: {}
+        products: {},
       },
       teste: NaN,
-      teste1: 1
+      teste1: 1,
     });
   };
 
-  openModalDetalhes = async valor => {
+  openModalDetalhes = async (valor) => {
     await this.setState({
       modalBaixa: true,
       produtoSelecionado: {
-        products: valor
+        products: valor,
       },
       totalModal: parseInt(valor.amount, 10),
-      teste: parseInt(valor.amount, 10)
+      teste: parseInt(valor.amount, 10),
     });
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     await this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
 
     await this.getAllKit();
   };
 
-  onChangeOs = e => {
+  onChangeOs = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado
+      avancado: !this.state.avancado,
     });
   };
 
   getAllTecnico = async () => {
     const query = {
-      external: true
+      external: true,
     };
 
-    await getTecnico(query).then(resposta =>
+    await getTecnico(query).then((resposta) =>
       this.setState({
-        tecnicoArray: resposta.data
+        tecnicoArray: resposta.data,
       })
     );
   };
@@ -253,7 +259,7 @@ class ReservaKit extends Component {
 
     if (this.state.tecnicoArray.length !== 0) {
       await this.setState({
-        tecnico: this.state.tecnicoArray[0].name
+        tecnico: this.state.tecnicoArray[0].name,
       });
     }
 
@@ -262,7 +268,7 @@ class ReservaKit extends Component {
 
   setRedirect = () => {
     this.setState({
-      redirect: true
+      redirect: true,
     });
   };
 
@@ -276,23 +282,23 @@ class ReservaKit extends Component {
     }
   };
 
-  onChangeTecnico = async value => {
+  onChangeTecnico = async (value) => {
     await this.setState({
-      tecnico: value
+      tecnico: value,
     });
 
     await this.getAllKit();
   };
 
-  onChangeModal = value => {
+  onChangeModal = (value) => {
     this.setState({
-      teste: value
+      teste: value,
     });
   };
 
-  onChangeModal1 = value => {
+  onChangeModal1 = (value) => {
     this.setState({
-      teste1: value
+      teste1: value,
     });
   };
 
@@ -305,12 +311,12 @@ class ReservaKit extends Component {
       produtoSelecionado: {
         products: {
           ...this.state.produtoSelecionado.products,
-          amount: menos
-        }
+          amount: menos,
+        },
       },
       totalModal: menos,
       incluidos: this.state.incluidos + this.state.teste1,
-      teste1: 1
+      teste1: 1,
     });
   };
 
@@ -323,12 +329,12 @@ class ReservaKit extends Component {
       produtoSelecionado: {
         products: {
           ...this.state.produtoSelecionado.products,
-          amount: menos
-        }
+          amount: menos,
+        },
       },
       totalModal: menos,
       perdas: this.state.perdas + this.state.teste,
-      teste: 1
+      teste: 1,
     });
   };
 
@@ -345,19 +351,19 @@ class ReservaKit extends Component {
       produtoSelecionado: {
         products: {
           ...this.state.produtoSelecionado.products,
-          amount: menos
-        }
+          amount: menos,
+        },
       },
       totalModal: menos,
       liberados: this.state.liberados + this.state.teste,
-      teste: 1
+      teste: 1,
     });
   };
 
-  searchDate = async e => {
+  searchDate = async (e) => {
     if (!e[0] || !e[1]) return;
     await this.setState({
-      valueDate: { start: e[0]._d, end: e[1]._d }
+      valueDate: { start: e[0]._d, end: e[1]._d },
     });
     await this.getAllKit();
   };
@@ -369,19 +375,19 @@ class ReservaKit extends Component {
       if (os.data.razaoSocial) {
         await this.setState({
           fieldFalha: {
-            Os: false
+            Os: false,
           },
           message: {
-            Os: ""
-          }
+            Os: "",
+          },
         });
       } else {
         this.setState(
           {
             fieldFalha: {
-              Os: true
+              Os: true,
             },
-            os: ""
+            os: "",
           },
           this.messageError()
         );
@@ -528,7 +534,7 @@ class ReservaKit extends Component {
                 className="button-liberar"
                 onClick={this.liberar}
               >
-                <Icon type="arrow-right" />
+                <ArrowRightOutlined />
               </Button>
             </Tooltip>
             <Tooltip placement="top" title="Perda">
@@ -537,7 +543,7 @@ class ReservaKit extends Component {
                 className="button-remove-entrada"
                 onClick={this.perda}
               >
-                <Icon type="alert" />
+                <AlertOutlined />
               </Button>
             </Tooltip>
           </div>
@@ -557,7 +563,7 @@ class ReservaKit extends Component {
           <div className="div-acoes-modalMais-kit">
             <Tooltip placement="top" title="Adicionar">
               <Button type="primary" className="button" onClick={this.retornar}>
-                <Icon type="plus" />
+                <PlusOutlined />
               </Button>
             </Tooltip>
           </div>
@@ -580,7 +586,7 @@ class ReservaKit extends Component {
 
   test = () => {
     if (this.state.kitArray.rows.length !== 0) {
-      return this.state.kitArray.rows.map(line => (
+      return this.state.kitArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div className="div-lines1-kit">
             <div className="cel-produto-cabecalho-kit">{line.name}</div>
@@ -592,7 +598,7 @@ class ReservaKit extends Component {
                 type="primary"
                 onClick={() => this.openModalDetalhes(line)}
               >
-                <Icon type="edit" />
+                <EditOutlined />
               </Button>
             </div>
             <this.modalDetalhesLinha />
@@ -687,7 +693,7 @@ class ReservaKit extends Component {
                     style={{ width: "100%" }}
                     onChange={this.onChangeTecnico}
                   >
-                    {this.state.tecnicoArray.map(valor => (
+                    {this.state.tecnicoArray.map((valor) => (
                       <Option value={valor.name}>{valor.name}</Option>
                     ))}
                   </Select>
@@ -738,7 +744,7 @@ class ReservaKit extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 

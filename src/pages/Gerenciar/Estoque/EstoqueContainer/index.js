@@ -148,7 +148,6 @@ class Estoque extends Component {
           specific: {
             name: this.state.produto,
             modulo: this.props.auth.modulo,
-            category: "peca",
           },
         },
         stockBase: {

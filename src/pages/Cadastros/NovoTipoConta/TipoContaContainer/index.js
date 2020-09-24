@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Icon, Input, Card, Checkbox, Button, message } from "antd";
+import { Input, Card, Checkbox, Button, message } from "antd";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { NovoTipoContaService } from "../../../../services/novoTipoConta";
 
+import { ArrowLeftOutlined } from "@ant-design/icons";
 class NovoTipoConta extends Component {
   state = {
     loading: false,
@@ -237,10 +238,7 @@ class NovoTipoConta extends Component {
         <div className="linhaTexto-tipo">
           <div className="div-nome-40">
             <div>
-              <Icon
-                type="arrow-left"
-                onClick={() => this.redirectReservaOs()}
-              />
+              <ArrowLeftOutlined onClick={() => this.redirectReservaOs()} />
             </div>
             {this.renderRedirect()}
           </div>

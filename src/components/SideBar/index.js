@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Menu, Icon, Tooltip } from "antd";
+import { Menu, Tooltip } from "antd";
 import "./index.css";
 import { Redirect } from "react-router-dom";
 import { Logout } from "../../pages/Login/LoginRedux/action";
@@ -10,6 +10,26 @@ import uuidValidate from "uuid-validate";
 
 import { auth } from "../../services/auth";
 import { hasNotifications } from "../../services/notificacao";
+import {
+  UserOutlined,
+  LogoutOutlined,
+  StockOutlined,
+  RetweetOutlined,
+  AreaChartOutlined,
+  AppleOutlined,
+  FileSearchOutlined,
+  AlertOutlined,
+  PieChartOutlined,
+  ShopOutlined,
+  FileAddOutlined,
+  FilePdfOutlined,
+  PushpinOutlined,
+  UserAddOutlined,
+  SettingOutlined,
+  BankOutlined,
+  UnorderedListOutlined,
+  ShoppingCartOutlined,
+} from "@ant-design/icons";
 
 const SubMenu = Menu.SubMenu;
 
@@ -19,13 +39,13 @@ class SideBar extends Component {
     current: "0",
     redirect: false,
     open: [],
-    auth: true
+    auth: true,
   };
 
   hasNotifications = async () => {
-    await hasNotifications().then(resp =>
+    await hasNotifications().then((resp) =>
       this.setState({
-        notificacao: resp.data
+        notificacao: resp.data,
       })
     );
   };
@@ -33,14 +53,14 @@ class SideBar extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username
+      username: this.props.auth.username,
     };
 
     let response = {};
 
-    response = await auth(value).then(resp =>
+    response = await auth(value).then((resp) =>
       this.setState({
-        auth: resp ? resp.data : false
+        auth: resp ? resp.data : false,
       })
     );
 
@@ -69,7 +89,7 @@ class SideBar extends Component {
 
     this.setState({
       current: "logout",
-      redirect: true
+      redirect: true,
     });
   };
 
@@ -84,13 +104,13 @@ class SideBar extends Component {
     this.setState({
       current,
       redirect: true,
-      open: [keyPath]
+      open: [keyPath],
     });
   };
 
   changeRedirectState = () => {
     this.setState({
-      redirect: false
+      redirect: false,
     });
   };
 
@@ -105,11 +125,11 @@ class SideBar extends Component {
     this.setState({
       current,
       redirect: true,
-      open: [keyPath]
+      open: [keyPath],
     });
   };
 
-  handleClick = async e => {
+  handleClick = async (e) => {
     await this.auth();
 
     if (!this.state.auth) {
@@ -120,7 +140,7 @@ class SideBar extends Component {
     this.setState({
       current: e.key,
       redirect: true,
-      open: [e.keyPath[1]]
+      open: [e.keyPath[1]],
     });
   };
 
@@ -134,7 +154,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/novoUsuario/add",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -144,7 +164,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/notificacao/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -154,7 +174,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/novoTipoConta/add",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -164,7 +184,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/novoTecnico/add",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -174,7 +194,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/novoProduto/add",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -184,7 +204,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/novoFornecedor/add",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -194,7 +214,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/gerenciarProduto/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -204,7 +224,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/entrada/add",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -214,7 +234,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/gerenciarEntrada/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -224,7 +244,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/estoque/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -234,7 +254,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/reservaKit/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -244,27 +264,17 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/reservaKitAdd/add",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
-        case "reservaTecnico_dash":
+        case "romaneio_dash":
           return (
             <Redirect
               push
               to={{
-                pathname: "/logged/reservaTecnico/dash",
-                state: { from: this.props.location }
-              }}
-            />
-          );
-        case "Rinterno_dash":
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: "/logged/Rinterno/dash",
-                state: { from: this.props.location }
+                pathname: "/logged/romaneio/dash",
+                state: { from: this.props.location },
               }}
             />
           );
@@ -274,7 +284,17 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/Rexterno/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
+              }}
+            />
+          );
+        case "Rinterno_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/Rinterno/dash",
+                state: { from: this.props.location },
               }}
             />
           );
@@ -284,7 +304,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/Os/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -294,7 +314,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/searchOs/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -304,7 +324,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/reservaML/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -314,7 +334,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/relatorioOs/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -324,7 +344,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/relatorioEmprestimo/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -334,7 +354,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/relatorioPerda/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -344,7 +364,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/relatorioML/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -354,7 +374,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/relatorioVendas/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -364,7 +384,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/relatorioMap/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -374,7 +394,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/RelatorioSuprimentos/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -384,7 +404,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/perfil/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -394,7 +414,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/gerenciarProdutosDash/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -404,7 +424,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/gerenciarFornecedor/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -414,7 +434,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/gerenciarUsuario/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -424,7 +444,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/gerenciarTecnico/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -434,7 +454,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/entradaDash/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -444,7 +464,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/emprestimo/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -454,7 +474,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/gerenciarCadastrosSup/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -464,7 +484,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/gerenciarEstoqueSup/dash",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -474,7 +494,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/cadastroFornecedorSup/add",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -484,7 +504,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/cadastroProdutosSup/add",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -494,7 +514,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/entradaSup/add",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -504,7 +524,7 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/saidaSup/add",
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
           );
@@ -518,34 +538,30 @@ class SideBar extends Component {
       <div>
         <div className="menuIcon">
           <Tooltip placement="bottom" title={"Logout"}>
-            <Icon
+            <LogoutOutlined
               key="logout"
               className="menuIcon-icon"
-              type="logout"
               onClick={() => this.logout()}
             />
           </Tooltip>
 
           <Tooltip placement="bottom" title={"Estoque"}>
-            <Icon
+            <StockOutlined
               className="menuIcon-icon"
-              type="stock"
               onClick={() => this.handleClickCompany("estoque_dash", "Entrada")}
             />
           </Tooltip>
 
           <Tooltip placement="bottom" title={"Entrada"}>
-            <Icon
+            <ShopOutlined
               className="menuIcon-icon"
-              type="shop"
               onClick={() => this.handleClickCompany("entrada_add")}
             />
           </Tooltip>
 
           <Tooltip placement="bottom" title={"Perfil"}>
-            <Icon
+            <UserOutlined
               className="menuIcon-icon"
-              type="user"
               onClick={() => this.handleClickCompany("perfil_dash")}
             />
           </Tooltip>
@@ -563,7 +579,7 @@ class SideBar extends Component {
             key="Cadastros"
             title={
               <span>
-                <Icon type="plus" />
+                <UserOutlined />
                 <span>Cadastros</span>
               </span>
             }
@@ -572,7 +588,7 @@ class SideBar extends Component {
               disabled={!this.props.auth.addUser}
               key="novoUsuario_add"
             >
-              <Icon type="user" />
+              <UserOutlined />
               Usuário
             </Menu.Item>
             {!this.props.auth.modulo && (
@@ -580,7 +596,7 @@ class SideBar extends Component {
                 disabled={!this.props.auth.addTec}
                 key="newTecnico_add"
               >
-                <Icon type="user-add" />
+                <UserAddOutlined />
                 Técnico
               </Menu.Item>
             )}
@@ -588,18 +604,18 @@ class SideBar extends Component {
               disabled={!this.props.auth.addProd}
               key="novoProduto_add"
             >
-              <Icon type="setting" />
+              <SettingOutlined />
               Produto
             </Menu.Item>
             <Menu.Item
               disabled={!this.props.auth.addFonr}
               key="novoFornecedor_add"
             >
-              <Icon type="bank" />
+              <BankOutlined />
               Fornecedor
             </Menu.Item>
             <Menu.Item key="gerenciarProduto_dash">
-              <Icon type="unordered-list" />
+              <UnorderedListOutlined />
               Gerenciar
             </Menu.Item>
           </SubMenu>
@@ -607,17 +623,17 @@ class SideBar extends Component {
             key="Entrada"
             title={
               <span>
-                <Icon type="shop" />
+                <ShopOutlined />
                 <span>Entrada</span>
               </span>
             }
           >
             <Menu.Item disabled={!this.props.auth.addEntr} key="entrada_add">
-              <Icon type="shopping-cart" />
+              <ShoppingCartOutlined />
               Nova
             </Menu.Item>
             <Menu.Item key="entrada_dash">
-              <Icon type="unordered-list" />
+              <UnorderedListOutlined />
               Gerenciar
             </Menu.Item>
           </SubMenu>
@@ -625,13 +641,13 @@ class SideBar extends Component {
             key="Estoque"
             title={
               <span>
-                <Icon type="stock" />
+                <StockOutlined />
                 <span>Estoque</span>
               </span>
             }
           >
             <Menu.Item key="estoque_dash">
-              <Icon type="unordered-list" />
+              <UnorderedListOutlined />
               Gerenciar
             </Menu.Item>
           </SubMenu>
@@ -641,7 +657,7 @@ class SideBar extends Component {
               key="Reserva"
               title={
                 <span>
-                  <Icon type="pushpin" />
+                  <PushpinOutlined />
                   <span>Reserva</span>
                 </span>
               }
@@ -650,33 +666,33 @@ class SideBar extends Component {
                 disabled={!this.props.auth.addKitOut}
                 key="reservaKit_dash"
               >
-                <Icon type="shopping" />
+                <ShoppingCartOutlined />
                 Kit
               </Menu.Item>
               <Menu.Item
                 disabled={!this.props.auth.addOutPut}
-                key="reservaTecnico_dash"
+                key="romaneio_dash"
               >
-                <Icon type="file-pdf" />
+                <FilePdfOutlined />
                 Romaneio
               </Menu.Item>
               <Menu.Item disabled={!this.props.auth.gerROs} key="Rinterno_dash">
-                <Icon type="file-add" />
+                <FileAddOutlined />
                 Recepção
               </Menu.Item>
               <Menu.Item disabled={!this.props.auth.addROs} key="Rexterno_dash">
-                <Icon type="file-add" />
+                <FileAddOutlined />
                 Externo
               </Menu.Item>
               <Menu.Item
                 disabled={!this.props.auth.addRML}
                 key="reservaML_dash"
               >
-                <Icon type="ie" />
+                <PieChartOutlined />
                 E-Commerce
               </Menu.Item>
               <Menu.Item disabled={!this.props.auth.gerROs} key="Os_dash">
-                <Icon type="unordered-list" />
+                <UnorderedListOutlined />
                 Gerenciar Os
               </Menu.Item>
             </SubMenu>
@@ -686,13 +702,13 @@ class SideBar extends Component {
             key="Emprestimo"
             title={
               <span>
-                <Icon type="retweet" />
+                <RetweetOutlined />
                 <span>{this.props.auth.modulo ? "Modulo" : "Empréstimo"}</span>
               </span>
             }
           >
             <Menu.Item key="emprestimo_dash">
-              <Icon type="unordered-list" />
+              <UnorderedListOutlined />
               Gerenciar
             </Menu.Item>
           </SubMenu>
@@ -701,50 +717,50 @@ class SideBar extends Component {
             key="Relatorios"
             title={
               <span>
-                <Icon type="area-chart" />
+                <AreaChartOutlined />
                 <span>Relatórios</span>
               </span>
             }
           >
             {!this.props.auth.modulo && (
               <Menu.Item key="relatorioOs_dash">
-                <Icon type="file-search" />
+                <FileSearchOutlined />
                 Os
               </Menu.Item>
             )}
             {!this.props.auth.modulo && (
               <Menu.Item key="relatorioPerda_dash">
-                <Icon type="alert" />
+                <AlertOutlined />
                 Perda
               </Menu.Item>
             )}
             {!this.props.auth.modulo && (
               <Menu.Item key="relatorioML_dash">
-                <Icon type="ie" />
+                <PieChartOutlined />
                 E-Commerce
               </Menu.Item>
             )}
             {!this.props.auth.modulo && (
               <Menu.Item key="relatorioVendas_dash">
-                <Icon type="shopping-cart" />
+                <ShoppingCartOutlined />
                 Vendas
               </Menu.Item>
             )}
             {!this.props.auth.modulo && (
               <Menu.Item key="relatorioMap_dash">
-                <Icon type="file-search" />
+                <FileSearchOutlined />
                 Mapeamento
               </Menu.Item>
             )}
             {!this.props.auth.modulo && (
               <Menu.Item key="relatorioSup_dash">
-                <Icon type="apple" />
+                <AppleOutlined />
                 Suprimentos
               </Menu.Item>
             )}
 
             <Menu.Item key="relatorioEmprestimo_dash">
-              <Icon type="retweet" />
+              <RetweetOutlined />
               Empréstimo
             </Menu.Item>
           </SubMenu>
@@ -754,7 +770,7 @@ class SideBar extends Component {
               key="Suprimentos"
               title={
                 <span>
-                  <Icon type="apple" />
+                  <AppleOutlined />
                   <span>Suprimentos</span>
                 </span>
               }
@@ -763,42 +779,42 @@ class SideBar extends Component {
                 key="cadastroProdutosSup_add"
                 disabled={!this.props.auth.suprimento}
               >
-                <Icon type="unordered-list" />
+                <UnorderedListOutlined />
                 Cad. Produtos
               </Menu.Item>
               <Menu.Item
                 key="cadastroFornecedorSup_add"
                 disabled={!this.props.auth.suprimento}
               >
-                <Icon type="unordered-list" />
+                <UnorderedListOutlined />
                 Cad. Fornecedor
               </Menu.Item>
               <Menu.Item
                 key="entradaSup_add"
                 disabled={!this.props.auth.suprimento}
               >
-                <Icon type="unordered-list" />
+                <UnorderedListOutlined />
                 Entrada
               </Menu.Item>
               <Menu.Item
                 key="saidaSup_add"
                 disabled={!this.props.auth.suprimento}
               >
-                <Icon type="unordered-list" />
+                <UnorderedListOutlined />
                 Saida
               </Menu.Item>
               <Menu.Item
                 key="gerenciarCadastrosSup_dash"
                 disabled={!this.props.auth.suprimento}
               >
-                <Icon type="unordered-list" />
+                <UnorderedListOutlined />
                 Ger. Cadastros
               </Menu.Item>
               <Menu.Item
                 key="gerenciarEstoqueSup_dash"
                 disabled={!this.props.auth.suprimento}
               >
-                <Icon type="unordered-list" />
+                <UnorderedListOutlined />
                 Ger. Estoque
               </Menu.Item>
             </SubMenu>
@@ -815,11 +831,8 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(SideBar);
+export default connect(mapStateToProps, mapDispacthToProps)(SideBar);

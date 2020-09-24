@@ -1,15 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  Button,
-  Select,
-  Input,
-  Modal,
-  message,
-  Icon,
-  DatePicker,
-  Spin,
-} from "antd";
+import { Button, Select, Input, Modal, message, DatePicker, Spin } from "antd";
 import moment from "moment";
 
 import "./index.css";
@@ -24,6 +15,14 @@ import {
 import { getItens } from "../../../../services/produto";
 import { getTecnico } from "../../../../services/tecnico";
 import { validator, masks } from "./validator";
+
+import {
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  RollbackOutlined,
+  PrinterOutlined,
+} from "@ant-design/icons";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -718,7 +717,7 @@ class EmprestimoContainer extends Component {
                     })
                   }
                 >
-                  <Icon type="plus" />
+                  <PlusOutlined />
                 </Button>
               </div>
             </div>
@@ -812,7 +811,7 @@ class EmprestimoContainer extends Component {
                   className="button"
                   onClick={() => this.update(item)}
                 >
-                  <Icon type="edit" />
+                  <EditOutlined />
                 </Button>
                 <Button
                   type="primary"
@@ -824,7 +823,7 @@ class EmprestimoContainer extends Component {
                     })
                   }
                 >
-                  <Icon type="delete" />
+                  <DeleteOutlined />
                 </Button>
               </div>
             </div>
@@ -862,7 +861,7 @@ class EmprestimoContainer extends Component {
                   className="button"
                   onClick={() => this.retorno(item)}
                 >
-                  <Icon type="rollback" />
+                  <RollbackOutlined />
                 </Button>
               </div>
             </div>
@@ -1221,11 +1220,10 @@ class EmprestimoContainer extends Component {
             </Select>
 
             <div style={{ display: "flex" }}>
-              <Icon
+              <PrinterOutlined
                 id="imprimir"
                 style={{ fontSize: "32px", marginRight: "20px" }}
                 onClick={this.createPDFEmprestimo}
-                type="printer"
               />
               <Button
                 type="primary"

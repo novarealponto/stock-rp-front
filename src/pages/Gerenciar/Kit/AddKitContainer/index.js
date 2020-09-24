@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Select, InputNumber, Button, message, Input, Icon } from "antd";
+import { Select, InputNumber, Button, message, Input } from "antd";
 import { getProdutoByEstoque } from "../../../../services/produto";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import { getTecnico } from "../../../../services/tecnico";
 import { NewKit, getKitDefaultValue } from "../../../../services/kit";
 import { getSerial } from "../../../../services/serialNumber";
+
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -282,10 +284,7 @@ class AddKit extends Component {
         <div className="linhaTexto-AddKit">
           <div className="div-nome-40">
             <div>
-              <Icon
-                type="arrow-left"
-                onClick={() => this.redirectReservaOs()}
-              />
+              <ArrowLeftOutlined onClick={() => this.redirectReservaOs()} />
             </div>
           </div>
           <div className="div-nome-60">

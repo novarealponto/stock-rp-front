@@ -3,8 +3,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import "./index.css";
-import { Button, Icon, Modal, Tooltip, Input, Spin, DatePicker } from "antd";
+import { Button, Modal, Tooltip, Input, Spin, DatePicker } from "antd";
 import { Redirect } from "react-router-dom";
+
+import { DeleteOutlined, StopOutlined } from "@ant-design/icons";
 
 import {
   getTodasOs,
@@ -416,12 +418,12 @@ class OsDash extends Component {
                     className="button-icon-remove"
                     onClick={() => this.removerLinha(line.id)}
                   >
-                    <Icon type="delete" />
+                    <DeleteOutlined />
                   </Button>
                 </Tooltip>
               ) : (
                 <Button type="primary" disabled className="button-disabled">
-                  <Icon type="stop" />
+                  <StopOutlined />
                 </Button>
               )}
               <this.modalRemover />

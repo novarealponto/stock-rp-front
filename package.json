@@ -6,7 +6,7 @@
     "@ant-design/icons": "^4.0.5",
     "@fnando/cnpj": "^0.1.1",
     "@fnando/cpf": "^0.1.1",
-    "antd": "^3.18.2",
+    "antd": "^4.6.5",
     "axios": "^0.18.0",
     "jspdf": "^1.5.3",
     "moment": "^2.24.0",

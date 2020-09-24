@@ -16,6 +16,12 @@ import {
   redirectValueTecnico,
 } from "../ProdutoRedux/action";
 
+import {
+  EditOutlined,
+  CheckCircleTwoTone,
+  CloseCircleTwoTone,
+} from "@ant-design/icons";
+
 const { Option } = Select;
 class GerenciarProdutoDash extends Component {
   state = {
@@ -431,8 +437,7 @@ class GerenciarProdutoDash extends Component {
             <div className="cel-edit-cabecalho-GCadastros">
               {this.props.auth.addProd ? (
                 <Tooltip placement="topLeft" title="Editar">
-                  <Icon
-                    type="edit"
+                  <EditOutlined
                     className="icon-edit"
                     onClick={() => this.redirectProduto(line)}
                     style={{ fontSize: "20px", color: "#08c" }}
@@ -465,24 +470,15 @@ class GerenciarProdutoDash extends Component {
             </div>
             <div className="cel-customizado-cabecalho-GCadastros">
               {line.customized ? (
-                <Icon
-                  type="check-circle"
-                  theme="twoTone"
-                  twoToneColor="#52c41a"
-                />
+                <CheckCircleTwoTone twoToneColor="#52c41a" />
               ) : (
-                <Icon
-                  type="close-circle"
-                  theme="twoTone"
-                  twoToneColor="#f01b0c"
-                />
+                <CloseCircleTwoTone twoToneColor="#f01b0c" />
               )}
             </div>
             <div className="cel-edit-cabecalho-GCadastros">
               {this.props.auth.addUser ? (
                 <Tooltip placement="topLeft" title="Editar">
-                  <Icon
-                    type="edit"
+                  <EditOutlined
                     className="icon-edit"
                     style={{ fontSize: "20px", color: "#08c" }}
                     onClick={() => this.redirectUsuario(line)}
@@ -510,17 +506,9 @@ class GerenciarProdutoDash extends Component {
             <div className="cel-tecnico-cabecalho-GCadastros">{line.name}</div>
             <div className="cel-externo-cabecalho-GCadastros">
               {line.external ? (
-                <Icon
-                  type="check-circle"
-                  theme="twoTone"
-                  twoToneColor="#52c41a"
-                />
+                <CheckCircleTwoTone twoToneColor="#52c41a" />
               ) : (
-                <Icon
-                  type="close-circle"
-                  theme="twoTone"
-                  twoToneColor="#eb2f96"
-                />
+                <CloseCircleTwoTone twoToneColor="#eb2f96" />
               )}
             </div>
             <div className="cel-carro-cabecalho-GCadastros">{line.plate}</div>
@@ -530,8 +518,7 @@ class GerenciarProdutoDash extends Component {
             <div className="cel-edit-cabecalho-GCadastros">
               {this.props.auth.addTec ? (
                 <Tooltip placement="topLeft" title="Editar">
-                  <Icon
-                    type="edit"
+                  <EditOutlined
                     className="icon-edit"
                     style={{ fontSize: "20px", color: "#08c" }}
                     onClick={() => this.redirectTecnico(line)}
@@ -575,8 +562,7 @@ class GerenciarProdutoDash extends Component {
             <div className="cel-edit-cabecalho-GCadastros">
               {this.props.auth.addFonr ? (
                 <Tooltip placement="topLeft" title="Editar">
-                  <Icon
-                    type="edit"
+                  <EditOutlined
                     className="icon-edit"
                     style={{ fontSize: "20px", color: "#08c" }}
                     onClick={() => this.redirectFornecedor(line)}

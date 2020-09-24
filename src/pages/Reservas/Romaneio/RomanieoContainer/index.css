@@ -1,0 +1,38 @@
+.div-card-Rtecnico {
+  width: 96%;
+  height: 95%;
+  background-color: white;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: static;
+}
+.linhaTexto-Rtecnico {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+.h1-Rtecnico {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-weight: 500;
+  font-size: 2.2em;
+}
+
+#form-romaneio-search {
+  width: 100% !important;
+  display: flex;
+  justify-content: space-between;
+}
+
+#form-romaneio-search div {
+  width: 100% !important;
+}
+/* 
+#form-romaneio-search div,
+#form-romaneio-search input,
+#form-romaneio-search span {
+  width: 30%;
+} */

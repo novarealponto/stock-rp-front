@@ -11,7 +11,6 @@ import {
   Button,
   message,
   Select,
-  Icon,
   Modal,
 } from "antd";
 import { validators, masks } from "./validators";
@@ -23,6 +22,8 @@ import {
 import { getProdutoByEstoque, getProdutos } from "../../../../services/produto";
 import { getTecnico } from "../../../../services/tecnico";
 import { getSerial } from "../../../../services/serialNumber";
+
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -662,10 +663,7 @@ class SearchOsDash extends Component {
         <div className="linhaTexto-GOs">
           <div className="div-nome-40">
             <div>
-              <Icon
-                type="arrow-left"
-                onClick={() => this.redirectGerenciarOs()}
-              />
+              <ArrowLeftOutlined onClick={() => this.redirectGerenciarOs()} />
             </div>
             {this.renderRedirect()}
           </div>

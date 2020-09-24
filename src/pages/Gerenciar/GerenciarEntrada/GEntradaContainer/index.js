@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Input, Select, InputNumber, Button, Modal, message, Icon } from "antd";
+import { Input, Select, InputNumber, Button, Modal, message } from "antd";
 import { validators } from "./validators";
 import { Redirect } from "react-router-dom";
 import { updateEntrada } from "../../../../services/entrada";
 import { getItens, getEquips } from "../../../../services/produto";
 import { getFornecedor } from "../../../../services/fornecedores";
+
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -323,8 +325,7 @@ class GerenciarEntrada extends Component {
         <div className="linhaTexto-GOs">
           <div className="div-nome-40">
             <div>
-              <Icon
-                type="arrow-left"
+              <ArrowLeftOutlined
                 onClick={() => this.redirectGerenciarCadastros()}
               />
             </div>

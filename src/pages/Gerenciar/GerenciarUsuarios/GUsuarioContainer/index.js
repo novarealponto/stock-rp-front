@@ -1,16 +1,8 @@
 import React, { Component } from "react";
-import {
-  Input,
-  Select,
-  Card,
-  Checkbox,
-  Switch,
-  Button,
-  message,
-  Icon,
-} from "antd";
+import { Input, Select, Card, Checkbox, Switch, Button, message } from "antd";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 import {
   getTypeAccount,
@@ -234,8 +226,7 @@ class GerenciarUsuario extends Component {
         <div className="linhaTexto-GOs">
           <div className="div-nome-40">
             <div>
-              <Icon
-                type="arrow-left"
+              <ArrowLeftOutlined
                 onClick={() => this.redirectGerenciarCadastros()}
               />
             </div>

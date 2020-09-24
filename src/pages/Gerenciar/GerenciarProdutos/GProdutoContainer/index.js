@@ -7,7 +7,6 @@ import {
   Modal,
   Switch,
   message,
-  Icon,
 } from "antd";
 import { connect } from "react-redux";
 import { validators, masks } from "./validators";
@@ -19,6 +18,7 @@ import {
   getMarca,
 } from "../../../../services/produto";
 import { Redirect } from "react-router-dom";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -427,8 +427,7 @@ class GerenciarProdutos extends Component {
         <div className="linhaTexto-GOs">
           <div className="div-nome-40">
             <div>
-              <Icon
-                type="arrow-left"
+              <ArrowLeftOutlined
                 onClick={() => this.redirectGerenciarCadastros()}
               />
             </div>
