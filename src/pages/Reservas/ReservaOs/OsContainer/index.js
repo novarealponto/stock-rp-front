@@ -561,6 +561,7 @@ class Rexterno extends Component {
     return (
       <div className="div-card-Os">
         {this.renderRedirect()}
+        {console.log(this.state)}
         <div className="linhaTexto-Os">
           <h1 className="h1-Os">Reserva técnicos externos</h1>
         </div>

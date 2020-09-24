@@ -47,10 +47,11 @@ import EditarFornecedorSupRoute from "./Suprimentos/Edit.Fornecedor";
 import RelatorioMapRoute from "./Relatorios/RelatorioMapeamento";
 import RelatorioVendasRoute from "./Relatorios/RelatorioVendas";
 import RelatorioSuprimentosRoute from "./Relatorios/RelatorioSuprimentos";
+import ReservaInternoRoute from "./Reservas/ReservaInterno";
 
 class PagesRoute extends Component {
   state = {
-    auth: true,
+    auth: true
   };
 
   hasAuth = R.has("auth");
@@ -73,14 +74,14 @@ class PagesRoute extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username,
+      username: this.props.auth.username
     };
 
     let response = {};
 
-    response = await auth(value).then((resp) =>
+    response = await auth(value).then(resp =>
       this.setState({
-        auth: resp ? resp.data : false,
+        auth: resp ? resp.data : false
       })
     );
 
@@ -123,6 +124,7 @@ class PagesRoute extends Component {
             path="/logged/reservaTecnico"
             component={ReservaTecnicoRoute}
           />
+          <Route path="/logged/Rinterno" component={ReservaInternoRoute} />
           <Route path="/logged/Rexterno" component={ReservaExternoRoute} />
           <Route path="/logged/reservaKitAdd" component={AddKitRoute} />
           <Route path="/logged/reservaML" component={ReservaMLRoute} />
@@ -214,8 +216,11 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    auth: state.auth
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(PagesRoute);
