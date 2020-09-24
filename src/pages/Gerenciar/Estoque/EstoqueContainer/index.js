@@ -29,6 +29,7 @@ class Estoque extends Component {
     numeroSerie: "",
     produto: "",
     numeroSerieModal: [],
+    tipo: "",
     fabricante: "",
     serialNumberDelete: "",
     serialNumberDeleteId: "",
@@ -147,11 +148,17 @@ class Estoque extends Component {
           specific: {
             name: this.state.produto,
             modulo: this.props.auth.modulo,
+            category: "peca",
           },
         },
         stockBase: {
           specific: {
             stockBase: estoqueBase,
+          },
+        },
+        equipType: {
+          specific: {
+            type: this.state.tipo,
           },
         },
       },
@@ -589,6 +596,19 @@ class Estoque extends Component {
                   name="fabricante"
                   value={this.state.fabricante}
                   placeholder="Digite o fabricante"
+                  onChange={this.onChange}
+                  allowClear
+                />
+              </div>
+
+              <div className="div-fabricante-estoque">
+                <div className="div-text-Rtecnico">Tipo:</div>
+                <Input
+                  className="input-100"
+                  style={{ width: "100%" }}
+                  name="tipo"
+                  value={this.state.tipo}
+                  placeholder="Digite o tipo"
                   onChange={this.onChange}
                   allowClear
                 />
