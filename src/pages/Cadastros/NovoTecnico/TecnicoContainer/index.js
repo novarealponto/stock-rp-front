@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { validators, masks } from "./validators";
 import { newTecnico, newCarro, getCarro } from "../../../../services/tecnico";
+import { PlusOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -441,9 +442,10 @@ class NovoTecnico extends Component {
               <Button
                 className="buttonadd-marca-tecnico"
                 type="primary"
-                icon="plus"
                 onClick={this.openModal}
-              />
+              >
+                <PlusOutlined />
+              </Button>
             ) : null}
           </div>
 

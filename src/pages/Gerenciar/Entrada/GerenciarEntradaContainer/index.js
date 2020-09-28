@@ -20,26 +20,26 @@ class GerenciarEntrada extends Component {
     produto: "",
     data: "",
     entrada: {
-      rows: [],
+      rows: []
     },
     page: 1,
     total: 10,
     count: 0,
     show: 0,
-    valueDate: { start: "2019/01/01" },
+    valueDate: { start: "2019/01/01" }
   };
 
-  removerLinha = (line) => {
+  removerLinha = line => {
     this.setState({
       modalRemove: true,
-      idLine: line,
+      idLine: line
     });
   };
 
-  onChange = async (e) => {
+  onChange = async e => {
     await this.setState({
       [e.target.name]: e.target.value,
-      page: 1,
+      page: 1
     });
 
     await this.getAllEntrada();
@@ -47,14 +47,14 @@ class GerenciarEntrada extends Component {
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado,
+      avancado: !this.state.avancado
     });
   };
 
-  changePages = (pages) => {
+  changePages = pages => {
     this.setState(
       {
-        page: pages,
+        page: pages
       },
       () => {
         this.getAllEntrada();
@@ -64,7 +64,7 @@ class GerenciarEntrada extends Component {
 
   getAllEntrada = async () => {
     this.setState({
-      loading: true,
+      loading: true
     });
 
     const query = {
@@ -73,39 +73,39 @@ class GerenciarEntrada extends Component {
         entrance: {
           specific: {
             responsibleUser: this.state.usuario,
-            createdAt: this.state.valueDate,
-          },
+            createdAt: this.state.valueDate
+          }
         },
         product: {
           specific: {
             name: this.state.produto,
-            modulo: this.props.auth.modulo,
-          },
-        },
+            modulo: this.props.auth.modulo
+          }
+        }
       },
       page: this.state.page,
-      total: this.state.total,
+      total: this.state.total
       // order: {
       //   field: 'createdAt',
       //   acendent: true,
       // },
     };
 
-    await getEntrada(query).then((resposta) =>
+    await getEntrada(query).then(resposta =>
       this.setState({
         entrada: resposta.data,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show,
+        show: resposta.data.show
       })
     );
 
     this.setState({
-      loading: false,
+      loading: false
     });
   };
 
-  redirectEntrada = async (entrada) => {
+  redirectEntrada = async entrada => {
     const value = {
       id: entrada.id,
       stockBase: entrada.stockBase,
@@ -115,13 +115,13 @@ class GerenciarEntrada extends Component {
       companyId: entrada.companyId,
       productId: entrada.productId,
       serial: entrada.serial,
-      createdAt: entrada.createdAtNotFormatted,
+      createdAt: entrada.createdAtNotFormatted
     };
 
     await this.props.redirectValueEntrada(value);
 
     await this.setState({
-      redirect: true,
+      redirect: true
     });
   };
 
@@ -135,10 +135,10 @@ class GerenciarEntrada extends Component {
     await this.getAllEntrada();
   };
 
-  searchDate = async (e) => {
+  searchDate = async e => {
     if (!e[0] || !e[1]) return;
     await this.setState({
-      valueDate: { start: e[0]._d, end: e[1]._d },
+      valueDate: { start: e[0]._d, end: e[1]._d }
     });
 
     await this.getAllEntrada();
@@ -229,7 +229,7 @@ class GerenciarEntrada extends Component {
 
   test = () => {
     if (this.state.entrada.rows.length !== 0) {
-      return this.state.entrada.rows.map((line) => (
+      return this.state.entrada.rows.map(line => (
         <div className="div-100-Gentrada">
           <div className="div-lines-Gentrada">
             <div className="cel-produto-cabecalho-Gentrada">
@@ -304,14 +304,14 @@ class GerenciarEntrada extends Component {
 
     await this.setState({
       modalRemove: false,
-      idLine: "",
+      idLine: ""
     });
   };
 
   handleOk = () => {
     this.setState({
       modalRemove: false,
-      idLine: "",
+      idLine: ""
     });
   };
 
@@ -408,8 +408,11 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    auth: state.auth
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(GerenciarEntrada);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(GerenciarEntrada);

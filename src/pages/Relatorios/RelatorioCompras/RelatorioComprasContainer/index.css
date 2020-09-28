@@ -1,0 +1,6 @@
+.div-linha-RCompras {
+  width: 90%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 2px;
+}

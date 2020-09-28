@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "./index.css";
 import { Button, Input, InputNumber, Slider, DatePicker, Select } from "antd";
-import { GetRelatVendas } from "../../../../services/produto";
-import { PlusOutlined, PrinterOutlined } from "@ant-design/icons";
+// import { GetRelatVendas } from "../../../../services/produto";
+import { PrinterOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 import { GetSupProduct } from "../../../../services/Suprimentos/product";
@@ -24,13 +24,13 @@ class RelatorioSuprimentosContainer extends Component {
     index: -1,
     select: "estoque",
     min: undefined,
-    max: undefined,
+    max: undefined
   };
 
-  onChange = async (e) => {
+  onChange = async e => {
     const { name, value } = e.target;
     await this.setState({
-      [name]: value,
+      [name]: value
     });
 
     await this.getSupProduct(value);
@@ -38,7 +38,7 @@ class RelatorioSuprimentosContainer extends Component {
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado,
+      avancado: !this.state.avancado
     });
   };
 
@@ -46,19 +46,19 @@ class RelatorioSuprimentosContainer extends Component {
     await this.getSupProduct();
   };
 
-  searchDate = async (e) => {
+  searchDate = async e => {
     if (!e[0] || !e[1]) return;
     await this.setState({
-      valueDate: { start: e[0]._d, end: e[1]._d },
+      valueDate: { start: e[0]._d, end: e[1]._d }
     });
 
     // await this.getAllOs();
     await this.getSupProduct();
   };
 
-  changePages = async (pages) => {
+  changePages = async pages => {
     await this.setState({
-      page: pages,
+      page: pages
     });
     await this.getSupProduct();
   };
@@ -73,19 +73,19 @@ class RelatorioSuprimentosContainer extends Component {
             updatedAt: this.state.valueDate,
             amount: {
               start: this.state.min ? this.state.min : 0,
-              end: this.state.max,
-            },
-          },
+              end: this.state.max
+            }
+          }
         },
         manufacturer: {
           specific: {
-            name: this.state.fabricante,
-          },
-        },
+            name: this.state.fabricante
+          }
+        }
       },
       page: this.state.page,
       total: this.state.total,
-      compra: this.state.select === "compra",
+      compra: this.state.select === "compra"
     };
     const { status, data } = await GetSupProduct(query);
 
@@ -100,15 +100,15 @@ class RelatorioSuprimentosContainer extends Component {
       filters: {},
       page: 1,
       total: null,
-      compra: select === "compra",
+      compra: select === "compra"
     };
     const { status, data } = await GetSupProduct(query);
     if (status === 200) await CreatePDFSuprimento(select, data.rows);
   };
 
-  changePages = async (pages) => {
+  changePages = async pages => {
     await this.setState({
-      page: pages,
+      page: pages
     });
 
     await this.getSupProduct();
@@ -208,7 +208,7 @@ class RelatorioSuprimentosContainer extends Component {
           <Select
             value={this.state.select}
             style={{ width: "20%" }}
-            onChange={async (select) => {
+            onChange={async select => {
               await this.setState({ select });
               await this.getSupProduct();
             }}
@@ -225,7 +225,7 @@ class RelatorioSuprimentosContainer extends Component {
             <Button
               onClick={() => this.setState({ avancado: !this.state.avancado })}
             >
-              {this.state.avancado ? "ocultar" : "Avançado"}
+              {this.state.avancado ? "Ocultar" : "Avançado"}
             </Button>
           </div>
         </div>
@@ -267,7 +267,7 @@ class RelatorioSuprimentosContainer extends Component {
                 <InputNumber
                   value={this.state.min}
                   placeholder="min"
-                  onChange={async (min) => {
+                  onChange={async min => {
                     await this.setState({ min });
                     await this.getSupProduct();
                   }}
@@ -276,7 +276,7 @@ class RelatorioSuprimentosContainer extends Component {
                   style={{ width: "50%" }}
                   range
                   value={[this.state.min, this.state.max]}
-                  onChange={(e) => this.setState({ min: e[0], max: e[1] })}
+                  onChange={e => this.setState({ min: e[0], max: e[1] })}
                   max={this.state.max ? this.state.max + 100 : 100}
                   min={0}
                   onAfterChange={async () => {
@@ -285,7 +285,7 @@ class RelatorioSuprimentosContainer extends Component {
                 />
                 <InputNumber
                   value={this.state.max}
-                  onChange={async (max) => {
+                  onChange={async max => {
                     await this.setState({ max });
                     await this.getSupProduct();
                   }}
@@ -328,7 +328,7 @@ class RelatorioSuprimentosContainer extends Component {
           </div>
         </div>
 
-        {this.state.rows.map((row) => (
+        {this.state.rows.map(row => (
           <div className="div-block-table-relat-sup">
             <div
               className="div-linha"
@@ -358,7 +358,7 @@ class RelatorioSuprimentosContainer extends Component {
               style={{
                 width: "90%",
                 backgroundColor: "rgb(221, 219, 219)",
-                height: "1px",
+                height: "1px"
               }}
             />
           </div>

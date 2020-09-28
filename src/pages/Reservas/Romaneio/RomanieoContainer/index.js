@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import "./index.css";
 import { connect } from "react-redux";
-import { Select, Form, Input, DatePicker, Button, Row, Col, Table } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Select, Form, Empty, DatePicker, Button, Row, Col, Table } from "antd";
+// import { SearchOutlined } from "@ant-design/icons";
 import { getTecnico } from "../../../../services/tecnico";
 import { getAllOsPartsByParams } from "../../../../services/reservaOs";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
-const SearchForm = (props) => {
+const SearchForm = props => {
   const [form] = Form.useForm();
 
   return (
@@ -19,7 +19,7 @@ const SearchForm = (props) => {
       id="form-romaneio-search"
       layout="vertical"
       hideRequiredMark
-      onFinish={(value) => props.handleSubmit(value)}
+      onFinish={value => props.handleSubmit(value)}
     >
       <Row gutter={20}>
         <Col span={7}>
@@ -27,11 +27,11 @@ const SearchForm = (props) => {
             name="serviço"
             label="Serviço:"
             rules={[
-              { required: true, message: "Por favor selecione um serviço" },
+              { required: true, message: "Por favor selecione um serviço" }
             ]}
             style={{ width: "100%" }}
           >
-            <Select placeholder="selecione um serviço">
+            <Select placeholder="Selecione um serviço">
               <Option value="saida">Saída</Option>
               <Option value="retorno">Retorno</Option>
             </Select>
@@ -42,12 +42,12 @@ const SearchForm = (props) => {
             name="tecnico"
             label="Técnico: "
             rules={[
-              { required: true, message: "Por favor selecione uma técnico" },
+              { required: true, message: "Por favor selecione uma técnico" }
             ]}
             style={{ width: "100%" }}
           >
-            <Select placeholder="selecione um técnico">
-              {props.tecnicos.map((valor) => (
+            <Select placeholder="Selecione um técnico">
+              {props.tecnicos.map(valor => (
                 <Option value={valor.name}>{valor.name}</Option>
               ))}
             </Select>
@@ -56,19 +56,21 @@ const SearchForm = (props) => {
         <Col span={7}>
           <Form.Item
             name="data"
-            label="Dia: "
+            label="Data: "
             rules={[{ required: true, message: "Por favor digite uma senha" }]}
             style={{ width: "100%" }}
           >
-            <DatePicker placeholder="selecione um dia" />
+            <DatePicker placeholder="Selecione um dia" />
           </Form.Item>
         </Col>
         <Col span={3}>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Buscar
-            </Button>
-          </Form.Item>
+          <div className="div-button-table-romaneio">
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Buscar
+              </Button>
+            </Form.Item>
+          </div>
         </Col>
       </Row>
     </Form>
@@ -86,43 +88,43 @@ class RomanieoContainer extends Component {
     columns: [
       {
         title: "Os",
-        dataIndex: "os",
+        dataIndex: "os"
       },
       {
         title: "Técnico",
-        dataIndex: "tecnico",
+        dataIndex: "tecnico"
       },
       {
         title: "Qtd",
-        dataIndex: "amount",
+        dataIndex: "amount"
       },
       {
         title: "Cliente",
-        dataIndex: "razaoSocial",
+        dataIndex: "razaoSocial"
       },
       {
         title: "Ação",
         dataIndex: "",
         key: "id",
-        render: (text) => {
+        render: text => {
           return (
             <ArrowRightOutlined
               onClick={() =>
-                this.setState((prevState) => {
+                this.setState(prevState => {
                   console.log(prevState);
                   return {
                     rows: [
-                      ...prevState.rows.filter((item) => item.id !== text.id),
+                      ...prevState.rows.filter(item => item.id !== text.id)
                     ],
-                    rowsSelecteds: [...prevState.rowsSelecteds, text],
+                    rowsSelecteds: [...prevState.rowsSelecteds, text]
                   };
                 })
               }
             />
           );
-        },
-      },
-    ],
+        }
+      }
+    ]
   };
 
   componentDidMount = async () => {
@@ -130,36 +132,36 @@ class RomanieoContainer extends Component {
   };
 
   getAllTecnico = async () => {
-    await getTecnico().then((resposta) =>
+    await getTecnico().then(resposta =>
       this.setState({
-        tecnicoArray: resposta.data,
+        tecnicoArray: resposta.data
       })
     );
   };
 
-  buscarOsParts = async (value) => {
+  buscarOsParts = async value => {
     const { serviço, tecnico, data } = value;
 
     const query = {
       filters: {
         technician: {
           specific: {
-            name: tecnico,
-          },
+            name: tecnico
+          }
         },
         os: {
           specific: {
-            date: { start: data, end: data },
-          },
-        },
-      },
+            date: { start: data, end: data }
+          }
+        }
+      }
       // page: this.state.page,
       // total: this.state.total,
     };
 
     const {
       status,
-      data: { rows },
+      data: { rows }
     } = await getAllOsPartsByParams(query);
 
     if (status === 200) {
@@ -183,12 +185,24 @@ class RomanieoContainer extends Component {
           style={{ width: "100%" }}
           columns={this.state.columns}
           dataSource={this.state.rows}
+          locale={{
+            emptyText: () => (
+              <Empty description="Vazio" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            )
+          }}
         />
+
+        <div className="div-separate-table"></div>
 
         <Table
           style={{ width: "100%" }}
           columns={this.state.columns}
           dataSource={this.state.rowsSelecteds}
+          locale={{
+            emptyText: () => (
+              <Empty description="Vazio" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            )
+          }}
         />
       </div>
     );
@@ -197,7 +211,7 @@ class RomanieoContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    auth: state.auth
   };
 }
 

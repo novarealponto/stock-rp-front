@@ -48,10 +48,13 @@ import RelatorioMapRoute from "./Relatorios/RelatorioMapeamento";
 import RelatorioVendasRoute from "./Relatorios/RelatorioVendas";
 import RelatorioSuprimentosRoute from "./Relatorios/RelatorioSuprimentos";
 import ReservaInternoRoute from "./Reservas/ReservaInterno";
+import RelatorioComprasRoute from "./Relatorios/RelatorioCompras";
+import RelatorioGastosRoute from "./Relatorios/RelatorioGastos";
+import RelatorioInternoRoute from "./Relatorios/RelatorioInterno";
 
 class PagesRoute extends Component {
   state = {
-    auth: true,
+    auth: true
   };
 
   hasAuth = R.has("auth");
@@ -74,14 +77,14 @@ class PagesRoute extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username,
+      username: this.props.auth.username
     };
 
     let response = {};
 
-    response = await auth(value).then((resp) =>
+    response = await auth(value).then(resp =>
       this.setState({
-        auth: resp ? resp.data : false,
+        auth: resp ? resp.data : false
       })
     );
 
@@ -136,6 +139,18 @@ class PagesRoute extends Component {
           />
           <Route path="/logged/relatorioMap" component={RelatorioMapRoute} />
           <Route path="/logged/relatorioML" component={RelatorioMLRoute} />
+          <Route
+            path="/logged/relatorioCompras"
+            component={RelatorioComprasRoute}
+          />
+          <Route
+            path="/logged/relatorioGastos"
+            component={RelatorioGastosRoute}
+          />
+          <Route
+            path="/logged/relatorioInterno"
+            component={RelatorioInternoRoute}
+          />
           <Route
             path="/logged/relatorioVendas"
             component={RelatorioVendasRoute}
@@ -194,6 +209,7 @@ class PagesRoute extends Component {
                 path="/logged/fornecedorSup/atializar"
                 component={EditarFornecedorSupRoute}
               />
+
               <Redirect to="/logged/dash" />
             </Switch>
           )}
@@ -213,8 +229,11 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    auth: state.auth
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(PagesRoute);
