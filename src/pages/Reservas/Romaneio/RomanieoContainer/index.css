@@ -43,6 +43,16 @@
 #form-romaneio-search div {
   width: 100% !important;
 }
+
+#search-serial-romaneio {
+  margin: 25px 0;
+  width: 50%;
+}
+
+#div-block-tables-saida-romaneio {
+  width: 100%;
+}
+
 /* 
 #form-romaneio-search div,
 #form-romaneio-search input,

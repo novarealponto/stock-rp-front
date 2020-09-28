@@ -2,7 +2,7 @@ import axios from "axios";
 import { BACKEND_URL } from "./var";
 import { store } from "../App";
 
-export const newReservaTecInt = async (value) => {
+export const newReservaInterno = async (value) => {
   const storeObject = store.getState();
 
   const headers = {
