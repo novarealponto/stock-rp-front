@@ -110,10 +110,10 @@ class CadFornecedorPage extends Component {
     const { status } = await NovoFornecedor(value);
 
     if (status === 200) {
-      message.success("Fabricante cadastrado com sucessso");
+      message.success("Fornecedor cadastrado com sucessso");
       this.clearState();
     } else {
-      message.error("Erro ao cadastrar novo fabricante");
+      message.error("Erro ao cadastrar novo fornecedor");
       this.setState({ loading: false });
     }
   };
