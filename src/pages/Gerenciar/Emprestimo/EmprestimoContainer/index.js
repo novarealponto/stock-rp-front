@@ -68,7 +68,7 @@ class EmprestimoContainer extends Component {
   onChangeTechnician = (value, props) => {
     this.setState({
       tecnico: value,
-      technicianId: props.props.props.id,
+      technicianId: props.props.id,
     });
   };
 

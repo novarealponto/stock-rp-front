@@ -186,7 +186,7 @@ class AddKit extends Component {
   onChangeItem = (value, props) => {
     this.setState({
       item: value,
-      productBaseId: props.props.props.id,
+      productBaseId: props.props.id,
       disp: parseInt(props.props.props.available, 10),
     });
   };

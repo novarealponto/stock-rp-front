@@ -234,11 +234,11 @@ class Rexterno extends Component {
 
   onChangeItem = async (value, props) => {
     await this.setState({
-      categoria: props.props.props.category,
+      categoria: props.props.category,
       nomeProduto: value,
-      productBaseId: props.props.props.id,
-      serial: props.props.props.serial,
-      disp: parseInt(props.props.props.available, 10),
+      productBaseId: props.props.id,
+      serial: props.props.serial,
+      disp: parseInt(props.props.available, 10),
     });
   };
 
@@ -395,7 +395,7 @@ class Rexterno extends Component {
   onChangeSelect = (value, props) => {
     this.setState({
       tecnico: value,
-      technicianId: props.props.props.id,
+      technicianId: props.props.id,
     });
   };
 

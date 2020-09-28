@@ -247,9 +247,9 @@ class SearchOsDash extends Component {
   onChangeItem = async (value, props) => {
     await this.setState({
       nomeProduto: value,
-      productBaseId: props.props.props.id,
-      serial: props.props.props.serial,
-      disp: parseInt(props.props.props.available, 10),
+      productBaseId: props.props.id,
+      serial: props.props.serial,
+      disp: parseInt(props.props.available, 10),
     });
   };
 
