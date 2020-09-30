@@ -27,24 +27,24 @@ class NovoTecnico extends Component {
     newAno: "",
     fieldFalha: {
       nome: false,
-      cnh: false
+      cnh: false,
     },
     message: {
       nome: "",
-      cnh: ""
-    }
+      cnh: "",
+    },
   };
 
   onChangeExterno = () => {
     this.setState({
-      externo: !this.state.externo
+      externo: !this.state.externo,
     });
   };
 
   getAllCarro = async () => {
-    await getCarro().then(resposta =>
+    await getCarro().then((resposta) =>
       this.setState({
-        carroArray: resposta.data
+        carroArray: resposta.data,
       })
     );
   };
@@ -63,9 +63,9 @@ class NovoTecnico extends Component {
     message.error("O cadastro não foi efetuado");
   };
 
-  onChangeSelect = async value => {
+  onChangeSelect = async (value) => {
     await this.setState({
-      placa: value
+      placa: value,
     });
 
     this.rodizio();
@@ -74,57 +74,58 @@ class NovoTecnico extends Component {
   rodizio = () => {
     if (this.state.placa[this.state.placa.length - 1] === "1") {
       this.setState({
-        rodizio: "SEGUNDA"
+        rodizio: "SEGUNDA",
       });
     } else if (this.state.placa[this.state.placa.length - 1] === "2") {
       this.setState({
-        rodizio: "SEGUNDA"
+        rodizio: "SEGUNDA",
       });
     } else if (this.state.placa[this.state.placa.length - 1] === "3") {
       this.setState({
-        rodizio: "TERÇA"
+        rodizio: "TERÇA",
       });
     } else if (this.state.placa[this.state.placa.length - 1] === "4") {
       this.setState({
-        rodizio: "TERÇA"
+        rodizio: "TERÇA",
       });
     } else if (this.state.placa[this.state.placa.length - 1] === "5") {
       this.setState({
-        rodizio: "QUARTA"
+        rodizio: "QUARTA",
       });
     } else if (this.state.placa[this.state.placa.length - 1] === "6") {
       this.setState({
-        rodizio: "QUARTA"
+        rodizio: "QUARTA",
       });
     } else if (this.state.placa[this.state.placa.length - 1] === "7") {
       this.setState({
-        rodizio: "QUINTA"
+        rodizio: "QUINTA",
       });
     } else if (this.state.placa[this.state.placa.length - 1] === "8") {
       this.setState({
-        rodizio: "QUINTA"
+        rodizio: "QUINTA",
       });
     } else if (this.state.placa[this.state.placa.length - 1] === "9") {
       this.setState({
-        rodizio: "SEXTA"
+        rodizio: "SEXTA",
       });
     } else if (this.state.placa[this.state.placa.length - 1] === "0") {
       this.setState({
-        rodizio: "SEXTA"
+        rodizio: "SEXTA",
       });
     }
   };
 
   saveTargetNewFornecedor = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const values = {
       name: this.state.nome,
       CNH: this.state.cnh,
       plate: this.state.placa,
-      external: this.state.externo
+      external: this.state.externo,
+      responsibleUser: this.props.auth.username,
     };
 
     const resposta = await newTecnico(values);
@@ -133,12 +134,12 @@ class NovoTecnico extends Component {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
+        message: resposta.data.fields[0].message,
       });
       await this.error();
       this.setState({
         loading: false,
-        messageError: false
+        messageError: false,
       });
     }
     if (resposta.status === 200) {
@@ -148,25 +149,25 @@ class NovoTecnico extends Component {
         placa: "Selecione o carro",
         externo: false,
         rodizio: "",
-        messageSuccess: true
+        messageSuccess: true,
       });
       await this.success();
       this.setState({
         loading: false,
-        messageSuccess: false
+        messageSuccess: false,
       });
     }
   };
 
   saveTargetNewCarro = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const values = {
       model: this.state.newModelo,
       year: this.state.newAno,
-      plate: this.state.newPlaca
+      plate: this.state.newPlaca,
     };
 
     const resposta = await newCarro(values);
@@ -175,12 +176,12 @@ class NovoTecnico extends Component {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
+        message: resposta.data.fields[0].message,
       });
       await this.error();
       this.setState({
         loading: false,
-        messageError: false
+        messageError: false,
       });
     }
     if (resposta.status === 200) {
@@ -190,19 +191,19 @@ class NovoTecnico extends Component {
         newAno: "",
         fieldFalha: {
           ...this.state.fieldFalha,
-          newPlaca: false
+          newPlaca: false,
         },
         message: {
           ...this.state.message,
-          newPlaca: ""
+          newPlaca: "",
         },
-        messageSuccess: true
+        messageSuccess: true,
       });
       await this.success();
       this.setState({
         loading: false,
         messageSuccess: false,
-        modalCarro: false
+        modalCarro: false,
       });
     }
 
@@ -211,7 +212,7 @@ class NovoTecnico extends Component {
 
   openModal = () => {
     this.setState({
-      modalCarro: true
+      modalCarro: true,
     });
   };
 
@@ -223,12 +224,12 @@ class NovoTecnico extends Component {
       newPlaca: "",
       fieldFalha: {
         ...this.state.fieldFalha,
-        newPlaca: false
+        newPlaca: false,
       },
       message: {
         ...this.state.message,
-        newPlaca: ""
-      }
+        newPlaca: "",
+      },
     });
   };
 
@@ -236,21 +237,21 @@ class NovoTecnico extends Component {
     await this.getAllCarro();
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const { nome, valor } = masks(e.target.name, e.target.value);
 
     this.setState({
-      [nome]: valor
+      [nome]: valor,
     });
   };
 
-  onChangeNormal = e => {
+  onChangeNormal = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  onBlurValidator = e => {
+  onBlurValidator = (e) => {
     const { nome, valor, fieldFalha, message } = validators(
       e.target.name,
       e.target.value,
@@ -260,20 +261,20 @@ class NovoTecnico extends Component {
     this.setState({
       [nome]: valor,
       fieldFalha,
-      message
+      message,
     });
   };
 
-  onFocus = e => {
+  onFocus = (e) => {
     this.setState({
       fieldFalha: {
         ...this.state.fieldFalha,
-        [e.target.name]: false
+        [e.target.name]: false,
       },
       message: {
         ...this.state.message,
-        [e.target.name]: false
-      }
+        [e.target.name]: false,
+      },
     });
   };
 
@@ -281,12 +282,12 @@ class NovoTecnico extends Component {
     this.setState({
       fieldFalha: {
         ...this.state.fieldFalha,
-        car: false
+        car: false,
       },
       message: {
         ...this.state.message,
-        car: false
-      }
+        car: false,
+      },
     });
   };
 
@@ -425,7 +426,7 @@ class NovoTecnico extends Component {
                   }
                   onChange={this.onChangeSelect}
                 >
-                  {this.state.carroArray.map(valor => (
+                  {this.state.carroArray.map((valor) => (
                     <Option
                       value={valor.plate}
                     >{`${valor.model} ${valor.plate}`}</Option>
@@ -487,7 +488,7 @@ class NovoTecnico extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 

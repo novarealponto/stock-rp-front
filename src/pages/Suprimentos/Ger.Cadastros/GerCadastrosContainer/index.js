@@ -662,7 +662,10 @@ class GerenciarCadastrosSupPage extends Component {
               </div>
             ) : null}
             {this.state.products.map((product) => (
-              <div className="div-cabecalhoLinha-gerEst">
+              <div
+                className="div-cabecalhoLinha-gerEst"
+                style={{ width: "90%" }}
+              >
                 <div className="cel-cod-cabecalho-gerCad">{product.id}</div>
                 <div className="cel-produto-cabecalho-gerCad">
                   {product.name}
@@ -708,7 +711,10 @@ class GerenciarCadastrosSupPage extends Component {
               </div>
             ) : null}
             {this.state.fabricantes.map((fabricante) => (
-              <div className="div-cabecalhoLinha-gerEst">
+              <div
+                className="div-cabecalhoLinha-gerEst"
+                style={{ width: "90%" }}
+              >
                 <div className="cel-fabricanteF-cabecalho-gerCad">
                   {fabricante.name}
                 </div>
@@ -751,7 +757,10 @@ class GerenciarCadastrosSupPage extends Component {
               </div>
             ) : null}
             {this.state.fornecedores.map((fornecedor) => (
-              <div className="div-cabecalhoLinha-gerEst">
+              <div
+                className="div-cabecalhoLinha-gerEst"
+                style={{ width: "90%" }}
+              >
                 <div className="cel-razaoNome-cabecalho-gerCad">
                   {fornecedor.razaoSocial}
                 </div>
