@@ -45,12 +45,12 @@ class PrivateRoute extends Component {
     if (this.state.auth) {
       return (
         <div className="div-main-route">
-          {/* {this.props.auth.externo ?  */}
-          <div className="div-sideBar">
-            <SideBar />
-          </div>
-          {/* : null} */}
-          <div className="div-body">
+          {this.props.auth.externo ? (
+            <div className="div-sideBar">
+              <SideBar />
+            </div>
+          ) : null}
+          <div className="div-body-sSidebar">
             <Switch>
               <Route path="/logged" component={PagesRoute} />
             </Switch>
