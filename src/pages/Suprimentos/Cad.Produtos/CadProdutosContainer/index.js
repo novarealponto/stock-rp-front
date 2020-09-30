@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Input, Select, Modal, Button, message, InputNumber } from "antd";
+import {
+  Input,
+  Select,
+  Modal,
+  Button,
+  message,
+  InputNumber,
+  Switch,
+} from "antd";
 
 import {
   NewSupProduct,
@@ -17,6 +25,7 @@ class CadProdutosPage extends Component {
     uniMedida: "NÃO SELECIONADO",
     fabricante: undefined,
     fornecedor: "NÃO SELECIONADO",
+    esporadico: false,
     newFabricante: "",
     modalFabricante: false,
     manufacturerList: [],
@@ -31,6 +40,7 @@ class CadProdutosPage extends Component {
       fabricante: undefined,
       fornecedor: "NÃO SELECIONADO",
       newFabricante: "",
+      esporadico: false,
       modalFabricante: false,
       quantidadeMinima: 1,
     });
@@ -121,9 +131,10 @@ class CadProdutosPage extends Component {
       uniMedida: unit,
       fabricante: manufacturerId,
       quantidadeMinima: minimumQuantity,
+      esporadico,
     } = this.state;
 
-    const value = { name, unit, manufacturerId, minimumQuantity };
+    const value = { name, unit, manufacturerId, minimumQuantity, esporadico };
     const { status } = await NewSupProduct(value);
 
     if (status === 200) {
@@ -205,15 +216,22 @@ class CadProdutosPage extends Component {
             />
           </div>
         </div>
-        <div className="linha-button-fornecedor">
-          <Button
-            type="primary"
-            className="button"
-            loading={this.state.loading}
-            onClick={this.saveTargetNewProduct}
-          >
-            Salvar
-          </Button>
+        <div className="div-linha-cadProd">
+          <div className="div-textProduto-cadProd">Esporádico:</div>
+          <Switch
+            checked={this.state.esporadico}
+            onChange={(esporadico) => this.setState({ esporadico })}
+          />
+          <div className="linha-button-fornecedor">
+            <Button
+              type="primary"
+              className="button"
+              loading={this.state.loading}
+              onClick={this.saveTargetNewProduct}
+            >
+              Salvar
+            </Button>
+          </div>
         </div>
       </div>
     );

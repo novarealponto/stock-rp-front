@@ -163,6 +163,95 @@ export const getAllOsPartsByParams = async (query) => {
   return response;
 };
 
+export const getAllOsParts = async (query) => {
+  const storeObject = store.getState();
+
+  const headers = {
+    token: storeObject.auth.token,
+    username: storeObject.auth.username,
+  };
+
+  let response = {};
+
+  await axios
+    .get(`${BACKEND_URL}/api/reserve/getAllOsParts`, {
+      headers: headers,
+      params: { query },
+    })
+    .then((resp) => {
+      response = resp;
+    })
+    .catch((error) => {
+      if (error.response) {
+        response = error.response;
+      } else {
+        console.log("Error", error.message);
+      }
+    });
+
+  console.log(response);
+  return response;
+};
+
+export const getAllOsPartsByParamsForReturn = async (query) => {
+  const storeObject = store.getState();
+
+  const headers = {
+    token: storeObject.auth.token,
+    username: storeObject.auth.username,
+  };
+
+  let response = {};
+
+  await axios
+    .get(`${BACKEND_URL}/api/reserve/getAllOsPartsByParams/return`, {
+      headers: headers,
+      params: { query },
+    })
+    .then((resp) => {
+      response = resp;
+    })
+    .catch((error) => {
+      if (error.response) {
+        response = error.response;
+      } else {
+        console.log("Error", error.message);
+      }
+    });
+
+  console.log(response);
+  return response;
+};
+
+export const associarEquipParaOsPart = async (values) => {
+  const storeObject = store.getState();
+
+  const headers = {
+    token: storeObject.auth.token,
+    username: storeObject.auth.username,
+  };
+
+  let response = {};
+
+  await axios
+    .put(
+      `${BACKEND_URL}/api/reserve/reservaTecnico/associarEquipParaOsPart`,
+      values,
+      { headers: headers }
+    )
+    .then((resp) => {
+      response = resp;
+    })
+    .catch((error) => {
+      if (error.response) {
+        response = error.response;
+      } else {
+        console.log("Error", error.message);
+      }
+    });
+  return response;
+};
+
 export const getTodasOsInterno = async (query) => {
   const storeObject = store.getState();
 
