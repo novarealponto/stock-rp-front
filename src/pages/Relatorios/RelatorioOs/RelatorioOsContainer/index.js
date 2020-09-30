@@ -22,13 +22,13 @@ class GerenciarEntrada extends Component {
     show: 0,
     mais: {},
     OsArray: {
-      rows: [],
-    },
+      rows: []
+    }
   };
 
   getAllOs = async () => {
     this.setState({
-      loading: true,
+      loading: true
     });
 
     const query = {
@@ -38,48 +38,48 @@ class GerenciarEntrada extends Component {
             deletedAt: { start: "2019/01/01" },
             os: this.state.os,
             razaoSocial: this.state.rs,
-            date: this.state.valueDate,
-          },
+            date: this.state.valueDate
+          }
         },
         technician: {
           specific: {
-            name: this.state.tecnico,
-          },
+            name: this.state.tecnico
+          }
         },
         product: {
           specific: {
-            name: this.state.produto,
-          },
-        },
+            name: this.state.produto
+          }
+        }
       },
       order: {
         field: "deletedAt",
-        acendent: true,
+        acendent: true
       },
       page: this.state.page,
       total: this.state.total,
       required: false,
-      paranoid: false,
+      paranoid: false
     };
 
-    await getTodasOs(query).then((resposta) =>
+    await getTodasOs(query).then(resposta =>
       this.setState({
         OsArray: resposta.data,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show,
+        show: resposta.data.show
       })
     );
 
     this.setState({
-      loading: false,
+      loading: false
     });
   };
 
-  changePages = (pages) => {
+  changePages = pages => {
     this.setState(
       {
-        page: pages,
+        page: pages
       },
       () => {
         this.getAllOs();
@@ -88,16 +88,16 @@ class GerenciarEntrada extends Component {
   };
 
   getAllTecnico = async () => {
-    await getTecnico().then((resposta) =>
+    await getTecnico().then(resposta =>
       this.setState({
-        tecnicoArray: resposta.data,
+        tecnicoArray: resposta.data
       })
     );
   };
 
-  onChangeTecnico = async (value) => {
+  onChangeTecnico = async value => {
     await this.setState({
-      tecnico: value,
+      tecnico: value
     });
 
     await this.getAllOs();
@@ -111,28 +111,28 @@ class GerenciarEntrada extends Component {
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado,
+      avancado: !this.state.avancado
     });
   };
 
-  onChange = async (e) => {
+  onChange = async e => {
     await this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
 
     await this.getAllOs();
   };
 
-  searchDate = async (e) => {
+  searchDate = async e => {
     if (!e[0] || !e[1]) return;
     await this.setState({
-      valueDate: { start: e[0]._d, end: e[1]._d },
+      valueDate: { start: e[0]._d, end: e[1]._d }
     });
 
     await this.getAllOs();
   };
 
-  formatDateFunct = (date) => {
+  formatDateFunct = date => {
     moment.locale("pt-br");
     const formatDate = moment(date).format("L");
     const formatHours = moment(date).format("LT");
@@ -140,20 +140,20 @@ class GerenciarEntrada extends Component {
     return dateformated;
   };
 
-  mais = async (line) => {
+  mais = async line => {
     await this.setState({
       mais: {
-        [line.id]: !this.state.mais[line.id],
+        [line.id]: !this.state.mais[line.id]
       },
       lineSelected: {
-        rows: [line],
-      },
+        rows: [line]
+      }
     });
   };
 
   test = () => {
     if (this.state.OsArray.rows.length !== 0) {
-      return this.state.OsArray.rows.map((line) => (
+      return this.state.OsArray.rows.map(line => (
         <div className="div-100-Gentrada">
           <div className="div-lines-ROs">
             <div className="cel-mais-cabecalho-ROs">
@@ -183,37 +183,39 @@ class GerenciarEntrada extends Component {
                   <Spin spinning={this.state.loading} />
                 </div>
               ) : (
-                this.state.lineSelected.rows.map((line) => (
-                  <div className="div-branco-mais">
-                    <div className="div-produtos-mais-ROs">
-                      {line.products.map((valor) => (
-                        <div className="div-peca">{valor.name}</div>
-                      ))}
-                    </div>
-                    <div className="div-produtos-mais-ROs">
-                      {line.products.map((valor) => (
-                        <div className="div-peca">{valor.status}</div>
-                      ))}
-                    </div>
-                    <div className="div-amount-mais-ROs">
-                      {line.products.map((valor) => (
-                        <div className="div-peca">{valor.amount}</div>
-                      ))}
-                    </div>
-                    <div className="div-missOut-mais-ROs">
-                      {line.products.map((valor) => (
-                        <div className="div-peca">{valor.missOut}</div>
-                      ))}
-                    </div>
-                    <div className="div-output-mais-ROs">
-                      {line.products.map((valor) => (
-                        <div className="div-peca">{valor.output}</div>
-                      ))}
-                    </div>
-                    <div className="div-return-mais-ROs">
-                      {line.products.map((valor) => (
-                        <div className="div-peca">{valor.return}</div>
-                      ))}
+                this.state.lineSelected.rows.map(line => (
+                  <div className="div-branco-mais-ROs">
+                    <div className="div-normal-mais-ROs">
+                      <div className="div-produtos-mais-ROs">
+                        {line.products.map(valor => (
+                          <div className="div-peca">{valor.name}</div>
+                        ))}
+                      </div>
+                      <div className="div-produtos-mais-ROs">
+                        {line.products.map(valor => (
+                          <div className="div-peca">{valor.status}</div>
+                        ))}
+                      </div>
+                      <div className="div-amount-mais-ROs">
+                        {line.products.map(valor => (
+                          <div className="div-peca">{valor.amount}</div>
+                        ))}
+                      </div>
+                      <div className="div-missOut-mais-ROs">
+                        {line.products.map(valor => (
+                          <div className="div-peca">{valor.missOut}</div>
+                        ))}
+                      </div>
+                      <div className="div-output-mais-ROs">
+                        {line.products.map(valor => (
+                          <div className="div-peca">{valor.output}</div>
+                        ))}
+                      </div>
+                      <div className="div-return-mais-ROs">
+                        {line.products.map(valor => (
+                          <div className="div-peca">{valor.return}</div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 ))
@@ -381,7 +383,7 @@ class GerenciarEntrada extends Component {
                     onChange={this.onChangeTecnico}
                   >
                     <Option value="">TODOS</Option>
-                    {this.state.tecnicoArray.map((valor) => (
+                    {this.state.tecnicoArray.map(valor => (
                       <Option value={valor.name}>{valor.name}</Option>
                     ))}
                   </Select>

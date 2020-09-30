@@ -290,6 +290,16 @@ class SideBar extends Component {
               }}
             />
           );
+        case "externo_add":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/externo/add",
+                state: { from: this.props.location }
+              }}
+            />
+          );
         case "Rinterno_dash":
           return (
             <Redirect

@@ -51,6 +51,7 @@ import ReservaInternoRoute from "./Reservas/ReservaInterno";
 import RelatorioComprasRoute from "./Relatorios/RelatorioCompras";
 import RelatorioGastosRoute from "./Relatorios/RelatorioGastos";
 import RelatorioInternoRoute from "./Relatorios/RelatorioInterno";
+import ExternoContainerRoute from "./Mobile/Externo";
 
 class PagesRoute extends Component {
   state = {
@@ -104,6 +105,8 @@ class PagesRoute extends Component {
           <Route exact path="/logged/dash" component={Dash} />
           <Route path="/logged/novoUsuario" component={NovoUsuarioRoute} />
           <Route path="/logged/novoTipoConta" component={NovoTipoContaRoute} />
+
+          <Route path="/logged/externo" component={ExternoContainerRoute} />
           <Route
             path="/logged/novoFornecedor"
             component={NovoFornecedorRoute}
