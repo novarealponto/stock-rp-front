@@ -48,3 +48,24 @@
   min-width: 30px;
   padding: 2px;
 }
+.input-drawer-externo {
+  width: 100%;
+  height: 35px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  padding-left: 2px;
+  margin-bottom: 10px;
+}
+.div-button-drawer-externo {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.footer-drawer-externo {
+  color: rgb(161, 161, 161);
+  font-size: 12px;
+  text-align: center;
+  margin-top: 50px;
+}

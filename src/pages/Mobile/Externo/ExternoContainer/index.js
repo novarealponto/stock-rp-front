@@ -8,7 +8,7 @@ import * as R from "ramda";
 
 import { getAllReservaTecnicoReturn } from "../../../../services/reservaTecnico";
 
-import { Button, message, Select } from "antd";
+import { Button, Drawer, Select } from "antd";
 
 const { Option } = Select;
 
@@ -18,7 +18,13 @@ for (let i = 10; i < 36; i++) {
 }
 
 class ExternoContainer extends Component {
-  state = { visible: false };
+  state = {
+    setVisible: false,
+    nome: "",
+    senhaAtual: "",
+    novaSenha: "",
+    confirmarSenha: ""
+  };
 
   constructor(props) {
     super(props);
@@ -26,9 +32,27 @@ class ExternoContainer extends Component {
       current: 0,
       indexProducts: [],
       products: [],
-      index: -1,
+      index: -1
     };
   }
+
+  onChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  showDrawer = () => {
+    this.setState({
+      setVisible: true
+    });
+  };
+
+  onClose = () => {
+    this.setState({
+      setVisible: false
+    });
+  };
 
   next() {
     const current = this.state.current + 1;
@@ -40,6 +64,12 @@ class ExternoContainer extends Component {
     this.setState({ current });
   }
 
+  // renderRedirect = () => {
+  //   if (!this.props.auth.addEntr) {
+  //     return <Redirect to="/logged/" />;
+  //   }
+  // };
+
   componentDidMount = async () => {
     const query = {
       filters: {
@@ -47,7 +77,7 @@ class ExternoContainer extends Component {
           specific: {
             // name: "TECNICO 1",
             // name: this.props.auth.username,
-          },
+          }
         },
         // os: {
         //   specific: {
@@ -58,32 +88,32 @@ class ExternoContainer extends Component {
           specific: {
             data: {
               start: moment(),
-              end: moment(),
-            },
-          },
-        },
-      },
+              end: moment()
+            }
+          }
+        }
+      }
     };
 
     const { status, data } = await getAllReservaTecnicoReturn(query);
 
     if (status === 200) {
-      data.map((item) => {
+      data.map(item => {
         const index = R.findIndex(R.propEq("produto", item.produto))(
           this.state.products
         );
         if (index === -1) {
-          this.setState((prevState) => {
+          this.setState(prevState => {
             return { products: [...prevState.products, item] };
           });
         } else {
-          this.setState((prevState) => {
+          this.setState(prevState => {
             const { products } = prevState;
             const { amount } = products[index];
 
             products.splice(index, 1, {
               ...products[index],
-              amount: amount + item.amount,
+              amount: amount + item.amount
             });
             return { products };
           });
@@ -94,13 +124,59 @@ class ExternoContainer extends Component {
     console.log(status, data);
   };
 
+  Drawer = () => (
+    <Drawer
+      title="Perfil"
+      placement="right"
+      closable={false}
+      onClose={this.onClose}
+      visible={this.state.setVisible}
+    >
+      <input
+        className="input-drawer-externo"
+        onChange={this.onChange}
+        placeholder="Nome"
+      ></input>
+      <input
+        className="input-drawer-externo"
+        onChange={this.onChange}
+        type="password"
+        name="senhaAtual"
+        placeholder="Senha atual"
+      ></input>
+      <input
+        className="input-drawer-externo"
+        onChange={this.onChange}
+        type="password"
+        name="novaSenha"
+        placeholder="Nova senha"
+      ></input>
+      <input
+        className="input-drawer-externo"
+        name="confirmarSenha"
+        type="password"
+        onChange={this.onChange}
+        placeholder="Confirmar senha"
+      ></input>
+      <div className="div-button-drawer-externo">
+        <Button>Salvar</Button>
+      </div>
+      <div className="footer-drawer-externo">
+        Developed by Jessi Castro and Guilherme Stain
+      </div>
+    </Drawer>
+  );
+
   render() {
     return (
       <div className="div-card-emprestimo-report">
         <div className="title-emprestimo-report">
           <h1 className="h1-Gentrada">
             Externos
-            <UserOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
+            <UserOutlined
+              style={{ fontSize: "20px", cursor: "pointer" }}
+              onClick={this.showDrawer}
+            />
           </h1>
         </div>
 
@@ -110,32 +186,28 @@ class ExternoContainer extends Component {
               className="div-linha-externo"
               select={
                 this.state.indexProducts.filter(
-                  (indexProduct) => index === indexProduct
+                  indexProduct => index === indexProduct
                 ).length !== 0
                   ? "true"
                   : "false"
               }
               onClick={() =>
-                this.setState((prevState) => {
+                this.setState(prevState => {
                   if (
-                    prevState.indexProducts.filter((idx) => idx === index)
+                    prevState.indexProducts.filter(idx => idx === index)
                       .length !== 0
                   ) {
                     return {
                       indexProducts: [
-                        ...prevState.indexProducts.filter(
-                          (idx) => idx !== index
-                        ),
-                      ],
+                        ...prevState.indexProducts.filter(idx => idx !== index)
+                      ]
                     };
                   } else {
                     return {
                       indexProducts: [
-                        ...prevState.indexProducts.filter(
-                          (idx) => idx !== index
-                        ),
-                        index,
-                      ],
+                        ...prevState.indexProducts.filter(idx => idx !== index),
+                        index
+                      ]
                     };
                   }
                 })
@@ -213,8 +285,10 @@ class ExternoContainer extends Component {
             ))}
         </div> */}
         <div className="div-buttons-externo">
-          <Button>Voltar</Button> <Button>Avançar</Button>
+          <Button>Voltar</Button>
+          <Button>Avançar</Button>
         </div>
+        <this.Drawer />
       </div>
     );
   }
@@ -222,7 +296,7 @@ class ExternoContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    auth: state.auth
   };
 }
 
