@@ -7,13 +7,14 @@ import { bindActionCreators } from "redux";
 import SideBar from "../components/SideBar";
 
 import PagesRoute from "../pages";
+import ExternoContainer from "../pages/Mobile/Externo/ExternoContainer";
 import { Logout } from "../pages/Login/LoginRedux/action";
 import { auth } from "../services/auth";
 import "./index.css";
 
 class PrivateRoute extends Component {
   state = {
-    auth: true
+    auth: true,
   };
 
   logout = async () => {
@@ -23,14 +24,14 @@ class PrivateRoute extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username
+      username: this.props.auth.username,
     };
 
     let response = {};
 
-    response = await auth(value).then(resp =>
+    response = await auth(value).then((resp) =>
       this.setState({
-        auth: resp ? resp.data : false
+        auth: resp ? resp.data : false,
       })
     );
 
@@ -43,20 +44,31 @@ class PrivateRoute extends Component {
 
   render() {
     if (this.state.auth) {
-      return (
-        <div className="div-main-route">
-          {this.props.auth.externo ? (
+      if (!this.props.auth.tecnico) {
+        return (
+          <div className="div-main-route">
             <div className="div-sideBar">
               <SideBar />
             </div>
-          ) : null}
-          <div className="div-body-sSidebar">
-            <Switch>
-              <Route path="/logged" component={PagesRoute} />
-            </Switch>
+            <div className="div-body">
+              <Switch>
+                <Route path="/logged" component={PagesRoute} />
+              </Switch>
+            </div>
           </div>
-        </div>
-      );
+        );
+      } else {
+        return (
+          <div className="div-main-route">
+            <div className="div-body-sSidebar">
+              <Switch>
+                <Route exact path="/logged" component={ExternoContainer} />
+                <Redirect to="/logged" />
+              </Switch>
+            </div>
+          </div>
+        );
+      }
     } else {
       this.logout();
       return <Redirect to="/login" />;
@@ -70,11 +82,8 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(PrivateRoute);
+export default connect(mapStateToProps, mapDispacthToProps)(PrivateRoute);

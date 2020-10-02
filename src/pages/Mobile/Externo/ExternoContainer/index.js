@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import "./index.css";
 
+import { connect } from "react-redux";
+import moment from "moment";
 import { Table } from "antd";
+
+import { getAllReservaTecnicoReturn } from "../../../../services/reservaTecnico";
 
 function NestedTable() {
   const columns = [
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Platform", dataIndex: "platform", key: "platform" },
-    { title: "Version", dataIndex: "version", key: "version" }
+    { title: "Version", dataIndex: "version", key: "version" },
   ];
 
   const data = [];
@@ -17,9 +21,6 @@ function NestedTable() {
       name: "Screem",
       platform: "iOS",
       version: "10.3.4.5654",
-      upgradeNum: 500,
-      creator: "Jack",
-      createdAt: "2014-12-24 23:12:00"
     });
   }
 
@@ -35,6 +36,31 @@ function NestedTable() {
 }
 
 class ExternoContainer extends Component {
+  componentDidMount = async () => {
+    const query = {
+      filters: {
+        technician: {
+          specific: {
+            name: this.props.auth.username,
+          },
+        },
+        // os: {
+        //   specific: {
+        //     date: { start: moment(), end: data },
+        //   },
+        // },
+        technicianReserve: {
+          specific: {
+            data: { start: moment(), end: moment() },
+          },
+        },
+      },
+    };
+
+    const response = await getAllReservaTecnicoReturn(query);
+
+    console.log(response);
+  };
   render() {
     return (
       <div className="div-card-emprestimo-report">
@@ -47,4 +73,10 @@ class ExternoContainer extends Component {
   }
 }
 
-export default ExternoContainer;
+function mapStateToProps(state) {
+  return {
+    auth: state.auth,
+  };
+}
+
+export default connect(mapStateToProps)(ExternoContainer);
