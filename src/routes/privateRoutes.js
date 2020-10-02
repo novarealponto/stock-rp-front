@@ -44,6 +44,7 @@ class PrivateRoute extends Component {
 
   render() {
     if (this.state.auth) {
+<<<<<<< HEAD
       if (!this.props.auth.tecnico) {
         return (
           <div className="div-main-route">
@@ -66,6 +67,17 @@ class PrivateRoute extends Component {
                 <Redirect to="/logged" />
               </Switch>
             </div>
+=======
+      return (
+        <div className="div-main-route">
+          <div className="div-sideBar">
+            <SideBar />
+          </div>
+          <div className="div-body">
+            <Switch>
+              <Route path="/logged" component={PagesRoute} />
+            </Switch>
+>>>>>>> fix mobile
           </div>
         );
       }
