@@ -14,7 +14,7 @@ import "./index.css";
 
 class PrivateRoute extends Component {
   state = {
-    auth: true,
+    auth: true
   };
 
   logout = async () => {
@@ -24,14 +24,14 @@ class PrivateRoute extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username,
+      username: this.props.auth.username
     };
 
     let response = {};
 
-    response = await auth(value).then((resp) =>
+    response = await auth(value).then(resp =>
       this.setState({
-        auth: resp ? resp.data : false,
+        auth: resp ? resp.data : false
       })
     );
 
@@ -44,7 +44,6 @@ class PrivateRoute extends Component {
 
   render() {
     if (this.state.auth) {
-<<<<<<< HEAD
       if (!this.props.auth.tecnico) {
         return (
           <div className="div-main-route">
@@ -67,17 +66,6 @@ class PrivateRoute extends Component {
                 <Redirect to="/logged" />
               </Switch>
             </div>
-=======
-      return (
-        <div className="div-main-route">
-          <div className="div-sideBar">
-            <SideBar />
-          </div>
-          <div className="div-body">
-            <Switch>
-              <Route path="/logged" component={PagesRoute} />
-            </Switch>
->>>>>>> fix mobile
           </div>
         );
       }
@@ -94,8 +82,11 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    auth: state.auth
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(PrivateRoute);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(PrivateRoute);
