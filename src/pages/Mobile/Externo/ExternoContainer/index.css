@@ -1,13 +1,44 @@
-.steps-content {
-  margin-top: 16px;
-  border: 1px dashed #e9e9e9;
-  border-radius: 2px;
-  background-color: #fafafa;
-  min-height: 200px;
-  text-align: center;
-  padding-top: 80px;
+.div-card-externo {
+  width: 90%;
+  height: auto;
+  /* border: 1px solid #ccc; */
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
 }
-
-.steps-action {
-  margin-top: 24px;
+.div-buttons-externo {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+.div-linha-externo {
+  display: flex;
+  width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  margin-bottom: 5px;
+  border-radius: 3px;
+  min-height: 48px;
+  cursor: pointer;
+}
+.div-linha-externo:active {
+  border: 1px solid #1890ff;
+  color: #1890ff;
+}
+.div-quant-externo {
+  width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 30px;
+}
+.div-item-externo {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 30px;
+  padding: 2px;
 }

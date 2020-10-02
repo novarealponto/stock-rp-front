@@ -6,24 +6,7 @@ import moment from "moment";
 import { getAllReservaTecnicoReturn } from "../../../../services/reservaTecnico";
 import { UserOutlined } from "@ant-design/icons";
 
-import { Steps, Modal, Button, message } from "antd";
-
-const { Step } = Steps;
-
-const steps = [
-  {
-    title: "First",
-    content: "First-content"
-  },
-  {
-    title: "Second",
-    content: "Second-content"
-  },
-  {
-    title: "Last",
-    content: "Last-content"
-  }
-];
+import { Button, message } from "antd";
 
 class ExternoContainer extends Component {
   state = { visible: false };
@@ -44,31 +27,6 @@ class ExternoContainer extends Component {
     const current = this.state.current - 1;
     this.setState({ current });
   }
-
-  showModal = () => {
-    this.setState({
-      visible: true
-    });
-  };
-
-  handleOk = () => {
-    this.setState({
-      visible: false
-    });
-  };
-
-  ModalDetalhes = () => (
-    <Modal
-      title="Basic Modal"
-      visible={this.state.visible}
-      onOk={this.handleOk}
-      onCancel={this.handleOk}
-      okText="Confirmar"
-      cancelText="Cancelar"
-    >
-      <p>Some contents...</p>
-    </Modal>
-  );
 
   componentDidMount = async () => {
     const query = {
@@ -97,7 +55,6 @@ class ExternoContainer extends Component {
   };
 
   render() {
-    const { current } = this.state;
     return (
       <div className="div-card-emprestimo-report">
         <div className="title-emprestimo-report">
@@ -106,36 +63,18 @@ class ExternoContainer extends Component {
             <UserOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
           </h1>
         </div>
-        <button onClick={this.showModal}>MODAL</button>
-        <this.ModalDetalhes />
-        <>
-          <Steps current={current}>
-            {steps.map(item => (
-              <Step key={item.title} title={item.title} />
-            ))}
-          </Steps>
-          <div className="steps-content">{steps[current].content}</div>
-          <div className="steps-action">
-            {current < steps.length - 1 && (
-              <Button type="primary" onClick={() => this.next()}>
-                Next
-              </Button>
-            )}
-            {current === steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={() => message.success("Processing complete!")}
-              >
-                Done
-              </Button>
-            )}
-            {current > 0 && (
-              <Button style={{ margin: "0 8px" }} onClick={() => this.prev()}>
-                Previous
-              </Button>
-            )}
+
+        <div className="div-card-externo">
+          <div className="div-linha-externo">
+            <div className="div-quant-externo">1</div>
+            <div className="div-item-externo">
+              RELÓGIO CARTOGRAFICO HENRY VEGA BIOMETRICO (COM BATERIA)
+            </div>
           </div>
-        </>
+        </div>
+        <div className="div-buttons-externo">
+          <Button>Voltar</Button> <Button>Avançar</Button>
+        </div>
       </div>
     );
   }
