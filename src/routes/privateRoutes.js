@@ -62,7 +62,7 @@ class PrivateRoute extends Component {
           <div className="div-main-route">
             <div className="div-body-sSidebar">
               <Switch>
-                <Route exact path="/logged" component={ExternoContainer} />
+                <Route path="/logged" component={ExternoContainer} />
                 <Redirect to="/logged" />
               </Switch>
             </div>

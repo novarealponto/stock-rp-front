@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./index.css";
 import { connect } from "react-redux";
 import moment from "moment";
-import { UserOutlined, PlusOutlined } from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 
 import * as R from "ramda";
 
@@ -59,12 +59,6 @@ class ExternoContainer extends Component {
     const current = this.state.current - 1;
     this.setState({ current });
   }
-
-  // renderRedirect = () => {
-  //   if (!this.props.auth.addEntr) {
-  //     return <Redirect to="/logged/" />;
-  //   }
-  // };
 
   componentDidMount = async () => {
     const query = {
@@ -124,7 +118,11 @@ class ExternoContainer extends Component {
 
   Drawer = () => (
     <Drawer
-      title="Perfil"
+      title={
+        <div className="div-drawer-externo">
+          Perfil <LogoutOutlined style={{ cursor: "pointer" }} />{" "}
+        </div>
+      }
       placement="right"
       closable={false}
       onClose={this.onClose}
