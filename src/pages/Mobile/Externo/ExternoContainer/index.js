@@ -8,14 +8,9 @@ import * as R from "ramda";
 
 import { getAllReservaTecnicoReturn } from "../../../../services/reservaTecnico";
 
-import { Button, Drawer, Select } from "antd";
+import { Button, Drawer, Select, InputNumber } from "antd";
 
 const { Option } = Select;
-
-const children = [];
-for (let i = 10; i < 36; i++) {
-  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-}
 
 class ExternoContainer extends Component {
   state = {
@@ -23,7 +18,8 @@ class ExternoContainer extends Component {
     nome: "",
     senhaAtual: "",
     novaSenha: "",
-    confirmarSenha: ""
+    confirmarSenha: "",
+    current: 0,
   };
 
   constructor(props) {
@@ -32,25 +28,25 @@ class ExternoContainer extends Component {
       current: 0,
       indexProducts: [],
       products: [],
-      index: -1
+      index: -1,
     };
   }
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   showDrawer = () => {
     this.setState({
-      setVisible: true
+      setVisible: true,
     });
   };
 
   onClose = () => {
     this.setState({
-      setVisible: false
+      setVisible: false,
     });
   };
 
@@ -76,8 +72,9 @@ class ExternoContainer extends Component {
         technician: {
           specific: {
             // name: "TECNICO 1",
+            id: this.props.auth.technicianId,
             // name: this.props.auth.username,
-          }
+          },
         },
         // os: {
         //   specific: {
@@ -88,32 +85,33 @@ class ExternoContainer extends Component {
           specific: {
             data: {
               start: moment(),
-              end: moment()
-            }
-          }
-        }
-      }
+              end: moment(),
+            },
+          },
+        },
+      },
     };
 
     const { status, data } = await getAllReservaTecnicoReturn(query);
 
     if (status === 200) {
-      data.map(item => {
+      data.map((item) => {
         const index = R.findIndex(R.propEq("produto", item.produto))(
           this.state.products
         );
         if (index === -1) {
-          this.setState(prevState => {
+          this.setState((prevState) => {
             return { products: [...prevState.products, item] };
           });
         } else {
-          this.setState(prevState => {
+          this.setState((prevState) => {
             const { products } = prevState;
-            const { amount } = products[index];
+            const { amount, serialNumbers } = products[index];
 
             products.splice(index, 1, {
               ...products[index],
-              amount: amount + item.amount
+              amount: amount + item.amount,
+              serialNumbers: [...serialNumbers, ...item.serialNumbers],
             });
             return { products };
           });
@@ -167,7 +165,111 @@ class ExternoContainer extends Component {
     </Drawer>
   );
 
+  ItemList = () => {
+    const { current } = this.state;
+
+    switch (current) {
+      case 0:
+        return (
+          <div className="div-card-externo">
+            {this.state.products.map((item, index) => (
+              <div
+                className="div-linha-externo"
+                select={
+                  this.state.indexProducts.filter(
+                    (indexProduct) => index === indexProduct.index
+                  ).length !== 0
+                    ? "true"
+                    : "false"
+                }
+                onClick={() =>
+                  this.setState((prevState) => {
+                    if (
+                      prevState.indexProducts.filter(
+                        (idx) => idx.index === index
+                      ).length !== 0
+                    ) {
+                      return {
+                        indexProducts: [
+                          ...prevState.indexProducts.filter(
+                            (idx) => idx.index !== index
+                          ),
+                        ],
+                      };
+                    } else {
+                      return {
+                        indexProducts: [
+                          ...prevState.indexProducts.filter(
+                            (idx) => idx.index !== index
+                          ),
+                          { ...item, index },
+                        ],
+                      };
+                    }
+                  })
+                }
+              >
+                <div className="div-quant-externo">{item.amount}</div>
+                <div className="div-item-externo">{item.produto}</div>
+              </div>
+            ))}
+          </div>
+        );
+
+      case 1:
+        return (
+          <div className="div-card-externo">
+            {this.state.indexProducts.map((item, index) => (
+              <div
+                className="div-linha-externo"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    height: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minHeight: "48px",
+                  }}
+                >
+                  <div className="div-item-externo">{item.produto}</div>
+                </div>
+                {item.serial ? (
+                  <Select
+                    style={{ width: "90%", margin: "5px 5% 10px" }}
+                    mode="tags"
+                    // onChange={handleChange}
+                    tokenSeparators={[","]}
+                  >
+                    {item.serialNumbers.map((serialNumber) => (
+                      <Option key={serialNumber}>{serialNumber}</Option>
+                    ))}
+                  </Select>
+                ) : (
+                  <InputNumber
+                    min={0}
+                    max={item.amount}
+                    style={{ width: "90%", margin: "5px 0 10px" }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
   render() {
+    console.log(this.state);
     return (
       <div className="div-card-emprestimo-report">
         <div className="title-emprestimo-report">
@@ -180,113 +282,31 @@ class ExternoContainer extends Component {
           </h1>
         </div>
 
-        <div className="div-card-externo">
-          {this.state.products.map((item, index) => (
-            <div
-              className="div-linha-externo"
-              select={
-                this.state.indexProducts.filter(
-                  indexProduct => index === indexProduct
-                ).length !== 0
-                  ? "true"
-                  : "false"
-              }
-              onClick={() =>
-                this.setState(prevState => {
-                  if (
-                    prevState.indexProducts.filter(idx => idx === index)
-                      .length !== 0
-                  ) {
-                    return {
-                      indexProducts: [
-                        ...prevState.indexProducts.filter(idx => idx !== index)
-                      ]
-                    };
-                  } else {
-                    return {
-                      indexProducts: [
-                        ...prevState.indexProducts.filter(idx => idx !== index),
-                        index
-                      ]
-                    };
-                  }
-                })
-              }
-            >
-              <div className="div-quant-externo">{item.amount}</div>
-              <div className="div-item-externo">{item.produto}</div>
-            </div>
-          ))}
-        </div>
+        <this.ItemList />
 
-        {/* <div className="div-card-externo">
-          {this.state.products
-            .filter((teste) => teste.serial)
-            .map((item, index) => (
-              <div
-                className="div-linha-externo"
-                select={
-                  this.state.indexProducts.filter(
-                    (indexProduct) => index === indexProduct
-                  ).length !== 0
-                    ? "true"
-                    : "false"
-                }
-                onClick={() =>
-                  this.setState((prevState) => {
-                    if (
-                      prevState.indexProducts.filter((idx) => idx === index)
-                        .length !== 0
-                    ) {
-                      return {
-                        indexProducts: [
-                          ...prevState.indexProducts.filter(
-                            (idx) => idx !== index
-                          ),
-                        ],
-                      };
-                    } else {
-                      return {
-                        indexProducts: [
-                          ...prevState.indexProducts.filter(
-                            (idx) => idx !== index
-                          ),
-                          index,
-                        ],
-                      };
-                    }
-                  })
-                }
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    minHeight: "48px",
-                  }}
-                >
-                  <div className="div-quant-externo">{item.amount}</div>
-                  <div className="div-item-externo">{item.produto}</div>
-                  <PlusOutlined onClick={() => this.setState({ index })} />
-                </div>
-                {this.state.index === index && (
-                  <Select
-                    style={{ width: "90%", margin: "5px 5%" }}
-                    mode="tags"
-                    // onChange={handleChange}
-                    tokenSeparators={[","]}
-                  >
-                    {children}
-                  </Select>
-                )}
-              </div>
-            ))}
-        </div> */}
         <div className="div-buttons-externo">
-          <Button>Voltar</Button>
-          <Button>Avançar</Button>
+          <Button
+            onClick={() =>
+              this.setState((prevState) => {
+                return {
+                  current: R.max(prevState.current - 1, 0),
+                };
+              })
+            }
+          >
+            Voltar
+          </Button>
+          <Button
+            onClick={() =>
+              this.setState((prevState) => {
+                return {
+                  current: R.min(prevState.current + 1, 3),
+                };
+              })
+            }
+          >
+            Avançar
+          </Button>
         </div>
         <this.Drawer />
       </div>
@@ -296,7 +316,7 @@ class ExternoContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 
