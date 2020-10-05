@@ -252,6 +252,35 @@ export const associarEquipParaOsPart = async (values) => {
   return response;
 };
 
+export const associarEquipsParaOsPart = async (values) => {
+  const storeObject = store.getState();
+
+  const headers = {
+    token: storeObject.auth.token,
+    username: storeObject.auth.username,
+  };
+
+  let response = {};
+
+  await axios
+    .put(
+      `${BACKEND_URL}/api/reserve/reservaTecnico/associarEquipsParaOsPart`,
+      values,
+      { headers: headers }
+    )
+    .then((resp) => {
+      response = resp;
+    })
+    .catch((error) => {
+      if (error.response) {
+        response = error.response;
+      } else {
+        console.log("Error", error.message);
+      }
+    });
+  return response;
+};
+
 export const getTodasOsInterno = async (query) => {
   const storeObject = store.getState();
 
