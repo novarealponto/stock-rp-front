@@ -3,17 +3,22 @@ import "./index.css";
 import { connect } from "react-redux";
 import moment from "moment";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
-
+import { bindActionCreators } from "redux";
 import * as R from "ramda";
+import uuidValidate from "uuid-validate";
+import { updateSenha } from "../../../../services/password";
+
+import { auth } from "../../../../services/auth";
+import { Logout } from "../../../Login/LoginRedux/action";
 
 import { getAllReservaTecnicoReturn } from "../../../../services/reservaTecnico";
 import { getAllEquipsService } from "../../../../services/equip";
 import {
   getTodasOs,
-  associarEquipsParaOsPart,
+  associarEquipsParaOsPart
 } from "../../../../services/reservaOs";
 
-import { Button, Drawer, Select, InputNumber } from "antd";
+import { Button, Drawer, Select, InputNumber, message } from "antd";
 
 const { Option } = Select;
 
@@ -24,32 +29,131 @@ class ExternoContainer extends Component {
       current: 0,
       indexProducts: [],
       products: [],
+      setVisible: false,
+      messageError: false,
+      messageSuccess: false,
+      current: 0,
+      auth: true,
+      user: "",
+      pass: "",
+      newPass: "",
+      confPass: "",
       os: [],
       index: -1,
-      setVisible: false,
-      nome: "",
-      senhaAtual: "",
-      novaSenha: "",
-      confirmarSenha: "",
-      oId: null,
+      oId: null
     };
   }
 
-  onChange = (e) => {
+  hasAuth = R.has("auth");
+  hasToken = R.has("token");
+
+  forceLogout = async () => {
+    if (!this.hasAuth(this.props)) {
+      await this.logout();
+    } else if (!this.hasToken(this.props.auth)) {
+      await this.logout();
+    } else if (!uuidValidate(this.props.auth.token)) {
+      await this.logout();
+    }
+  };
+
+  error = () => {
+    message.error("Os dados do usuário não foram atualizados");
+  };
+
+  success = () => {
+    message.success("Os dados do usuário foram atualizados");
+  };
+
+  messageErrorPass = () => {
+    message.error("As duas senhas não coincidem");
+  };
+
+  messagePassEqual = () => {
+    message.error("A senha atual não pode ser a mesma que a antiga");
+  };
+
+  logout = async () => {
+    await this.props.Logout(this.props.auth.token);
+  };
+
+  saveNewPassword = async () => {
+    if (this.state.pass === this.state.newPass) {
+      this.messagePassEqual();
+    } else if (this.state.newPass !== this.state.confPass) {
+      this.messageErrorPass();
+    } else {
+      const value = {
+        username: this.state.user,
+        oldPassword: this.state.pass,
+        newPassword: this.state.newPass
+      };
+
+      this.setState({
+        loading: true
+      });
+
+      const resposta = await updateSenha(value);
+
+      if (resposta.status === 422) {
+        this.setState({
+          messageError: true
+        });
+        await this.error();
+        this.setState({
+          loading: false,
+          messageError: false
+        });
+      }
+      if (resposta.status === 200) {
+        this.setState({
+          newPass: "",
+          pass: "",
+          confPass: "",
+          messageSuccess: true,
+          editar: false
+        });
+        await this.success();
+        this.setState({
+          loading: false,
+          messageSuccess: false
+        });
+      }
+    }
+  };
+
+  auth = async () => {
+    const value = {
+      token: this.props.auth.token,
+      username: this.props.auth.username
+    };
+
+    let response = {};
+
+    response = await auth(value).then(resp =>
+      this.setState({
+        auth: resp ? resp.data : false
+      })
+    );
+
+    return response;
+  };
+
+  onChange = e => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
   showDrawer = () => {
     this.setState({
-      setVisible: true,
+      setVisible: true
     });
   };
 
   onClose = () => {
     this.setState({
-      setVisible: false,
+      setVisible: false
     });
   };
 
@@ -69,30 +173,43 @@ class ExternoContainer extends Component {
   //   }
   // };
 
+  componentDidMount = async () => {
+    await this.auth();
+
+    await this.forceLogout();
+
+    this.setState({
+      user: this.props.auth.username,
+      typeAccount: this.props.auth.typeAccount
+    });
+
+    await this.getOs();
+  };
+
   getOs = async () => {
     const query = {
       filters: {
         technician: {
           specific: {
             // name: "TECNICO 1",
-            id: this.props.auth.technicianId,
+            id: this.props.auth.technicianId
             // name: this.props.auth.username,
-          },
+          }
         },
         os: {
           specific: {
-            date: { start: moment(), end: moment() },
-          },
+            date: { start: moment(), end: moment() }
+          }
         },
         technicianReserve: {
           specific: {
             data: {
               start: moment(),
-              end: moment(),
-            },
-          },
-        },
-      },
+              end: moment()
+            }
+          }
+        }
+      }
     };
 
     const response = await getTodasOs(query);
@@ -111,24 +228,24 @@ class ExternoContainer extends Component {
       filters: {
         technician: {
           specific: {
-            id: this.props.auth.technicianId,
-          },
+            id: this.props.auth.technicianId
+          }
         },
         technicianReserve: {
           specific: {
             data: {
               start: moment(),
-              end: moment(),
-            },
-          },
-        },
+              end: moment()
+            }
+          }
+        }
       },
-      osPartsId: null,
+      osPartsId: null
     };
     const { status, data } = await getAllReservaTecnicoReturn(query);
 
     if (status === 200) {
-      data.map((item) => {
+      data.map(item => {
         const index = R.findIndex(R.propEq("produto", item.produto))(
           this.state.products
         );
@@ -138,18 +255,18 @@ class ExternoContainer extends Component {
         ).id;
 
         if (index === -1) {
-          this.setState((prevState) => {
+          this.setState(prevState => {
             return { products: [...prevState.products, { ...item, osPartId }] };
           });
         } else {
-          this.setState((prevState) => {
+          this.setState(prevState => {
             const { products } = prevState;
             const { amount, serialNumbers } = products[index];
 
             products.splice(index, 1, {
               ...products[index],
               amount: amount + item.amount,
-              serialNumbers: [...serialNumbers, ...item.serialNumbers],
+              serialNumbers: [...serialNumbers, ...item.serialNumbers]
             });
             return { products };
           });
@@ -158,27 +275,27 @@ class ExternoContainer extends Component {
       await Promise.all(
         this.state.products.map(async (item, index) => {
           const {
-            data: { count },
+            data: { count }
           } = await getAllEquipsService({
             filters: {
               equip: {
                 specific: {
-                  osPartId: item.osPartId,
-                },
-              },
-            },
+                  osPartId: item.osPartId
+                }
+              }
+            }
           });
           const amount =
             R.find(R.propEq("name", item.produto))(
               R.find(R.propEq("id", this.state.oId))(this.state.os).products
             ).quantMax - count;
 
-          this.setState((prevState) => {
+          this.setState(prevState => {
             const { products } = prevState;
 
             products.splice(index, 1, {
               ...products[index],
-              amount,
+              amount
             });
             return { products };
           });
@@ -191,7 +308,8 @@ class ExternoContainer extends Component {
     <Drawer
       title={
         <div className="div-drawer-externo">
-          Perfil <LogoutOutlined style={{ cursor: "pointer" }} />{" "}
+          Perfil{" "}
+          <LogoutOutlined onClick={this.logout} style={{ cursor: "pointer" }} />{" "}
         </div>
       }
       placement="right"
@@ -202,31 +320,36 @@ class ExternoContainer extends Component {
       <input
         className="input-drawer-externo"
         onChange={this.onChange}
-        placeholder="Nome"
+        placeholder="user"
+        value={this.state.user}
+        readOnly
       ></input>
       <input
         className="input-drawer-externo"
         onChange={this.onChange}
         type="password"
-        name="senhaAtual"
+        name="pass"
+        value={this.state.pass}
         placeholder="Senha atual"
       ></input>
       <input
         className="input-drawer-externo"
         onChange={this.onChange}
         type="password"
-        name="novaSenha"
+        value={this.state.newPass}
+        name="newPass"
         placeholder="Nova senha"
       ></input>
       <input
         className="input-drawer-externo"
-        name="confirmarSenha"
+        name="confPass"
+        value={this.state.confPass}
         type="password"
         onChange={this.onChange}
         placeholder="Confirmar senha"
       ></input>
       <div className="div-button-drawer-externo">
-        <Button>Salvar</Button>
+        <Button onClick={this.saveNewPassword}>Salvar</Button>
       </div>
       <div className="footer-drawer-externo">
         Developed by Jessi Castro and Guilherme Stain
@@ -241,7 +364,7 @@ class ExternoContainer extends Component {
       case 0:
         return (
           <div className="div-card-externo">
-            {this.state.os.map((item) => (
+            {this.state.os.map(item => (
               <div
                 className="div-linha-externo"
                 select={this.state.oId === item.id ? "true" : "false"}
@@ -257,44 +380,44 @@ class ExternoContainer extends Component {
         return (
           <div className="div-card-externo">
             {this.state.products
-              .filter((item) => item.amount > 0)
+              .filter(item => item.amount > 0)
               .map((item, index) => (
                 <div
                   className="div-linha-externo"
                   select={
                     this.state.indexProducts.filter(
-                      (indexProduct) => index === indexProduct.index
+                      indexProduct => index === indexProduct.index
                     ).length !== 0
                       ? "true"
                       : "false"
                   }
                   onClick={async () => {
-                    this.setState((prevState) => {
+                    this.setState(prevState => {
                       if (
                         prevState.indexProducts.filter(
-                          (idx) => idx.index === index
+                          idx => idx.index === index
                         ).length !== 0
                       ) {
                         return {
                           indexProducts: [
                             ...prevState.indexProducts.filter(
-                              (idx) => idx.index !== index
-                            ),
-                          ],
+                              idx => idx.index !== index
+                            )
+                          ]
                         };
                       } else {
                         return {
                           indexProducts: [
                             ...prevState.indexProducts.filter(
-                              (idx) => idx.index !== index
+                              idx => idx.index !== index
                             ),
                             {
                               ...item,
                               index,
                               serialNumersSelects: [],
-                              quantidadeSaida: 0,
-                            },
-                          ],
+                              quantidadeSaida: 0
+                            }
+                          ]
                         };
                       }
                     });
@@ -318,7 +441,7 @@ class ExternoContainer extends Component {
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
-                    alignItems: "center",
+                    alignItems: "center"
                   }}
                 >
                   <div
@@ -327,7 +450,7 @@ class ExternoContainer extends Component {
                       height: "100%",
                       justifyContent: "center",
                       alignItems: "center",
-                      minHeight: "48px",
+                      minHeight: "48px"
                     }}
                   >
                     <div className="div-item-externo">{item.produto}</div>
@@ -337,12 +460,12 @@ class ExternoContainer extends Component {
                       style={{ width: "90%", margin: "5px 5% 10px" }}
                       mode="tags"
                       value={item.serialNumersSelects}
-                      onChange={(e) =>
-                        this.setState((prevState) => {
+                      onChange={e =>
+                        this.setState(prevState => {
                           const { indexProducts } = this.state;
                           indexProducts.splice(index, 1, {
                             ...item,
-                            serialNumersSelects: e.slice(0, item.amount),
+                            serialNumersSelects: e.slice(0, item.amount)
                           });
 
                           return { indexProducts };
@@ -350,7 +473,7 @@ class ExternoContainer extends Component {
                       }
                       tokenSeparators={[","]}
                     >
-                      {item.serialNumbers.map((serialNumber) => (
+                      {item.serialNumbers.map(serialNumber => (
                         <Option key={serialNumber}>{serialNumber}</Option>
                       ))}
                     </Select>
@@ -359,12 +482,12 @@ class ExternoContainer extends Component {
                       min={0}
                       max={item.amount}
                       value={item.quantidadeSaida}
-                      onChange={(quantidadeSaida) => {
-                        this.setState((prevState) => {
+                      onChange={quantidadeSaida => {
+                        this.setState(prevState => {
                           const { indexProducts } = prevState;
                           indexProducts.splice(index, 1, {
                             ...item,
-                            quantidadeSaida,
+                            quantidadeSaida
                           });
 
                           return { indexProducts };
@@ -385,14 +508,17 @@ class ExternoContainer extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div className="div-card-emprestimo-report">
         <div className="title-emprestimo-report">
-          <h1 className="h1-Gentrada">
+          <h1 className="h1-externo">
             Externos
             <UserOutlined
-              style={{ fontSize: "20px", cursor: "pointer" }}
+              style={{
+                fontSize: "25px",
+                cursor: "pointer",
+                marginLeft: "20px"
+              }}
               onClick={this.showDrawer}
             />
           </h1>
@@ -403,10 +529,10 @@ class ExternoContainer extends Component {
         <div className="div-buttons-externo">
           <Button
             onClick={() => {
-              this.setState((prevState) => {
+              this.setState(prevState => {
                 return {
                   products: prevState.current === 1 ? [] : prevState.products,
-                  current: R.max(prevState.current - 1, 0),
+                  current: R.max(prevState.current - 1, 0)
                 };
               });
             }}
@@ -420,7 +546,7 @@ class ExternoContainer extends Component {
               if (this.state.current === 2) {
                 const { status } = await associarEquipsParaOsPart({
                   technicianId: this.props.auth.technicianId,
-                  osParts: this.state.indexProducts,
+                  osParts: this.state.indexProducts
                 });
                 if (status === 200) {
                   await this.setState({
@@ -429,14 +555,14 @@ class ExternoContainer extends Component {
                     products: [],
                     os: [],
                     index: -1,
-                    oId: null,
+                    oId: null
                   });
                   await this.getOs();
                 }
               } else {
-                this.setState((prevState) => {
+                this.setState(prevState => {
                   return {
-                    current: R.min(prevState.current + 1, 2),
+                    current: R.min(prevState.current + 1, 2)
                   };
                 });
               }
@@ -451,10 +577,17 @@ class ExternoContainer extends Component {
   }
 }
 
+function mapDispacthToProps(dispach) {
+  return bindActionCreators({ Logout }, dispach);
+}
+
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    auth: state.auth
   };
 }
 
-export default connect(mapStateToProps)(ExternoContainer);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(ExternoContainer);

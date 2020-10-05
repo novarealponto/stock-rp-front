@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Input, Button, message, Icon } from "antd";
+import { Input, Button, message } from "antd";
 import * as R from "ramda";
 
 import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
@@ -20,7 +20,7 @@ class CadFornecedorPage extends Component {
     numero: "",
     uf: "",
     complemento: "",
-    contacts: [{ name: "", telphone: "", email: "" }],
+    contacts: [{ name: "", telphone: "", email: "" }]
   };
 
   clearState = () => {
@@ -35,19 +35,19 @@ class CadFornecedorPage extends Component {
       numero: "",
       uf: "",
       complemento: "",
-      contacts: [{ name: "", telphone: "", email: "" }],
+      contacts: [{ name: "", telphone: "", email: "" }]
     });
   };
 
-  onChange = (e) => {
+  onChange = e => {
     const { name, value } = e.target;
     const { nome, valor } = masks(name, value);
     this.setState({
-      [nome]: valor,
+      [nome]: valor
     });
   };
 
-  onChangeContact = (e) => {
+  onChangeContact = e => {
     const { name, id, value } = e.target;
     const { nome, valor } = masks(name, value);
 
@@ -60,11 +60,11 @@ class CadFornecedorPage extends Component {
 
   onChangeSelect = (e, value) => {
     this.setState({
-      [e.target.name]: value,
+      [e.target.name]: value
     });
   };
 
-  getAddress = async (e) => {
+  getAddress = async e => {
     const cep = e.target.value;
 
     const address = await getAddressByZipCode(cep);
@@ -74,7 +74,7 @@ class CadFornecedorPage extends Component {
         rua: address.data.logradouro,
         cidade: address.data.localidade,
         bairro: address.data.bairro,
-        uf: address.data.uf,
+        uf: address.data.uf
       });
     }
   };
@@ -91,7 +91,7 @@ class CadFornecedorPage extends Component {
       numero: number,
       uf: state,
       complemento: complement,
-      contacts,
+      contacts
     } = this.state;
 
     const value = {
@@ -104,7 +104,7 @@ class CadFornecedorPage extends Component {
       number,
       state,
       complement,
-      contacts,
+      contacts
     };
 
     const { status } = await NovoFornecedor(value);
@@ -299,8 +299,8 @@ class CadFornecedorPage extends Component {
               this.setState({
                 contacts: [
                   ...this.state.contacts,
-                  { nome: "", tel: "", email: "" },
-                ],
+                  { nome: "", tel: "", email: "" }
+                ]
               })
             }
           />
