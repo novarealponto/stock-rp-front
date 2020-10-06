@@ -55,17 +55,17 @@
   border-bottom: 1px solid #ccc;
   outline: none;
   padding-left: 2px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 .div-button-drawer-externo {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 10px;
 }
 .footer-drawer-externo {
   color: rgb(161, 161, 161);
-  font-size: 12px;
+  font-size: 12.7px;
   text-align: center;
   margin-top: 50px;
 }
@@ -83,4 +83,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+@media (min-width: 550px) {
+  .drawer-externo {
+    width: 100%;
+  }
+
+  .footer-drawer-externo {
+    font-size: 12px;
+  }
 }

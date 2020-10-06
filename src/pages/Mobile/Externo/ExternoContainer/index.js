@@ -34,7 +34,7 @@ class ExternoContainer extends Component {
       messageSuccess: false,
       current: 0,
       auth: true,
-      user: "",
+      user: this.props.auth.username,
       pass: "",
       newPass: "",
       confPass: "",
@@ -151,9 +151,13 @@ class ExternoContainer extends Component {
     });
   };
 
-  onClose = () => {
+  cancelUpdate = () => {
     this.setState({
-      setVisible: false
+      setVisible: false,
+      user: this.props.auth.username,
+      pass: "",
+      newPass: "",
+      confPass: ""
     });
   };
 
@@ -177,11 +181,6 @@ class ExternoContainer extends Component {
     await this.auth();
 
     await this.forceLogout();
-
-    this.setState({
-      user: this.props.auth.username,
-      typeAccount: this.props.auth.typeAccount
-    });
 
     await this.getOs();
   };
@@ -309,9 +308,14 @@ class ExternoContainer extends Component {
       title={
         <div className="div-drawer-externo">
           Perfil{" "}
-          <LogoutOutlined onClick={this.logout} style={{ cursor: "pointer" }} />{" "}
+          <LogoutOutlined
+            size="large"
+            onClick={this.logout}
+            style={{ cursor: "pointer" }}
+          />{" "}
         </div>
       }
+      width={"100%"}
       placement="right"
       closable={false}
       onClose={this.onClose}
@@ -349,7 +353,12 @@ class ExternoContainer extends Component {
         placeholder="Confirmar senha"
       ></input>
       <div className="div-button-drawer-externo">
-        <Button onClick={this.saveNewPassword}>Salvar</Button>
+        <Button size="large" onClick={this.cancelUpdate}>
+          Voltar
+        </Button>
+        <Button size="large" onClick={this.saveNewPassword}>
+          Salvar
+        </Button>
       </div>
       <div className="footer-drawer-externo">
         Developed by Jessi Castro and Guilherme Stain
@@ -528,6 +537,7 @@ class ExternoContainer extends Component {
 
         <div className="div-buttons-externo">
           <Button
+            size="large"
             onClick={() => {
               this.setState(prevState => {
                 return {
@@ -540,6 +550,7 @@ class ExternoContainer extends Component {
             Voltar
           </Button>
           <Button
+            size="large"
             onClick={async () => {
               if (this.state.current === 0)
                 await this.getAllReservaTecnicoReturn();
