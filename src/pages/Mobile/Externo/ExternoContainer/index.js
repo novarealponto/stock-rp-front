@@ -15,7 +15,7 @@ import { getAllReservaTecnicoReturn } from "../../../../services/reservaTecnico"
 import { getAllEquipsService } from "../../../../services/equip";
 import {
   getTodasOs,
-  associarEquipsParaOsPart
+  associarEquipsParaOsPart,
 } from "../../../../services/reservaOs";
 
 import { Button, Drawer, Select, InputNumber, message, Input } from "antd";
@@ -40,7 +40,7 @@ class ExternoContainer extends Component {
       confPass: "",
       os: [],
       index: -1,
-      oId: null
+      oId: null,
     };
   }
 
@@ -86,23 +86,23 @@ class ExternoContainer extends Component {
       const value = {
         username: this.state.user,
         oldPassword: this.state.pass,
-        newPassword: this.state.newPass
+        newPassword: this.state.newPass,
       };
 
       this.setState({
-        loading: true
+        loading: true,
       });
 
       const resposta = await updateSenha(value);
 
       if (resposta.status === 422) {
         this.setState({
-          messageError: true
+          messageError: true,
         });
         await this.error();
         this.setState({
           loading: false,
-          messageError: false
+          messageError: false,
         });
       }
       if (resposta.status === 200) {
@@ -111,12 +111,12 @@ class ExternoContainer extends Component {
           pass: "",
           confPass: "",
           messageSuccess: true,
-          editar: false
+          editar: false,
         });
         await this.success();
         this.setState({
           loading: false,
-          messageSuccess: false
+          messageSuccess: false,
         });
       }
     }
@@ -125,29 +125,29 @@ class ExternoContainer extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username
+      username: this.props.auth.username,
     };
 
     let response = {};
 
-    response = await auth(value).then(resp =>
+    response = await auth(value).then((resp) =>
       this.setState({
-        auth: resp ? resp.data : false
+        auth: resp ? resp.data : false,
       })
     );
 
     return response;
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   showDrawer = () => {
     this.setState({
-      setVisible: true
+      setVisible: true,
     });
   };
 
@@ -157,7 +157,7 @@ class ExternoContainer extends Component {
       user: this.props.auth.username,
       pass: "",
       newPass: "",
-      confPass: ""
+      confPass: "",
     });
   };
 
@@ -191,24 +191,24 @@ class ExternoContainer extends Component {
         technician: {
           specific: {
             // name: "TECNICO 1",
-            id: this.props.auth.technicianId
+            id: this.props.auth.technicianId,
             // name: this.props.auth.username,
-          }
+          },
         },
         os: {
           specific: {
-            date: { start: moment(), end: moment() }
-          }
+            date: { start: moment(), end: moment() },
+          },
         },
         technicianReserve: {
           specific: {
             data: {
               start: moment(),
-              end: moment()
-            }
-          }
-        }
-      }
+              end: moment(),
+            },
+          },
+        },
+      },
     };
 
     const response = await getTodasOs(query);
@@ -227,45 +227,45 @@ class ExternoContainer extends Component {
       filters: {
         technician: {
           specific: {
-            id: this.props.auth.technicianId
-          }
+            id: this.props.auth.technicianId,
+          },
         },
         technicianReserve: {
           specific: {
             data: {
               start: moment(),
-              end: moment()
-            }
-          }
-        }
+              end: moment(),
+            },
+          },
+        },
       },
-      osPartsId: null
+      osPartsId: null,
     };
     const { status, data } = await getAllReservaTecnicoReturn(query);
 
     if (status === 200) {
-      data.map(item => {
+      data.map((item) => {
         const index = R.findIndex(R.propEq("produto", item.produto))(
           this.state.products
         );
-
-        const osPartId = R.find(R.propEq("name", item.produto))(
+        const osPart = R.find(R.propEq("name", item.produto))(
           R.find(R.propEq("id", this.state.oId))(this.state.os).products
-        ).id;
-
+        );
         if (index === -1) {
-          this.setState(prevState => {
+          if (!osPart) return;
+          const osPartId = osPart.id;
+          this.setState((prevState) => {
             return { products: [...prevState.products, { ...item, osPartId }] };
           });
         } else {
-          this.setState(prevState => {
+          this.setState((prevState) => {
             const { products } = prevState;
             const { amount, serialNumbers } = products[index];
 
             products.splice(index, 1, {
               ...products[index],
               amount: amount + item.amount,
-              serialNumbers: [...serialNumbers, ...item.serialNumbers]
+              serialNumbers: [...serialNumbers, ...item.serialNumbers],
             });
             return { products };
           });
@@ -274,27 +274,27 @@ class ExternoContainer extends Component {
       await Promise.all(
         this.state.products.map(async (item, index) => {
           const {
-            data: { count }
+            data: { count },
           } = await getAllEquipsService({
             filters: {
               equip: {
                 specific: {
-                  osPartId: item.osPartId
-                }
-              }
-            }
+                  osPartId: item.osPartId,
+                },
+              },
+            },
           });
           const amount =
             R.find(R.propEq("name", item.produto))(
               R.find(R.propEq("id", this.state.oId))(this.state.os).products
             ).quantMax - count;
 
-          this.setState(prevState => {
+          this.setState((prevState) => {
             const { products } = prevState;
 
             products.splice(index, 1, {
               ...products[index],
-              amount
+              amount,
             });
             return { products };
           });
@@ -377,7 +377,7 @@ class ExternoContainer extends Component {
       case 0:
         return (
           <div className="div-card-externo">
-            {this.state.os.map(item => (
+            {this.state.os.map((item) => (
               <div
                 className="div-linha-externo"
                 select={this.state.oId === item.id ? "true" : "false"}
@@ -393,44 +393,44 @@ class ExternoContainer extends Component {
         return (
           <div className="div-card-externo">
             {this.state.products
-              .filter(item => item.amount > 0)
+              .filter((item) => item.amount > 0)
               .map((item, index) => (
                 <div
                   className="div-linha-externo"
                   select={
                     this.state.indexProducts.filter(
-                      indexProduct => index === indexProduct.index
+                      (indexProduct) => index === indexProduct.index
                     ).length !== 0
                       ? "true"
                       : "false"
                   }
                   onClick={async () => {
-                    this.setState(prevState => {
+                    this.setState((prevState) => {
                       if (
                         prevState.indexProducts.filter(
-                          idx => idx.index === index
+                          (idx) => idx.index === index
                         ).length !== 0
                       ) {
                         return {
                           indexProducts: [
                             ...prevState.indexProducts.filter(
-                              idx => idx.index !== index
-                            )
-                          ]
+                              (idx) => idx.index !== index
+                            ),
+                          ],
                         };
                       } else {
                         return {
                           indexProducts: [
                             ...prevState.indexProducts.filter(
-                              idx => idx.index !== index
+                              (idx) => idx.index !== index
                             ),
                             {
                               ...item,
                               index,
                               serialNumersSelects: [],
-                              quantidadeSaida: 0
-                            }
-                          ]
+                              quantidadeSaida: 0,
+                            },
+                          ],
                         };
                       }
                     });
@@ -454,7 +454,7 @@ class ExternoContainer extends Component {
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
-                    alignItems: "center"
+                    alignItems: "center",
                   }}
                 >
                   <div
@@ -463,7 +463,7 @@ class ExternoContainer extends Component {
                       height: "100%",
                       justifyContent: "center",
                       alignItems: "center",
-                      minHeight: "48px"
+                      minHeight: "48px",
                     }}
                   >
                     <div className="div-item-externo">{item.produto}</div>
@@ -473,12 +473,12 @@ class ExternoContainer extends Component {
                       style={{ width: "90%", margin: "5px 5% 10px" }}
                       mode="tags"
                       value={item.serialNumersSelects}
-                      onChange={e =>
-                        this.setState(prevState => {
+                      onChange={(e) =>
+                        this.setState((prevState) => {
                           const { indexProducts } = this.state;
                           indexProducts.splice(index, 1, {
                             ...item,
-                            serialNumersSelects: e.slice(0, item.amount)
+                            serialNumersSelects: e.slice(0, item.amount),
                           });
 
                           return { indexProducts };
@@ -486,7 +486,7 @@ class ExternoContainer extends Component {
                       }
                       tokenSeparators={[","]}
                     >
-                      {item.serialNumbers.map(serialNumber => (
+                      {item.serialNumbers.map((serialNumber) => (
                         <Option key={serialNumber}>{serialNumber}</Option>
                       ))}
                     </Select>
@@ -495,12 +495,12 @@ class ExternoContainer extends Component {
                       min={0}
                       max={item.amount}
                       value={item.quantidadeSaida}
-                      onChange={quantidadeSaida => {
-                        this.setState(prevState => {
+                      onChange={(quantidadeSaida) => {
+                        this.setState((prevState) => {
                           const { indexProducts } = prevState;
                           indexProducts.splice(index, 1, {
                             ...item,
-                            quantidadeSaida
+                            quantidadeSaida,
                           });
 
                           return { indexProducts };
@@ -530,7 +530,7 @@ class ExternoContainer extends Component {
               style={{
                 fontSize: "25px",
                 cursor: "pointer",
-                marginLeft: "20px"
+                marginLeft: "20px",
               }}
               onClick={this.showDrawer}
             />
@@ -543,10 +543,10 @@ class ExternoContainer extends Component {
           <Button
             size="large"
             onClick={() => {
-              this.setState(prevState => {
+              this.setState((prevState) => {
                 return {
                   products: prevState.current === 1 ? [] : prevState.products,
-                  current: R.max(prevState.current - 1, 0)
+                  current: R.max(prevState.current - 1, 0),
                 };
               });
             }}
@@ -561,7 +561,7 @@ class ExternoContainer extends Component {
               if (this.state.current === 2) {
                 const { status } = await associarEquipsParaOsPart({
                   technicianId: this.props.auth.technicianId,
-                  osParts: this.state.indexProducts
+                  osParts: this.state.indexProducts,
                 });
                 if (status === 200) {
                   await this.setState({
@@ -570,14 +570,14 @@ class ExternoContainer extends Component {
                     products: [],
                     os: [],
                     index: -1,
-                    oId: null
+                    oId: null,
                   });
                   await this.getOs();
                 }
               } else {
-                this.setState(prevState => {
+                this.setState((prevState) => {
                   return {
-                    current: R.min(prevState.current + 1, 2)
+                    current: R.min(prevState.current + 1, 2),
                   };
                 });
               }
@@ -598,11 +598,8 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(ExternoContainer);
+export default connect(mapStateToProps, mapDispacthToProps)(ExternoContainer);

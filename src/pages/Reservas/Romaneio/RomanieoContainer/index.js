@@ -229,7 +229,10 @@ class RomanieoContainer extends Component {
         if (rows.length === 0 && response.data.length === 0) {
           message.error("Não reserva para esta técnico nesta data");
         } else {
-          this.setState({ rows, rowsSelecteds: response.data });
+          this.setState({
+            rows,
+            // rowsSelecteds: response.data
+          });
           this.setState({ serviço, tecnico, data });
         }
       }
@@ -436,6 +439,7 @@ class RomanieoContainer extends Component {
         visible={this.state.visibleModalSemNumeroSerie}
         width={700}
         // visible={true}
+        footer={null}
       >
         {this.state.osPartsArrayReturn.map((item, idx) => (
           <div className="div-text-modal">
@@ -455,7 +459,9 @@ class RomanieoContainer extends Component {
                 <td>
                   <div className="div-quant-modal" style={{ width: "100%" }}>
                     <InputNumber
-                      max={item.amount}
+                      max={
+                        item.amount - item.output - item.return - item.missOut
+                      }
                       min={0}
                       value={item.valor}
                       onChange={(valor) =>
@@ -546,27 +552,79 @@ class RomanieoContainer extends Component {
         }}
         onCancel={() => this.setState({ visible: false })}
       >
-        <Select
-          style={{ width: "100%" }}
-          onChange={(oId) => this.setState({ oId })}
+        <div
+          style={{
+            width: "100%",
+            dislpay: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
         >
-          {this.state.osArrayReturn.map((item) => (
-            <Option value={item.oId}>{item.os}</Option>
-          ))}
-        </Select>
-        <Select
-          style={{ width: "100%" }}
-          onChange={(oId) => this.setState({ oId })}
-        >
-          {this.state.osArrayReturn.map((item) => (
-            <Option value={item.oId}>{item.razaoSocial}</Option>
-          ))}
-        </Select>
+          <Select
+            style={{ width: "20%", marginRight: "5%" }}
+            value={this.state.oId}
+            onChange={(oId) => this.setState({ oId })}
+            placeholder="os"
+          >
+            {this.state.osArrayReturn.map((item) => (
+              <Option value={item.oId}>{item.os}</Option>
+            ))}
+          </Select>
+          <Select
+            style={{ width: "75%" }}
+            value={this.state.oId}
+            onChange={(oId) => this.setState({ oId })}
+            placeholder="razão social"
+          >
+            {this.state.osArrayReturn.map((item) => (
+              <Option value={item.oId}>{item.razaoSocial}</Option>
+            ))}
+          </Select>
+        </div>
       </Modal>
     );
   };
 
+  openModalOsByReturn = async (text) => {
+    const query = {
+      filters: {
+        technician: {
+          specific: {
+            name: text.tecnico,
+          },
+        },
+        product: {
+          specific: {
+            name: text.produto,
+          },
+        },
+        os: {
+          specific: {
+            date: {
+              start: this.state.data,
+              end: this.state.data,
+            },
+          },
+        },
+      },
+    };
+
+    const resp = await getAllOsPartsByParamsForReturn(query);
+
+    if (resp.status === 200) {
+      this.setState({
+        osArrayReturn: resp.data.rows,
+      });
+    }
+    this.setState({
+      visible: true,
+      serialNumberModal: text.serialNumber,
+      technicianReserveId: text.technicianReserveId,
+    });
+  };
+
   render() {
+    console.log(this.state);
     return (
       <div className="div-card-Rtecnico">
         <div className="linhaTexto-Rtecnico">
@@ -620,8 +678,6 @@ class RomanieoContainer extends Component {
                           <ArrowRightOutlined
                             onClick={() =>
                               this.setState((prevState) => {
-                                console.log("pqp");
-
                                 const rowAdd = R.find(R.propEq("id", text.id))(
                                   prevState.rowsSelecteds
                                 );
@@ -656,7 +712,7 @@ class RomanieoContainer extends Component {
                       },
                     },
                   ]}
-                  dataSource={this.state.rows}
+                  dataSource={this.state.rows.filter((item) => item.amount > 0)}
                 />
 
                 <Table
@@ -696,44 +752,7 @@ class RomanieoContainer extends Component {
                               <ArrowRightOutlined
                                 onClick={async () => {
                                   if (text.os === "-") {
-                                    const query = {
-                                      filters: {
-                                        technician: {
-                                          specific: {
-                                            name: text.tecnico,
-                                          },
-                                        },
-                                        product: {
-                                          specific: {
-                                            name: text.produto,
-                                          },
-                                        },
-                                        os: {
-                                          specific: {
-                                            date: {
-                                              start: this.state.data,
-                                              end: this.state.data,
-                                            },
-                                          },
-                                        },
-                                      },
-                                    };
-
-                                    const resp = await getAllOsPartsByParamsForReturn(
-                                      query
-                                    );
-
-                                    if (resp.status === 200) {
-                                      this.setState({
-                                        osArrayReturn: resp.data.rows,
-                                      });
-                                    }
-                                    this.setState({
-                                      visible: true,
-                                      serialNumberModal: text.serialNumber,
-                                      technicianReserveId:
-                                        text.technicianReserveId,
-                                    });
+                                    await this.openModalOsByReturn(text);
                                   } else {
                                     const value = {
                                       osPartsId: text.osPartsId,
@@ -753,7 +772,32 @@ class RomanieoContainer extends Component {
                                   }
                                 }}
                               />
-                              <RollbackOutlined />
+                              <RollbackOutlined
+                                onClick={async () => {
+                                  if (text.os === "-") {
+                                    await this.openModalOsByReturn(text);
+                                  } else {
+                                    const value = {
+                                      osPartsId: text.osPartsId,
+                                      add: {
+                                        return: 1,
+                                      },
+                                      serialNumberArray: [text.serialNumber],
+                                    };
+
+                                    const resposta = await baixaReservaOs(
+                                      value
+                                    );
+
+                                    if (resposta.status === 200) {
+                                      this.buscarOsParts();
+                                    }
+                                  }
+                                }}
+                              />
+                              <PlusOutlined
+                                onClick={() => this.openModalOsByReturn(text)}
+                              />
                             </>
                           );
                         return (
@@ -801,7 +845,7 @@ class RomanieoContainer extends Component {
                       },
                     },
                   ]}
-                  dataSource={this.state.rows}
+                  dataSource={this.state.rows.filter((item) => item.amount > 0)}
                 />
 
                 <Table

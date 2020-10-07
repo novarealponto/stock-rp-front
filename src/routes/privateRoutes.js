@@ -14,7 +14,7 @@ import "./index.css";
 
 class PrivateRoute extends Component {
   state = {
-    auth: true
+    auth: true,
   };
 
   logout = async () => {
@@ -24,16 +24,21 @@ class PrivateRoute extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username
+      username: this.props.auth.username,
     };
+
+    console.log(value);
 
     let response = {};
 
-    response = await auth(value).then(resp =>
-      this.setState({
-        auth: resp ? resp.data : false
-      })
-    );
+    response = await auth(value);
+    // .then((resp) =>
+    // this.setState({
+    //     auth: resp ? resp.data : false,
+    //   })
+    // );
+
+    this.setState({ auth: response.data });
 
     return response;
   };
@@ -82,11 +87,8 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(PrivateRoute);
+export default connect(mapStateToProps, mapDispacthToProps)(PrivateRoute);

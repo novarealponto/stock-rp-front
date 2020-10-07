@@ -739,11 +739,12 @@ class Rexterno extends Component {
               optionFilterProp="children"
               value={this.state.nomeProduto}
               onChange={this.onChangeItem}
-              filterOption={(input, option) =>
-                option.props.children
-                  .toLowerCase()
-                  .indexOf(input.toLowerCase()) >= 0
-              }
+              filterOption={(input, option) => {
+                return (
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                );
+              }}
             >
               {this.state.itemArray.map((value) => (
                 <Option props={value} value={value.name}>

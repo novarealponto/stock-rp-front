@@ -12,6 +12,7 @@ import {
   message,
   DatePicker,
   InputNumber,
+  Switch,
 } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { split } from "ramda";
@@ -50,6 +51,7 @@ class GerenciarCadastrosSupPage extends Component {
       name: "",
     },
     product: {
+      esporadico: false,
       id: "",
       name: "",
       unit: "",
@@ -139,8 +141,16 @@ class GerenciarCadastrosSupPage extends Component {
       unit,
       manufacturerId,
       minimumQuantity,
+      esporadico,
     } = this.state.product;
-    const value = { id, name, unit, manufacturerId, minimumQuantity };
+    const value = {
+      id,
+      name,
+      unit,
+      manufacturerId,
+      minimumQuantity,
+      esporadico,
+    };
     const { status } = await UpdateSupProduct(value);
 
     if (status === 200) {
@@ -561,13 +571,34 @@ class GerenciarCadastrosSupPage extends Component {
           </Option>
         ))}
       </Select>
-      <InputNumber
-        style={{ marginTop: "10px" }}
-        onChange={(minimumQuantity) =>
-          this.setState({ product: { ...this.state.product, minimumQuantity } })
-        }
-        value={this.state.product.minimumQuantity}
-      />
+      <div
+        style={{
+          width: "100%",
+          marginTop: "10px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <InputNumber
+          min={1}
+          onChange={(minimumQuantity) =>
+            this.setState({
+              product: { ...this.state.product, minimumQuantity },
+            })
+          }
+          value={this.state.product.minimumQuantity}
+        />
+        <div>
+          <label>Esporadico: </label>
+          <Switch
+            checked={this.state.product.esporadico}
+            onChange={(esporadico) =>
+              this.setState({ product: { ...this.state.product, esporadico } })
+            }
+          />
+        </div>
+      </div>
     </Modal>
   );
 
