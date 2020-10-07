@@ -18,7 +18,7 @@ import {
   associarEquipsParaOsPart
 } from "../../../../services/reservaOs";
 
-import { Button, Drawer, Select, InputNumber, message } from "antd";
+import { Button, Drawer, Select, InputNumber, message, Input } from "antd";
 
 const { Option } = Select;
 
@@ -321,37 +321,41 @@ class ExternoContainer extends Component {
       onClose={this.onClose}
       visible={this.state.setVisible}
     >
-      <input
+      <Input
         className="input-drawer-externo"
+        bordered={false}
         onChange={this.onChange}
         placeholder="user"
         value={this.state.user}
         readOnly
-      ></input>
-      <input
+      ></Input>
+      <Input.Password
         className="input-drawer-externo"
+        bordered={false}
         onChange={this.onChange}
         type="password"
         name="pass"
         value={this.state.pass}
         placeholder="Senha atual"
-      ></input>
-      <input
+      ></Input.Password>
+      <Input.Password
         className="input-drawer-externo"
+        bordered={false}
         onChange={this.onChange}
         type="password"
         value={this.state.newPass}
         name="newPass"
         placeholder="Nova senha"
-      ></input>
-      <input
+      ></Input.Password>
+      <Input.Password
         className="input-drawer-externo"
+        bordered={false}
         name="confPass"
         value={this.state.confPass}
         type="password"
         onChange={this.onChange}
         placeholder="Confirmar senha"
-      ></input>
+      ></Input.Password>
       <div className="div-button-drawer-externo">
         <Button size="large" onClick={this.cancelUpdate}>
           Voltar
