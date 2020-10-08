@@ -16,14 +16,14 @@ import {
   message,
   Modal,
   InputNumber,
-  Tooltip,
+  Tooltip
 } from "antd";
 import {
   PlusOutlined,
   RollbackOutlined,
   ArrowRightOutlined,
   ArrowLeftOutlined,
-  AlertOutlined,
+  AlertOutlined
 } from "@ant-design/icons";
 import { getTecnico } from "../../../../services/tecnico";
 import {
@@ -32,18 +32,18 @@ import {
   baixaReservaOs,
   getTodasOs,
   getAllOsParts,
-  associarEquipParaOsPart,
+  associarEquipParaOsPart
 } from "../../../../services/reservaOs";
 import { getAllEquipBySerialNumber } from "../../../../services/equip";
 import {
   newReservaTecnico,
   getAllReservaTecnico,
-  getAllReservaTecnicoReturn,
+  getAllReservaTecnicoReturn
 } from "../../../../services/reservaTecnico";
 
 const { Option } = Select;
 
-const SearchForm = (props) => {
+const SearchForm = props => {
   const [form] = Form.useForm();
 
   return (
@@ -53,7 +53,7 @@ const SearchForm = (props) => {
       id="form-romaneio-search"
       layout="vertical"
       hideRequiredMark
-      onFinish={(value) => props.handleSubmit(value)}
+      onFinish={value => props.handleSubmit(value)}
     >
       <Row gutter={20}>
         <Col span={7}>
@@ -61,12 +61,12 @@ const SearchForm = (props) => {
             name="serviço"
             label="Serviço:"
             rules={[
-              { required: true, message: "Por favor selecione um serviço" },
+              { required: true, message: "Por favor selecione um serviço" }
             ]}
             style={{ width: "100%" }}
           >
             <Select
-              placeholder="selecione um serviço"
+              placeholder="Selecione um serviço"
               disabled={props.disabled}
             >
               <Option value="saida">Saída</Option>
@@ -79,15 +79,15 @@ const SearchForm = (props) => {
             name="tecnico"
             label="Técnico: "
             rules={[
-              { required: true, message: "Por favor selecione uma técnico" },
+              { required: true, message: "Por favor selecione uma técnico" }
             ]}
             style={{ width: "100%" }}
           >
             <Select
-              placeholder="selecione um técnico"
+              placeholder="Selecione um técnico"
               disabled={props.disabled}
             >
-              {props.tecnicos.map((valor) => (
+              {props.tecnicos.map(valor => (
                 <Option value={valor.name}>{valor.name}</Option>
               ))}
             </Select>
@@ -102,18 +102,18 @@ const SearchForm = (props) => {
           >
             <DatePicker
               inputReadOnly={true}
-              disabledDate={(current) =>
+              disabledDate={current =>
                 current &&
                 form.getFieldValue("serviço") === "saida" &&
                 current < moment().startOf("day")
               }
-              placeholder="selecione um dia"
+              placeholder="Selecione uma data"
               disabled={props.disabled}
             />
           </Form.Item>
         </Col>
         <Col span={3}>
-          <Form.Item>
+          <Form.Item label=" ">
             <Button
               type="primary"
               htmlType="submit"
@@ -131,16 +131,16 @@ const SearchForm = (props) => {
 const columns = [
   {
     title: "Os",
-    dataIndex: "os",
+    dataIndex: "os"
   },
   {
     title: "Qtd",
-    dataIndex: "amount",
+    dataIndex: "amount"
   },
   {
     title: "Produto",
-    dataIndex: "produto",
-  },
+    dataIndex: "produto"
+  }
 ];
 
 class RomanieoContainer extends Component {
@@ -158,7 +158,7 @@ class RomanieoContainer extends Component {
     osPartsArrayReturn: [],
     visible: false,
     visibleModalSemNumeroSerie: false,
-    data: null,
+    data: null
   };
 
   componentDidMount = async () => {
@@ -166,9 +166,9 @@ class RomanieoContainer extends Component {
   };
 
   getAllTecnico = async () => {
-    await getTecnico().then((resposta) =>
+    await getTecnico().then(resposta =>
       this.setState({
-        tecnicoArray: resposta.data,
+        tecnicoArray: resposta.data
       })
     );
   };
@@ -182,12 +182,12 @@ class RomanieoContainer extends Component {
         tecnico: undefined,
         serviço: undefined,
         rows: [],
-        rowsSelecteds: [],
+        rowsSelecteds: []
       });
     }
   };
 
-  buscarOsParts = async (value) => {
+  buscarOsParts = async value => {
     let serviço = this.state.serviço;
     let tecnico = this.state.tecnico;
     let data = this.state.data;
@@ -202,25 +202,25 @@ class RomanieoContainer extends Component {
       filters: {
         technician: {
           specific: {
-            name: tecnico,
-          },
+            name: tecnico
+          }
         },
         os: {
           specific: {
-            date: { start: data, end: data },
-          },
+            date: { start: data, end: data }
+          }
         },
         technicianReserve: {
           specific: {
-            data: { start: data, end: data },
-          },
-        },
-      },
+            data: { start: data, end: data }
+          }
+        }
+      }
     };
     if (serviço === "saida") {
       const {
         status,
-        data: { rows },
+        data: { rows }
       } = await getAllOsPartsByParams(query);
 
       const response = await getAllReservaTecnico(query);
@@ -230,7 +230,7 @@ class RomanieoContainer extends Component {
           message.error("Não reserva para esta técnico nesta data");
         } else {
           this.setState({
-            rows,
+            rows
             // rowsSelecteds: response.data
           });
           this.setState({ serviço, tecnico, data });
@@ -253,11 +253,11 @@ class RomanieoContainer extends Component {
     }
   };
 
-  buscaPorNumeroSerie = async (e) => {
+  buscaPorNumeroSerie = async e => {
     const { value: serialNumber } = e.target;
     if (e.which === 13 || e.keyCode === 13) {
       const { status, data } = await getAllEquipBySerialNumber({
-        serialNumber,
+        serialNumber
       });
 
       if (status === 200 && data) {
@@ -280,7 +280,7 @@ class RomanieoContainer extends Component {
         let reserved =
           data.reserved && data.productBase.product.category === "peca";
 
-        R.map((item) => {
+        R.map(item => {
           if (
             R.findIndex(R.propEq("serialNumber", serialNumber))(
               item.serialNumbers
@@ -302,10 +302,10 @@ class RomanieoContainer extends Component {
             this.state.rowsSelecteds
           );
           if (idx === -1) {
-            await this.setState((prevState) => {
+            await this.setState(prevState => {
               return {
                 rows: [
-                  ...prevState.rows.filter((item) => {
+                  ...prevState.rows.filter(item => {
                     if (linhaUnica) {
                       return item.serialNumber !== serialNumber;
                     } else {
@@ -314,74 +314,74 @@ class RomanieoContainer extends Component {
                   }),
                   {
                     ...row,
-                    amount: row.amount - 1,
-                  },
+                    amount: row.amount - 1
+                  }
                 ],
                 rowsSelecteds: [
                   ...prevState.rowsSelecteds,
                   {
                     ...row,
                     amount: 1,
-                    serialNumbers: [{ serialNumber }],
-                  },
-                ],
+                    serialNumbers: [{ serialNumber }]
+                  }
+                ]
               };
             });
           } else {
-            await this.setState((prevState) => {
+            await this.setState(prevState => {
               if (linhaUnica) {
                 return {
                   rows: [
                     ...prevState.rows.filter(
-                      (item) => item.serialNumber !== serialNumber
+                      item => item.serialNumber !== serialNumber
                     ),
                     {
                       ...row,
-                      amount: row.amount - 1,
-                    },
+                      amount: row.amount - 1
+                    }
                   ],
                   rowsSelecteds: [
                     ...prevState.rowsSelecteds,
                     {
                       ...row,
                       amount: 1,
-                      serialNumbers: [{ serialNumber }],
-                    },
-                  ],
+                      serialNumbers: [{ serialNumber }]
+                    }
+                  ]
                 };
               }
               return {
                 rows: [
-                  ...prevState.rows.filter((item) => item.id !== row.id),
+                  ...prevState.rows.filter(item => item.id !== row.id),
                   {
                     ...row,
-                    amount: row.amount - 1,
-                  },
+                    amount: row.amount - 1
+                  }
                 ],
                 rowsSelecteds: [
                   ...prevState.rowsSelecteds.filter(
-                    (item) => item.id !== prevState.rowsSelecteds[idx].id
+                    item => item.id !== prevState.rowsSelecteds[idx].id
                   ),
                   {
                     ...prevState.rowsSelecteds[idx],
                     amount: prevState.rowsSelecteds[idx].amount + 1,
                     serialNumbers: [
                       ...prevState.rowsSelecteds[idx].serialNumbers,
-                      { serialNumber },
-                    ],
-                  },
-                ],
+                      { serialNumber }
+                    ]
+                  }
+                ]
               };
             });
           }
 
-          await this.setState((prevState) => {
+          await this.setState(prevState => {
             return {
               rows: [
                 ...prevState.rows.filter(
-                  (item) => !(item.id === row.id && item.amount === 0)
-                ),
-              ],
+                  item => !(item.id === row.id && item.amount === 0)
+                )
+              ]
             };
           });
           message.success(
@@ -405,26 +405,26 @@ class RomanieoContainer extends Component {
     const value = {
       osPartsId: item.osPartId,
       add: {
-        [key]: item.valor,
+        [key]: item.valor
       },
-      serialNumberArray: null,
+      serialNumberArray: null
     };
 
     const { status } = await baixaReservaOs(value);
 
     if (status === 200) {
-      this.setState((prevState) => {
+      this.setState(prevState => {
         const { osPartsArrayReturn } = prevState;
 
         osPartsArrayReturn.splice(idx, 1, {
           ...osPartsArrayReturn[idx],
           valor: 0,
           amount: osPartsArrayReturn[idx].amount - item.valor,
-          [key]: osPartsArrayReturn[idx][key] + item.valor,
+          [key]: osPartsArrayReturn[idx][key] + item.valor
         });
 
         return {
-          osPartsArrayReturn,
+          osPartsArrayReturn
         };
       });
       this.buscarOsParts();
@@ -457,29 +457,32 @@ class RomanieoContainer extends Component {
                 <td>{item.return}</td>
                 <td>{item.missOut}</td>
                 <td>
-                  <div className="div-quant-modal" style={{ width: "100%" }}>
+                  <div
+                    className="div-quant-modal-romaneio"
+                    style={{ width: "100%" }}
+                  >
                     <InputNumber
                       max={
                         item.amount - item.output - item.return - item.missOut
                       }
                       min={0}
                       value={item.valor}
-                      onChange={(valor) =>
-                        this.setState((prevState) => {
+                      onChange={valor =>
+                        this.setState(prevState => {
                           const { osPartsArrayReturn } = prevState;
 
                           osPartsArrayReturn.splice(idx, 1, {
                             ...osPartsArrayReturn[idx],
-                            valor,
+                            valor
                           });
 
                           return {
-                            osPartsArrayReturn,
+                            osPartsArrayReturn
                           };
                         })
                       }
                     />
-                    <div className="div-acoes-modal">
+                    <div className="div-acoes-modal-romaneio">
                       <Tooltip placement="top" title="Retornar">
                         <Button
                           type="primary"
@@ -494,7 +497,7 @@ class RomanieoContainer extends Component {
                       <Tooltip placement="top" title="Liberar">
                         <Button
                           type="primary"
-                          className="button-liberar"
+                          className="button-liberar-romaneio"
                           onClick={() =>
                             this.BaixaReservaOs(item, idx, "output")
                           }
@@ -518,11 +521,6 @@ class RomanieoContainer extends Component {
                 </td>
               </tr>
             </table>
-
-            {/* <div className="div-produtos-modal">{item.os}</div>
-            <div className="div-quant-modal">
-              
-            </div> */}
           </div>
         ))}
       </Modal>
@@ -534,7 +532,6 @@ class RomanieoContainer extends Component {
       <Modal
         title="Liberar"
         visible={this.state.visible}
-        // visible={true}
         onOk={async () => {
           if (!this.state.oId) return;
 
@@ -542,7 +539,7 @@ class RomanieoContainer extends Component {
             serialNumber: this.state.serialNumberModal,
             technicianReserveId: this.state.technicianReserveId,
             oId: this.state.oId,
-            tecnico: this.state.tecnico,
+            tecnico: this.state.tecnico
           });
 
           if (status === 200) {
@@ -557,26 +554,26 @@ class RomanieoContainer extends Component {
             width: "100%",
             dislpay: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
+            justifyContent: "space-between"
           }}
         >
           <Select
             style={{ width: "20%", marginRight: "5%" }}
             value={this.state.oId}
-            onChange={(oId) => this.setState({ oId })}
+            onChange={oId => this.setState({ oId })}
             placeholder="os"
           >
-            {this.state.osArrayReturn.map((item) => (
+            {this.state.osArrayReturn.map(item => (
               <Option value={item.oId}>{item.os}</Option>
             ))}
           </Select>
           <Select
             style={{ width: "75%" }}
             value={this.state.oId}
-            onChange={(oId) => this.setState({ oId })}
+            onChange={oId => this.setState({ oId })}
             placeholder="razão social"
           >
-            {this.state.osArrayReturn.map((item) => (
+            {this.state.osArrayReturn.map(item => (
               <Option value={item.oId}>{item.razaoSocial}</Option>
             ))}
           </Select>
@@ -585,46 +582,45 @@ class RomanieoContainer extends Component {
     );
   };
 
-  openModalOsByReturn = async (text) => {
+  openModalOsByReturn = async text => {
     const query = {
       filters: {
         technician: {
           specific: {
-            name: text.tecnico,
-          },
+            name: text.tecnico
+          }
         },
         product: {
           specific: {
-            name: text.produto,
-          },
+            name: text.produto
+          }
         },
         os: {
           specific: {
             date: {
               start: this.state.data,
-              end: this.state.data,
-            },
-          },
-        },
-      },
+              end: this.state.data
+            }
+          }
+        }
+      }
     };
 
     const resp = await getAllOsPartsByParamsForReturn(query);
 
     if (resp.status === 200) {
       this.setState({
-        osArrayReturn: resp.data.rows,
+        osArrayReturn: resp.data.rows
       });
     }
     this.setState({
       visible: true,
       serialNumberModal: text.serialNumber,
-      technicianReserveId: text.technicianReserveId,
+      technicianReserveId: text.technicianReserveId
     });
   };
 
   render() {
-    console.log(this.state);
     return (
       <div className="div-card-Rtecnico">
         <div className="linhaTexto-Rtecnico">
@@ -647,13 +643,11 @@ class RomanieoContainer extends Component {
               </div>
 
               <Input
-                placeholder="insira o sumero de série a ser liberado"
+                placeholder="Insira o número de série a ser liberado"
                 id="search-serial-romaneio"
                 value={this.state.serialNumber}
                 onKeyPress={this.buscaPorNumeroSerie}
-                onChange={(e) =>
-                  this.setState({ serialNumber: e.target.value })
-                }
+                onChange={e => this.setState({ serialNumber: e.target.value })}
               />
             </div>
 
@@ -666,18 +660,18 @@ class RomanieoContainer extends Component {
                     ...columns,
                     {
                       title: "Número de Série",
-                      dataIndex: "serialNumber",
+                      dataIndex: "serialNumber"
                     },
                     {
                       title: "Ação",
                       dataIndex: "",
                       key: "id",
-                      render: (text) => {
+                      render: text => {
                         if (text.serial) return null;
                         return (
                           <ArrowRightOutlined
                             onClick={() =>
-                              this.setState((prevState) => {
+                              this.setState(prevState => {
                                 const rowAdd = R.find(R.propEq("id", text.id))(
                                   prevState.rowsSelecteds
                                 );
@@ -687,32 +681,32 @@ class RomanieoContainer extends Component {
                                 return {
                                   rows: [
                                     ...prevState.rows.filter(
-                                      (item) => item.id !== text.id
-                                    ),
+                                      item => item.id !== text.id
+                                    )
                                   ],
                                   rowsSelecteds: rowAdd
                                     ? [
                                         ...prevState.rowsSelecteds.filter(
-                                          (item) => item.id !== text.id
+                                          item => item.id !== text.id
                                         ),
                                         {
                                           ...rowAdd,
-                                          amount: rowAdd.amount + text.amount,
-                                        },
+                                          amount: rowAdd.amount + text.amount
+                                        }
                                       ]
                                     : [
                                         ...prevState.rowsSelecteds,
-                                        { ...text, serialNumbers: [] },
-                                      ],
+                                        { ...text, serialNumbers: [] }
+                                      ]
                                 };
                               })
                             }
                           />
                         );
-                      },
-                    },
+                      }
+                    }
                   ]}
-                  dataSource={this.state.rows.filter((item) => item.amount > 0)}
+                  dataSource={this.state.rows.filter(item => item.amount > 0)}
                 />
 
                 <Table
@@ -721,12 +715,18 @@ class RomanieoContainer extends Component {
                     ...columns,
                     {
                       title: "Número de Série",
-                      dataIndex: "serialNumber",
-                    },
+                      dataIndex: "serialNumber"
+                    }
                   ]}
                   dataSource={this.state.rowsSelecteds}
                 />
-                <Button onClick={this.newReservaTecnico}>Submeter</Button>
+                <Button
+                  type="primary"
+                  style={{ width: "100%" }}
+                  onClick={this.newReservaTecnico}
+                >
+                  Enviar
+                </Button>
               </>
             )}
             {this.state.serviço === "retorno" && (
@@ -738,18 +738,19 @@ class RomanieoContainer extends Component {
                     ...columns,
                     {
                       title: "Número de Série",
-                      dataIndex: "serialNumber",
+                      dataIndex: "serialNumber"
                     },
                     {
                       title: "Ação",
                       dataIndex: "",
                       key: "id",
-                      render: (text) => {
+                      render: text => {
                         console.log(text);
                         if (text.serial)
                           return (
-                            <>
+                            <div className="div-acao-romaneio">
                               <ArrowRightOutlined
+                                size="large"
                                 onClick={async () => {
                                   if (text.os === "-") {
                                     await this.openModalOsByReturn(text);
@@ -757,9 +758,9 @@ class RomanieoContainer extends Component {
                                     const value = {
                                       osPartsId: text.osPartsId,
                                       add: {
-                                        output: 1,
+                                        output: 1
                                       },
-                                      serialNumberArray: [text.serialNumber],
+                                      serialNumberArray: [text.serialNumber]
                                     };
 
                                     const resposta = await baixaReservaOs(
@@ -773,6 +774,7 @@ class RomanieoContainer extends Component {
                                 }}
                               />
                               <RollbackOutlined
+                                size="large"
                                 onClick={async () => {
                                   if (text.os === "-") {
                                     await this.openModalOsByReturn(text);
@@ -780,9 +782,9 @@ class RomanieoContainer extends Component {
                                     const value = {
                                       osPartsId: text.osPartsId,
                                       add: {
-                                        return: 1,
+                                        return: 1
                                       },
-                                      serialNumberArray: [text.serialNumber],
+                                      serialNumberArray: [text.serialNumber]
                                     };
 
                                     const resposta = await baixaReservaOs(
@@ -796,34 +798,36 @@ class RomanieoContainer extends Component {
                                 }}
                               />
                               <PlusOutlined
+                                size="large"
                                 onClick={() => this.openModalOsByReturn(text)}
                               />
-                            </>
+                            </div>
                           );
                         return (
                           <PlusOutlined
+                            size="large"
                             onClick={async () => {
                               const query = {
                                 filters: {
                                   technician: {
                                     specific: {
-                                      name: this.state.tecnico,
-                                    },
+                                      name: this.state.tecnico
+                                    }
                                   },
                                   os: {
                                     specific: {
                                       date: {
                                         start: this.state.data,
-                                        end: this.state.data,
-                                      },
-                                    },
+                                        end: this.state.data
+                                      }
+                                    }
                                   },
                                   product: {
                                     specific: {
-                                      name: text.produto,
-                                    },
-                                  },
-                                },
+                                      name: text.produto
+                                    }
+                                  }
+                                }
                               };
 
                               const { status, data } = await getAllOsParts(
@@ -833,19 +837,19 @@ class RomanieoContainer extends Component {
                               if (status === 200) {
                                 console.log(data);
                                 await this.setState({
-                                  osPartsArrayReturn: data.rows.map((item) => {
+                                  osPartsArrayReturn: data.rows.map(item => {
                                     return { ...item, valor: 0 };
                                   }),
-                                  visibleModalSemNumeroSerie: true,
+                                  visibleModalSemNumeroSerie: true
                                 });
                               }
                             }}
                           />
                         );
-                      },
-                    },
+                      }
+                    }
                   ]}
-                  dataSource={this.state.rows.filter((item) => item.amount > 0)}
+                  dataSource={this.state.rows.filter(item => item.amount > 0)}
                 />
 
                 <Table
@@ -854,16 +858,16 @@ class RomanieoContainer extends Component {
                     ...columns,
                     {
                       title: "Saída",
-                      dataIndex: "output",
+                      dataIndex: "output"
                     },
                     {
                       title: "Retorno",
-                      dataIndex: "return",
+                      dataIndex: "return"
                     },
                     {
                       title: "Perda",
-                      dataIndex: "missOut",
-                    },
+                      dataIndex: "missOut"
+                    }
                   ]}
                   dataSource={this.state.rowsSelecteds}
                 />
@@ -878,7 +882,7 @@ class RomanieoContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    auth: state.auth
   };
 }
 
