@@ -23,7 +23,7 @@ import { getProdutoByEstoque, getProdutos } from "../../../../services/produto";
 import { getTecnico } from "../../../../services/tecnico";
 import { getSerial } from "../../../../services/serialNumber";
 
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -872,10 +872,11 @@ class SearchOsDash extends Component {
                 <Button
                   className="buttonadd-marca-produtos"
                   type="primary"
-                  icon="plus"
                   name="modalMarca"
                   onClick={this.openModais}
-                />
+                >
+                  <PlusOutlined />
+                </Button>
               ) : null}
             </div>
           </div>

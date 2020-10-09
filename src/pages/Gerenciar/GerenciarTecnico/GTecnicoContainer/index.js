@@ -8,7 +8,7 @@ import {
   newCarro,
   getCarro,
 } from "../../../../services/tecnico";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -462,9 +462,10 @@ class GerenciarTecnico extends Component {
               <Button
                 className="buttonadd-marca-tecnico"
                 type="primary"
-                icon="plus"
                 onClick={this.openModal}
-              />
+              >
+                <PlusOutlined />
+              </Button>
             ) : null}
           </div>
 

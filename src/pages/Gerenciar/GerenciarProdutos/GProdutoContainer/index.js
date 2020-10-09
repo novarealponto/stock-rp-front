@@ -18,7 +18,7 @@ import {
   getMarca,
 } from "../../../../services/produto";
 import { Redirect } from "react-router-dom";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -512,10 +512,11 @@ class GerenciarProdutos extends Component {
               <Button
                 className="buttonadd-marca-produtos"
                 type="primary"
-                icon="plus"
                 name="modalMarca"
                 onClick={this.openModais}
-              />
+              >
+                <PlusOutlined />
+              </Button>
             ) : null}
           </div>
           <this.modalMarca />
@@ -558,9 +559,10 @@ class GerenciarProdutos extends Component {
                   className="buttonadd-marca-produtos"
                   type="primary"
                   name="modalTipo"
-                  icon="plus"
                   onClick={this.openModais}
-                />
+                >
+                  <PlusOutlined />
+                </Button>
               ) : null}
               <this.modalTipo />
             </div>

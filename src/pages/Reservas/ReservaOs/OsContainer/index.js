@@ -21,6 +21,7 @@ import {
   getAllStatusExpedition,
 } from "../../../../services/statusExpedition";
 import moment from "moment";
+import { PlusOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -719,10 +720,11 @@ class Rexterno extends Component {
                 <Button
                   className="buttonadd-marca-produtos"
                   type="primary"
-                  icon="plus"
                   name="modalMarca"
                   onClick={this.openModais}
-                />
+                >
+                  <PlusOutlined />
+                </Button>
               ) : null}
             </div>
           </div>

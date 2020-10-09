@@ -20,6 +20,11 @@ import {
 
 import { Button, Drawer, Select, InputNumber, message, Input } from "antd";
 
+
+import { Howl, Howler } from "howler";
+import ha from "./sound.mp3";
+
+
 const { Option } = Select;
 
 class ExternoContainer extends Component {
@@ -520,7 +525,23 @@ class ExternoContainer extends Component {
     }
   };
 
+  soundPlay = () => {
+    const sound = new Howl({
+      src: ha,
+      html5: true,
+      sprite: {
+        laser: [15100, 1500],
+      },
+    });
+
+    sound.play("laser");
+    // setTimeout(function() {
+    // sound.play("laser");
+    // }, 3000);
+  };
+
   render() {
+    Howler.volume(1);
     return (
       <div className="div-card-emprestimo-report">
         <div className="title-emprestimo-report">
@@ -556,6 +577,7 @@ class ExternoContainer extends Component {
           <Button
             size="large"
             onClick={async () => {
+              // this.soundPlay()
               if (this.state.current === 0)
                 await this.getAllReservaTecnicoReturn();
               if (this.state.current === 2) {

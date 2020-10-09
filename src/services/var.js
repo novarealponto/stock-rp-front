@@ -4,8 +4,8 @@
 
 // export const BACKEND_URL = "http://localhost:5312";
 
-export const BACKEND_URL = "http://192.168.90.201:5312";
+// export const BACKEND_URL = "http://192.168.90.201:5312";
 
-// export const BACKEND_URL = "http://192.168.90.200:5312";
+export const BACKEND_URL = "http://192.168.90.200:5312";
 
 // export const BACKEND_URL = "http://200.196.235.175:5314";
