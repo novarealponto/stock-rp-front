@@ -35,6 +35,7 @@ import {
   getAllOsPartsByParams,
   getAllOsPartsByParamsForReturn,
   baixaReservaOs,
+  retornarBaixaReservaOs,
   getTodasOs,
   getAllOsParts,
   associarEquipParaOsPart,
@@ -164,6 +165,7 @@ class RomanieoContainer extends Component {
     visible: false,
     visibleModalSemNumeroSerie: false,
     data: null,
+    prevAction: "",
   };
 
   componentDidMount = async () => {
@@ -268,38 +270,6 @@ class RomanieoContainer extends Component {
       //   this.setState({ rowsSelecteds: resp.data.rows });
       // }
 
-      await Promise.all(
-        response.data.map(async (test) => {
-          if (!test.serial) {
-            const query = {
-              filters: {
-                technician: {
-                  specific: {
-                    name: this.state.tecnico,
-                  },
-                },
-                os: {
-                  specific: {
-                    date: {
-                      start: this.state.data,
-                      end: this.state.data,
-                    },
-                  },
-                },
-                product: {
-                  specific: {
-                    name: test.produto,
-                  },
-                },
-              },
-            };
-
-            console.log(test);
-            console.log(await getAllOsParts(query));
-          }
-        })
-      );
-
       if (response.status === 200) {
         this.setState({
           rows: response.data.filter((test) => test.os === "-"),
@@ -308,9 +278,9 @@ class RomanieoContainer extends Component {
             .map((item) => {
               return {
                 ...item,
-                perda: item.missOut || 0,
-                retorno: item.return || 0,
-                saida: item.output || 1,
+                perda: item.prevAction === "perda" ? 1 : item.missOut || 0,
+                retorno: item.prevAction === "retorno" ? 1 : item.return || 0,
+                saida: item.prevAction === "saida" ? 1 : item.output || 0,
               };
             }),
         });
@@ -469,7 +439,7 @@ class RomanieoContainer extends Component {
 
   BaixaReservaOs = async (item, idx, key) => {
     const value = {
-      osPartsId: item.osPartId,
+      osPartId: item.osPartId,
       add: {
         [key]: item.valor,
       },
@@ -484,7 +454,6 @@ class RomanieoContainer extends Component {
 
         osPartsArrayReturn.splice(idx, 1, {
           ...osPartsArrayReturn[idx],
-          valor: 0,
           amount: osPartsArrayReturn[idx].amount - item.valor,
           [key]: osPartsArrayReturn[idx][key] + item.valor,
         });
@@ -606,6 +575,7 @@ class RomanieoContainer extends Component {
             technicianReserveId: this.state.technicianReserveId,
             oId: this.state.oId,
             tecnico: this.state.tecnico,
+            prevAction: this.state.prevAction,
           });
 
           if (status === 200) {
@@ -613,7 +583,7 @@ class RomanieoContainer extends Component {
             this.setState({ visible: false, oId: null });
           }
         }}
-        onCancel={() => this.setState({ visible: false })}
+        onCancel={() => this.setState({ visible: false, prevAction: "" })}
       >
         <div
           style={{
@@ -689,6 +659,7 @@ class RomanieoContainer extends Component {
   };
 
   render() {
+    console.log(this.state);
     return (
       <div className="div-card-Rtecnico">
         <div className="linhaTexto-Rtecnico">
@@ -816,54 +787,60 @@ class RomanieoContainer extends Component {
                           return (
                             <div className="div-acao-romaneio">
                               <ArrowRightOutlined
-                              // onClick={async () => {
-                              //   if (text.os === "-") {
-                              //     await this.openModalOsByReturn(text);
-                              //   } else {
-                              //     const value = {
-                              //       osPartsId: text.osPartsId,
-                              //       add: {
-                              //         output: 1,
-                              //       },
-                              //       serialNumberArray: [text.serialNumber],
-                              //     };
+                                onClick={() => {
+                                  this.setState({ prevAction: "saida" });
+                                  this.openModalOsByReturn(text);
+                                }}
 
-                              //     const resposta = await baixaReservaOs(
-                              //       value
-                              //     );
+                                // onClick={async () => {
+                                //   if (text.os === "-") {
+                                //     await this.openModalOsByReturn(text);
+                                //   } else {
+                                //     const value = {
+                                //       osPartId: text.osPartId,
+                                //       add: {
+                                //         output: 1,
+                                //       },
+                                //       serialNumberArray: [text.serialNumber],
+                                //     };
 
-                              //     if (resposta.status === 200) {
-                              //       this.buscarOsParts();
-                              //     }
-                              //   }
-                              // }}
+                                //     const resposta = await baixaReservaOs(
+                                //       value
+                                //     );
+
+                                //     if (resposta.status === 200) {
+                                //       this.buscarOsParts();
+                                //     }
+                                //   }
+                                // }}
                               />
                               <RollbackOutlined
-                              // onClick={async () => {
-                              //   if (text.os === "-") {
-                              //     await this.openModalOsByReturn(text);
-                              //   } else {
-                              //     const value = {
-                              //       osPartsId: text.osPartsId,
-                              //       add: {
-                              //         return: 1,
-                              //       },
-                              //       serialNumberArray: [text.serialNumber],
-                              //     };
+                                onClick={() => {
+                                  this.setState({ prevAction: "retorno" });
+                                  this.openModalOsByReturn(text);
+                                }}
 
-                              //     const resposta = await baixaReservaOs(
-                              //       value
-                              //     );
+                                // onClick={async () => {
+                                //   if (text.os === "-") {
+                                //     await this.openModalOsByReturn(text);
+                                //   } else {
+                                //     const value = {
+                                //       osPartId: text.osPartId,
+                                //       add: {
+                                //         return: 1,
+                                //       },
+                                //       serialNumberArray: [text.serialNumber],
+                                //     };
 
-                              //     if (resposta.status === 200) {
-                              //       this.buscarOsParts();
-                              //     }
-                              //   }
-                              // }}
-                              />
-                              <PlusOutlined
-                                size="large"
-                                onClick={() => this.openModalOsByReturn(text)}
+                                //     const resposta = await baixaReservaOs(
+                                //       value
+                                //     );
+
+                                //     if (resposta.status === 200) {
+                                //       this.buscarOsParts();
+                                //     }
+                                //   }
+                                // }}
                               />
                             </div>
                           );
@@ -915,54 +892,94 @@ class RomanieoContainer extends Component {
                   dataSource={this.state.rows.filter((item) => item.amount > 0)}
                 />
 
-                <Table
-                  style={{ width: "100%" }}
-                  columns={[
-                    ...columns,
-                    {
-                      title: "Saída",
-                      // dataIndex: "saida",
-                      render: (text) => {
-                        if (text.serialNumber) {
-                          return <Checkbox defaultChecked />;
-                        } else {
-                          return <>{text.saida}</>;
-                        }
-                      },
-                    },
-                    {
-                      title: "Retorno",
-                      render: (text) => {
-                        if (text.serialNumber) {
-                          return <Checkbox />;
-                        } else {
-                          return <>{text.retorno}</>;
-                        }
-                      },
-                    },
-                    {
-                      title: "Perda",
-                      render: (text) => {
-                        if (text.serialNumber) {
-                          return <Checkbox />;
-                        } else {
-                          return <>{text.perda}</>;
-                        }
-                      },
-                    },
-                    {
-                      title: "Checkout",
-                      render: (text) => {
-                        return <Checkbox />;
-                      },
-                    },
-                  ]}
-                  dataSource={this.state.rowsSelecteds}
-                />
+                <table id="table-return-romaneo">
+                  <tr>
+                    <th>Os</th>
+                    <th>Qtd</th>
+                    <th>Produto</th>
+                    <th>Saída</th>
+                    <th>Retorno</th>
+                    <th>Perda</th>
+                    <th>Ação</th>
+                    <th>Checkout</th>
+                  </tr>
+                  {this.state.rowsSelecteds.map((row, idx) => (
+                    <tr className={row.checkout ? "row-disabled" : ""}>
+                      <td>{row.os}</td>
+                      <td>{row.amount}</td>
+                      <td>{row.produto}</td>
+                      <td>{row.saida}</td>
+                      <td>{row.retorno}</td>
+                      <td>{row.perda}</td>
+                      <td>
+                        <Button
+                          disabled={row.checkout}
+                          onClick={async () => {
+                            const { status } = await retornarBaixaReservaOs(
+                              row
+                            );
+                            if (status === 200) {
+                              await this.buscarOsParts();
+                            }
+                          }}
+                        >
+                          Retornar
+                        </Button>
+                      </td>
+                      <td>
+                        <Checkbox
+                          defaultChecked={false}
+                          checked={row.checkout}
+                          onChange={(e) => {
+                            this.setState((prevState) => {
+                              const { rowsSelecteds } = prevState;
+
+                              rowsSelecteds.splice(idx, 1, {
+                                ...rowsSelecteds[idx],
+                                checkout: e.target.checked,
+                              });
+
+                              return {
+                                rowsSelecteds,
+                              };
+                            });
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </table>
+
+                {this.state.rowsSelecteds.filter((row) => row.checkout)
+                  .length === this.state.rowsSelecteds.length && (
+                  <Button type="primary" style={{ width: "100%" }}>
+                    Enviar
+                  </Button>
+                )}
               </>
             )}
           </div>
         )}
+        {/* <table id="table-return-romaneo">
+          <tr>
+            <th>Os</th>
+            <th>Qtd</th>
+            <th>Produto</th>
+            <th>Saída</th>
+            <th>Retorno</th>
+            <th>Perda</th>
+          </tr>
+          {[1, 2, 3, 4, 5, 6].map((item) => (
+            <tr>
+              <td>Os</td>
+              <td>Qtd</td>
+              <td>Produto</td>
+              <td>Saída</td>
+              <td>Retorno</td>
+              <td>Perda</td>
+            </tr>
+          ))}
+        </table> */}
       </div>
     );
   }
