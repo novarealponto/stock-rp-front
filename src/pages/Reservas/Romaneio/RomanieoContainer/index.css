@@ -92,6 +92,7 @@
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  margin: 20px 0;
 }
 
 #table-return-romaneo {

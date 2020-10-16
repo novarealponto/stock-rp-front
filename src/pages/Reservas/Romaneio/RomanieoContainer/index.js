@@ -956,7 +956,10 @@ class RomanieoContainer extends Component {
 
                 {this.state.rowsSelecteds.filter(row => row.checkout).length ===
                   this.state.rowsSelecteds.length && (
-                  <Button type="primary" style={{ width: "100%" }}>
+                  <Button
+                    type="primary"
+                    style={{ width: "100%", margin: "20px 0" }}
+                  >
                     Enviar
                   </Button>
                 )}
