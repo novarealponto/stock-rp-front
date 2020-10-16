@@ -413,3 +413,28 @@ export const newConserto = async (values) => {
     });
   return response;
 };
+
+export const checkout = async (value) => {
+  const storeObject = store.getState();
+
+  const headers = {
+    token: storeObject.auth.token,
+    username: storeObject.auth.username,
+  };
+
+  try {
+    return await axios.put(
+      `${BACKEND_URL}/api/reserve/OS/finalizarCheckout`,
+      value,
+      {
+        headers: headers,
+      }
+    );
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    } else {
+      console.log("Error", error.message);
+    }
+  }
+};
