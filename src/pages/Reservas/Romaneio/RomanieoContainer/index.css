@@ -88,9 +88,15 @@
 #form-romaneio-search span {
   width: 30%;
 } */
+.div-pagination-table-romaneio {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
 
 #table-return-romaneo {
   width: 100%;
+  margin-top: 20px;
 }
 #table-return-romaneo tr {
   height: 50px;
