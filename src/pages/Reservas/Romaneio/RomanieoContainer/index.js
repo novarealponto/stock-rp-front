@@ -168,6 +168,7 @@ class RomanieoContainer extends Component {
     visibleModalSemNumeroSerie: false,
     data: null,
     prevAction: "",
+    current: 1,
   };
 
   componentDidMount = async () => {
@@ -905,54 +906,63 @@ class RomanieoContainer extends Component {
                     <th>Ação</th>
                     <th>Checkout</th>
                   </tr>
-                  {this.state.rowsSelecteds.map((row, idx) => (
-                    <tr className={row.checkout ? "row-disabled" : ""}>
-                      <td>{row.os}</td>
-                      <td>{row.amount}</td>
-                      <td>{row.produto}</td>
-                      <td>{row.saida}</td>
-                      <td>{row.retorno}</td>
-                      <td>{row.perda}</td>
-                      <td>
-                        <Button
-                          disabled={row.checkout}
-                          onClick={async () => {
-                            const { status } = await retornarBaixaReservaOs(
-                              row
-                            );
-                            if (status === 200) {
-                              await this.buscarOsParts();
-                            }
-                          }}
-                        >
-                          Retornar
-                        </Button>
-                      </td>
-                      <td>
-                        <Checkbox
-                          defaultChecked={false}
-                          checked={row.checkout}
-                          onChange={(e) => {
-                            this.setState((prevState) => {
-                              const { rowsSelecteds } = prevState;
+                  {this.state.rowsSelecteds
+                    .slice(
+                      10 * (this.state.current - 1),
+                      10 * this.state.current
+                    )
+                    .map((row, idx) => (
+                      <tr className={row.checkout ? "row-disabled" : ""}>
+                        <td>{row.os}</td>
+                        <td>{row.amount}</td>
+                        <td>{row.produto}</td>
+                        <td>{row.saida}</td>
+                        <td>{row.retorno}</td>
+                        <td>{row.perda}</td>
+                        <td>
+                          <Button
+                            disabled={row.checkout}
+                            onClick={async () => {
+                              const { status } = await retornarBaixaReservaOs(
+                                row
+                              );
+                              if (status === 200) {
+                                await this.buscarOsParts();
+                              }
+                            }}
+                          >
+                            Retornar
+                          </Button>
+                        </td>
+                        <td>
+                          <Checkbox
+                            defaultChecked={false}
+                            checked={row.checkout}
+                            onChange={(e) => {
+                              this.setState((prevState) => {
+                                const { rowsSelecteds } = prevState;
 
-                              rowsSelecteds.splice(idx, 1, {
-                                ...rowsSelecteds[idx],
-                                checkout: e.target.checked,
+                                rowsSelecteds.splice(idx, 1, {
+                                  ...rowsSelecteds[idx],
+                                  checkout: e.target.checked,
+                                });
+
+                                return {
+                                  rowsSelecteds,
+                                };
                               });
-
-                              return {
-                                rowsSelecteds,
-                              };
-                            });
-                          }}
-                        />
-                      </td>
-                    </tr>
-                  ))}
+                            }}
+                          />
+                        </td>
+                      </tr>
+                    ))}
                 </table>
                 <div className="div-pagination-table-romaneio">
-                  <Pagination defaultCurrent={1} total={50} />
+                  <Pagination
+                    onChange={(current) => this.setState({ current })}
+                    current={this.state.current}
+                    total={this.state.rowsSelecteds.length}
+                  />
                 </div>
 
                 {this.state.rowsSelecteds.filter((row) => row.checkout)
