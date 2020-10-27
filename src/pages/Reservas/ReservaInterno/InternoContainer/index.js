@@ -452,9 +452,7 @@ class Rinterno extends Component {
                 name="technician"
                 onFocus={this.onFocusTecnico}
                 filterOption={(input, option) =>
-                  option.props.children
-                    .toLowerCase()
-                    .indexOf(input.toLowerCase()) >= 0
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
                 {this.state.tecnicoArray.map((valor) => (
@@ -483,9 +481,7 @@ class Rinterno extends Component {
               value={this.state.nomeProduto}
               onChange={this.onChangeItem}
               filterOption={(input, option) =>
-                option.props.children
-                  .toLowerCase()
-                  .indexOf(input.toLowerCase()) >= 0
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
               {this.state.itemArray.map((value) => (
