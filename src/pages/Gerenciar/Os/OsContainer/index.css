@@ -194,6 +194,11 @@
   width: 100%;
   display: flex;
 }
+.div-text-modal-romaneio {
+  width: 100%;
+  display: flex;
+  margin: 10px 0;
+}
 .div-produtos-modal {
   width: 60%;
   font-size: 1.3em;

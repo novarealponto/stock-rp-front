@@ -50,6 +50,9 @@
   justify-content: center !important;
   align-items: center !important;
 }
+.tr-click {
+  cursor: pointer;
+}
 .div-acoes-modal-romaneio {
   width: 40%;
   display: flex;
