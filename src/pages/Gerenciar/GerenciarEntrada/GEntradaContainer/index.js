@@ -451,7 +451,6 @@ class GerenciarEntrada extends Component {
                 Atualizar
               </Button>
             ) : null}
-            <this.modalConfirm />
           </div>
         ) : (
           <div className="div-button-entrada1">
@@ -466,9 +465,9 @@ class GerenciarEntrada extends Component {
                 Atualizar
               </Button>
             ) : null}
-            <this.modalConfirm />
           </div>
         )}
+        <this.modalConfirm />
       </div>
     );
   }
