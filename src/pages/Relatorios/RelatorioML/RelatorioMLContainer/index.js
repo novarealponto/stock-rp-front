@@ -1,28 +1,28 @@
-import React, { Component } from "react";
-import "./index.css";
-import { Spin, Button, Input, DatePicker, Dropdown, Menu } from "antd";
-import { getRelatorioML } from "../../../../services/relatorioML";
+import React, { Component } from 'react';
+import './index.css';
+import { Spin, Button, Input, DatePicker, Dropdown, Menu } from 'antd';
+import { getRelatorioML } from '../../../../services/relatorioML';
 
 class GerenciarEntrada extends Component {
   state = {
-    codigo: "",
-    produto: "",
-    name: "",
-    data: "",
+    codigo: '',
+    produto: '',
+    name: '',
+    data: '',
     avancado: false,
     lineSelected: {
-      rows: [],
+      rows: []
     },
     mais: {},
     relatorioArray: {
-      rows: [],
+      rows: []
     },
     page: 1,
     total: 10,
     count: 0,
     show: 0,
     loading: false,
-    valueDate: { start: "2019/01/01" },
+    valueDate: { start: '2019/01/01' }
   };
 
   componentDidMount = async () => {
@@ -31,13 +31,13 @@ class GerenciarEntrada extends Component {
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado,
+      avancado: !this.state.avancado
     });
   };
 
   getRelatorio = async () => {
     this.setState({
-      loading: true,
+      loading: true
     });
 
     const query = {
@@ -46,69 +46,69 @@ class GerenciarEntrada extends Component {
           specific: {
             createdAt: this.state.valueDate,
             name: this.state.name,
-            trackingCode: this.state.codigo,
-          },
+            trackingCode: this.state.codigo
+          }
         },
         product: {
           specific: {
-            name: this.state.produto,
-          },
-        },
+            name: this.state.produto
+          }
+        }
       },
       page: this.state.page,
-      total: this.state.total,
+      total: this.state.total
     };
 
-    await getRelatorioML(query).then((resposta) =>
+    await getRelatorioML(query).then(resposta =>
       this.setState({
         relatorioArray: resposta.data,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show,
+        show: resposta.data.show
       })
     );
 
     this.setState({
-      loading: false,
+      loading: false
     });
   };
 
-  mais = async (line) => {
+  mais = async line => {
     await this.setState({
       mais: {
-        [line.id]: !this.state.mais[line.id],
+        [line.id]: !this.state.mais[line.id]
       },
       lineSelected: {
-        rows: [line],
-      },
+        rows: [line]
+      }
     });
   };
 
-  onChange = async (e) => {
+  onChange = async e => {
     await this.setState({
       page: 1,
 
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
 
     await this.getRelatorio();
   };
 
-  searchDate = async (e) => {
+  searchDate = async e => {
     if (!e[0] || !e[1]) return;
     await this.setState({
       page: 1,
 
-      valueDate: { start: e[0]._d, end: e[1]._d },
+      valueDate: { start: e[0]._d, end: e[1]._d }
     });
 
     await this.getRelatorio();
   };
 
-  changePages = (pages) => {
+  changePages = pages => {
     this.setState(
       {
-        page: pages,
+        page: pages
       },
       () => {
         this.getRelatorio();
@@ -118,7 +118,7 @@ class GerenciarEntrada extends Component {
 
   test = () => {
     if (this.state.relatorioArray.rows.length !== 0) {
-      return this.state.relatorioArray.rows.map((line) => (
+      return this.state.relatorioArray.rows.map(line => (
         <div className="div-100-Gentrada">
           <div className="div-lines-RML">
             <div className="cel-mais-cabecalho-Rtecnico">
@@ -136,10 +136,7 @@ class GerenciarEntrada extends Component {
                 <div className="div-normal-mais">
                   <div className="div-produtos-mais-ML ">Produtos</div>
                   <div className="div-serialnumbers-mais-ML" />
-                  <div
-                    className="div-quant-mais-ML"
-                    style={{ "align-items": "center" }}
-                  >
+                  <div className="div-quant-mais-ML" style={{ 'align-items': 'center' }}>
                     Quantidade
                   </div>
                 </div>
@@ -149,24 +146,22 @@ class GerenciarEntrada extends Component {
                   <Spin spinning={this.state.loading} />
                 </div>
               ) : (
-                this.state.lineSelected.rows.map((line) => (
+                this.state.lineSelected.rows.map(line => (
                   <div className="div-branco-mais">
                     <div className="div-produtos-mais-ML ">
-                      {line.products.map((valor) => (
+                      {line.products.map(valor => (
                         <div className="div-peca">{valor.name}</div>
                       ))}
                     </div>
                     <div className="div-serialnumbers-mais-ML">
-                      {line.products.map((valor) => {
+                      {line.products.map(valor => {
                         return valor.serialNumbers ? (
                           <div className="div-serialnumbers">
                             <Dropdown
                               overlay={
                                 <Menu>
-                                  {valor.serialNumbers.map((serialnumber) => {
-                                    return (
-                                      <Menu.Item>{serialnumber}</Menu.Item>
-                                    );
+                                  {valor.serialNumbers.map(serialnumber => {
+                                    return <Menu.Item>{serialnumber}</Menu.Item>;
                                   })}
                                 </Menu>
                               }
@@ -182,11 +177,8 @@ class GerenciarEntrada extends Component {
                     </div>
 
                     <div className="div-quant-mais-ML">
-                      {line.products.map((valor) => (
-                        <div
-                          className="div-peca"
-                          style={{ "justify-content": "center" }}
-                        >
+                      {line.products.map(valor => (
+                        <div className="div-peca" style={{ 'justify-content': 'center' }}>
                           {valor.amount}
                         </div>
                       ))}
@@ -200,11 +192,7 @@ class GerenciarEntrada extends Component {
         </div>
       ));
     } else {
-      return (
-        <div className="div-naotemnada">
-          Não há nenhuma reserva finalizada até o momento
-        </div>
-      );
+      return <div className="div-naotemnada">Não há nenhuma reserva finalizada até o momento</div>;
     }
   };
 
@@ -268,8 +256,7 @@ class GerenciarEntrada extends Component {
           {this.state.page + 2}
         </Button>
       ) : null}
-      {this.state.page + 2 < this.state.count / this.state.total &&
-      this.state.page < 3 ? (
+      {this.state.page + 2 < this.state.count / this.state.total && this.state.page < 3 ? (
         <Button
           className="button"
           type="primary"
@@ -278,8 +265,7 @@ class GerenciarEntrada extends Component {
           {this.state.page + 3}
         </Button>
       ) : null}
-      {this.state.page + 3 < this.state.count / this.state.total &&
-      this.state.page < 2 ? (
+      {this.state.page + 3 < this.state.count / this.state.total && this.state.page < 2 ? (
         <Button
           className="button"
           type="primary"
@@ -310,7 +296,7 @@ class GerenciarEntrada extends Component {
                 <div className="div-text-Rtecnico">Código:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="codigo"
                   value={this.state.codigo}
                   placeholder="Digite o código"
@@ -323,7 +309,7 @@ class GerenciarEntrada extends Component {
                 <div className="div-text-Os">Produto:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="produto"
                   value={this.state.produto}
                   placeholder="Digite o nome do produto"
@@ -349,7 +335,7 @@ class GerenciarEntrada extends Component {
                 <div className="div-text-Os">Name:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="name"
                   value={this.state.name}
                   placeholder="Digite o nome do produto"
