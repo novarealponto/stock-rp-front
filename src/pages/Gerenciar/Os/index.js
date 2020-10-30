@@ -8,7 +8,7 @@ class OsDashRoute extends Component{
   render() {
     return(
         <Switch>
-          <Route exact path='/logged/Os/dash' component={OsDash}/>  
+          <Route exact path='/logged/Os/dash' component={OsDash}/>
         </Switch>
     )
   }

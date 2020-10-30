@@ -115,7 +115,7 @@ class GerenciarEntrada extends Component {
       companyId: entrada.companyId,
       productId: entrada.productId,
       serial: entrada.serial,
-      createdAt: entrada.createdAtNotFormatted
+      createdAt: entrada.createdAtNotFormatted,
     };
 
     await this.props.redirectValueEntrada(value);
@@ -267,7 +267,6 @@ class GerenciarEntrada extends Component {
                     className="icon-lixo"
                     onClick={() => this.removerLinha(line.id)}
                   />
-                  <this.modalRemover />
                 </Tooltip>
               </div>
             ) : null}
@@ -395,6 +394,7 @@ class GerenciarEntrada extends Component {
         )}
 
         <this.Pages />
+        <this.modalRemover />
 
         {this.renderRedirect()}
       </div>

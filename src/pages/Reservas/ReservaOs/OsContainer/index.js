@@ -666,7 +666,7 @@ class Rexterno extends Component {
                 name="technician"
                 onFocus={this.onFocusTecnico}
                 filterOption={(input, option) =>
-                  option.props.children
+                  option.children
                     .toLowerCase()
                     .indexOf(input.toLowerCase()) >= 0
                 }

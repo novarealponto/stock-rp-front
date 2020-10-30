@@ -376,7 +376,9 @@ class OsDash extends Component {
     });
   };
 
-  modalRemover = () => (
+  ModalRemover = () => {
+    console.log('object');
+    return(
     <Modal
       title="Confirmação"
       visible={this.state.modalRemove}
@@ -389,10 +391,10 @@ class OsDash extends Component {
         Todos as reservas voltarão para o estoque, deseja continuar?
       </div>
     </Modal>
-  );
+  )};
 
   test = () => {
-    if (this.state.OsArray.rows.length !== 0) {
+    if (this.state.OsArray && this.state.OsArray.rows && this.state.OsArray.rows.length !== 0) {
       return this.state.OsArray.rows.map(line => (
         <div className="div-100-Gentrada">
           <div className="div-lines-GOs">
@@ -426,7 +428,6 @@ class OsDash extends Component {
                   <StopOutlined />
                 </Button>
               )}
-              <this.modalRemover />
             </div>
           </div>
           {this.state.mais[line.id] ? (
@@ -437,7 +438,9 @@ class OsDash extends Component {
                   <div className="div-quant-mais">Quantidade</div>
                   <div className="div-button-mais-GOs">
                     <Tooltip placement="topLeft" title="Adicionar produto">
-                      {this.props.auth.updateRos && !line.notDelet ? (
+                      {this.props.auth.updateRos
+                      // && !line.notDelet
+                      ? (
                         <div
                           className="button-mais-div"
                           onClick={() => this.redirectSearchOs()}
@@ -686,6 +689,7 @@ class OsDash extends Component {
           this.test()
         )}
         <this.Pages />
+        <this.ModalRemover />
       </div>
     );
   }

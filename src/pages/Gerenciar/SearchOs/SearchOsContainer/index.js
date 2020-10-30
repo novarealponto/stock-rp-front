@@ -52,8 +52,9 @@ class SearchOsDash extends Component {
     tecnicoId: this.props.osUpdateValue.technicianId,
     quant: 1,
     quantObj: {},
-    carrinho: this.props.osUpdateValue.products,
+    carrinho: this.props.osUpdateValue.products.filter(item => (item.missOut === "0" && item.output === "0" && item.return === "0" )),
     estoque: "ESTOQUE",
+    categoria: "",
     disp: 1,
     fieldFalha: {
       Os: false,
@@ -190,6 +191,8 @@ class SearchOsDash extends Component {
     await this.getAllTecnico();
     await this.getAllStatusExpedition();
 
+    console.log(this.props.osUpdateValue.products);
+
     // eslint-disable-next-line array-callback-return
     await this.state.carrinho.map((item) => {
       this.setState({
@@ -242,11 +245,13 @@ class SearchOsDash extends Component {
         itemArray: resposta.data,
       })
     );
+    this.setState({categoria: ""})
   };
 
   onChangeItem = async (value, props) => {
     await this.setState({
       nomeProduto: value,
+      categoria: props.props.category,
       productBaseId: props.props.id,
       serial: props.props.serial,
       disp: parseInt(props.props.available, 10),
@@ -467,7 +472,7 @@ class SearchOsDash extends Component {
   onChangeSelect = (value, props) => {
     this.setState({
       tecnico: value,
-      tecnicoId: props.props.props.id,
+      tecnicoId: props.props.id,
     });
   };
 
@@ -576,7 +581,8 @@ class SearchOsDash extends Component {
         this.state.serial &&
         this.state.numeroSerieTest
           .split(/\n/)
-          .filter((item) => (item ? item : null)).length !== this.state.quant
+          .filter((item) => (item ? item : null)).length !== this.state.quant &&
+          this.state.categoria !== "peca"
       ) {
         this.errorSelecionado(
           "Quantidade de numero de serie não condiz com a quantidade adicionada"
@@ -779,7 +785,7 @@ class SearchOsDash extends Component {
                   name="technician"
                   onFocus={this.onFocusTecnico}
                   filterOption={(input, option) =>
-                    option.props.children
+                    option.children
                       .toLowerCase()
                       .indexOf(input.toLowerCase()) >= 0
                   }
@@ -804,46 +810,6 @@ class SearchOsDash extends Component {
           <h1 className="h1-Os">Reservar peças</h1>
         </div>
 
-        <div className="div-linha-Os">
-          <div className="div-nome-Os">
-            <div className="div-textNome-Os">Nome do produto:</div>
-            <Select
-              showSearch
-              onSearch={
-                this.state.status === "CONSERTO"
-                  ? (name) => this.getAllProducts(name)
-                  : (name) => this.getAllItens(name)
-              }
-              style={{ width: "100%" }}
-              placeholder="Selecione o produto"
-              optionFilterProp="children"
-              value={this.state.nomeProduto}
-              onChange={this.onChangeItem}
-              filterOption={(input, option) =>
-                option.props.children
-                  .toLowerCase()
-                  .indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              {this.state.itemArray.map((value) => (
-                <Option props={value} value={value.name}>
-                  {value.name}
-                </Option>
-              ))}
-            </Select>
-          </div>
-
-          <div className="div-quant-Os">
-            <div className="div-text-Os">Quant:</div>
-            <InputNumber
-              min={1}
-              max={this.state.disp}
-              defaultValue={this.state.quant}
-              value={this.state.quant}
-              onChange={this.onChangeQuant}
-            />
-          </div>
-        </div>
         <div className="div-linha-Os">
           <div className="div-numeroSerie-Os">
             <div className="div-text-Os">Estoque:</div>
@@ -882,6 +848,47 @@ class SearchOsDash extends Component {
           </div>
         </div>
 
+        <div className="div-linha-Os">
+          <div className="div-nome-Os">
+            <div className="div-textNome-Os">Nome do produto:</div>
+            <Select
+              showSearch
+              onSearch={
+                this.state.status === "CONSERTO"
+                  ? (name) => this.getAllProducts(name)
+                  : (name) => this.getAllItens(name)
+              }
+              style={{ width: "100%" }}
+              placeholder="Selecione o produto"
+              optionFilterProp="children"
+              value={this.state.nomeProduto}
+              onChange={this.onChangeItem}
+              filterOption={(input, option) =>
+                option.children
+                  .toLowerCase()
+                  .indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              {this.state.itemArray.map((value) => (
+                <Option props={value} value={value.name}>
+                  {value.name}
+                </Option>
+              ))}
+            </Select>
+          </div>
+
+          <div className="div-quant-Os">
+            <div className="div-text-Os">Quant:</div>
+            <InputNumber
+              min={1}
+              max={this.state.disp}
+              defaultValue={this.state.quant}
+              value={this.state.quant}
+              onChange={this.onChangeQuant}
+            />
+          </div>
+        </div>
+
         {this.state.status === "CONSERTO" ? (
           <div className="linha1-produtos">
             <div className="div-serialCon-Os">
@@ -912,7 +919,8 @@ class SearchOsDash extends Component {
           </div>
         ) : null}
 
-        {this.state.serial ? (
+        {this.state.serial &&
+        this.state.categoria !== "peca" ? (
           <div className="div-linha-Os">
             <div className="div-serial-AddKit">
               <div className="div-textSerial-AddKit">Número de série:</div>

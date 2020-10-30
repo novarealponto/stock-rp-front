@@ -187,7 +187,7 @@ class AddKit extends Component {
     this.setState({
       item: value,
       productBaseId: props.props.id,
-      disp: parseInt(props.props.props.available, 10),
+      disp: parseInt(props.props.available, 10),
     });
   };
 
@@ -303,7 +303,7 @@ class AddKit extends Component {
               onChange={this.onChangeItem}
               onSearch={(name) => this.getAllItens(name)}
               filterOption={(input, option) =>
-                option.props.children
+                option.children
                   .toLowerCase()
                   .indexOf(input.toLowerCase()) >= 0
               }
