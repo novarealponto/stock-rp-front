@@ -322,7 +322,7 @@ export const createPDF = async (technician, data) => {
 
   moment.locale("pt");
 
-  technician.map((tecnico, i) => {
+  technician.forEach((tecnico, i) => {
     header(doc, tecnico, data);
 
     doc.setFontSize(10).text(148.5, 205, `Página 1`, "center");
@@ -331,12 +331,12 @@ export const createPDF = async (technician, data) => {
     let page = false;
 
     tecnico.rows &&
-      tecnico.rows.map((item) => {
+      tecnico.rows.forEach((item) => {
         if (R.has("products", item)) {
-          item.products.map((product) => {
+          item.products.forEach((product) => {
             let equips = "";
             if (product.serial) {
-              product.serialNumbers.map((equip, idx) => {
+              product.serialNumbers.forEach((equip, idx) => {
                 equips = `${equips}${idx > 0 ? ", " : ""}${equip.serialNumber}`;
               });
             }
@@ -425,8 +425,6 @@ export const createPDF = async (technician, data) => {
             });
 
             index = index + rows;
-            // eslint-disable-next-line array-callback-return
-            return;
           });
         } else {
           if (index === 0) {
@@ -513,13 +511,9 @@ export const createPDF = async (technician, data) => {
 
           index = index + rows;
         }
-        // eslint-disable-next-line array-callback-return
-        return;
       });
 
     i < technician.length - 1 && doc.addPage();
-    // eslint-disable-next-line array-callback-return
-    return;
   });
 
   doc.autoPrint();

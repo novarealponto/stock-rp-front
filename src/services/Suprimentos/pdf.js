@@ -124,6 +124,8 @@ function header(type, doc, page, total) {
     .setFontSize(10)
     .setFontType("italic")
     .text(146, 200, `Página ${page} de ${total}`, "center");
+
+  return
 }
 
 export const CreatePDFSuprimento = async (type, rows) => {
@@ -153,6 +155,8 @@ export const CreatePDFSuprimento = async (type, rows) => {
       total = total + 1;
     }
     totalRows = totalRows + height;
+    // eslint-disable-next-line array-callback-return
+    return;
   });
 
   let page = 1;
@@ -245,8 +249,8 @@ export const CreatePDFSuprimento = async (type, rows) => {
 
     index = index + height;
     // eslint-disable-next-line array-callback-return
-    return;
+    return ;
   });
 
-  doc.save(`${type}_${moment().format("L")}.pdf`);
+  return doc.save(`${type}_${moment().format("L")}.pdf`);
 };

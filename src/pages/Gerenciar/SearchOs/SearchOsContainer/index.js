@@ -191,8 +191,6 @@ class SearchOsDash extends Component {
     await this.getAllTecnico();
     await this.getAllStatusExpedition();
 
-    console.log(this.props.osUpdateValue.products);
-
     // eslint-disable-next-line array-callback-return
     await this.state.carrinho.map((item) => {
       this.setState({
@@ -984,6 +982,8 @@ class SearchOsDash extends Component {
                   />
                   UN
                 </label>
+                {!valor.technicianReserve && (
+
                 <Button
                   type="primary"
                   className="button-remove-Os"
@@ -991,6 +991,7 @@ class SearchOsDash extends Component {
                 >
                   Remover
                 </Button>
+                )}
               </div>
             ))}
           </div>
