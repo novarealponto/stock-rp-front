@@ -649,7 +649,6 @@ class RomanieoContainer extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div className="div-card-Rtecnico">
         <div className="linhaTexto-Rtecnico">

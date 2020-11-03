@@ -263,8 +263,6 @@ class ExternoContainer extends Component {
           this.setState(prevState => {
             const { products } = prevState;
             const { amount, serialNumbers } = products[index];
-            console.log(serialNumbers)
-            console.log(item)
 
             products.splice(index, 1, {
               ...products[index],
@@ -525,7 +523,6 @@ class ExternoContainer extends Component {
   };
 
   render() {
-    console.log(this.state)
     Howler.volume(1);
     return (
       <div className="div-card-emprestimo-report">

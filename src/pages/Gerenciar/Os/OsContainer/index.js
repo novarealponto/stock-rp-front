@@ -377,7 +377,6 @@ class OsDash extends Component {
   };
 
   ModalRemover = () => {
-    console.log('object');
     return(
     <Modal
       title="Confirmação"

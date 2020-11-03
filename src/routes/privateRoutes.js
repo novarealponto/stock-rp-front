@@ -27,8 +27,6 @@ class PrivateRoute extends Component {
       username: this.props.auth.username,
     };
 
-    console.log(value);
-
     let response = {};
 
     response = await auth(value);
