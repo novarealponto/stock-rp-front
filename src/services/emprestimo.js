@@ -252,7 +252,7 @@ export const CreatePDFEmprestimo = async (type, rows) => {
   let total = 1;
 
   doc.setFontSize(10);
-  rows.map((row) => {
+  rows.forEach((row) => {
     if (type === "Em Cliente" || type === "Reservados") {
       const height = Math.max.apply(null, [
         doc.splitTextToSize(row.name, 80).length,
@@ -286,7 +286,7 @@ export const CreatePDFEmprestimo = async (type, rows) => {
 
   let index = 0;
 
-  rows.map((row) => {
+  rows.forEach((row) => {
     if (type === "Em Cliente" || type === "Reservados") {
       const height = Math.max.apply(null, [
         doc.splitTextToSize(row.name, 80).length,
@@ -401,8 +401,6 @@ export const CreatePDFEmprestimo = async (type, rows) => {
       });
 
       index = index + height;
-      // eslint-disable-next-line array-callback-return
-      return;
     }
   });
 

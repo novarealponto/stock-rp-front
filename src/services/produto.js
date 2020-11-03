@@ -614,6 +614,9 @@ export const CreatePDF = async (products) => {
     });
 
     index = index + rows;
+
+    // eslint-disable-next-line array-callback-return
+    return;
   });
 
   moment.locale("pt");

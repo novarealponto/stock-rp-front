@@ -34,59 +34,58 @@ class GerenciarEntrada extends Component {
 
     await this.getRelatorio();
 
-    await this.getAllOs();
   };
 
-  getAllOs = async () => {
-    // this.setState({
-    //   loading: true
-    // });
+  // getAllOs = async () => {
+  //   // this.setState({
+  //   //   loading: true
+  //   // });
 
-    const query = {
-      filters: {
-        os: {
-          specific: {
-            deletedAt: { start: "2019/01/01" },
-            // os: this.state.os,
-            // razaoSocial: this.state.rs,
-            // date: this.state.valueDate
-          },
-        },
-        technician: {
-          specific: {
-            name: this.state.tecnico,
-          },
-        },
-        osParts: {
-          specific: {
-            missOut: "1",
-          },
-        },
-      },
-      order: {
-        field: "deletedAt",
-        acendent: true,
-      },
-      page: 1,
-      total: 10,
-      required: false,
-      paranoid: false,
-    };
+  //   const query = {
+  //     filters: {
+  //       os: {
+  //         specific: {
+  //           deletedAt: { start: "2019/01/01" },
+  //           // os: this.state.os,
+  //           // razaoSocial: this.state.rs,
+  //           // date: this.state.valueDate
+  //         },
+  //       },
+  //       technician: {
+  //         specific: {
+  //           name: this.state.tecnico,
+  //         },
+  //       },
+  //       osParts: {
+  //         specific: {
+  //           missOut: "1",
+  //         },
+  //       },
+  //     },
+  //     order: {
+  //       field: "deletedAt",
+  //       acendent: true,
+  //     },
+  //     page: 1,
+  //     total: 10,
+  //     required: false,
+  //     paranoid: false,
+  //   };
 
-    // await getTodasOs(query)
-    // .then
-    // this.setState({
-    //   OsArray: resposta.data,
-    //   page: resposta.data.page,
-    //   count: resposta.data.count,
-    //   show: resposta.data.show
-    // })
-    // ();
+  //   // await getTodasOs(query)
+  //   // .then
+  //   // this.setState({
+  //   //   OsArray: resposta.data,
+  //   //   page: resposta.data.page,
+  //   //   count: resposta.data.count,
+  //   //   show: resposta.data.show
+  //   // })
+  //   // ();
 
-    // this.setState({
-    //   loading: false
-    // });
-  };
+  //   // this.setState({
+  //   //   loading: false
+  //   // });
+  // };
 
   avancado = () => {
     this.setState({

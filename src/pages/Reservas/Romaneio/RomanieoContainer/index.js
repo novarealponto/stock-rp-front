@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './index.css';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
-import moment from 'moment';
 import {
   Select,
   Form,
@@ -12,7 +11,6 @@ import {
   Row,
   Col,
   Table,
-  Empty,
   message,
   Modal,
   InputNumber,
@@ -28,7 +26,9 @@ import {
   AlertOutlined
 } from '@ant-design/icons';
 
-import { Howl, Howler } from 'howler';
+import { Howl,
+  // Howler
+ } from 'howler';
 import ha from './sound.mp3';
 
 import { getTecnico } from '../../../../services/tecnico';
@@ -37,7 +37,6 @@ import {
   getAllOsPartsByParamsForReturn,
   baixaReservaOs,
   retornarBaixaReservaOs,
-  getTodasOs,
   getAllOsParts,
   associarEquipParaOsPart,
   checkout
@@ -71,7 +70,7 @@ const SearchForm = props => {
             rules={[{ required: true, message: 'Por favor selecione um serviço' }]}
             style={{ width: '100%' }}
           >
-            <Select placeholder="Selecione um serviço" disabled={props.disabled}>
+            <Select placeholder="Selecione um serviço">
               <Option value="saida">Saída</Option>
               <Option value="retorno">Retorno</Option>
             </Select>
@@ -86,7 +85,6 @@ const SearchForm = props => {
           >
             <Select
               placeholder="Selecione um técnico"
-              disabled={props.disabled}
               onChange={tecnico => form.setFieldsValue({ tecnico })}
             >
               {props.tecnicos.map(valor => (
@@ -123,7 +121,7 @@ const SearchForm = props => {
                     //   current < moment().startOf("day")
                     // }
                     placeholder="Selecione uma data"
-                    disabled={props.disabled || getFieldValue('tecnico') === 'LABORATORIO'}
+                    disabled={getFieldValue('tecnico') === 'LABORATORIO'}
                   />
                 </Form.Item>
               );
@@ -195,7 +193,7 @@ class RomanieoContainer extends Component {
 
   newReservaTecnico = async () => {
     const { tecnico: technician, rowsSelecteds: rows, data } = this.state;
-    const { status } = await newReservaTecnico({ technician, rows, data });
+    const { status } = await newReservaTecnico({ technician, rows, data: data ? data : null });
 
     if (status === 200) {
       this.setState({
@@ -331,6 +329,8 @@ class RomanieoContainer extends Component {
         R.map(item => {
           if (R.findIndex(R.propEq('serialNumber', serialNumber))(item.serialNumbers) !== -1)
             reserved = true;
+          // eslint-disable-next-line array-callback-return
+          return;
         }, this.state.rowsSelecteds);
 
         if (reserved) {
@@ -451,7 +451,7 @@ class RomanieoContainer extends Component {
 
         osPartsArrayReturn.splice(idx, 1, {
           ...osPartsArrayReturn[idx],
-          amount: osPartsArrayReturn[idx].amount - item.valor,
+          amount: osPartsArrayReturn[idx].amount,
           [key]: osPartsArrayReturn[idx][key] + item.valor,
           valor: 0
         });
@@ -887,7 +887,9 @@ class RomanieoContainer extends Component {
                       <tr className={row.checkout ? 'row-disabled' : 'tr-click'}>
                         <td>{row.os}</td>
                         <td>{row.amount}</td>
-                        <td>{row.produto}</td>
+                        <Tooltip placement="top" title={row.serialNumber}>
+                          <td>{row.produto}</td>
+                        </Tooltip>
                         <td>{row.saida}</td>
                         <td>{row.retorno}</td>
                         <td>{row.perda}</td>
@@ -912,8 +914,8 @@ class RomanieoContainer extends Component {
                               this.setState(prevState => {
                                 const { rowsSelecteds } = prevState;
 
-                                rowsSelecteds.splice(idx, 1, {
-                                  ...rowsSelecteds[idx],
+                                rowsSelecteds.splice(10 * (this.state.current - 1) + idx, 1, {
+                                  ...rowsSelecteds[10 * (this.state.current - 1) + idx],
                                   checkout: e.target.checked
                                 });
 

@@ -32,7 +32,6 @@ class ExternoContainer extends Component {
       setVisible: false,
       messageError: false,
       messageSuccess: false,
-      current: 0,
       auth: true,
       user: this.props.auth.username,
       pass: '',
@@ -197,8 +196,11 @@ class ExternoContainer extends Component {
         },
         os: {
           specific: {
-            date: { start: moment(), end: moment() }
-          }
+            date: this.props.auth.technicianId !== "0c451d60-f837-4a9e-b8a6-cab41a788133" ? {
+              start: moment(),
+              end: moment(),
+            } : undefined,
+          },
         },
         technicianReserve: {
           specific: {
@@ -232,22 +234,24 @@ class ExternoContainer extends Component {
         },
         technicianReserve: {
           specific: {
-            data: {
+            data: this.props.auth.technicianId !== "0c451d60-f837-4a9e-b8a6-cab41a788133" ? {
               start: moment(),
-              end: moment()
-            }
-          }
-        }
+              end: moment(),
+            } : undefined,
+          },
+        },
       },
       osPartsId: null
     };
     const { status, data } = await getAllReservaTecnicoReturn(query);
 
     if (status === 200) {
-      data.map(item => {
-        const index = R.findIndex(R.propEq('produto', item.produto))(this.state.products);
-        const osPart = R.find(R.propEq('name', item.produto))(
-          R.find(R.propEq('id', this.state.oId))(this.state.os).products
+      data.forEach((item) => {
+        const index = R.findIndex(R.propEq("produto", item.produto))(
+          this.state.products
+        );
+        const osPart = R.find(R.propEq("name", item.produto))(
+          R.find(R.propEq("id", this.state.oId))(this.state.os).products
         );
         if (index === -1) {
           if (!osPart) return;
@@ -259,6 +263,8 @@ class ExternoContainer extends Component {
           this.setState(prevState => {
             const { products } = prevState;
             const { amount, serialNumbers } = products[index];
+            console.log(serialNumbers)
+            console.log(item)
 
             products.splice(index, 1, {
               ...products[index],
@@ -519,6 +525,7 @@ class ExternoContainer extends Component {
   };
 
   render() {
+    console.log(this.state)
     Howler.volume(1);
     return (
       <div className="div-card-emprestimo-report">

@@ -984,6 +984,8 @@ class SearchOsDash extends Component {
                   />
                   UN
                 </label>
+                {!valor.technicianReserve && (
+
                 <Button
                   type="primary"
                   className="button-remove-Os"
@@ -991,6 +993,7 @@ class SearchOsDash extends Component {
                 >
                   Remover
                 </Button>
+                )}
               </div>
             ))}
           </div>
