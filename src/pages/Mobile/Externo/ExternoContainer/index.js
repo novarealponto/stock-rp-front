@@ -1,29 +1,24 @@
-import React, { Component } from "react";
-import "./index.css";
-import { connect } from "react-redux";
-import moment from "moment";
-import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
-import { bindActionCreators } from "redux";
-import * as R from "ramda";
-import uuidValidate from "uuid-validate";
-import { updateSenha } from "../../../../services/password";
+import React, { Component } from 'react';
+import './index.css';
+import { connect } from 'react-redux';
+import moment from 'moment';
+import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
+import { bindActionCreators } from 'redux';
+import * as R from 'ramda';
+import uuidValidate from 'uuid-validate';
+import { updateSenha } from '../../../../services/password';
 
-import { auth } from "../../../../services/auth";
-import { Logout } from "../../../Login/LoginRedux/action";
+import { auth } from '../../../../services/auth';
+import { Logout } from '../../../Login/LoginRedux/action';
 
-import { getAllReservaTecnicoReturn } from "../../../../services/reservaTecnico";
-import { getAllEquipsService } from "../../../../services/equip";
-import {
-  getTodasOs,
-  associarEquipsParaOsPart,
-} from "../../../../services/reservaOs";
+import { getAllReservaTecnicoReturn } from '../../../../services/reservaTecnico';
+import { getAllEquipsService } from '../../../../services/equip';
+import { getTodasOs, associarEquipsParaOsPart } from '../../../../services/reservaOs';
 
-import { Button, Drawer, Select, InputNumber, message, Input } from "antd";
+import { Button, Drawer, Select, InputNumber, message, Input } from 'antd';
 
-
-import { Howl, Howler } from "howler";
-import ha from "./sound.mp3";
-
+import { Howl, Howler } from 'howler';
+import ha from './sound.mp3';
 
 const { Option } = Select;
 
@@ -40,17 +35,17 @@ class ExternoContainer extends Component {
       current: 0,
       auth: true,
       user: this.props.auth.username,
-      pass: "",
-      newPass: "",
-      confPass: "",
+      pass: '',
+      newPass: '',
+      confPass: '',
       os: [],
       index: -1,
-      oId: null,
+      oId: null
     };
   }
 
-  hasAuth = R.has("auth");
-  hasToken = R.has("token");
+  hasAuth = R.has('auth');
+  hasToken = R.has('token');
 
   forceLogout = async () => {
     if (!this.hasAuth(this.props)) {
@@ -63,19 +58,19 @@ class ExternoContainer extends Component {
   };
 
   error = () => {
-    message.error("Os dados do usuário não foram atualizados");
+    message.error('Os dados do usuário não foram atualizados');
   };
 
   success = () => {
-    message.success("Os dados do usuário foram atualizados");
+    message.success('Os dados do usuário foram atualizados');
   };
 
   messageErrorPass = () => {
-    message.error("As duas senhas não coincidem");
+    message.error('As duas senhas não coincidem');
   };
 
   messagePassEqual = () => {
-    message.error("A senha atual não pode ser a mesma que a antiga");
+    message.error('A senha atual não pode ser a mesma que a antiga');
   };
 
   logout = async () => {
@@ -91,37 +86,37 @@ class ExternoContainer extends Component {
       const value = {
         username: this.state.user,
         oldPassword: this.state.pass,
-        newPassword: this.state.newPass,
+        newPassword: this.state.newPass
       };
 
       this.setState({
-        loading: true,
+        loading: true
       });
 
       const resposta = await updateSenha(value);
 
       if (resposta.status === 422) {
         this.setState({
-          messageError: true,
+          messageError: true
         });
         await this.error();
         this.setState({
           loading: false,
-          messageError: false,
+          messageError: false
         });
       }
       if (resposta.status === 200) {
         this.setState({
-          newPass: "",
-          pass: "",
-          confPass: "",
+          newPass: '',
+          pass: '',
+          confPass: '',
           messageSuccess: true,
-          editar: false,
+          editar: false
         });
         await this.success();
         this.setState({
           loading: false,
-          messageSuccess: false,
+          messageSuccess: false
         });
       }
     }
@@ -130,29 +125,29 @@ class ExternoContainer extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username,
+      username: this.props.auth.username
     };
 
     let response = {};
 
-    response = await auth(value).then((resp) =>
+    response = await auth(value).then(resp =>
       this.setState({
-        auth: resp ? resp.data : false,
+        auth: resp ? resp.data : false
       })
     );
 
     return response;
   };
 
-  onChange = (e) => {
+  onChange = e => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
   showDrawer = () => {
     this.setState({
-      setVisible: true,
+      setVisible: true
     });
   };
 
@@ -160,9 +155,9 @@ class ExternoContainer extends Component {
     this.setState({
       setVisible: false,
       user: this.props.auth.username,
-      pass: "",
-      newPass: "",
-      confPass: "",
+      pass: '',
+      newPass: '',
+      confPass: ''
     });
   };
 
@@ -196,24 +191,24 @@ class ExternoContainer extends Component {
         technician: {
           specific: {
             // name: "TECNICO 1",
-            id: this.props.auth.technicianId,
+            id: this.props.auth.technicianId
             // name: this.props.auth.username,
-          },
+          }
         },
         os: {
           specific: {
-            date: { start: moment(), end: moment() },
-          },
+            date: { start: moment(), end: moment() }
+          }
         },
         technicianReserve: {
           specific: {
             data: {
               start: moment(),
-              end: moment(),
-            },
-          },
-        },
-      },
+              end: moment()
+            }
+          }
+        }
+      }
     };
 
     const response = await getTodasOs(query);
@@ -232,45 +227,43 @@ class ExternoContainer extends Component {
       filters: {
         technician: {
           specific: {
-            id: this.props.auth.technicianId,
-          },
+            id: this.props.auth.technicianId
+          }
         },
         technicianReserve: {
           specific: {
             data: {
               start: moment(),
-              end: moment(),
-            },
-          },
-        },
+              end: moment()
+            }
+          }
+        }
       },
-      osPartsId: null,
+      osPartsId: null
     };
     const { status, data } = await getAllReservaTecnicoReturn(query);
 
     if (status === 200) {
-      data.map((item) => {
-        const index = R.findIndex(R.propEq("produto", item.produto))(
-          this.state.products
-        );
-        const osPart = R.find(R.propEq("name", item.produto))(
-          R.find(R.propEq("id", this.state.oId))(this.state.os).products
+      data.map(item => {
+        const index = R.findIndex(R.propEq('produto', item.produto))(this.state.products);
+        const osPart = R.find(R.propEq('name', item.produto))(
+          R.find(R.propEq('id', this.state.oId))(this.state.os).products
         );
         if (index === -1) {
           if (!osPart) return;
           const osPartId = osPart.id;
-          this.setState((prevState) => {
+          this.setState(prevState => {
             return { products: [...prevState.products, { ...item, osPartId }] };
           });
         } else {
-          this.setState((prevState) => {
+          this.setState(prevState => {
             const { products } = prevState;
             const { amount, serialNumbers } = products[index];
 
             products.splice(index, 1, {
               ...products[index],
               amount: amount + item.amount,
-              serialNumbers: [...serialNumbers, ...item.serialNumbers],
+              serialNumbers: [...serialNumbers, ...item.serialNumbers]
             });
             return { products };
           });
@@ -279,27 +272,27 @@ class ExternoContainer extends Component {
       await Promise.all(
         this.state.products.map(async (item, index) => {
           const {
-            data: { count },
+            data: { count }
           } = await getAllEquipsService({
             filters: {
               equip: {
                 specific: {
-                  osPartId: item.osPartId,
-                },
-              },
-            },
+                  osPartId: item.osPartId
+                }
+              }
+            }
           });
           const amount =
-            R.find(R.propEq("name", item.produto))(
-              R.find(R.propEq("id", this.state.oId))(this.state.os).products
+            R.find(R.propEq('name', item.produto))(
+              R.find(R.propEq('id', this.state.oId))(this.state.os).products
             ).quantMax - count;
 
-          this.setState((prevState) => {
+          this.setState(prevState => {
             const { products } = prevState;
 
             products.splice(index, 1, {
               ...products[index],
-              amount,
+              amount
             });
             return { products };
           });
@@ -312,15 +305,10 @@ class ExternoContainer extends Component {
     <Drawer
       title={
         <div className="div-drawer-externo">
-          Perfil{" "}
-          <LogoutOutlined
-            size="large"
-            onClick={this.logout}
-            style={{ cursor: "pointer" }}
-          />{" "}
+          Perfil <LogoutOutlined size="large" onClick={this.logout} style={{ cursor: 'pointer' }} />{' '}
         </div>
       }
-      width={"100%"}
+      width={'100%'}
       placement="right"
       closable={false}
       onClose={this.onClose}
@@ -369,9 +357,7 @@ class ExternoContainer extends Component {
           Salvar
         </Button>
       </div>
-      <div className="footer-drawer-externo">
-        Developed by Jessi Castro and Guilherme Stain
-      </div>
+      <div className="footer-drawer-externo">Developed by Jessi Castro and Guilherme Stain</div>
     </Drawer>
   );
 
@@ -382,10 +368,11 @@ class ExternoContainer extends Component {
       case 0:
         return (
           <div className="div-card-externo">
-            {this.state.os.map((item) => (
+            {console.log(this.state.products)}
+            {this.state.os.map(item => (
               <div
                 className="div-linha-externo"
-                select={this.state.oId === item.id ? "true" : "false"}
+                select={this.state.oId === item.id ? 'true' : 'false'}
                 onClick={() => this.setState({ oId: item.id })}
               >
                 <div className="div-quant-externo">{item.os}</div>
@@ -398,44 +385,35 @@ class ExternoContainer extends Component {
         return (
           <div className="div-card-externo">
             {this.state.products
-              .filter((item) => item.amount > 0)
+              .filter(item => item.amount > 0)
               .map((item, index) => (
                 <div
                   className="div-linha-externo"
                   select={
-                    this.state.indexProducts.filter(
-                      (indexProduct) => index === indexProduct.index
-                    ).length !== 0
-                      ? "true"
-                      : "false"
+                    this.state.indexProducts.filter(indexProduct => index === indexProduct.index)
+                      .length !== 0
+                      ? 'true'
+                      : 'false'
                   }
                   onClick={async () => {
-                    this.setState((prevState) => {
-                      if (
-                        prevState.indexProducts.filter(
-                          (idx) => idx.index === index
-                        ).length !== 0
-                      ) {
+                    this.setState(prevState => {
+                      if (prevState.indexProducts.filter(idx => idx.index === index).length !== 0) {
                         return {
                           indexProducts: [
-                            ...prevState.indexProducts.filter(
-                              (idx) => idx.index !== index
-                            ),
-                          ],
+                            ...prevState.indexProducts.filter(idx => idx.index !== index)
+                          ]
                         };
                       } else {
                         return {
                           indexProducts: [
-                            ...prevState.indexProducts.filter(
-                              (idx) => idx.index !== index
-                            ),
+                            ...prevState.indexProducts.filter(idx => idx.index !== index),
                             {
                               ...item,
                               index,
                               serialNumersSelects: [],
-                              quantidadeSaida: 0,
-                            },
-                          ],
+                              quantidadeSaida: 0
+                            }
+                          ]
                         };
                       }
                     });
@@ -456,42 +434,42 @@ class ExternoContainer extends Component {
                 <div
                   className="div-linha-externo"
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 >
                   <div
                     style={{
-                      display: "flex",
-                      height: "100%",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      minHeight: "48px",
+                      display: 'flex',
+                      height: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      minHeight: '48px'
                     }}
                   >
                     <div className="div-item-externo">{item.produto}</div>
                   </div>
                   {item.serial ? (
                     <Select
-                      style={{ width: "90%", margin: "5px 5% 10px" }}
+                      style={{ width: '90%', margin: '5px 5% 10px' }}
                       mode="tags"
                       value={item.serialNumersSelects}
-                      onChange={(e) =>
-                        this.setState((prevState) => {
+                      onChange={e =>
+                        this.setState(prevState => {
                           const { indexProducts } = this.state;
                           indexProducts.splice(index, 1, {
                             ...item,
-                            serialNumersSelects: e.slice(0, item.amount),
+                            serialNumersSelects: e.slice(0, item.amount)
                           });
 
                           return { indexProducts };
                         })
                       }
-                      tokenSeparators={[","]}
+                      tokenSeparators={[',']}
                     >
-                      {item.serialNumbers.map((serialNumber) => (
+                      {item.serialNumbers.map(serialNumber => (
                         <Option key={serialNumber}>{serialNumber}</Option>
                       ))}
                     </Select>
@@ -500,18 +478,18 @@ class ExternoContainer extends Component {
                       min={0}
                       max={item.amount}
                       value={item.quantidadeSaida}
-                      onChange={(quantidadeSaida) => {
-                        this.setState((prevState) => {
+                      onChange={quantidadeSaida => {
+                        this.setState(prevState => {
                           const { indexProducts } = prevState;
                           indexProducts.splice(index, 1, {
                             ...item,
-                            quantidadeSaida,
+                            quantidadeSaida
                           });
 
                           return { indexProducts };
                         });
                       }}
-                      style={{ width: "90%", margin: "5px 0 10px" }}
+                      style={{ width: '90%', margin: '5px 0 10px' }}
                     />
                   )}
                 </div>
@@ -530,11 +508,11 @@ class ExternoContainer extends Component {
       src: ha,
       html5: true,
       sprite: {
-        laser: [15100, 1500],
-      },
+        laser: [15100, 1500]
+      }
     });
 
-    sound.play("laser");
+    sound.play('laser');
     // setTimeout(function() {
     // sound.play("laser");
     // }, 3000);
@@ -546,12 +524,12 @@ class ExternoContainer extends Component {
       <div className="div-card-emprestimo-report">
         <div className="title-emprestimo-report">
           <h1 className="h1-externo">
-            Externos
+            {this.props.auth.username.replace(/\./g, ' ')}
             <UserOutlined
               style={{
-                fontSize: "25px",
-                cursor: "pointer",
-                marginLeft: "20px",
+                fontSize: '25px',
+                cursor: 'pointer',
+                marginLeft: '20px'
               }}
               onClick={this.showDrawer}
             />
@@ -564,10 +542,10 @@ class ExternoContainer extends Component {
           <Button
             size="large"
             onClick={() => {
-              this.setState((prevState) => {
+              this.setState(prevState => {
                 return {
                   products: prevState.current === 1 ? [] : prevState.products,
-                  current: R.max(prevState.current - 1, 0),
+                  current: R.max(prevState.current - 1, 0)
                 };
               });
             }}
@@ -578,12 +556,11 @@ class ExternoContainer extends Component {
             size="large"
             onClick={async () => {
               // this.soundPlay()
-              if (this.state.current === 0)
-                await this.getAllReservaTecnicoReturn();
+              if (this.state.current === 0) await this.getAllReservaTecnicoReturn();
               if (this.state.current === 2) {
                 const { status } = await associarEquipsParaOsPart({
                   technicianId: this.props.auth.technicianId,
-                  osParts: this.state.indexProducts,
+                  osParts: this.state.indexProducts
                 });
                 if (status === 200) {
                   await this.setState({
@@ -592,14 +569,14 @@ class ExternoContainer extends Component {
                     products: [],
                     os: [],
                     index: -1,
-                    oId: null,
+                    oId: null
                   });
                   await this.getOs();
                 }
               } else {
-                this.setState((prevState) => {
+                this.setState(prevState => {
                   return {
-                    current: R.min(prevState.current + 1, 2),
+                    current: R.min(prevState.current + 1, 2)
                   };
                 });
               }
@@ -620,8 +597,11 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    auth: state.auth
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(ExternoContainer);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(ExternoContainer);
