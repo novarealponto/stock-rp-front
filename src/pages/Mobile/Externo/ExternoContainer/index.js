@@ -186,6 +186,7 @@ class ExternoContainer extends Component {
 
   getOs = async () => {
     const query = {
+      paranoid:true,
       filters: {
         technician: {
           specific: {
@@ -196,11 +197,14 @@ class ExternoContainer extends Component {
         },
         os: {
           specific: {
-            date: this.props.auth.technicianId !== "0c451d60-f837-4a9e-b8a6-cab41a788133" ? {
-              start: moment(),
-              end: moment(),
-            } : undefined,
-          },
+            date:
+              this.props.auth.technicianId !== '0c451d60-f837-4a9e-b8a6-cab41a788133'
+                ? {
+                    start: moment(),
+                    end: moment()
+                  }
+                : undefined
+          }
         },
         technicianReserve: {
           specific: {
@@ -209,9 +213,10 @@ class ExternoContainer extends Component {
               end: moment()
             }
           }
-        }
+        },
       }
     };
+
 
     const response = await getTodasOs(query);
 
@@ -234,24 +239,25 @@ class ExternoContainer extends Component {
         },
         technicianReserve: {
           specific: {
-            data: this.props.auth.technicianId !== "0c451d60-f837-4a9e-b8a6-cab41a788133" ? {
-              start: moment(),
-              end: moment(),
-            } : undefined,
-          },
-        },
+            data:
+              this.props.auth.technicianId !== '0c451d60-f837-4a9e-b8a6-cab41a788133'
+                ? {
+                    start: moment(),
+                    end: moment()
+                  }
+                : undefined
+          }
+        }
       },
       osPartsId: null
     };
     const { status, data } = await getAllReservaTecnicoReturn(query);
 
     if (status === 200) {
-      data.forEach((item) => {
-        const index = R.findIndex(R.propEq("produto", item.produto))(
-          this.state.products
-        );
-        const osPart = R.find(R.propEq("name", item.produto))(
-          R.find(R.propEq("id", this.state.oId))(this.state.os).products
+      data.forEach(item => {
+        const index = R.findIndex(R.propEq('produto', item.produto))(this.state.products);
+        const osPart = R.find(R.propEq('name', item.produto))(
+          R.find(R.propEq('id', this.state.oId))(this.state.os).products
         );
         if (index === -1) {
           if (!osPart) return;
@@ -372,7 +378,7 @@ class ExternoContainer extends Component {
       case 0:
         return (
           <div className="div-card-externo">
-            {console.log(this.state.products)}
+            {console.log(this.state.os)}
             {this.state.os.map(item => (
               <div
                 className="div-linha-externo"

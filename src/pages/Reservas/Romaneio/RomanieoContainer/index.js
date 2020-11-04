@@ -26,9 +26,10 @@ import {
   AlertOutlined
 } from '@ant-design/icons';
 
-import { Howl,
+import {
+  Howl
   // Howler
- } from 'howler';
+} from 'howler';
 import ha from './sound.mp3';
 
 import { getTecnico } from '../../../../services/tecnico';
@@ -266,7 +267,7 @@ class RomanieoContainer extends Component {
 
       if (status === 200 && response.status === 200) {
         if (rows.length === 0 && response.data.length === 0) {
-          message.error('Não reserva para esta técnico nesta data');
+          message.error('Não há reserva para esta técnico nesta data');
         } else {
           this.setState({
             rows,
@@ -426,7 +427,7 @@ class RomanieoContainer extends Component {
           );
         }
       } else {
-        message.error('equipamento não foi encontrado');
+        message.error('Equipamento não foi encontrado');
       }
       this.setState({ serialNumber: undefined });
     } else {
