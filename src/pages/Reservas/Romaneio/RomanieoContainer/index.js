@@ -482,7 +482,9 @@ class RomanieoContainer extends Component {
           <div className="div-text-modal-romaneio">
             <table style={{ width: '100%' }}>
               <tr>
-                <th>OS</th>
+                <Tooltip title={item.razaoSocial}>
+                  <th style={{ cursor: 'pointer' }}>OS</th>
+                </Tooltip>
                 <th>Quant</th>
                 <th>Saída</th>
                 <th>Retorno</th>
@@ -490,7 +492,7 @@ class RomanieoContainer extends Component {
                 <th>Ação</th>
               </tr>
               <tr>
-                <td>{item.os}</td>
+                <td style={{ cursor: 'pointer' }}>{item.os}</td>
                 <td>{item.amount}</td>
                 <td>{item.output}</td>
                 <td>{item.return}</td>
@@ -826,6 +828,7 @@ class RomanieoContainer extends Component {
                             size="large"
                             onClick={async () => {
                               const query = {
+                                paranoid: true,
                                 filters: {
                                   technician: {
                                     specific: {

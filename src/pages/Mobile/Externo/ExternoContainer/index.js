@@ -186,7 +186,7 @@ class ExternoContainer extends Component {
 
   getOs = async () => {
     const query = {
-      paranoid:true,
+      paranoid: true,
       filters: {
         technician: {
           specific: {
@@ -213,10 +213,9 @@ class ExternoContainer extends Component {
               end: moment()
             }
           }
-        },
+        }
       }
     };
-
 
     const response = await getTodasOs(query);
 
@@ -534,7 +533,7 @@ class ExternoContainer extends Component {
       <div className="div-card-emprestimo-report">
         <div className="title-emprestimo-report">
           <h1 className="h1-externo">
-            {this.props.auth.username.replace(/\./g, ' ')}
+            <p style={{ textAlign: 'center' }}>{this.props.auth.username.replace(/\./g, ' ')}</p>
             <UserOutlined
               style={{
                 fontSize: '25px',
