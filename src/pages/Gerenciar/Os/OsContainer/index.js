@@ -412,7 +412,9 @@ class OsDash extends Component {
             </div>
             <div className="cel-data-cabecalho-GOs">{line.formatedDate}</div>
             <div className="cel-acoes-cabecalho-GOs">
-              {this.props.auth.delROs && !line.notDelet ? (
+              {this.props.auth.delROs &&
+              !line.notDelet &&
+              !line.products.filter(product => product.technicianReserve).length ? (
                 <Tooltip placement="topLeft" title="Remover">
                   <Button
                     type="primary"
