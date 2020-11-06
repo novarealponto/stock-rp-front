@@ -440,7 +440,7 @@ class OsDash extends Component {
                   <div className="div-button-mais-GOs">
                     <Tooltip placement="topLeft" title="Adicionar produto">
                       {this.props.auth.updateRos
-                      // && !line.notDelet
+                      // && !line.products.filter(product => product.technicianReserve).length
                       ? (
                         <div
                           className="button-mais-div"

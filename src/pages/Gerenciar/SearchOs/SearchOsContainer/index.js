@@ -706,8 +706,11 @@ class SearchOsDash extends Component {
             <div className="div-textData-Os">Data do atendimento:</div>
             <div className="div-inputs">
               <DatePicker
-                disabledDate={this.disabledDate}
-                className={this.state.fieldFalha.data ? 'div-inputError-OS' : 'input-100'}
+                disabledDate={this.disabledDate }
+                disabled={!!this.state.carrinho.filter(valor => !!valor.technicianReserve).length}
+                className={
+                  this.state.fieldFalha.data ? "div-inputError-OS" : "input-100"
+                }
                 onChange={this.onChangeData}
                 name="data"
                 onFocus={this.onFocus}
@@ -734,9 +737,14 @@ class SearchOsDash extends Component {
                 ></Select>
               ) : (
                 <Select
-                  className={this.state.fieldFalha.technician ? 'div-inputError-OS' : 'input-100'}
-                  defaultValue="Não selecionado"
-                  style={{ width: '100%' }}
+                  className={
+                    this.state.fieldFalha.technician
+                      ? "div-inputError-OS"
+                      : "input-100"
+                  }
+                disabled={!!this.state.carrinho.filter(valor => !!valor.technicianReserve).length}
+                defaultValue="Não selecionado"
+                  style={{ width: "100%" }}
                   onChange={this.onChangeSelect}
                   showSearch
                   onSearch={name => this.getAllTecnico(name)}
@@ -924,7 +932,7 @@ class SearchOsDash extends Component {
                 <label className="label-quant-SearchOs">
                   <InputNumber
                     min={1}
-                    disabled={valor.serial}
+                    disabled={valor.serial || valor.technicianReserve}
                     value={this.state.quantObj[`quant${valor.name}`]}
                     onChange={value => this.onChangeUpdateQuant(valor.name, value)}
                   />
