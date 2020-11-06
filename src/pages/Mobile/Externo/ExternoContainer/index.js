@@ -377,7 +377,6 @@ class ExternoContainer extends Component {
       case 0:
         return (
           <div className="div-card-externo">
-            {console.log(this.state.os)}
             {this.state.os.map(item => (
               <div
                 className="div-linha-externo"

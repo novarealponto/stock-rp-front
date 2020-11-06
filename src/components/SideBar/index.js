@@ -663,7 +663,7 @@ class SideBar extends Component {
               Gerenciar
             </Menu.Item>
           </SubMenu>
-          <SubMenu
+          {/* <SubMenu
             key="Compras"
             title={
               <span>
@@ -676,7 +676,7 @@ class SideBar extends Component {
               <ShoppingCartOutlined />
               Nova
             </Menu.Item>
-          </SubMenu>
+          </SubMenu> */}
           <SubMenu
             key="Estoque"
             title={
