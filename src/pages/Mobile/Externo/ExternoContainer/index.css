@@ -85,7 +85,43 @@
   flex-direction: column;
   justify-content: center;
 }
-
+.div-card-main-mobile {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.div-card-mobile {
+  flex-direction: column;
+  height: 300px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+.error-mobile {
+  font-weight: bold;
+  height: 20%;
+  display: flex;
+  align-items: flex-end;
+  font-size: 22px;
+  color: red;
+  /* text-decoration: underline; */
+}
+.div-underline {
+  width: 180px;
+  height: 2px;
+  background-color: #ccc;
+}
+.message-card {
+  margin-top: 20px;
+  height: 80%;
+  margin-top: 30px;
+  font-size: 17px;
+  padding: 0 20px;
+}
 @media (min-width: 550px) {
   .drawer-externo {
     width: 100%;

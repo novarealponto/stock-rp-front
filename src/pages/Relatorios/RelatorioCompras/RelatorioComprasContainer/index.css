@@ -4,3 +4,11 @@
   justify-content: flex-end;
   padding: 2px;
 }
+.div-relatorio-compras {
+  margin-top: 10px;
+  width: 90%;
+  background-color: #fafafa;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}

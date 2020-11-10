@@ -377,60 +377,88 @@ class ExternoContainer extends Component {
       case 0:
         return (
           <div className="div-card-externo">
-            {this.state.os.map(item => (
-              <div
-                className="div-linha-externo"
-                select={this.state.oId === item.id ? 'true' : 'false'}
-                onClick={() => this.setState({ oId: item.id })}
-              >
-                <div className="div-quant-externo">{item.os}</div>
-                <div className="div-item-externo">{item.razaoSocial}</div>
+            {this.state.os.length !== 0 ? (
+              this.state.os.map(item => (
+                <div
+                  className="div-linha-externo"
+                  select={this.state.oId === item.id ? 'true' : 'false'}
+                  onClick={() => this.setState({ oId: item.id })}
+                >
+                  <div className="div-quant-externo">{item.os}</div>
+                  <div className="div-item-externo">{item.razaoSocial}</div>
+                </div>
+              ))
+            ) : (
+              <div className="div-card-main-mobile">
+                <div className="div-card-mobile">
+                  <div className="error-mobile">OOOOPS !!!!!!!</div>
+                  <div className="div-underline"></div>
+                  <a className="message-card">
+                    Você não possui ordens de serviço associadas a você. Por favor recarregue a
+                    página caso não solucione, entre em contato com o administrativo.
+                  </a>
+                </div>
               </div>
-            ))}
+            )}
           </div>
         );
       case 1:
         return (
           <div className="div-card-externo">
-            {this.state.products
-              .filter(item => item.amount > 0)
-              .map((item, index) => (
-                <div
-                  className="div-linha-externo"
-                  select={
-                    this.state.indexProducts.filter(indexProduct => index === indexProduct.index)
-                      .length !== 0
-                      ? 'true'
-                      : 'false'
-                  }
-                  onClick={async () => {
-                    this.setState(prevState => {
-                      if (prevState.indexProducts.filter(idx => idx.index === index).length !== 0) {
-                        return {
-                          indexProducts: [
-                            ...prevState.indexProducts.filter(idx => idx.index !== index)
-                          ]
-                        };
-                      } else {
-                        return {
-                          indexProducts: [
-                            ...prevState.indexProducts.filter(idx => idx.index !== index),
-                            {
-                              ...item,
-                              index,
-                              serialNumersSelects: [],
-                              quantidadeSaida: 0
-                            }
-                          ]
-                        };
-                      }
-                    });
-                  }}
-                >
-                  <div className="div-quant-externo">{item.amount}</div>
-                  <div className="div-item-externo">{item.produto}</div>
+            {this.state.products.length !== 0 ? (
+              this.state.products
+                .filter(item => item.amount > 0)
+                .map((item, index) => (
+                  <div
+                    className="div-linha-externo"
+                    select={
+                      this.state.indexProducts.filter(indexProduct => index === indexProduct.index)
+                        .length !== 0
+                        ? 'true'
+                        : 'false'
+                    }
+                    onClick={async () => {
+                      this.setState(prevState => {
+                        if (
+                          prevState.indexProducts.filter(idx => idx.index === index).length !== 0
+                        ) {
+                          return {
+                            indexProducts: [
+                              ...prevState.indexProducts.filter(idx => idx.index !== index)
+                            ]
+                          };
+                        } else {
+                          return {
+                            indexProducts: [
+                              ...prevState.indexProducts.filter(idx => idx.index !== index),
+                              {
+                                ...item,
+                                index,
+                                serialNumersSelects: [],
+                                quantidadeSaida: 0
+                              }
+                            ]
+                          };
+                        }
+                      });
+                    }}
+                  >
+                    <div className="div-quant-externo">{item.amount}</div>
+                    <div className="div-item-externo">{item.produto}</div>
+                  </div>
+                ))
+            ) : (
+              <div className="div-card-main-mobile">
+                <div className="div-card-mobile">
+                  <div className="error-mobile">OOOOPS !!!!!!!</div>
+                  <div className="div-underline"></div>
+                  <a className="message-card">
+                    Está O.S já foi finalizada, caso necessário inclusão/troca de peças entrar em
+                    contato com o administrativo.
+                  </a>
                 </div>
-              ))}
+              </div>
+            )}
           </div>
         );
 
@@ -562,6 +590,11 @@ class ExternoContainer extends Component {
           </Button>
           <Button
             size="large"
+            disabled={
+              this.state.os.length === 0 ||
+              this.state.oId === null ||
+              (this.state.current === 1 && this.state.indexProducts.length === 0)
+            }
             onClick={async () => {
               // this.soundPlay()
               if (this.state.current === 0) await this.getAllReservaTecnicoReturn();

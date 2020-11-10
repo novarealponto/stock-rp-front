@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import "./index.css";
-import { PrinterOutlined } from "@ant-design/icons";
-import { Button, Input, InputNumber, Slider, DatePicker } from "antd";
+import React, { Component } from 'react';
+import './index.css';
+import { PrinterOutlined } from '@ant-design/icons';
+import { Button, Input, InputNumber, Slider, DatePicker } from 'antd';
 
 class RelatorioComprasContainer extends Component {
   state = {
@@ -9,10 +9,10 @@ class RelatorioComprasContainer extends Component {
     total: 10,
     count: 0,
     show: 0,
-    valueDate: { start: "2019/01/01" },
-    code: "",
-    produto: "",
-    fabricante: "",
+    valueDate: { start: '2019/01/01' },
+    code: '',
+    produto: '',
+    fabricante: '',
     avancado: false,
     rows: [],
     index: -1,
@@ -42,10 +42,8 @@ class RelatorioComprasContainer extends Component {
               className="icon-printer"
               // onClick={this.createPDFSuprimento}
             />
-            <Button
-              onClick={() => this.setState({ avancado: !this.state.avancado })}
-            >
-              {this.state.avancado ? "Ocultar" : "Avançado"}
+            <Button onClick={() => this.setState({ avancado: !this.state.avancado })}>
+              {this.state.avancado ? 'Ocultar' : 'Avançado'}
             </Button>
           </div>
         </div>
@@ -93,7 +91,7 @@ class RelatorioComprasContainer extends Component {
                   }}
                 />
                 <Slider
-                  style={{ width: "50%" }}
+                  style={{ width: '50%' }}
                   range
                   value={[this.state.min, this.state.max]}
                   onChange={e => this.setState({ min: e[0], max: e[1] })}
@@ -118,7 +116,7 @@ class RelatorioComprasContainer extends Component {
                   placeholder="Digite a data"
                   format="DD/MM/YYYY"
                   dropdownClassName="poucas"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   onChange={this.searchDate}
                   onOk={this.searchDate}
                 />
@@ -127,25 +125,12 @@ class RelatorioComprasContainer extends Component {
           </>
         )}
 
-        <div
-          className="div-linha"
-          style={{ backgroundColor: "#f5f5f5", marginTop: "20px" }}
-        >
-          <div className="div-cabecalho-cod">
-            <strong>Código</strong>
-          </div>
-          <div className="div-cabecalho-prod">
-            <strong>Produto</strong>
-          </div>
-          <div className="div-cabecalho-fabr">
-            <strong>Fabricante</strong>
-          </div>
-          <div className="div-cabecalho-qtd">
-            <strong>Qtd. total</strong>
-          </div>
-          <div className="div-cabecalho-data">
-            <strong>Data Ultima Atualiz.</strong>
-          </div>
+        <div className="div-relatorio-compras">
+          <div className="div-cabecalho-cod">Código</div>
+          <div className="div-cabecalho-prod">Produto</div>
+          <div className="div-cabecalho-fabr">Fabricante</div>
+          <div className="div-cabecalho-qtd">Qtd. total</div>
+          <div className="div-cabecalho-data">Data Ultima Atualiz.</div>
         </div>
       </div>
     );

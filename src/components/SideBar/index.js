@@ -579,10 +579,6 @@ class SideBar extends Component {
     return (
       <div>
         <div className="menuIcon">
-          <Tooltip placement="bottom" title={'Logout'}>
-            <LogoutOutlined key="logout" className="menuIcon-icon" onClick={() => this.logout()} />
-          </Tooltip>
-
           <Tooltip placement="bottom" title={'Estoque'}>
             <StockOutlined
               className="menuIcon-icon"
@@ -602,6 +598,9 @@ class SideBar extends Component {
               className="menuIcon-icon"
               onClick={() => this.handleClickCompany('perfil_dash')}
             />
+          </Tooltip>
+          <Tooltip placement="bottom" title={'Logout'}>
+            <LogoutOutlined key="logout" className="menuIcon-icon" onClick={() => this.logout()} />
           </Tooltip>
         </div>
 

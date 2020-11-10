@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import "./index.css";
-import { Button, Input, InputNumber, Slider, DatePicker, Select } from "antd";
+import React, { Component } from 'react';
+import './index.css';
+import { Button, Input, InputNumber, Slider, DatePicker, Select } from 'antd';
 // import { GetRelatVendas } from "../../../../services/produto";
-import { PrinterOutlined } from "@ant-design/icons";
-import moment from "moment";
+import { PrinterOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
-import { GetSupProduct } from "../../../../services/Suprimentos/product";
-import { CreatePDFSuprimento } from "../../../../services/Suprimentos/pdf";
+import { GetSupProduct } from '../../../../services/Suprimentos/product';
+import { CreatePDFSuprimento } from '../../../../services/Suprimentos/pdf';
 
 const { Option } = Select;
 class RelatorioSuprimentosContainer extends Component {
@@ -15,14 +15,14 @@ class RelatorioSuprimentosContainer extends Component {
     total: 10,
     count: 0,
     show: 0,
-    valueDate: { start: "2019/01/01" },
-    code: "",
-    produto: "",
-    fabricante: "",
+    valueDate: { start: '2019/01/01' },
+    code: '',
+    produto: '',
+    fabricante: '',
     avancado: false,
     rows: [],
     index: -1,
-    select: "estoque",
+    select: 'estoque',
     min: undefined,
     max: undefined
   };
@@ -85,12 +85,11 @@ class RelatorioSuprimentosContainer extends Component {
       },
       page: this.state.page,
       total: this.state.total,
-      compra: this.state.select === "compra"
+      compra: this.state.select === 'compra'
     };
     const { status, data } = await GetSupProduct(query);
 
-    if (status === 200)
-      this.setState({ rows: data.rows, count: data.count, index: -1 });
+    if (status === 200) this.setState({ rows: data.rows, count: data.count, index: -1 });
   };
 
   createPDFSuprimento = async () => {
@@ -100,7 +99,7 @@ class RelatorioSuprimentosContainer extends Component {
       filters: {},
       page: 1,
       total: null,
-      compra: select === "compra"
+      compra: select === 'compra'
     };
     const { status, data } = await GetSupProduct(query);
     if (status === 200) await CreatePDFSuprimento(select, data.rows);
@@ -174,8 +173,7 @@ class RelatorioSuprimentosContainer extends Component {
           {this.state.page + 2}
         </Button>
       ) : null}
-      {this.state.page + 2 < this.state.count / this.state.total &&
-      this.state.page < 3 ? (
+      {this.state.page + 2 < this.state.count / this.state.total && this.state.page < 3 ? (
         <Button
           className="button"
           type="primary"
@@ -184,8 +182,7 @@ class RelatorioSuprimentosContainer extends Component {
           {this.state.page + 3}
         </Button>
       ) : null}
-      {this.state.page + 3 < this.state.count / this.state.total &&
-      this.state.page < 2 ? (
+      {this.state.page + 3 < this.state.count / this.state.total && this.state.page < 2 ? (
         <Button
           className="button"
           type="primary"
@@ -207,7 +204,7 @@ class RelatorioSuprimentosContainer extends Component {
         <div className="div-linha">
           <Select
             value={this.state.select}
-            style={{ width: "20%" }}
+            style={{ width: '20%' }}
             onChange={async select => {
               await this.setState({ select });
               await this.getSupProduct();
@@ -218,14 +215,9 @@ class RelatorioSuprimentosContainer extends Component {
           </Select>
 
           <div>
-            <PrinterOutlined
-              className="icon-printer"
-              onClick={this.createPDFSuprimento}
-            />
-            <Button
-              onClick={() => this.setState({ avancado: !this.state.avancado })}
-            >
-              {this.state.avancado ? "Ocultar" : "Avançado"}
+            <PrinterOutlined className="icon-printer" onClick={this.createPDFSuprimento} />
+            <Button onClick={() => this.setState({ avancado: !this.state.avancado })}>
+              {this.state.avancado ? 'Ocultar' : 'Avançado'}
             </Button>
           </div>
         </div>
@@ -273,7 +265,7 @@ class RelatorioSuprimentosContainer extends Component {
                   }}
                 />
                 <Slider
-                  style={{ width: "50%" }}
+                  style={{ width: '50%' }}
                   range
                   value={[this.state.min, this.state.max]}
                   onChange={e => this.setState({ min: e[0], max: e[1] })}
@@ -298,7 +290,7 @@ class RelatorioSuprimentosContainer extends Component {
                   placeholder="Digite a data"
                   format="DD/MM/YYYY"
                   dropdownClassName="poucas"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   onChange={this.searchDate}
                   onOk={this.searchDate}
                 />
@@ -307,62 +299,49 @@ class RelatorioSuprimentosContainer extends Component {
           </>
         )}
 
-        <div
-          className="div-linha"
-          style={{ backgroundColor: "#f5f5f5", marginTop: "20px" }}
-        >
-          <div className="div-cabecalho-cod">
-            <strong>Código</strong>
-          </div>
-          <div className="div-cabecalho-prod">
-            <strong>Produto</strong>
-          </div>
-          <div className="div-cabecalho-fabr">
-            <strong>Fabricante</strong>
-          </div>
-          <div className="div-cabecalho-qtd">
-            <strong>Qtd. total</strong>
-          </div>
-          <div className="div-cabecalho-data">
-            <strong>Data Ultima Atualiz.</strong>
-          </div>
+        <div className="div-relatorio-compras">
+          <div className="div-cabecalho-cod">Código</div>
+          <div className="div-cabecalho-prod">Produto</div>
+          <div className="div-cabecalho-fabr">Fabricante</div>
+          <div className="div-cabecalho-qtd">Qtd. total</div>
+          <div className="div-cabecalho-data">Data Ultima Atualiz.</div>
         </div>
 
-        {this.state.rows.map(row => (
-          <div className="div-block-table-relat-sup">
-            <div
-              className="div-linha"
-              style={
-                row.minimumQuantity >= row.amount
-                  ? { color: "rgba(255, 0, 0, 0.8)" }
-                  : null
-              }
-            >
-              <div className="div-cabecalho-cod">
-                <label>{row.code}</label>
+        {this.state.rows.length !== 0 ? (
+          this.state.rows.map(row => (
+            <div className="div-block-table-relat-sup">
+              <div
+                className="div-linha"
+                style={row.minimumQuantity >= row.amount ? { color: 'rgba(255, 0, 0, 0.8)' } : null}
+              >
+                <div className="div-cabecalho-cod">
+                  <label>{row.code}</label>
+                </div>
+                <div className="div-cabecalho-prod">
+                  <label>{row.name}</label>
+                </div>
+                <div className="div-cabecalho-fabr">
+                  <label>{row.manufacturer.name}</label>
+                </div>
+                <div className="div-cabecalho-qtd">
+                  <label>{row.amount}</label>
+                </div>
+                <div className="div-cabecalho-data">
+                  <label>{moment(row.updatedAt).format('ll')}</label>
+                </div>
               </div>
-              <div className="div-cabecalho-prod">
-                <label>{row.name}</label>
-              </div>
-              <div className="div-cabecalho-fabr">
-                <label>{row.manufacturer.name}</label>
-              </div>
-              <div className="div-cabecalho-qtd">
-                <label>{row.amount}</label>
-              </div>
-              <div className="div-cabecalho-data">
-                <label>{moment(row.updatedAt).format("ll")}</label>
-              </div>
+              <div
+                style={{
+                  width: '90%',
+                  backgroundColor: 'rgb(221, 219, 219)',
+                  height: '1px'
+                }}
+              />
             </div>
-            <div
-              style={{
-                width: "90%",
-                backgroundColor: "rgb(221, 219, 219)",
-                height: "1px"
-              }}
-            />
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className="div-naotemnada">Não há nenhum suprimento até o momento</div>
+        )}
         <div className="footer-ROs">
           <this.Pages />
         </div>
