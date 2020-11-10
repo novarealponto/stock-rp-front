@@ -209,6 +209,7 @@ class Rexterno extends Component {
         product: {
           specific: {
             name,
+            serial: this.state.status === "CONSERTO" ? true : undefined
           },
         },
         stockBase: {
