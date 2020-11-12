@@ -322,7 +322,9 @@
   display: flex;
   align-items: center;
   /* justify-content: center; */
-  height: 40px;
+
+  background-color: #08c;
+  overflow: hidden;
 }
 .div-lines-mais-Rtecnico {
   width: 100%;
