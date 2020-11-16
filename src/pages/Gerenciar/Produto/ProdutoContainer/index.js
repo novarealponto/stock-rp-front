@@ -1,48 +1,44 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import "./index.css";
-import { Spin, Button, Input, Select, Tooltip } from "antd";
-import { getProdutos } from "../../../../services/produto";
-import { getAllFornecedor } from "../../../../services/fornecedores";
-import { getAllTecnico } from "../../../../services/tecnico";
-import { getUsers } from "../../../../services/usuario";
-import { masks } from "./validators";
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import './index.css';
+import { Spin, Button, Input, Select, Tooltip } from 'antd';
+import { getProdutos } from '../../../../services/produto';
+import { getAllFornecedor } from '../../../../services/fornecedores';
+import { getAllTecnico } from '../../../../services/tecnico';
+import { getUsers } from '../../../../services/usuario';
+import { masks } from './validators';
 import {
   redirectValueProduto,
   redirectValueFornecedor,
   redirectValueUsuario,
   redirectValueTecnico
-} from "../ProdutoRedux/action";
+} from '../ProdutoRedux/action';
 
-import {
-  EditOutlined,
-  CheckCircleTwoTone,
-  CloseCircleTwoTone
-} from "@ant-design/icons";
+import { EditOutlined, CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 
 const { Option } = Select;
 class GerenciarProdutoDash extends Component {
   state = {
-    redirect: "",
-    cnh: "",
-    nome: "",
-    telefone: "",
-    fornecedor: "",
-    tecnico: "",
-    placa: "",
-    cnpj: "",
-    razaoSocial: "",
-    uf: "",
-    tipoConta: "",
-    usuario: "",
-    gerenciar: "produtos",
-    sku: "",
-    produto: "",
-    marca: "",
-    tipo: "",
-    categoria: "",
+    redirect: '',
+    cnh: '',
+    nome: '',
+    telefone: '',
+    fornecedor: '',
+    tecnico: '',
+    placa: '',
+    cnpj: '',
+    razaoSocial: '',
+    uf: '',
+    tipoConta: '',
+    usuario: '',
+    gerenciar: 'produtos',
+    sku: '',
+    produto: '',
+    marca: '',
+    tipo: '',
+    categoria: '',
     loading: false,
     userArray: {
       rows: []
@@ -118,16 +114,16 @@ class GerenciarProdutoDash extends Component {
     });
 
     switch (value) {
-      case "usuario":
+      case 'usuario':
         await this.getAllUsers();
         break;
-      case "tecnico":
+      case 'tecnico':
         await this.getAllTecnicos();
         break;
-      case "produtos":
+      case 'produtos':
         await this.getAllProdutos();
         break;
-      case "fornecedor":
+      case 'fornecedor':
         await this.getAllFornecedor();
         break;
       default:
@@ -140,22 +136,22 @@ class GerenciarProdutoDash extends Component {
   avancado = () => {
     this.setState({
       avancado: !this.state.avancado,
-      cnh: "",
-      nome: "",
-      telefone: "",
-      fornecedor: "",
-      tecnico: "",
-      placa: "",
-      cnpj: "",
-      razaoSocial: "",
-      uf: "",
-      tipoConta: "",
-      usuario: "",
-      sku: "",
-      produto: "",
-      marca: "",
-      tipo: "",
-      categoria: ""
+      cnh: '',
+      nome: '',
+      telefone: '',
+      fornecedor: '',
+      tecnico: '',
+      placa: '',
+      cnpj: '',
+      razaoSocial: '',
+      uf: '',
+      tipoConta: '',
+      usuario: '',
+      sku: '',
+      produto: '',
+      marca: '',
+      tipo: '',
+      categoria: ''
     });
   };
 
@@ -166,16 +162,16 @@ class GerenciarProdutoDash extends Component {
       },
       async () => {
         switch (this.state.gerenciar) {
-          case "usuario":
+          case 'usuario':
             await this.getAllUsers();
             break;
-          case "tecnico":
+          case 'tecnico':
             await this.getAllTecnicos();
             break;
-          case "produtos":
+          case 'produtos':
             await this.getAllProdutos();
             break;
-          case "fornecedor":
+          case 'fornecedor':
             await this.getAllFornecedor();
             break;
           default:
@@ -194,11 +190,11 @@ class GerenciarProdutoDash extends Component {
       filters: {
         company: {
           specific: {
-            cnpj: this.state.cnpj.replace(/\D/gi, ""),
+            cnpj: this.state.cnpj.replace(/\D/gi, ''),
             razaoSocial: this.state.razaoSocial,
             state: this.state.uf,
             nameContact: this.state.nome,
-            telphone: this.state.telefone.replace(/\D/gi, "")
+            telphone: this.state.telefone.replace(/\D/gi, '')
           }
         }
       },
@@ -230,7 +226,7 @@ class GerenciarProdutoDash extends Component {
         technician: {
           specific: {
             name: this.state.tecnico,
-            CNH: this.state.cnh.replace(/\D/gi, "")
+            CNH: this.state.cnh.replace(/\D/gi, '')
           }
         },
         car: {
@@ -401,8 +397,7 @@ class GerenciarProdutoDash extends Component {
           {this.state.page + 2}
         </Button>
       ) : null}
-      {this.state.page + 2 < this.state.count / this.state.total &&
-      this.state.page < 3 ? (
+      {this.state.page + 2 < this.state.count / this.state.total && this.state.page < 3 ? (
         <Button
           className="button"
           type="primary"
@@ -411,8 +406,7 @@ class GerenciarProdutoDash extends Component {
           {this.state.page + 3}
         </Button>
       ) : null}
-      {this.state.page + 3 < this.state.count / this.state.total &&
-      this.state.page < 2 ? (
+      {this.state.page + 3 < this.state.count / this.state.total && this.state.page < 2 ? (
         <Button
           className="button"
           type="primary"
@@ -430,10 +424,11 @@ class GerenciarProdutoDash extends Component {
         <div className="div-100-Gentrada">
           <div
             style={{
-              width: "100%",
-              height: "50px",
-              display: "flex",
-              alignItems: "center"
+              width: '100%',
+              height: 'auto',
+              minHeight: '60px',
+              display: 'flex',
+              alignItems: 'center'
             }}
             // className="div-lines-Rtecnico"
           >
@@ -448,7 +443,7 @@ class GerenciarProdutoDash extends Component {
                   <EditOutlined
                     className="icon-edit"
                     onClick={() => this.redirectProduto(line)}
-                    style={{ fontSize: "20px", color: "#08c" }}
+                    style={{ fontSize: '20px', color: '#08c' }}
                     theme="outlined"
                   />
                 </Tooltip>
@@ -459,9 +454,7 @@ class GerenciarProdutoDash extends Component {
         </div>
       ));
     } else {
-      return (
-        <div className="div-naotemnada">Não há nenhum produto cadastrado</div>
-      );
+      return <div className="div-naotemnada">Não há nenhum produto cadastrado</div>;
     }
   };
 
@@ -472,18 +465,15 @@ class GerenciarProdutoDash extends Component {
           <div
             // className="div-lines-Rtecnico"
             style={{
-              width: "100%",
-              height: "50px",
-              display: "flex",
-              alignItems: "center"
+              width: '100%',
+              height: 'auto',
+              minHeight: '60px',
+              display: 'flex',
+              alignItems: 'center'
             }}
           >
-            <div className="cel-usuario-cabecalho-GCadastros">
-              {line.username}
-            </div>
-            <div className="cel-tipoConta-cabecalho-GCadastros">
-              {line.typeName}
-            </div>
+            <div className="cel-usuario-cabecalho-GCadastros">{line.username}</div>
+            <div className="cel-tipoConta-cabecalho-GCadastros">{line.typeName}</div>
             <div className="cel-customizado-cabecalho-GCadastros">
               {line.customized ? (
                 <CheckCircleTwoTone twoToneColor="#52c41a" />
@@ -496,7 +486,7 @@ class GerenciarProdutoDash extends Component {
                 <Tooltip placement="topLeft" title="Editar">
                   <EditOutlined
                     className="icon-edit"
-                    style={{ fontSize: "20px", color: "#08c" }}
+                    style={{ fontSize: '20px', color: '#08c' }}
                     onClick={() => this.redirectUsuario(line)}
                     theme="outlined"
                   />
@@ -508,9 +498,7 @@ class GerenciarProdutoDash extends Component {
         </div>
       ));
     } else {
-      return (
-        <div className="div-naotemnada">Não há nenhum usuário cadastrado</div>
-      );
+      return <div className="div-naotemnada">Não há nenhum usuário cadastrado</div>;
     }
   };
 
@@ -521,10 +509,11 @@ class GerenciarProdutoDash extends Component {
           <div
             // className="div-lines-Rtecnico"
             style={{
-              width: "100%",
-              height: "50px",
-              display: "flex",
-              alignItems: "center"
+              width: '100%',
+              height: 'auto',
+              minHeight: '60px',
+              display: 'flex',
+              alignItems: 'center'
             }}
           >
             <div className="cel-tecnico-cabecalho-GCadastros">{line.name}</div>
@@ -537,14 +526,14 @@ class GerenciarProdutoDash extends Component {
             </div>
             <div className="cel-carro-cabecalho-GCadastros">{line.plate}</div>
             <div className="cel-cnh-cabecalho-GCadastros">
-              {line.CNH.replace(/(\d{2})(\d{2})(\d{4})/, "$1/$2/$3")}
+              {line.CNH.replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3')}
             </div>
             <div className="cel-edit-cabecalho-GCadastros">
               {this.props.auth.addTec ? (
                 <Tooltip placement="topLeft" title="Editar">
                   <EditOutlined
                     className="icon-edit"
-                    style={{ fontSize: "20px", color: "#08c" }}
+                    style={{ fontSize: '20px', color: '#08c' }}
                     onClick={() => this.redirectTecnico(line)}
                     theme="outlined"
                   />
@@ -556,9 +545,7 @@ class GerenciarProdutoDash extends Component {
         </div>
       ));
     } else {
-      return (
-        <div className="div-naotemnada">Não há nenhum técnico cadastrado</div>
-      );
+      return <div className="div-naotemnada">Não há nenhum técnico cadastrado</div>;
     }
   };
 
@@ -569,34 +556,28 @@ class GerenciarProdutoDash extends Component {
           <div
             // className="div-lines-Rtecnico"
             style={{
-              width: "100%",
-              height: "50px",
-              display: "flex",
-              alignItems: "center"
+              width: '100%',
+              height: 'auto',
+              minHeight: '60px',
+              display: 'flex',
+              alignItems: 'center'
             }}
           >
             <div className="cel-cnpj-cabecalho-GCadastros">
-              {line.cnpj.replace(
-                /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
-                "$1.$2.$3/$4-$5"
-              )}
+              {line.cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')}
             </div>
-            <div className="cel-rs-cabecalho-GCadastros">
-              {line.razaoSocial}
-            </div>
+            <div className="cel-rs-cabecalho-GCadastros">{line.razaoSocial}</div>
             <div className="cel-uf-cabecalho-GCadastros">{line.state}</div>
-            <div className="cel-nome-cabecalho-GCadastros">
-              {line.nameContact}
-            </div>
+            <div className="cel-nome-cabecalho-GCadastros">{line.nameContact}</div>
             <div className="cel-telefone-cabecalho-GCadastros">
-              {line.telphone.replace(/(\d{2})(\d{4,5})(\d{4})/, "($1) $2-$3")}
+              {line.telphone.replace(/(\d{2})(\d{4,5})(\d{4})/, '($1) $2-$3')}
             </div>
             <div className="cel-edit-cabecalho-GCadastros">
               {this.props.auth.addFonr ? (
                 <Tooltip placement="topLeft" title="Editar">
                   <EditOutlined
                     className="icon-edit"
-                    style={{ fontSize: "20px", color: "#08c" }}
+                    style={{ fontSize: '20px', color: '#08c' }}
                     onClick={() => this.redirectFornecedor(line)}
                     theme="outlined"
                   />
@@ -608,11 +589,7 @@ class GerenciarProdutoDash extends Component {
         </div>
       ));
     } else {
-      return (
-        <div className="div-naotemnada">
-          Não há nenhum fornecedor cadastrado
-        </div>
-      );
+      return <div className="div-naotemnada">Não há nenhum fornecedor cadastrado</div>;
     }
   };
 
@@ -636,7 +613,7 @@ class GerenciarProdutoDash extends Component {
     await this.props.redirectValueProduto(value);
 
     await this.setState({
-      redirect: "produto"
+      redirect: 'produto'
     });
   };
 
@@ -661,7 +638,7 @@ class GerenciarProdutoDash extends Component {
     await this.props.redirectValueFornecedor(value);
 
     await this.setState({
-      redirect: "fornecedor"
+      redirect: 'fornecedor'
     });
   };
 
@@ -677,7 +654,7 @@ class GerenciarProdutoDash extends Component {
     await this.props.redirectValueUsuario(value);
 
     await this.setState({
-      redirect: "usuario"
+      redirect: 'usuario'
     });
   };
 
@@ -693,33 +670,29 @@ class GerenciarProdutoDash extends Component {
     await this.props.redirectValueTecnico(value);
 
     await this.setState({
-      redirect: "tecnico"
+      redirect: 'tecnico'
     });
   };
 
   renderRedirect = () => {
     // eslint-disable-next-line default-case
     switch (this.state.redirect) {
-      case "produto":
-        return (
-          <Redirect exact push path to="/logged/gerenciarProdutosDash/dash" />
-        );
+      case 'produto':
+        return <Redirect exact push path to="/logged/gerenciarProdutosDash/dash" />;
       // eslint-disable-next-line no-duplicate-case
-      case "fornecedor":
-        return (
-          <Redirect exact push path to="/logged/gerenciarFornecedor/dash" />
-        );
+      case 'fornecedor':
+        return <Redirect exact push path to="/logged/gerenciarFornecedor/dash" />;
       // eslint-disable-next-line no-duplicate-case
-      case "usuario":
+      case 'usuario':
         return <Redirect exact push path to="/logged/gerenciarUsuario/dash" />;
       // eslint-disable-next-line no-duplicate-case
-      case "tecnico":
+      case 'tecnico':
         return <Redirect exact push path to="/logged/gerenciarTecnico/dash" />;
     }
   };
 
   Tables = () => {
-    if (this.state.gerenciar === "produtos") {
+    if (this.state.gerenciar === 'produtos') {
       return (
         <div className="div-tables-GCadastros">
           <div className="div-cabecalho-GCadastros">
@@ -741,17 +714,13 @@ class GerenciarProdutoDash extends Component {
           )}
         </div>
       );
-    } else if (this.state.gerenciar === "usuario") {
+    } else if (this.state.gerenciar === 'usuario') {
       return (
         <div className="div-tables-GCadastros">
           <div className="div-cabecalho-GCadastros">
             <div className="cel-usuario-cabecalho-GCadastros">Usuário</div>
-            <div className="cel-tipoConta-cabecalho-GCadastros">
-              Tipo de conta
-            </div>
-            <div className="cel-customizado-cabecalho-GCadastros">
-              Customizado
-            </div>
+            <div className="cel-tipoConta-cabecalho-GCadastros">Tipo de conta</div>
+            <div className="cel-customizado-cabecalho-GCadastros">Customizado</div>
             <div className="cel-edit-cabecalho-GCadastros" />
           </div>
 
@@ -765,7 +734,7 @@ class GerenciarProdutoDash extends Component {
           )}
         </div>
       );
-    } else if (this.state.gerenciar === "fornecedor") {
+    } else if (this.state.gerenciar === 'fornecedor') {
       return (
         <div className="div-tables-GCadastros">
           <div className="div-cabecalho-GCadastros">
@@ -787,7 +756,7 @@ class GerenciarProdutoDash extends Component {
           )}
         </div>
       );
-    } else if (this.state.gerenciar === "tecnico") {
+    } else if (this.state.gerenciar === 'tecnico') {
       return (
         <div className="div-tables-GCadastros">
           <div className="div-cabecalho-GCadastros">
@@ -812,7 +781,7 @@ class GerenciarProdutoDash extends Component {
   };
 
   Avancado = () => {
-    if (this.state.avancado && this.state.gerenciar === "produtos") {
+    if (this.state.avancado && this.state.gerenciar === 'produtos') {
       return (
         <div className="div-linha-avancado-Rtecnico">
           <div className="div-ocultar-GCadastros">
@@ -826,7 +795,7 @@ class GerenciarProdutoDash extends Component {
               <Input
                 disabled
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="sku"
                 value={this.state.sku}
                 placeholder="Digite o sku"
@@ -839,7 +808,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-text-Os">Produto:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="produto"
                 value={this.state.produto}
                 placeholder="Digite o produto"
@@ -854,7 +823,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-text-Rtecnico">Categoria:</div>
               <Select
                 defaultValue="Não selecionado"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 onChange={this.handleChange}
               >
                 <Option value="">Todos</Option>
@@ -868,7 +837,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-text-Rtecnico">Marca:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="marca"
                 value={this.state.marca}
                 placeholder="Digite a marca"
@@ -881,7 +850,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-text-Rtecnico">Tipo:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="tipo"
                 value={this.state.tipo}
                 placeholder="Digite o tipo"
@@ -892,7 +861,7 @@ class GerenciarProdutoDash extends Component {
           </div>
         </div>
       );
-    } else if (this.state.avancado && this.state.gerenciar === "fornecedor") {
+    } else if (this.state.avancado && this.state.gerenciar === 'fornecedor') {
       return (
         <div className="div-linha-avancado-Rtecnico">
           <div className="div-ocultar-GCadastros">
@@ -905,7 +874,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-text-Rtecnico">Cnpj:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="cnpj"
                 value={this.state.cnpj}
                 placeholder="Digite o cnpj"
@@ -918,7 +887,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-textRs-Os">Razão social:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="razaoSocial"
                 value={this.state.razaoSocial}
                 placeholder="Digite a razão social"
@@ -933,7 +902,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-text-Rtecnico">UF:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="uf"
                 value={this.state.uf}
                 placeholder="SP"
@@ -946,7 +915,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-text-Rtecnico">Nome:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="nome"
                 value={this.state.nome}
                 placeholder="Digite o nome"
@@ -959,7 +928,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-text-Rtecnico">Telefone:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="telefone"
                 value={this.state.telefone}
                 placeholder="Digite o telefone"
@@ -970,7 +939,7 @@ class GerenciarProdutoDash extends Component {
           </div>
         </div>
       );
-    } else if (this.state.avancado && this.state.gerenciar === "tecnico") {
+    } else if (this.state.avancado && this.state.gerenciar === 'tecnico') {
       return (
         <div className="div-linha-avancado-Rtecnico">
           <div className="div-ocultar-GCadastros">
@@ -983,7 +952,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-text-Rtecnico">Técnico:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="tecnico"
                 value={this.state.tecnico}
                 placeholder="Digite o tecnico"
@@ -996,7 +965,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-text-Rtecnico">Placa:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="placa"
                 value={this.state.placa}
                 placeholder="Digite a placa"
@@ -1009,7 +978,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-text-Rtecnico">CNH:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="cnh"
                 value={this.state.cnh}
                 placeholder="20/11/2020"
@@ -1020,7 +989,7 @@ class GerenciarProdutoDash extends Component {
           </div>
         </div>
       );
-    } else if (this.state.avancado && this.state.gerenciar === "usuario") {
+    } else if (this.state.avancado && this.state.gerenciar === 'usuario') {
       return (
         <div className="div-linha-avancado-Rtecnico">
           <div className="div-ocultar-GCadastros">
@@ -1033,7 +1002,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-text-Rtecnico">Usuário:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="usuario"
                 value={this.state.usuario}
                 placeholder="Digite o usuário"
@@ -1046,7 +1015,7 @@ class GerenciarProdutoDash extends Component {
               <div className="div-textTipo-GCadastros">Tipo de conta:</div>
               <Input
                 className="input-100"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="tipoConta"
                 value={this.state.tipoConta}
                 placeholder="Digite o tipo de conta"
@@ -1062,13 +1031,11 @@ class GerenciarProdutoDash extends Component {
         <div className="div-avancado-GCadastros">
           <Select
             value={this.state.gerenciar}
-            style={{ width: "25%" }}
+            style={{ width: '25%' }}
             onChange={this.handleChangeGerenciar}
           >
             <Option value="usuario">USUÁRIO</Option>
-            {!this.props.auth.modulo && (
-              <Option value="tecnico">TÉCNICO</Option>
-            )}
+            {!this.props.auth.modulo && <Option value="tecnico">TÉCNICO</Option>}
             <Option value="produtos">PRODUTOS</Option>
             <Option value="fornecedor">FORNECEDOR</Option>
           </Select>

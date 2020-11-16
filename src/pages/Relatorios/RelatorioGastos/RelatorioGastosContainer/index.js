@@ -33,7 +33,7 @@ class RelatorioGastosContainer extends Component {
     return (
       <div className="div-card-emprestimo-report">
         <div className="title-emprestimo-report">
-          <h1 className="h1-Gentrada">Relatório Gastos</h1>
+          <h1 className="h1-Gentrada">Relatório gastos</h1>
         </div>
 
         <div className="div-linha-RCompras">
@@ -132,6 +132,7 @@ class RelatorioGastosContainer extends Component {
           <div className="div-cabecalho-qtd">Qtd. total</div>
           <div className="div-cabecalho-data">Data Ultima Atualiz.</div>
         </div>
+        <div className="div-separate-RVendas" />
       </div>
     );
   }

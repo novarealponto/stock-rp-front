@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import "./index.css";
-import { Button, Spin, Input, Modal } from "antd";
-import { getProdutos, CreatePDF } from "../../../../services/produto";
-import { PrinterOutlined } from "@ant-design/icons";
+import React, { Component } from 'react';
+import './index.css';
+import { Button, Spin, Input, Modal } from 'antd';
+import { getProdutos, CreatePDF } from '../../../../services/produto';
+import { PrinterOutlined } from '@ant-design/icons';
 
 class RelatorioMapContainer extends Component {
   state = {
     avancado: false,
     loading: false,
-    produto: "",
-    marca: "",
-    corredor: "",
-    coluna: "",
-    prateleira: "",
-    gaveta: "",
+    produto: '',
+    marca: '',
+    corredor: '',
+    coluna: '',
+    prateleira: '',
+    gaveta: '',
     page: 1,
     count: 1,
     show: 1,
     total: 10,
     modalImprimir: false,
-    products: [],
+    products: []
   };
 
   componentDidMount = async () => {
@@ -35,43 +35,43 @@ class RelatorioMapContainer extends Component {
             corredor: this.state.corredor,
             coluna: this.state.coluna,
             prateleira: this.state.prateleira,
-            gaveta: this.state.gaveta,
-          },
+            gaveta: this.state.gaveta
+          }
         },
         mark: {
           specific: {
-            mark: this.state.marca,
-          },
+            mark: this.state.marca
+          }
         },
         equipType: {
           specific: {
-            type: "",
-          },
-        },
+            type: ''
+          }
+        }
       },
       page: this.state.page,
-      total: 10,
+      total: 10
     };
 
-    await getProdutos(query).then((resposta) =>
+    await getProdutos(query).then(resposta =>
       this.setState({
         products: resposta.data.rows,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show,
+        show: resposta.data.show
       })
     );
   };
 
   openModal = () => {
     this.setState({
-      modalImprimir: true,
+      modalImprimir: true
     });
   };
 
-  onChange = async (e) => {
+  onChange = async e => {
     await this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
 
     await this.getAllProdutos();
@@ -79,13 +79,13 @@ class RelatorioMapContainer extends Component {
 
   onCancel = () => {
     this.setState({
-      modalImprimir: false,
+      modalImprimir: false
     });
   };
 
-  changePages = async (pages) => {
+  changePages = async pages => {
     await this.setState({
-      page: pages,
+      page: pages
     });
     await this.getAllProdutos();
   };
@@ -150,8 +150,7 @@ class RelatorioMapContainer extends Component {
           {this.state.page + 2}
         </Button>
       ) : null}
-      {this.state.page + 2 < this.state.count / this.state.total &&
-      this.state.page < 3 ? (
+      {this.state.page + 2 < this.state.count / this.state.total && this.state.page < 3 ? (
         <Button
           className="button"
           type="primary"
@@ -160,8 +159,7 @@ class RelatorioMapContainer extends Component {
           {this.state.page + 3}
         </Button>
       ) : null}
-      {this.state.page + 3 < this.state.count / this.state.total &&
-      this.state.page < 2 ? (
+      {this.state.page + 3 < this.state.count / this.state.total && this.state.page < 2 ? (
         <Button
           className="button"
           type="primary"
@@ -182,22 +180,22 @@ class RelatorioMapContainer extends Component {
             corredor: this.state.corredor,
             coluna: this.state.coluna,
             prateleira: this.state.prateleira,
-            gaveta: this.state.gaveta,
-          },
+            gaveta: this.state.gaveta
+          }
         },
         mark: {
           specific: {
-            mark: this.state.marca,
-          },
+            mark: this.state.marca
+          }
         },
         equipType: {
           specific: {
-            type: "",
-          },
-        },
+            type: ''
+          }
+        }
       },
       // total: 400,
-      total: undefined,
+      total: undefined
     };
 
     const { status, data } = await getProdutos(query);
@@ -231,15 +229,13 @@ class RelatorioMapContainer extends Component {
             <div className="div-linha-avancado-RMap">
               <PrinterOutlined
                 id="imprimir"
-                style={{ fontSize: "32px" }}
+                style={{ fontSize: '32px' }}
                 onClick={this.openModal}
               />
               <Button
                 type="primary"
                 className="button"
-                onClick={() =>
-                  this.setState({ avancado: !this.state.avancado })
-                }
+                onClick={() => this.setState({ avancado: !this.state.avancado })}
               >
                 Ocultar
               </Button>
@@ -250,7 +246,7 @@ class RelatorioMapContainer extends Component {
                 <Input
                   disabled
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="sku"
                   value={this.state.sku}
                   placeholder="123456"
@@ -263,7 +259,7 @@ class RelatorioMapContainer extends Component {
                 <div className="div-text-Os">Produto:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="produto"
                   value={this.state.produto}
                   placeholder="Digite o produto"
@@ -277,7 +273,7 @@ class RelatorioMapContainer extends Component {
                 <div className="div-text-Os">Marca:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="marca"
                   value={this.state.marca}
                   placeholder="Digite a marca"
@@ -290,7 +286,7 @@ class RelatorioMapContainer extends Component {
                 <div className="div-text-Os">Corredor:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="corredor"
                   value={this.state.corredor}
                   placeholder="Digite o corredor"
@@ -302,7 +298,7 @@ class RelatorioMapContainer extends Component {
                 <div className="div-text-Os">Coluna:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="coluna"
                   value={this.state.coluna}
                   placeholder="Digite a coluna"
@@ -314,11 +310,7 @@ class RelatorioMapContainer extends Component {
           </div>
         ) : (
           <div className="div-linha1-avancado-RMap">
-            <PrinterOutlined
-              id="imprimir"
-              style={{ fontSize: "32px" }}
-              onClick={this.openModal}
-            />
+            <PrinterOutlined id="imprimir" style={{ fontSize: '32px' }} onClick={this.openModal} />
             <Button
               type="primary"
               className="button"
@@ -337,21 +329,24 @@ class RelatorioMapContainer extends Component {
           <div className="cel-map-cabecalho-RMap">Prateleira</div>
           <div className="cel-map-cabecalho-RMap">Gaveta</div>
         </div>
-        <div className=" div-separate-ROs" />
+        <div className=" div-separate-Gentrada" />
         {this.state.loading ? (
           <div className="spin">
             <Spin spinning={this.state.loading} />
           </div>
         ) : null}
-        {this.state.products.map((product) => (
-          <div className="div-cabecalhoLinha-gerEst" style={{ width: "90%" }}>
-            <div className="cel-map-cabecalho-RMap">{product.sku}</div>
-            <div className="cel-produto-cabecalho-RMap">{product.name}</div>
-            <div className="cel-marca-cabecalho-RMap">{product.mark}</div>
-            <div className="cel-map-cabecalho-RMap">{product.corredor}</div>
-            <div className="cel-map-cabecalho-RMap">{product.coluna}</div>
-            <div className="cel-map-cabecalho-RMap">{product.prateleira}</div>
-            <div className="cel-map-cabecalho-RMap">{product.gaveta}</div>
+        {this.state.products.map(product => (
+          <div className="div-main-cabecalho-RMap">
+            <div className="div-cabecalhoLinha-RMap">
+              <div className="cel-map-cabecalho-RMap">{product.sku}</div>
+              <div className="cel-produto-cabecalho-RMap">{product.name}</div>
+              <div className="cel-marca-cabecalho-RMap">{product.mark}</div>
+              <div className="cel-map-cabecalho-RMap">{product.corredor}</div>
+              <div className="cel-map-cabecalho-RMap">{product.coluna}</div>
+              <div className="cel-map-cabecalho-RMap">{product.prateleira}</div>
+              <div className="cel-map-cabecalho-RMap">{product.gaveta}</div>
+            </div>
+            <div className="div-separate-RMap" />
           </div>
         ))}
         <div className="footer-ROs">

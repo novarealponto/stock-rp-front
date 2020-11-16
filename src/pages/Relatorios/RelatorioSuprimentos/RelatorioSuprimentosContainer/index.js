@@ -306,6 +306,7 @@ class RelatorioSuprimentosContainer extends Component {
           <div className="div-cabecalho-qtd">Qtd. total</div>
           <div className="div-cabecalho-data">Data Ultima Atualiz.</div>
         </div>
+        <div className="div-separate-RVendas" />
 
         {this.state.rows.length !== 0 ? (
           this.state.rows.map(row => (

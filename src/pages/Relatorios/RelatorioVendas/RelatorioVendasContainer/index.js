@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import "./index.css";
-import { Button, Input, DatePicker } from "antd";
-import { GetRelatVendas } from "../../../../services/produto";
-import { PlusOutlined } from "@ant-design/icons";
-import moment from "moment";
+import React, { Component } from 'react';
+import './index.css';
+import { Button, Input, DatePicker } from 'antd';
+import { GetRelatVendas } from '../../../../services/produto';
+import { PlusOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 class RelatorioVendasContainer extends Component {
   state = {
@@ -11,17 +11,17 @@ class RelatorioVendasContainer extends Component {
     total: 10,
     count: 0,
     show: 0,
-    valueDate: { start: "2019/01/01" },
-    produto: "",
+    valueDate: { start: '2019/01/01' },
+    produto: '',
     avancado: false,
     rows: [],
-    index: -1,
+    index: -1
   };
 
-  onChange = async (e) => {
+  onChange = async e => {
     const { name, value } = e.target;
     this.setState({
-      [name]: value,
+      [name]: value
     });
 
     await this.getRelatVendas(value);
@@ -29,7 +29,7 @@ class RelatorioVendasContainer extends Component {
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado,
+      avancado: !this.state.avancado
     });
   };
 
@@ -37,38 +37,38 @@ class RelatorioVendasContainer extends Component {
     await this.getRelatVendas();
   };
 
-  getRelatVendas = async (name) => {
+  getRelatVendas = async name => {
     const query = {
       filters: {
         product: {
           specific: {
-            name,
-          },
+            name
+          }
         },
 
         freeMarketParts: {
           specific: {
-            createdAt: this.state.valueDate,
-          },
+            createdAt: this.state.valueDate
+          }
         },
         osParts: {
           specific: {
-            deletedAt: this.state.valueDate,
-          },
+            deletedAt: this.state.valueDate
+          }
         },
         technicianReserveParts: {
           specific: {
-            createdAt: this.state.valueDate,
-          },
+            createdAt: this.state.valueDate
+          }
         },
         kitOut: {
           specific: {
-            updatedAt: this.state.valueDate,
-          },
-        },
+            updatedAt: this.state.valueDate
+          }
+        }
       },
       page: this.state.page,
-      total: this.state.total,
+      total: this.state.total
     };
     const { status, data } = await GetRelatVendas(query);
 
@@ -77,23 +77,23 @@ class RelatorioVendasContainer extends Component {
         rows: data.rows,
         page: data.page,
         count: data.count,
-        show: data.show,
+        show: data.show
       });
   };
 
-  searchDate = async (e) => {
+  searchDate = async e => {
     if (!e[0] || !e[1]) return;
     await this.setState({
-      valueDate: { start: e[0]._d, end: e[1]._d },
+      valueDate: { start: e[0]._d, end: e[1]._d }
     });
 
     // await this.getAllOs();
     await this.getRelatVendas();
   };
 
-  changePages = async (pages) => {
+  changePages = async pages => {
     await this.setState({
-      page: pages,
+      page: pages
     });
     await this.getRelatVendas();
   };
@@ -158,8 +158,7 @@ class RelatorioVendasContainer extends Component {
           {this.state.page + 2}
         </Button>
       ) : null}
-      {this.state.page + 2 < this.state.count / this.state.total &&
-      this.state.page < 3 ? (
+      {this.state.page + 2 < this.state.count / this.state.total && this.state.page < 3 ? (
         <Button
           className="button"
           type="primary"
@@ -168,8 +167,7 @@ class RelatorioVendasContainer extends Component {
           {this.state.page + 3}
         </Button>
       ) : null}
-      {this.state.page + 3 < this.state.count / this.state.total &&
-      this.state.page < 2 ? (
+      {this.state.page + 3 < this.state.count / this.state.total && this.state.page < 2 ? (
         <Button
           className="button"
           type="primary"
@@ -200,7 +198,7 @@ class RelatorioVendasContainer extends Component {
                 <div className="div-text-Os">Produto:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="produto"
                   value={this.state.produto}
                   placeholder="Digite o nome do produto"
@@ -236,34 +234,31 @@ class RelatorioVendasContainer extends Component {
           <div className="cel-data-cabecalho-Gentrada">Data atualização</div>
           <div className="cel-edit-cabecalho-Gentrada" />
         </div>
+        <div className="div-separate-RVendas" />
 
         {this.state.rows.map((row, index) => (
           <>
             <div className="div-100-Gentrada">
               <div className="div-lines-Gentrada">
                 <div className="cel-produto-cabecalho-Gentrada">
-                  <label className="div-table-label-cel-Gentrada">
-                    {row.name}
-                  </label>
+                  <label className="div-table-label-cel-Gentrada">{row.name}</label>
                 </div>
                 <div className="cel-quant-cabecalho-Gentrada">
-                  <label className="div-table-label-cel-Gentrada">
-                    {row.quantidadeSaidaTotal}
-                  </label>
+                  <label className="div-table-label-cel-Gentrada">{row.quantidadeSaidaTotal}</label>
                 </div>
                 <div className="cel-usuario-cabecalho-Gentrada">
                   <label className="div-table-label-cel-Gentrada">-</label>
                 </div>
                 <div className="cel-data-cabecalho-Gentrada">
                   <label className="div-table-label-cel-Gentrada">
-                    {row.updatedAt ? moment(row.updatedAt).format("LLL") : null}
+                    {row.updatedAt ? moment(row.updatedAt).format('LLL') : null}
                   </label>
                 </div>
                 <div className="cel-edit-cabecalho-Gentrada">
                   <PlusOutlined
                     onClick={() =>
                       this.setState({
-                        index: this.state.index === index ? -1 : index,
+                        index: this.state.index === index ? -1 : index
                       })
                     }
                   />
@@ -278,42 +273,36 @@ class RelatorioVendasContainer extends Component {
                   <div className="div-normal-mais-RVendas">
                     <div className="div-relatVendas-mais-status">Status</div>
                     <div className="div-relatVendas-mais-total">Total</div>
-                    <div className="div-relatVendas-mais-updated">
-                      Ultima saída
-                    </div>
+                    <div className="div-relatVendas-mais-updated">Ultima saída</div>
                   </div>
                 </div>
                 {[
                   {
-                    status: "E-Commerce",
+                    status: 'E-Commerce',
                     total: row.saidaEComerce,
-                    saída: row.createdAtEComerce,
+                    saída: row.createdAtEComerce
                   },
                   {
-                    status: "OS",
+                    status: 'OS',
                     total: row.saidaOs,
-                    saída: row.createdAtOs,
+                    saída: row.createdAtOs
                   },
                   {
-                    status: "Interno",
+                    status: 'Interno',
                     total: row.saidaInterno,
-                    saída: row.createdAtInterno,
+                    saída: row.createdAtInterno
                   },
                   {
-                    status: "Kit",
+                    status: 'Kit',
                     total: row.saidaKit,
-                    saída: row.createdAtKit,
-                  },
-                ].map((item) => (
+                    saída: row.createdAtKit
+                  }
+                ].map(item => (
                   <div className="div-normal-mais-ROs">
-                    <div className="div-relatVendas-mais-status-RV">
-                      {item.status}
-                    </div>
-                    <div className="div-relatVendas-mais-total-RV">
-                      {item.total}
-                    </div>
+                    <div className="div-relatVendas-mais-status-RV">{item.status}</div>
+                    <div className="div-relatVendas-mais-total-RV">{item.total}</div>
                     <div className="div-relatVendas-mais-updated-RV">
-                      {item.saída ? moment(item.saída).format("LLL") : "-"}
+                      {item.saída ? moment(item.saída).format('LLL') : '-'}
                     </div>
                   </div>
                 ))}
