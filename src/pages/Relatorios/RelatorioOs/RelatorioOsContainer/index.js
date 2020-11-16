@@ -186,37 +186,19 @@ class GerenciarEntrada extends Component {
                 this.state.lineSelected.rows.map(line => (
                   <div className="div-branco-mais-ROs">
                     <div className="div-normal-mais-ROs">
-                      <div className="div-produtos-mais-ROs">
-                        {line.products.map(valor => (
-                          <div className="div-peca">{valor.name}</div>
-                        ))}
+                        <div style={{ display: "flex", flexDirection: "column",  width: '100%'}}>
+                          {line.products.map(valor => (
+                            <div style={{ display: "flex", width: '100%'}}>
+                              <div className="div-peca" contentEditable style={{ width: '30%' }}>{valor.name}</div>
+                              <div className="div-peca" style={{ width: '30%' }}>{valor.status}</div>
+                              <div className="div-peca" style={{ width: '10%' }}>{valor.amount}</div>
+                              <div className="div-peca" style={{ width: '10%' }}>{valor.missOut}</div>
+                              <div className="div-peca" style={{ width: '10%' }}>{valor.output}</div>
+                              <div className="div-peca" style={{ width: '10%' }}>{valor.return}</div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <div className="div-produtos-mais-ROs">
-                        {line.products.map(valor => (
-                          <div className="div-peca">{valor.status}</div>
-                        ))}
-                      </div>
-                      <div className="div-amount-mais-ROs">
-                        {line.products.map(valor => (
-                          <div className="div-peca">{valor.amount}</div>
-                        ))}
-                      </div>
-                      <div className="div-missOut-mais-ROs">
-                        {line.products.map(valor => (
-                          <div className="div-peca">{valor.missOut}</div>
-                        ))}
-                      </div>
-                      <div className="div-output-mais-ROs">
-                        {line.products.map(valor => (
-                          <div className="div-peca">{valor.output}</div>
-                        ))}
-                      </div>
-                      <div className="div-return-mais-ROs">
-                        {line.products.map(valor => (
-                          <div className="div-peca">{valor.return}</div>
-                        ))}
-                      </div>
-                    </div>
                   </div>
                 ))
               )}
