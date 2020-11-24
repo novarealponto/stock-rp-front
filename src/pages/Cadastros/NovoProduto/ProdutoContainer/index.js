@@ -1,119 +1,85 @@
-import React, { Component } from "react";
-import {
-  Input,
-  InputNumber,
-  Select,
-  Button,
-  Modal,
-  Switch,
-  message
-} from "antd";
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import "./index.css";
-import { validators, masks } from "./validators";
+import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { message } from 'antd'
+
+import { validators } from './validators'
 import {
   newMarca,
   newTipo,
   newProduto,
   getTipo,
   getMarca
-} from "../../../../services/produto";
-import { PlusOutlined } from "@ant-design/icons";
+} from '../../../../services/produto'
+import AddProduct from '../../../../containers/Register/AddProduct'
+import buildProduct from './productSpec'
 
-const { Option } = Select;
-const { TextArea } = Input;
-
+const initialState = {
+  messageError: false,
+  typesList: [],
+  marksList: [],
+  messageSuccess: false,
+  itemArray: [],
+  item: '',
+  corredor: '',
+  coluna: '',
+  prateleira: '',
+  gaveta: '',
+  category: 'Equipamento',
+  mark: 'Não selecionado',
+  type: 'Não selecionado',
+  descricao: '',
+  quantMin: 1,
+  visibleMark: false,
+  visibleType: false,
+  newMark: '',
+  newType: '',
+  newDescricao: '',
+  loading: false,
+  serial: false,
+  formErrors: {
+    item: null,
+  },
+  message: {
+    item: '',
+    quantMin: '',
+  },
+  responsibleUser: 'modrp',
+}
 class NovoProduto extends Component {
-  state = {
-    messageError: false,
-    tipoArray: [],
-    marcaArray: [],
-    messageSuccess: false,
-    itemArray: [],
-    item: "",
-    corredor: "",
-    coluna: "",
-    prateleira: "",
-    gaveta: "",
-    categoria: "Equipamento",
-    marca: "Não selecionado",
-    tipo: "Não selecionado",
-    descricao: "",
-    quantMin: 1,
-    modalMarca: false,
-    modalTipo: false,
-    newMarca: "",
-    newTipo: "",
-    newDescricao: "",
-    loading: false,
-    serial: false,
-    fieldFalha: {
-      item: false,
-      quantMin: false
-    },
-    message: {
-      item: "",
-      quantMin: ""
-    }
-  };
+  state = initialState
 
   onChangeQuantMin = value => {
     this.setState({
       quantMin: value ? value : 1
-    });
-  };
-
-  handleChangeTipo = value => {
-    this.setState({
-      tipo: value
-    });
-  };
-
-  handleChangeMarca = async value => {
-    // const {
-    //   nome,
-    //   valor,
-    //   fieldFalha,
-    //   message
-    // } = validators('mark', value, this.state)
-
-    // this.setState({
-    //   [nome]: valor,
-    //   fieldFalha,
-    //   message
-    // })
-
-    await this.setState({
-      marca: value
-    });
-  };
+    })
+  }
 
   success = () => {
-    message.success("O cadastro foi efetuado");
-  };
+    message.success("O cadastro foi efetuado")
+  }
 
   error = () => {
-    message.error("O cadastro não foi efetuado");
-  };
+    message.error("O cadastro não foi efetuado")
+  }
 
   errorQuant = () => {
-    message.error("Coloque a quantidade mínima");
-  };
+    message.error("Coloque a quantidade mínima")
+  }
 
   componentDidMount = async () => {
-    await this.getAllMarca();
-
-    await this.getAllTipo();
-  };
+    await this.getAllMarca()
+    await this.getAllTipo()
+  }
 
   getAllTipo = async () => {
-    await getTipo().then(resposta =>
-      this.setState({
-        tipoArray: resposta.data
-      })
-    );
-  };
+    try {
+      const { data } = await getTipo()
+      this.setState({ typesList: data })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   getAllMarca = async mark => {
     const query = {
@@ -124,560 +90,183 @@ class NovoProduto extends Component {
           }
         }
       }
-    };
-
-    await getMarca(query).then(resposta =>
-      this.setState({
-        marcaArray: resposta.data
-      })
-    );
-  };
-
-  saveTargetNewProduto = async () => {
-    this.setState({
-      loading: true
-    });
-
-    const values = {
-      category: this.state.categoria.toLocaleLowerCase(),
-      description: this.state.descricao,
-      minimumStock: this.state.quantMin.toString(),
-      mark: this.state.marca,
-      name: this.state.item,
-      type: this.state.tipo,
-      serial: this.props.auth.modulo || this.state.serial,
-      responsibleUser: "modrp",
-      corredor: this.state.corredor,
-      coluna: this.state.coluna,
-      prateleira: this.state.prateleira,
-      gaveta: this.state.gaveta,
-      modulo: this.props.auth.modulo
-    };
-
-    const resposta = await newProduto(values);
-
-    if (resposta.status === 422) {
-      this.setState({
-        messageError: true,
-        fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
-      });
-      await this.error();
-      this.setState({
-        loading: false,
-        messageError: false
-      });
-    }
-    if (resposta.status === 200) {
-      this.setState({
-        item: "",
-        categoria: "Equipamento",
-        marca: "Não selecionado",
-        tipo: "Não selecionado",
-        descricao: "",
-        quantMin: 1,
-        serial: false,
-        messageSuccess: true,
-        corredor: "",
-        coluna: "",
-        prateleira: "",
-        gaveta: ""
-      });
-      await this.success();
-      this.setState({
-        loading: false,
-        messageSuccess: false
-      });
-    }
-  };
-
-  saveTargetNewMarca = async () => {
-    const values = {
-      manufacturer: this.state.newMarca,
-      mark: this.state.newMarca,
-      responsibleUser: "modrp"
-    };
-
-    const resposta = await newMarca(values);
-
-    if (resposta.status === 422) {
-      this.setState({
-        messageError: true,
-        fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
-      });
-      await this.error();
-      this.setState({
-        messageError: false
-      });
-    }
-    if (resposta.status === 200) {
-      this.setState({
-        newMarca: "",
-        messageSuccess: true
-      });
-      await this.success();
-      this.setState({
-        messageSuccess: false,
-        modalMarca: false
-      });
     }
 
-    await this.getAllMarca();
-  };
-
-  saveTargetNewTipo = async () => {
-    const values = {
-      type: this.state.newTipo,
-      responsibleUser: "modrp"
-    };
-
-    const resposta = await newTipo(values);
-
-    if (resposta.status === 422) {
-      this.setState({
-        messageError: true,
-        fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
-      });
-      await this.error();
-      this.setState({
-        messageError: false
-      });
+    try {
+      const { data } = await getMarca(query)
+      this.setState({ marksList: data, newMarca: '' })
+    } catch (error) {
+      this.error()
     }
-    if (resposta.status === 200) {
-      this.setState({
-        newTipo: "",
-        messageSuccess: true
-      });
-      await this.success();
-      this.setState({
-        messageSuccess: false,
-        modalTipo: false
-      });
+  }
+
+  addNewProduct = async () => {
+    this.setState({ loading: true })
+    const { modulo } = this.props.auth
+
+    const productFormatted = buildProduct({
+      ...this.state,
+      modulo,
+    })
+
+    try {
+      await newProduto(productFormatted)
+      this.setState(initialState)
+      await this.success()
+
+    } catch (error) {
+      await this.error()
+      console.log(error)
+    }
+  }
+
+  createNewMark = async () => {
+    const { newMark, responsibleUser } = this.state
+    const data = {
+      manufacturer: newMark,
+      mark: newMark,
+      responsibleUser,
     }
 
-    await this.getAllTipo();
-  };
+    try {
+      await newMarca(data)
+      await this.getAllMarca()
+      this.setState({ visibleMark: false })
+      this.success()
+    } catch (error) {
+      this.error()
+      this.setState({ visibleMark: false })
+    }
+  }
 
-  onChangeSerial = () => {
+  createNewType = async () => {
+    const { newType, responsibleUser } = this.state
+    const data = {
+      type: newType,
+      responsibleUser,
+    }
+
+    try {
+      await newTipo(data)
+      await this.getAllTipo()
+      this.setState({ visibleMark: false })
+      this.success()
+    } catch (error) {
+      this.error()
+      this.setState({ visibleMark: false })
+    }
+  }
+
+  saveModalData = async (modalType) => {
+    if (modalType === 'mark') {
+      await this.createNewMark()
+    }
+
+    if (modalType === 'type') {
+      await this.createNewType()
+    }
+  }
+
+  handleCancel = () => this.setState({
+    visibleMark: false,
+    visibleType: false,
+  })
+
+  openModalMark = () => {
     this.setState({
-      serial: !this.state.serial
-    });
-  };
+      visibleMark: true
+    })
+  }
 
-  handleOk = () => {
+  openModalType = () => {
     this.setState({
-      modalMarca: false,
-      modalTipo: false
-    });
-  };
+      visibleType: true
+    })
+  }
 
-  handleCancel = () => {
-    this.setState({
-      modalMarca: false
-    });
-  };
+  handleOnChange = ({ target }) => {
+    const { name, value } = target
+    this.setState({ [name]: value })
+  }
 
-  openModais = e => {
-    this.setState({
-      [e.target.name]: true
-    });
-  };
-
-  handleChange = value => {
-    this.setState({
-      categoria: value,
-      tipo: "Não selecionado"
-    });
-
-    this.getAllMarca();
-  };
-
-  onChange = e => {
-    const { nome, valor } = masks(e.target.name, e.target.value);
+  onBlurValidator = ({ target }) => {
+    const { formErrors } = this.state
+    const { name, value } = target
+    const messageError = validators(name, value)
 
     this.setState({
-      [nome]: valor
-    });
-  };
-
-  onBlurValidator = async e => {
-    const { nome, valor, fieldFalha, message } = validators(
-      e.target.name,
-      e.target.value,
-      this.state
-    );
-
-    await this.setState({
-      [nome]: valor,
-      fieldFalha,
-      message
-    });
-  };
-
-  onFocus = async e => {
-    await this.setState({
-      fieldFalha: {
-        ...this.state.fieldFalha,
-        [e.target.name]: false
-      },
-      message: {
-        ...this.state.message,
-        [e.target.name]: false
+      [name]: value,
+      formErrors: {
+        ...formErrors,
+        [name]: messageError,
       }
-    });
-  };
-
-  onFocusMark = () => {
-    this.setState({
-      fieldFalha: {
-        ...this.state.fieldFalha,
-        mark: false
-      },
-      message: {
-        ...this.state.message,
-        mark: false
-      }
-    });
-  };
-
-  onFocusType = () => {
-    this.setState({
-      fieldFalha: {
-        ...this.state.fieldFalha,
-        type: false
-      },
-      message: {
-        ...this.state.message,
-        type: false
-      }
-    });
-  };
+    })
+  }
 
   renderRedirect = () => {
     if (!this.props.auth.addProd) {
-      return <Redirect to="/logged/dash" />;
+      return <Redirect to="/logged/dash" />
     }
-  };
-
-  modalMarca = () => (
-    <Modal
-      title="Adicionar marca"
-      visible={this.state.modalMarca}
-      onOk={this.saveTargetNewMarca}
-      okText="Salvar"
-      onCancel={this.handleOk}
-      cancelText="Cancelar"
-    >
-      <div className="linhaModal-produtos">
-        <div className="div-marcaModal-produtos">
-          <div className="div-text-produtos">Marca:</div>
-          <Input
-            allowClear={!this.state.fieldFalha.newMarca}
-            className={
-              this.state.fieldFalha.newMarca
-                ? "div-inputError-tecnico"
-                : "input-100"
-            }
-            placeholder="Digite a marca"
-            name="newMarca"
-            value={this.state.newMarca}
-            onChange={this.onChange}
-            onBlur={this.onBlurValidator}
-            onFocus={this.onFocus}
-          />
-          {this.state.fieldFalha.newMarca ? (
-            <p className="div-feedbackError">{this.state.message.newMarca}</p>
-          ) : null}
-        </div>
-      </div>
-    </Modal>
-  );
-
-  modalTipo = () => (
-    <Modal
-      title="Adicionar tipo"
-      visible={this.state.modalTipo}
-      onOk={this.saveTargetNewTipo}
-      okText="Salvar"
-      onCancel={this.handleOk}
-      cancelText="Cancelar"
-    >
-      <div className="linhaModal-produtos">
-        <div className="div-tipoModal-produtos">
-          <div className="div-text-produtos">Tipo:</div>
-          <Input
-            className="input-100"
-            placeholder="Digite o tipo"
-            name="newTipo"
-            value={this.state.newTipo}
-            onChange={this.onChange}
-            allowClear
-          />
-        </div>
-      </div>
-    </Modal>
-  );
+  }
 
   render() {
+    const {
+      category,
+      corredor,
+      coluna,
+      descricao,
+      formErrors,
+      gaveta,
+      item,
+      loading,
+      message,
+      mark,
+      marksList,
+      prateleira,
+      serial,
+      type,
+      typesList,
+      visibleMark,
+      visibleType,
+    } = this.state
+
     return (
-      <div className="div-card-produtos">
-        {this.renderRedirect()}
-        <div className="linhaTexto-produtos">
-          <h1 className="h1-produtos">Produtos</h1>
-        </div>
-
-        <div className="linha1-produtos">
-          <div className="div-item-produtos">
-            <div className="div-text-produtos">Item:</div>
-            <div className="div-inputs">
-              <Input
-                allowClear={!this.state.fieldFalha.item}
-                className={
-                  this.state.fieldFalha.item
-                    ? "div-inputError-produtos"
-                    : "input-100"
-                }
-                placeholder="Digite o item"
-                name="item"
-                value={this.state.item}
-                onChange={this.onChange}
-                onBlur={this.onBlurValidator}
-                onFocus={this.onFocus}
-              />
-              {this.state.fieldFalha.item ? (
-                <p className="div-feedbackError">{this.state.message.item}</p>
-              ) : null}
-            </div>
-          </div>
-
-          <div className="div-categoria-produtos">
-            <div className="div-text-produtos">Categoria:</div>
-            <Select
-              value={this.state.categoria}
-              style={{ width: "100%" }}
-              onChange={this.handleChange}
-            >
-              <Option value="Equipamento">Equipamento</Option>
-              <Option value="Peca">Peca</Option>
-              <Option value="Acessorios">Acessórios</Option>
-            </Select>
-          </div>
-
-          <div className="div-marca-produtos">
-            <div className="div-text-produtos">Marca:</div>
-            <div className="div-inputs">
-              <Select
-                showSearch
-                placeholder="Selecione o produto"
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option.props.children
-                    .toLowerCase()
-                    .indexOf(input.toLowerCase()) >= 0
-                }
-                name="mark"
-                value={this.state.marca}
-                style={{ width: "100%" }}
-                onChange={this.handleChangeMarca}
-                onSearch={mark => this.getAllMarca(mark)}
-                onFocus={this.onFocusMark}
-                className={
-                  this.state.fieldFalha.mark
-                    ? "div-inputError-produtos"
-                    : "input-100"
-                }
-              >
-                {this.state.marcaArray.map(valor => (
-                  <Option value={valor.mark}>{valor.mark}</Option>
-                ))}
-              </Select>
-
-              {this.state.fieldFalha.mark ? (
-                <p className="div-feedbackError">{this.state.message.mark}</p>
-              ) : null}
-            </div>
-            {this.props.auth.addMark ? (
-              <Button
-                className="buttonadd-marca-produtos"
-                type="primary"
-                name="modalMarca"
-                onClick={this.openModais}
-              >
-                <PlusOutlined />
-              </Button>
-            ) : null}
-          </div>
-          <this.modalMarca />
-        </div>
-
-        <div className="linha1-produtos">
-          <div className="div-tipo-produtos">
-            <div className="div-text-produtos">Tipo:</div>
-            <div className="div-inputs">
-              {this.state.tipoArray.length !== 0 ? (
-                <Select
-                  value={this.state.tipo}
-                  style={{ width: "100%" }}
-                  name="type"
-                  onFocus={this.onFocusType}
-                  className={
-                    this.state.fieldFalha.type
-                      ? "div-inputError-produtos"
-                      : "input-100"
-                  }
-                  onChange={this.handleChangeTipo}
-                >
-                  {this.state.tipoArray.map(valor => (
-                    <Option value={valor.type}>{valor.type}</Option>
-                  ))}
-                </Select>
-              ) : (
-                <Select
-                  value="Nenhum tipo cadastrado"
-                  style={{ width: "100%" }}
-                ></Select>
-              )}
-              {this.state.fieldFalha.type ? (
-                <p className="div-feedbackError">{this.state.message.type}</p>
-              ) : null}
-            </div>
-            {this.props.auth.addType ? (
-              <Button
-                className="buttonadd-marca-produtos"
-                type="primary"
-                name="modalTipo"
-                onClick={this.openModais}
-              >
-                <PlusOutlined />
-              </Button>
-            ) : null}
-            <this.modalTipo />
-          </div>
-
-          <div className="div-quantMin-produtos">
-            <div className="div-textQuant-produtos">Quant. min:</div>
-            <div className="div-inputs">
-              <InputNumber
-                min={1}
-                className={
-                  this.state.fieldFalha.quantMin
-                    ? "div-inputError-produtos"
-                    : "input-100"
-                }
-                placeholder="12345"
-                name="quantMin"
-                value={this.state.quantMin}
-                onChange={this.onChangeQuantMin}
-                onBlur={this.onBlurValidator}
-                onFocus={this.onFocus}
-              />
-              {this.state.fieldFalha.quantMin ? (
-                <p className="div-feedbackError">
-                  {this.state.message.quantMin}
-                </p>
-              ) : null}
-            </div>
-          </div>
-
-          <div className="div-serial-produtos">
-            <div className="div-textSerial-produtos">Número de série:</div>
-            <Switch
-              checked={this.props.auth.modulo || this.state.serial}
-              onChange={this.onChangeSerial}
-            />
-          </div>
-        </div>
-
-        <div className="linha1-produtos">
-          <div className="div-descricao-produtos">
-            <div className="div-text-produtos">Descrição:</div>
-            <TextArea
-              className="input-100"
-              placeholder="Digite a descrição"
-              autosize={{ minRows: 2, maxRows: 4 }}
-              rows={4}
-              name="descricao"
-              value={this.state.descricao}
-              onChange={this.onChange}
-            />
-          </div>
-        </div>
-
-        <div className="linhaSemEspaco-produtos">
-          <div className="div-codigo-produtos">
-            <div className="div-text-produtos">Corredor:</div>
-            <div className="div-inputs">
-              <Input
-                className="input-100"
-                placeholder="12345"
-                name="corredor"
-                value={this.state.corredor}
-                onChange={this.onChange}
-              />
-            </div>
-          </div>
-
-          <div className="div-codigo-produtos">
-            <div className="div-text-produtos">Coluna:</div>
-            <div className="div-inputs">
-              <Input
-                className="input-100"
-                placeholder="12345"
-                name="coluna"
-                value={this.state.coluna}
-                onChange={this.onChange}
-              />
-            </div>
-          </div>
-
-          <div className="div-codigo-produtos">
-            <div className="div-text-produtos">Prateleira:</div>
-            <div className="div-inputs">
-              <Input
-                className="input-100"
-                placeholder="12345"
-                name="prateleira"
-                value={this.state.prateleira}
-                onChange={this.onChange}
-              />
-            </div>
-          </div>
-
-          <div className="div-codigo-produtos">
-            <div className="div-text-produtos">Gaveta:</div>
-            <div className="div-inputs">
-              <Input
-                className="input-100"
-                placeholder="12345"
-                name="gaveta"
-                value={this.state.gaveta}
-                onChange={this.onChange}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="linha-button-produtos">
-          <Button
-            className="button"
-            type="primary"
-            loading={this.state.loading}
-            onClick={this.saveTargetNewProduto}
-          >
-            Salvar
-          </Button>
-        </div>
-      </div>
-    );
+      <AddProduct
+        addNewProduct={this.addNewProduct}
+        category={category}
+        coluna={coluna}
+        corredor={corredor}
+        closeModal={this.handleCancel}
+        descricao={descricao}
+        formErrors={formErrors}
+        gaveta={gaveta}
+        getAllMarca={this.getAllMarca}
+        handleOnChange={this.handleOnChange}
+        item={item}
+        loading={loading}
+        mark={mark}
+        marksList={marksList}
+        message={message}
+        onBlurValidator={this.onBlurValidator}
+        onFocus={this.onFocus}
+        openModalType={this.openModalType}
+        openModalMark={this.openModalMark}
+        prateleira={prateleira}
+        saveModalData={this.saveModalData}
+        serial={serial}
+        typesList={typesList}
+        type={type}
+        visibleMark={visibleMark}
+        visibleType={visibleType}
+      />
+    )
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
     auth: state.auth
-  };
+  }
 }
 
-export default connect(mapStateToProps)(NovoProduto);
+export default connect(mapStateToProps)(NovoProduto)
