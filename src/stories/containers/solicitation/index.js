@@ -1,34 +1,61 @@
-import React from 'react';
+import React from 'react'
+import SolicitationContainer from '../../../containers/Solicitation'
+
+const data = [
+  {
+    key: '1',
+    item: 'Prisma Super Fácil',
+    quant: 32,
+    solicitante: 'Alan Lima',
+    date: '20/11/2020'
+  },
+  {
+    key: '2',
+    item: 'Prisma Super Fácil',
+    quant: 32,
+    solicitante: 'Alan Lima',
+    date: '20/11/2020'
+  },
+  {
+    key: '3',
+    item: 'Prisma Super Fácil',
+    quant: 32,
+    solicitante: 'Alan Lima',
+    date: '20/11/2020'
+  },
+  {
+    key: '4',
+    item: 'Prisma Super Fácil',
+    quant: 32,
+    solicitante: 'Alan Lima',
+    date: '20/11/2020'
+  },
+  {
+    key: '5',
+    item: 'Prisma Super Fácil',
+    quant: 32,
+    solicitante: 'Alan Lima',
+    date: '20/11/2020'
+  },
+]
+
+const handleOk = (values) => {
+  console.log(values)
+}
 
 export default {
-  title: 'Example/Button',
-  component: Button,
+  title: 'Containers/Solicitation',
+  component: SolicitationContainer,
   argTypes: {
-    backgroundColor: { control: 'color' },
+    data,
+    handleOk
   },
-};
+}
 
-const Template = (args) => <Button {...args} />;
+const Template = (args) => <SolicitationContainer {...args} />
 
-export const Primary = Template.bind({});
-Primary.args = {
-  primary: true,
-  label: 'Button',
-};
-
-export const Secondary = Template.bind({});
-Secondary.args = {
-  label: 'Button',
-};
-
-export const Large = Template.bind({});
-Large.args = {
-  size: 'large',
-  label: 'Button',
-};
-
-export const Small = Template.bind({});
-Small.args = {
-  size: 'small',
-  label: 'Button',
-};
+export const Default = Template.bind({})
+Default.args = {
+  data,
+  handleOk
+}
