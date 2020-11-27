@@ -1,8 +1,8 @@
-import React from 'react';
-import { Button, Modal, Form, Select } from 'antd';
+import React from 'react'
+import { Button, Modal, Form, Select } from 'antd'
 import styles from './style.module.css'
 
-const { Option } = Select;
+const { Option } = Select
 
 const ModalNewQuotation = ({
   visible,
@@ -12,19 +12,11 @@ const ModalNewQuotation = ({
   onFocus,
   onBlur,
   onSearch,
-  form
+  form,
 }) => (
-  <Modal
-    visible={visible}
-    footer={null}
-    closable={false}
-  >
+  <Modal visible={visible} footer={null} onFinish={handleOk} closable={false}>
     <h1>Criar nova cotação</h1>
-    <Form
-      form={form}
-      layout="vertical"
-      onFinish={handleOk}
-    >
+    <Form form={form} layout="vertical" onFinish={handleOk}>
       <Form.Item
         label="Nome do produto:"
         name="productName"
@@ -48,23 +40,16 @@ const ModalNewQuotation = ({
           <Option value="tom">Tom</Option>
         </Select>
       </Form.Item>
-        <div className={styles.divBtn}>
-          <Button
-            type="danger"
-            className={styles.actionBtn}
-            onClick={handleCancel}
-          >
-            Cancelar
-          </Button>
-          <Button
-            type="primary"
-            htmlType="submit"
-          >
-            Criar
-          </Button>
-        </div>
-      </Form>
+    </Form>
+    <div className={styles.divBtn}>
+      <Button type="danger" className={styles.actionBtn} onClick={handleCancel}>
+        Cancelar
+      </Button>
+      <Button type="primary" htmlType="submit">
+        Criar
+      </Button>
+    </div>
   </Modal>
-);
+)
 
-export default ModalNewQuotation;
+export default ModalNewQuotation
