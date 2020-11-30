@@ -1,18 +1,16 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Switch, Route } from 'react-router-dom'
+import AddProductContainer from '../NovoProduto/ProdutoContainer'
 
-import NovoProduto from './ProdutoContainer'
-
-class NovoProdutoRoute extends Component{
-
-  render() {
-    return(
-        <Switch>
-          <Route exact path='/logged/novoProduto/add' component={NovoProduto}/>  
-        </Switch>
-    )
-  }
-}
+const AddProduct = () => (
+  <Switch>
+    <Route
+      exact
+      path='/logged/novoProduto/add'
+      component={AddProductContainer}
+    />
+  </Switch>
+)
 
 
-export default NovoProdutoRoute
+export default AddProduct
