@@ -7,7 +7,7 @@
     "@fnando/cnpj": "0.1.1",
     "@fnando/cpf": "0.1.1",
     "antd": "4.6.5",
-    "axios": "0.18.0",
+    "axios": "0.18.1",
     "classnames": "2.2.6",
     "howler": "2.2.0",
     "jspdf": "1.5.3",
