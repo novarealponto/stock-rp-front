@@ -26,8 +26,6 @@ const initialState = {
   quantMin: 1,
   visibleMark: false,
   visibleType: false,
-  newMark: '',
-  newType: '',
   newDescricao: '',
   loading: false,
   serial: false,
@@ -226,16 +224,14 @@ class NovoProduto extends Component {
       mark,
       marksList,
       prateleira,
+      quantMin,
       serial,
       type,
       typesList,
       visibleMark,
       visibleType,
-      newMark,
-      newType,
     } = this.state;
 
-    console.log(visibleType);
 
     return (
       <AddProduct
@@ -259,13 +255,12 @@ class NovoProduto extends Component {
         openModalType={this.openModalType}
         openModalMark={this.openModalMark}
         prateleira={prateleira}
+        quantMin={quantMin}
         saveModalData={this.saveModalData}
         serial={serial}
         typesList={typesList}
         type={type}
         visibleMark={visibleMark}
-        newMark={newMark}
-        newType={newType}
         visibleType={visibleType}
       />
     );

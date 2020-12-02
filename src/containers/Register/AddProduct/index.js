@@ -25,8 +25,6 @@ const AddProduct = ({
   loading,
   mark,
   marksList,
-  newMark,
-  newType,
   onBlurValidator,
   openModalMark,
   openModalType,
