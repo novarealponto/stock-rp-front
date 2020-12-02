@@ -230,11 +230,8 @@ class NovoProduto extends Component {
       typesList,
       visibleMark,
       visibleType,
-      newMark,
-      newType,
     } = this.state;
 
-    console.log(visibleType);
 
     return (
       <AddProduct
@@ -264,8 +261,6 @@ class NovoProduto extends Component {
         typesList={typesList}
         type={type}
         visibleMark={visibleMark}
-        newMark={newMark}
-        newType={newType}
         visibleType={visibleType}
       />
     );
