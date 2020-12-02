@@ -27,7 +27,7 @@ class Estoque extends Component {
   state = {
     numeroSerie: "",
     produto: "",
-    numeroSerieModal: [],
+    numeroSerieModal: "",
     tipo: "",
     fabricante: "",
     serialNumberDelete: "",
@@ -79,7 +79,7 @@ class Estoque extends Component {
       numeroSerieModal: e.target.value
     });
 
-    const teste = this.state.numeroSerieModal.split(/\n/);
+    const teste = this.state.numeroSerieModal.split(/\n/, 10);
 
     if (
       /\n/.test(
@@ -109,6 +109,12 @@ class Estoque extends Component {
         });
       }
     }
+
+    console.log(this.state.line.analysis)
+
+    this.setState({
+      quantModal: this.state.numeroSerieModal.split("\n").length - 1,
+    });
   };
 
   onChange = async e => {
@@ -431,9 +437,9 @@ class Estoque extends Component {
                     placeholder="Digite o número de série"
                     autosize={{ minRows: 2, maxRows: 4 }}
                     rows={4}
-                    onChange={this.onChangeNumeroModal}
                     name="numeroSerieModal"
                     value={this.state.numeroSerieModal}
+                    onChange={this.onChangeNumeroModal}
                   />
                 </div>
                 <div className="div-quantModal-estoque">
@@ -442,8 +448,8 @@ class Estoque extends Component {
                     min={1}
                     max={parseInt(this.state.line.analysis, 10)}
                     defaultValue={this.state.quantModal}
-                    style={{ width: "100%" }}
                     value={this.state.quantModal}
+                    style={{ width: "100%" }}
                     onChange={this.onChangeQuant}
                   />
                 </div>
