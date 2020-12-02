@@ -1,18 +1,12 @@
-import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { message } from 'antd'
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { message } from 'antd';
 
-import { validators } from './validators'
-import {
-  newMarca,
-  newTipo,
-  newProduto,
-  getTipo,
-  getMarca
-} from '../../../../services/produto'
-import AddProduct from '../../../../containers/Register/AddProduct'
-import buildProduct from './productSpec'
+import { validators } from './validators';
+import { newMarca, newTipo, newProduto, getTipo, getMarca } from '../../../../services/produto';
+import AddProduct from '../../../../containers/Register/AddProduct';
+import buildProduct from './productSpec';
 
 const initialState = {
   messageError: false,
@@ -32,8 +26,6 @@ const initialState = {
   quantMin: 1,
   visibleMark: false,
   visibleType: false,
-  newMark: '',
-  newType: '',
   newDescricao: '',
   loading: false,
   serial: false,
@@ -45,169 +37,178 @@ const initialState = {
     quantMin: '',
   },
   responsibleUser: 'modrp',
-}
+};
 class NovoProduto extends Component {
-  state = initialState
+  state = initialState;
 
-  onChangeQuantMin = value => {
+  onChangeQuantMin = (value) => {
     this.setState({
-      quantMin: value ? value : 1
-    })
-  }
+      quantMin: value ? value : 1,
+    });
+  };
 
   success = () => {
-    message.success("O cadastro foi efetuado")
-  }
+    message.success('O cadastro foi efetuado');
+  };
 
   error = () => {
-    message.error("O cadastro não foi efetuado")
-  }
+    message.error('O cadastro não foi efetuado');
+  };
 
   errorQuant = () => {
-    message.error("Coloque a quantidade mínima")
-  }
+    message.error('Coloque a quantidade mínima');
+  };
 
   componentDidMount = async () => {
-    await this.getAllMarca()
-    await this.getAllTipo()
-  }
+    await this.getAllMarca();
+    await this.getAllTipo();
+  };
 
   getAllTipo = async () => {
     try {
-      const { data } = await getTipo()
-      this.setState({ typesList: data })
+      const { data } = await getTipo();
+      this.setState({ typesList: data });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  getAllMarca = async mark => {
+  getAllMarca = async (mark) => {
     const query = {
       filters: {
         mark: {
           specific: {
-            mark
-          }
-        }
-      }
-    }
+            mark,
+          },
+        },
+      },
+    };
 
     try {
-      const { data } = await getMarca(query)
-      this.setState({ marksList: data, newMarca: '' })
+      const { data } = await getMarca(query);
+      this.setState({ marksList: data, newMarca: '' });
     } catch (error) {
-      this.error()
+      this.error();
     }
-  }
+  };
 
   addNewProduct = async () => {
-    this.setState({ loading: true })
-    const { modulo } = this.props.auth
+    this.setState({ loading: true });
+    const { modulo } = this.props.auth;
 
     const productFormatted = buildProduct({
       ...this.state,
       modulo,
-    })
+    });
 
     try {
-      await newProduto(productFormatted)
-      this.setState(initialState)
-      await this.success()
-
+      await newProduto(productFormatted);
+      this.setState(initialState);
+      await this.success();
     } catch (error) {
-      await this.error()
-      console.log(error)
+      await this.error();
+      console.log(error);
     }
-  }
+  };
 
-  createNewMark = async () => {
-    const { newMark, responsibleUser } = this.state
+  createNewMark = async (values) => {
+    const { responsibleUser } = this.state;
+    const { newMark: mark } = values;
     const data = {
-      manufacturer: newMark,
-      mark: newMark,
+      manufacturer: mark,
+      mark,
       responsibleUser,
-    }
+    };
 
     try {
-      await newMarca(data)
-      await this.getAllMarca()
-      this.setState({ visibleMark: false })
-      this.success()
-    } catch (error) {
-      this.error()
-      this.setState({ visibleMark: false })
-    }
-  }
+      const { status } = await newMarca(data);
+      await this.getAllMarca();
 
-  createNewType = async () => {
-    const { newType, responsibleUser } = this.state
+      if (status === 200 || status === 201) {
+        this.success();
+      } else {
+        this.error();
+      }
+    } catch (error) {
+      this.error();
+    }
+  };
+
+  createNewType = async (values) => {
+    const { responsibleUser } = this.state;
+    const { newType: type } = values;
     const data = {
-      type: newType,
+      type,
       responsibleUser,
-    }
+    };
 
     try {
-      await newTipo(data)
-      await this.getAllTipo()
-      this.setState({ visibleMark: false })
-      this.success()
+      const { status } = await newTipo(data);
+      await this.getAllTipo();
+      if (status === 200 || status === 201) {
+        this.success();
+      } else {
+        this.error();
+      }
     } catch (error) {
-      this.error()
-      this.setState({ visibleMark: false })
+      this.error();
     }
-  }
+  };
 
-  saveModalData = async (modalType) => {
-    if (modalType === 'mark') {
-      await this.createNewMark()
+  saveModalData = async (eventSubmit) => {
+    if (eventSubmit.type === 'mark') {
+      await this.createNewMark(eventSubmit.data);
     }
 
-    if (modalType === 'type') {
-      await this.createNewType()
+    if (eventSubmit.type === 'type') {
+      await this.createNewType(eventSubmit.data);
     }
-  }
 
-  handleCancel = () => this.setState({
-    visibleMark: false,
-    visibleType: false,
-  })
+    this.handleCancel();
+  };
+
+  handleCancel = () =>
+    this.setState({
+      visibleMark: false,
+      visibleType: false,
+    });
 
   openModalMark = () => {
     this.setState({
-      visibleMark: true
-    })
-  }
+      visibleMark: true,
+    });
+  };
 
   openModalType = () => {
     this.setState({
-      visibleType: true
-    })
-  }
+      visibleType: true,
+    });
+  };
 
   handleOnChange = ({ target }) => {
-    const { name, value } = target
-    this.setState({ [name]: value })
-  }
+    const { name, value } = target;
+    this.setState({ [name]: value });
+  };
 
   onBlurValidator = ({ target }) => {
-    const { formErrors } = this.state
-    const { name, value } = target
-    const messageError = validators(name, value)
+    const { formErrors } = this.state;
+    const { name, value } = target;
+    const messageError = validators(name, value);
 
     this.setState({
       [name]: value,
       formErrors: {
         ...formErrors,
         [name]: messageError,
-      }
-    })
-  }
+      },
+    });
+  };
 
   renderRedirect = () => {
     if (!this.props.auth.addProd) {
-      return <Redirect to="/logged/dash" />
+      return <Redirect to="/logged/dash" />;
     }
-  }
+  };
 
   render() {
     const {
@@ -223,12 +224,14 @@ class NovoProduto extends Component {
       mark,
       marksList,
       prateleira,
+      quantMin,
       serial,
       type,
       typesList,
       visibleMark,
       visibleType,
-    } = this.state
+    } = this.state;
+
 
     return (
       <AddProduct
@@ -252,6 +255,7 @@ class NovoProduto extends Component {
         openModalType={this.openModalType}
         openModalMark={this.openModalMark}
         prateleira={prateleira}
+        quantMin={quantMin}
         saveModalData={this.saveModalData}
         serial={serial}
         typesList={typesList}
@@ -259,14 +263,15 @@ class NovoProduto extends Component {
         visibleMark={visibleMark}
         visibleType={visibleType}
       />
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
+  '';
   return {
-    auth: state.auth
-  }
-}
+    auth: state.auth,
+  };
+};
 
-export default connect(mapStateToProps)(NovoProduto)
+export default connect(mapStateToProps)(NovoProduto);
