@@ -154,7 +154,7 @@ const AddProduct = ({
               onChange={(value) => handleOnChange({ target: { value, name: 'mark' } })}
               onSearch={(mark) => getAllMarca(mark)}
             >
-              {marksList && marksList.map((item) => <Option value={item.mark}>{item.mark}</Option>)}
+              {marksList && marksList.map((item) => <Option key={item.mark} value={item.mark}>{item.mark}</Option>)}
             </Select>
             <Button
               className={styles.addButtonPlus}
@@ -179,7 +179,7 @@ const AddProduct = ({
               name="type"
               onChange={(value) => handleOnChange({ target: { value, name: 'type' } })}
             >
-              {typesList && typesList.map((item) => <Option value={item.type}>{item.type}</Option>)}
+              {typesList && typesList.map((item) => <Option key={item.type} value={item.type}>{item.type}</Option>)}
             </Select>
 
             <Button
