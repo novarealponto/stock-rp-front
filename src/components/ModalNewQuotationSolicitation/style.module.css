@@ -1,0 +1,8 @@
+.divBtn{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+.actionBtn {
+    margin-right: 5px;
+}
