@@ -14,9 +14,17 @@ const ModalNewQuotation = ({
   onSearch,
   form
 }) => (
-  <Modal visible={visible} footer={null} onFinish={handleOk} closable={false}>
+  <Modal
+    visible={visible}
+    footer={null}
+    closable={false}
+  >
     <h1>Criar nova cotação</h1>
-    <Form form={form} layout="vertical" onFinish={handleOk}>
+    <Form
+      form={form}
+      layout="vertical"
+      onFinish={handleOk}
+    >
       <Form.Item
         label="Nome do produto:"
         name="productName"
@@ -40,15 +48,22 @@ const ModalNewQuotation = ({
           <Option value="tom">Tom</Option>
         </Select>
       </Form.Item>
-      </Form>
-      <div className={styles.divBtn}>
-          <Button type="danger" className={styles.actionBtn} onClick={handleCancel}>
+        <div className={styles.divBtn}>
+          <Button
+            type="danger"
+            className={styles.actionBtn}
+            onClick={handleCancel}
+          >
             Cancelar
           </Button>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+          >
             Criar
           </Button>
         </div>
+      </Form>
   </Modal>
 );
 

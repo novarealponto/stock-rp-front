@@ -1,4 +1,6 @@
 import React from 'react'
+import { action } from '@storybook/addon-actions'
+
 import CotacaoContainer from '../../../containers/Quotation'
 
 const data = [
@@ -44,23 +46,22 @@ const data = [
   },
 ]
 
-const handleOk = (values) => {
-  console.log(values)
-}
-
 export default {
   title: 'Containers/Quotation',
-  component: CotacaoContainer,
-  argTypes: {
-    data,
-    handleOk
-  },
+  component: CotacaoContainer
 }
 
 const Template = (args) => <CotacaoContainer {...args} />
 
 export const Default = Template.bind({})
+export const NoData = Template.bind({})
+
 Default.args = {
   data,
-  handleOk
+  handleOk: action('Handle Ok'),
+}
+
+NoData.args = {
+  data: [],
+  handleOk: action('Handle Ok'),
 }
