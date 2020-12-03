@@ -1,5 +1,12 @@
 import React from 'react';
-import { Button, Form, Input, InputNumber, Select, Switch } from 'antd';
+import {
+  Button,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Switch,
+} from 'antd';
 import styles from './style.module.css';
 import classNames from 'classnames';
 

@@ -8,7 +8,7 @@ import Dash from "./Dash";
 import { auth } from "../services/auth";
 import { Logout } from "./Login/LoginRedux/action";
 import NovoFornecedorRoute from "./Cadastros/NovoFornecedor";
-import NovoProdutoRoute from "./Cadastros/NovoProduto";
+import Product from "./Product";
 import NovoTecnicoRoute from "./Cadastros/NovoTecnico";
 import NovaEntradaRoute from "./Cadastros/NovaEntrada";
 import EstoqueRoute from "./Gerenciar/Estoque";
@@ -108,7 +108,7 @@ class PagesRoute extends Component {
             path="/logged/novoFornecedor"
             component={NovoFornecedorRoute}
           />
-          <Route path="/logged/novoProduto" component={NovoProdutoRoute} />
+          <Route path="/logged/product" component={Product} />
           {!this.props.auth.modulo && (
             <Route path="/logged/novoTecnico" component={NovoTecnicoRoute} />
           )}
