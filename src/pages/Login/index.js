@@ -20,7 +20,7 @@ class LoginPage extends Component {
   }
 
   verifyAuth = () => {
-          if (this.hasAuth(this.props)) {
+    if (this.hasAuth(this.props)) {
       if (this.hasToken(this.props.auth)) {
         if (uuidValidate(this.props.auth.token)) {
           return this.setState({authenticated : true})
