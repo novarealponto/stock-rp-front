@@ -1,34 +1,30 @@
 .container {
-  width: 100vw;
-  height: 100vh;
-
-  background-color: white;
-
-  display: flex;
   align-items: center;
+  background-color: white;
+  display: flex;
+  height: 100vh;
   justify-content: center;
+  width: 100vw;
 }
 
 .wrapper {
-  width: 350px;
-  height: 250px;
-
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-
+  height: 250px;
   position: relative;
+  width: 350px;
 }
 
 .wrapper h1 {
+  color: #0b0550;
   font-size: 32px;
   font-weight: bold;
-  color: #0b0550;
 }
 
 .wrapper img {
+  margin-bottom: 20px;
   width: 100%;
-  margin-bottom: 20px
 }
 
 .wrapper form {
@@ -36,11 +32,9 @@
 }
 
 .wrapper form button {
+  background-color: #0b0550;
+  border: none;
   position: absolute;
   bottom: 0;
   right: 0;
-
-  border: none;
-
-  background-color: #0b0550;
 }

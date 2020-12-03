@@ -1,17 +1,17 @@
 import actions from '../../../store/actions';
 
 const INICIAL_STATE_LOGIN = {
-  username: '',
   password: '',
+  username: '',
 };
 
 const INICIAL_STATE_AUTH = {
+  email: 'email',
+  password: '',
   token: null,
   userId: null,
   username: 'userName',
-  email: 'email',
   validTonken: false,
-  password: '',
 };
 
 export function login(state = INICIAL_STATE_LOGIN, action) {

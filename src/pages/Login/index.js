@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-
 import uuidValidate from 'uuid-validate';
-
-import * as R from 'ramda';
-
+import { has } from 'ramda';
 import { message } from 'antd';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 
 import LoginContainer from '../../containers/Login';
-
 import { signIn } from '../../services/auth';
 import { onSubmit } from './LoginRedux/action'
 
@@ -20,20 +16,22 @@ class LoginPage extends Component {
   }
 
   verifyAuth = () => {
-    if (this.hasAuth(this.props)) {
-      if (this.hasToken(this.props.auth)) {
-        if (uuidValidate(this.props.auth.token)) {
-          return this.setState({authenticated : true})
-        }
-      }
+
+    if(has('auth', this.props) && has('token', this.props.auth)){
+      return this.setState({authenticated : uuidValidate(this.props.auth.token)})
+
     }
   }
 
-  hasAuth = R.has('auth');
-  hasToken = R.has('token');
+  hasAuth = has('auth');
+  hasToken = has('token');
 
   success = () => {
     message.success('Bem-vindo ao Estoque');
+  };
+
+  error = () => {
+    message.error("Inautorizado, confira username e senha por favor");
   };
 
   handleSubmit = async ({ username, password }) => {
@@ -44,13 +42,10 @@ class LoginPage extends Component {
         await this.props.onSubmit(data);
         this.verifyAuth()
 
-        if(this.state.authenticated) this.success();
-        break;
+        return this.state.authenticated && this.success();
       case 401:
 
-        message.error("Inautorizado, confira username e senha por favor");
-
-        break;
+        return this.error();
       default:
     }
   };
@@ -60,7 +55,11 @@ class LoginPage extends Component {
   }
 
   render() {
-    return this.state.authenticated ? <Redirect to="/logged" /> : <LoginContainer onSubmit={this.handleSubmit} />
+    return (
+      this.state.authenticated
+        ?  <Redirect to="/logged" />
+        :  <LoginContainer onSubmit={this.handleSubmit} />
+    )
   }
 }
 
