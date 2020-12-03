@@ -1,6 +1,7 @@
 import React from 'react'
-import LoginContainar from '../../../containers/Login'
 import { action } from '@storybook/addon-actions'
+
+import LoginContainar from '../../../containers/Login'
 
 export default {
   title: 'Containers/Login',
