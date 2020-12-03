@@ -19,12 +19,8 @@ class LoginPage extends Component {
 
     if(has('auth', this.props) && has('token', this.props.auth)){
       return this.setState({authenticated : uuidValidate(this.props.auth.token)})
-
     }
   }
-
-  hasAuth = has('auth');
-  hasToken = has('token');
 
   success = () => {
     message.success('Bem-vindo ao Estoque');
