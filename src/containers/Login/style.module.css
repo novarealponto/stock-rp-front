@@ -1,0 +1,46 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+
+  background-color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  width: 350px;
+  height: 250px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: relative;
+}
+
+.wrapper h1 {
+  font-size: 32px;
+  font-weight: bold;
+  color: #0b0550;
+}
+
+.wrapper img {
+  width: 100%;
+  margin-bottom: 20px
+}
+
+.wrapper form {
+  width: 80%;
+}
+
+.wrapper form button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  border: none;
+
+  background-color: #0b0550;
+}

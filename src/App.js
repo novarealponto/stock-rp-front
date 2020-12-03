@@ -15,6 +15,9 @@ import reducers from './store/reducers'
 import Routes from './routes'
 // import history from './routes/history'
 
+import "antd/dist/antd.css";
+
+
 const persistConfig = {
   key: 'root',
   storage,
@@ -53,9 +56,9 @@ export const store = applyMiddleware(thunk, multi, promise,)(createStore)(persis
 
 // export const store = createStore(connectRouter(history)(() => {}), applyMiddleware(...middlewarer))
 
-      
+
 const persistor = persistStore(store)
-      
+
 const App = () => (
   // <MemoryRouter >
   <Provider store={store}>
