@@ -2,36 +2,30 @@
   align-items: center;
   background-color: white;
   display: flex;
+  flex-direction: column;
   height: 100vh;
   justify-content: center;
-  width: 100vw;
-}
-
-.wrapper {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  height: 250px;
-  position: relative;
+  margin: auto;
+  overflow: hidden;
   width: 350px;
 }
 
-.wrapper h1 {
+.container h1 {
   color: #0b0550;
   font-size: 32px;
   font-weight: bold;
 }
 
-.wrapper img {
+.container img {
   margin-bottom: 20px;
   width: 100%;
 }
 
-.wrapper form {
+.container form {
   width: 80%;
 }
 
-.wrapper form button {
+.container form button {
   background-color: #0b0550;
   border: none;
   position: absolute;
