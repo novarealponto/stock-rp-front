@@ -1,31 +1,25 @@
 import React, { useState } from 'react';
-import { Button, Form, Input, Select } from 'antd';
+import { 
+  Button,
+  Form,
+  Input,
+  Select 
+} from 'antd';
+
 import styles from './style.module.css';
 
 const { Option } = Select;
 
 const ManageProducts = () => {
-  const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
-
-  const showSearch = () => {
-    setVisible(!visible);
-  };
-
-  const onChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-
-  const onBlur = () => {
-    console.log('blur');
-  };
-
-  const onFocus = () => {
-    console.log('focus');
-  };
+  const [visible, setVisible] = useState(false);
 
   const onSearch = (val) => {
     console.log('search:', val);
+  };
+  
+  const showSearch = () => {
+    setVisible(!visible);
   };
 
   return (
@@ -33,7 +27,10 @@ const ManageProducts = () => {
       <h1>Gerenciar produtos</h1>
       {visible ? (
         <div>
-          <Button type="primary" onClick={showSearch}>
+          <Button 
+            type="primary" 
+            onClick={showSearch}
+          >
             Ocultar
           </Button>
           <div className={styles.divSearch}>
@@ -49,9 +46,6 @@ const ManageProducts = () => {
                   showSearch
                   placeholder="Selecione a categoria"
                   optionFilterProp="children"
-                  onChange={onChange}
-                  onFocus={onFocus}
-                  onBlur={onBlur}
                   onSearch={onSearch}
                   filterOption={(input, option) =>
                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -73,8 +67,12 @@ const ManageProducts = () => {
           </div>
         </div>
       ) : (
-        <Button type="primary" onClick={showSearch}>
-          Avançado
+        <Button 
+          htmlType="submit"
+          onClick={showSearch} 
+          type="primary" 
+          >
+            Avançado
         </Button>
       )}
     </div>
