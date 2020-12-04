@@ -19,7 +19,7 @@ const LoginContainer = ({ onSubmit }) => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <h1>Estoque - RP</h1>
-        <img src="../../retina.png" />
+        <img src="../../retina.png" alt="company logo" />
         <Form name="signIn" onFinish={onSubmit} onFinishFailed={() => {}}>
           <ItemForm
             name="username"
