@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { action } from '@storybook/addon-actions'
 
 import AddProduct from '../../../../containers/Product/AddProduct'
-import { validators } from '../../../../pages/Cadastros/NovoProduto/ProdutoContainer/validators'
+import { validators } from '../../../../pages/Product/AddProduct/validators'
 
 export default {
   title: 'Containers/Products/AddProducts',
@@ -47,9 +47,7 @@ const typesList = [
   },
 ]
 
-const formErrorInitialState = {
-  item: null
-}
+const formErrorInitialState = {}
 
 const addNewProductAction = action('ADD NEW PRODUCT')
 const changeLoadingAction = action('LOADING')
@@ -68,12 +66,9 @@ const Template = () => {
   const [visibleMark, setVisibleMark] = useState(false)
   const [visibleType, setVisibleType] = useState(false)
 
-  const addNewProduct=() => {
+  const addNewProduct = () => {
     changeLoading(true)
-    addNewProductAction({
-      ...form
-    })
-    form.submit()
+    addNewProductAction(form)
   }
 
   const changeLoading = () => {
