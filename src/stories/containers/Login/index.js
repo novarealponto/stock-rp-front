@@ -1,7 +1,7 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
 
-import LoginContainar from '../../../containers/Login'
+import LoginContainer from '../../../containers/Login'
 
 export default {
   title: 'Containers/Login',
@@ -11,6 +11,6 @@ export default {
   }
 }
 
-const Template = (args) => <LoginContainar {...args} />
+const Template = (args) => <LoginContainer {...args} />
 
 export const Default = Template.bind({})
