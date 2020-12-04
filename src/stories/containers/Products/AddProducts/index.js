@@ -70,7 +70,9 @@ const Template = () => {
 
   const addNewProduct=() => {
     changeLoading(true)
-    addNewProductAction(true)
+    addNewProductAction({
+      ...form
+    })
     form.submit()
   }
 
