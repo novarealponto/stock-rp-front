@@ -40,7 +40,7 @@ const LoginContainer = ({ onSubmit }) => {
             />
           </ItemForm>
 
-          <ItemForm name="password">
+          <ItemForm>
             <Button htmlType="submit" type="primary">
               Login
             </Button>
