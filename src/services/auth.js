@@ -3,7 +3,7 @@ import { BACKEND_URL } from "./var";
 
 import { store } from "../App";
 
-export const authentic = async values => {
+export const signIn = async values => {
   let response = {};
   await axios
     .post(`${BACKEND_URL}/oapi/login`, values)
