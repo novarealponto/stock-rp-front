@@ -7,12 +7,11 @@ import {
   Select,
   Switch,
 } from 'antd';
-import styles from './style.module.css';
 import classNames from 'classnames';
+import { PlusOutlined } from '@ant-design/icons';
 
 import Modal from '../../../components/Modal';
-
-import { PlusOutlined } from '@ant-design/icons';
+import styles from './style.module.css';
 
 const { Option } = Select;
 const { TextArea } = Input;
