@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 import { validators, masks } from "./validators";
 import {
   updateTecnico,
-  newCarro,
-  getCarro,
+  newCar,
+  getCars,
 } from "../../../../services/tecnico";
 import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
 
@@ -61,7 +61,7 @@ class GerenciarTecnico extends Component {
   };
 
   getAllCarro = async () => {
-    await getCarro().then((resposta) =>
+    await getCars().then((resposta) =>
       this.setState({
         carroArray: resposta.data,
       })
@@ -167,7 +167,7 @@ class GerenciarTecnico extends Component {
     }
   };
 
-  saveTargetNewCarro = async () => {
+  saveTargetnewCar = async () => {
     this.setState({
       loading: true,
     });
@@ -178,7 +178,7 @@ class GerenciarTecnico extends Component {
       plate: this.state.newPlaca,
     };
 
-    const resposta = await newCarro(values);
+    const resposta = await newCar(values);
 
     if (resposta.status === 422) {
       this.setState({
@@ -305,7 +305,7 @@ class GerenciarTecnico extends Component {
     <Modal
       title="Adicionar carro"
       visible={this.state.modalCarro}
-      onOk={this.saveTargetNewCarro}
+      onOk={this.saveTargetnewCar}
       okText="Salvar"
       onCancel={this.handleOk}
       cancelText="Cancelar"

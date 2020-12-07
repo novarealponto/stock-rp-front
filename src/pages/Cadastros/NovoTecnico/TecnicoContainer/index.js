@@ -4,7 +4,7 @@ import { Input, Button, Select, Modal, message, Switch } from "antd";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { validators, masks } from "./validators";
-import { newTecnico, newCarro, getCarro } from "../../../../services/tecnico";
+import { newTechnician, newCar, getCars } from "../../../../services/tecnico";
 import { PlusOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
@@ -42,7 +42,7 @@ class NovoTecnico extends Component {
   };
 
   getAllCarro = async () => {
-    await getCarro().then((resposta) =>
+    await getCars().then((resposta) =>
       this.setState({
         carroArray: resposta.data,
       })
@@ -128,7 +128,7 @@ class NovoTecnico extends Component {
       responsibleUser: this.props.auth.username,
     };
 
-    const resposta = await newTecnico(values);
+    const resposta = await newTechnician(values);
 
     if (resposta.status === 422) {
       this.setState({
@@ -159,7 +159,7 @@ class NovoTecnico extends Component {
     }
   };
 
-  saveTargetNewCarro = async () => {
+  saveTargetnewCar = async () => {
     this.setState({
       loading: true,
     });
@@ -170,7 +170,7 @@ class NovoTecnico extends Component {
       plate: this.state.newPlaca,
     };
 
-    const resposta = await newCarro(values);
+    const resposta = await newCar(values);
 
     if (resposta.status === 422) {
       this.setState({
@@ -295,7 +295,7 @@ class NovoTecnico extends Component {
     <Modal
       title="Adicionar carro"
       visible={this.state.modalCarro}
-      onOk={this.saveTargetNewCarro}
+      onOk={this.saveTargetnewCar}
       okText="Salvar"
       onCancel={this.handleOk}
       cancelText="Cancelar"

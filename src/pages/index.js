@@ -7,50 +7,51 @@ import Dash from "./Dash";
 
 import { auth } from "../services/auth";
 import { Logout } from "./Login/LoginRedux/action";
-import NovoFornecedorRoute from "./Cadastros/NovoFornecedor";
-import Product from "./Product";
-import NovoTecnicoRoute from "./Cadastros/NovoTecnico";
-import NovaEntradaRoute from "./Cadastros/NovaEntrada";
-import EstoqueRoute from "./Gerenciar/Estoque";
-import ReservaKitRoute from "./Reservas/ReservaKit";
-import NovoUsuarioRoute from "./Cadastros/NovoUsuario";
-import GerenciarEntradaRoute from "./Gerenciar/Entrada";
-import RomanieoRoute from "./Reservas/Romaneio";
-import ReservaExternoRoute from "./Reservas/ReservaOs";
-import ReservaMLRoute from "./Reservas/ReservaML";
-import RelatorioOsRoute from "./Relatorios/RelatorioOs";
-import RelatorioPerdaRoute from "./Relatorios/RelatorioPerda";
-import RelatorioMLRoute from "./Relatorios/RelatorioML";
 import AddKitRoute from "./Gerenciar/Kit";
-import SearchOsRoute from "./Gerenciar/SearchOs";
-import OsDashRoute from "./Gerenciar/Os";
-import NovoTipoContaRoute from "./Cadastros/NovoTipoConta";
-import PerfilDashRoute from "./Gerenciar/Perfil";
-import GerenciarProdutoRoute from "./Gerenciar/Produto";
 import * as R from "ramda";
-import uuidValidate from "uuid-validate";
-import GerenciarFornecedorRoute from "./Gerenciar/GerenciarFornecedores";
-import GerenciarUsuarioRoute from "./Gerenciar/GerenciarUsuarios";
-import GerenciarTecnicoRoute from "./Gerenciar/GerenciarTecnico";
-import GerenciarProdutosDashRoute from "./Gerenciar/GerenciarProdutos";
-import GerenciarEntradaDashRoute from "./Gerenciar/GerenciarEntrada";
-import NotificacaoRoute from "./Gerenciar/Notificacoes";
-import EmprestimoRoute from "./Gerenciar/Emprestimo";
-import RelatorioEmprestimoRoute from "./Relatorios/RelatorioEmprestimo";
-import SaidaSupRoute from "./Suprimentos/Saida";
-import GerenciarEstoqueSupRoute from "./Suprimentos/Ger.Estoque";
-import GerenciarCadastrosSupRoute from "./Suprimentos/Ger.Cadastros";
-import EntradaSupRoute from "./Suprimentos/Entrada";
-import CadastroProdutosSupRoute from "./Suprimentos/Cad.Produtos";
 import CadastroFornecedorSupRoute from "./Suprimentos/Cad.Fornecedor";
+import CadastroProdutosSupRoute from "./Suprimentos/Cad.Produtos";
 import EditarFornecedorSupRoute from "./Suprimentos/Edit.Fornecedor";
-import RelatorioMapRoute from "./Relatorios/RelatorioMapeamento";
-import RelatorioVendasRoute from "./Relatorios/RelatorioVendas";
-import RelatorioSuprimentosRoute from "./Relatorios/RelatorioSuprimentos";
-import ReservaInternoRoute from "./Reservas/ReservaInterno";
+import EntradaSupRoute from "./Suprimentos/Entrada";
+import EmprestimoRoute from "./Gerenciar/Emprestimo";
+import EstoqueRoute from "./Gerenciar/Estoque";
+import GerenciarCadastrosSupRoute from "./Suprimentos/Ger.Cadastros";
+import GerenciarEntradaDashRoute from "./Gerenciar/GerenciarEntrada";
+import GerenciarEntradaRoute from "./Gerenciar/Entrada";
+import GerenciarEstoqueSupRoute from "./Suprimentos/Ger.Estoque";
+import GerenciarFornecedorRoute from "./Gerenciar/GerenciarFornecedores";
+import GerenciarProdutosDashRoute from "./Gerenciar/GerenciarProdutos";
+import GerenciarProdutoRoute from "./Gerenciar/Produto";
+import GerenciarTecnicoRoute from "./Gerenciar/GerenciarTecnico";
+import GerenciarUsuarioRoute from "./Gerenciar/GerenciarUsuarios";
+import NotificacaoRoute from "./Gerenciar/Notificacoes";
+import NovaEntradaRoute from "./Cadastros/NovaEntrada";
+import NovoFornecedorRoute from "./Cadastros/NovoFornecedor";
+import NovoTecnicoRoute from "./Cadastros/NovoTecnico";
+import NovoTipoContaRoute from "./Cadastros/NovoTipoConta";
+import NovoUsuarioRoute from "./Cadastros/NovoUsuario";
+import OsDashRoute from "./Gerenciar/Os";
+import PerfilDashRoute from "./Gerenciar/Perfil";
+import Product from "./Product";
 import RelatorioComprasRoute from "./Relatorios/RelatorioCompras";
+import RelatorioEmprestimoRoute from "./Relatorios/RelatorioEmprestimo";
 import RelatorioGastosRoute from "./Relatorios/RelatorioGastos";
 import RelatorioInternoRoute from "./Relatorios/RelatorioInterno";
+import RelatorioMapRoute from "./Relatorios/RelatorioMapeamento";
+import RelatorioMLRoute from "./Relatorios/RelatorioML";
+import RelatorioOsRoute from "./Relatorios/RelatorioOs";
+import RelatorioPerdaRoute from "./Relatorios/RelatorioPerda";
+import RelatorioSuprimentosRoute from "./Relatorios/RelatorioSuprimentos";
+import RelatorioVendasRoute from "./Relatorios/RelatorioVendas";
+import ReservaExternoRoute from "./Reservas/ReservaOs";
+import ReservaInternoRoute from "./Reservas/ReservaInterno";
+import ReservaKitRoute from "./Reservas/ReservaKit";
+import ReservaMLRoute from "./Reservas/ReservaML";
+import RomanieoRoute from "./Reservas/Romaneio";
+import SaidaSupRoute from "./Suprimentos/Saida";
+import SearchOsRoute from "./Gerenciar/SearchOs";
+import TechnicianRoute from './Technician'
+import uuidValidate from "uuid-validate";
 
 class PagesRoute extends Component {
   state = {
@@ -184,6 +185,8 @@ class PagesRoute extends Component {
           />
           <Route path="/logged/emprestimo" component={EmprestimoRoute} />
           <Route path="/logged/notificacao" component={NotificacaoRoute} />
+
+          <Route path='/logged/technician/' component={TechnicianRoute} />
 
           {this.props.auth.suprimento && (
             <Switch>
