@@ -93,7 +93,12 @@ const AddTechinician = ({
         <Row gutter={24}>
           <Col span={10}>
             <div className={styles.divWrapperCar}>
-              <Form.Item name="car" label="Carro" rules={[{ required: true }]}>
+              <Form.Item
+                style={{ width: '80%' }}
+                name="car"
+                label="Carro"
+                rules={[{ required: true }]}
+              >
                 <Select
                   allowClear
                   onChange={onChangeSelecCarList}
