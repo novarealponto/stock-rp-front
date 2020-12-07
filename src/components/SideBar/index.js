@@ -440,12 +440,12 @@ class SideBar extends Component {
               }}
             />
           );
-        case 'perfil_dash':
+        case 'profile_dash':
           return (
             <Redirect
               push
               to={{
-                pathname: '/logged/perfil/dash',
+                pathname: '/logged/profile/dash',
                 state: { from: this.props.location }
               }}
             />
@@ -596,7 +596,7 @@ class SideBar extends Component {
           <Tooltip placement="bottom" title={'Perfil'}>
             <UserOutlined
               className="menuIcon-icon"
-              onClick={() => this.handleClickCompany('perfil_dash')}
+              onClick={() => this.handleClickCompany('profile_dash')}
             />
           </Tooltip>
           <Tooltip placement="bottom" title={'Logout'}>

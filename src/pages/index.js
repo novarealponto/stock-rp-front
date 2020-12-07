@@ -152,7 +152,7 @@ class PagesRoute extends Component {
           />
           <Route path="/logged/searchOs" component={SearchOsRoute} />
           <Route path="/logged/Os" component={OsDashRoute} />
-          <Route path="/logged/perfil" component={PerfilDashRoute} />
+          <Route path="/logged/profile" component={PerfilDashRoute} />
           <Route
             path="/logged/gerenciarProdutosDash"
             component={GerenciarProdutosDashRoute}
