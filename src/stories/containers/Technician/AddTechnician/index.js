@@ -5,12 +5,6 @@ import { Form } from 'antd';
 import AddTechinician from '../../../../containers/Technician/AddTechinician';
 import { getRotation } from '../../../../utils'
 
-const carList = [];
-
-for (let i = 0; i < 5; i++) {
-  carList.push({ model: `name ${i}`, plate: `AAA-123${i}` });
-}
-
 export default {
   title: 'Containers/Technician',
   component: AddTechinician,
@@ -27,7 +21,7 @@ const Template = (args) => {
   const [rotation, setRotation] = useState('');
   const [visibleModalNewCar, setVisibleModalNewCar] = useState(false);
 
-  const closeModalNewCar = (event) => {
+  const closeModalNewCar = () => {
     closeModalAciton(true);
     setVisibleModalNewCar(false);
     formModal.resetFields();
@@ -38,23 +32,24 @@ const Template = (args) => {
     setRotation(getRotation(lastNumberPlate));
   };
 
-  const openModalNewCar = (event) => {
+  const openModalNewCar = () => {
     openModalAciton(true);
     setVisibleModalNewCar(true);
   };
 
-  const saveModalCar = (e) => {
-    registerModalAciton(e);
+  const saveModalCar = (carFormData) => {
+    registerModalAciton(carFormData);
+    setVisibleModalNewCar(false);
+    formModal.resetFields();
   };
 
-  const saveTechnician = (e) => {
-    registerAction(e);
+  const saveTechnician = (technicianFormData) => {
+    registerAction(technicianFormData);
   };
 
   return (
     <AddTechinician
       {...args}
-      carList={carList}
       closeModalNewCar={closeModalNewCar}
       form={form}
       formModal={formModal}
@@ -70,4 +65,11 @@ const Template = (args) => {
 
 export const Default = Template.bind({});
 
-Default.args = {};
+Default.args = {
+  carList: [
+    { model: 'name 1', plate: 'AAA-1231' },
+    { model: 'name 2', plate: 'AAA-1232' },
+    { model: 'name 3', plate: 'AAA-1233' },
+    { model: 'name 4', plate: 'AAA-1234' },
+   ]
+};
