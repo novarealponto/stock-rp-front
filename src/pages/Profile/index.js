@@ -3,51 +3,42 @@ import { connect } from 'react-redux';
 import { compose, pathOr, omit, mergeRight } from 'ramda';
 import { message, Form } from 'antd';
 
-import PerfilContainer from '../../containers/Profile';
+import ProfileContainer from '../../containers/Profile';
 import { updateSenha } from '../../services/password';
 
-const PerfilDash = ({ username, typeAccount }) => {
-  const [editar, setEditar] = useState(false);
+const Profile = ({ username, typeAccount }) => {
+  const [edit, setEdit] = useState(false);
   const [form] = Form.useForm();
 
-  const error = () => {
-    message.error('Os dados do usuário não foram atualizados');
-  };
+  const error = () => message.error('Os dados do usuário não foram atualizados');
 
   const handleCancel = () => {
     form.resetFields();
-    setEditar(false);
+    setEdit(false);
   };
-  
+
   const handleOnSubmit = async (formData) => {
-
     const resposta = await updateSenha(
-      mergeRight(
-        omit(['confirmPassword'], formData), 
-        { username }
-      ));
-
-    if (resposta.status === 422) {
-      error();
-    }
+      mergeRight(omit(['confirmPassword'], formData), { username })
+    );
     if (resposta.status === 200) {
       success();
-      setEditar(false);
+      setEdit(false);
       form.resetFields();
+    } else {
+      error();
     }
   };
 
   const showAlterPassword = () => {
-    setEditar(!editar); 
-  };
-  
-  const success = () => {
-    message.success('Os dados do usuário foram atualizados');
+    setEdit(!edit);
   };
 
+  const success = () => message.success('Os dados do usuário foram atualizados');
+
   return (
-    <PerfilContainer
-      editar={editar}
+    <ProfileContainer
+      edit={edit}
       form={form}
       handleCancel={handleCancel}
       handleOnSubmit={handleOnSubmit}
@@ -69,4 +60,4 @@ const mapStateToProps = ({ auth }) => {
 
 const enhanced = compose(connect(mapStateToProps));
 
-export default enhanced(PerfilDash);
+export default enhanced(Profile);

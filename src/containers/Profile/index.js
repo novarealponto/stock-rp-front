@@ -9,8 +9,8 @@ import {
 
 import styles from './style.module.css';
 
-const PerfilContainer = ({
-  editar,
+const Profile = ({
+  edit,
   form,
   handleCancel,
   handleOnSubmit,
@@ -38,20 +38,16 @@ const PerfilContainer = ({
 
   return (
     <div className={styles.divCard}>
-      <div className={styles.linhaTexto}>
         <h1 className={styles.h1Perfil}>Perfil</h1>
-      </div>
       <div className={styles.divLinhaCardPerfil}>
-        <div className={styles.divCardInfosPerfil}>
           <Card className={styles.cardPerfil}>
             <div className={styles.bgWrapperPerfil}>
               <Avatar size={170}>USER</Avatar>
             </div>
           </Card>
-          <Button type="primary" onClick={showAlterPassword} style={{ width: '220px' }}>
+          <Button type="primary" onClick={showAlterPassword} style={{ width: '220px', marginBottom: '20px' }}>
             Alterar senha
           </Button>
-        </div>
 
         <div className={styles.divInputs}>
           <label className={styles.labelInputs}>Usuário:</label>
@@ -60,27 +56,27 @@ const PerfilContainer = ({
           <label className={styles.labelInputs}>Tipo de conta:</label>
           <Input className={styles.perfilInputs} readOnly value={typeAccount} />
         </div>
-        {editar && (
+        {edit && (
           <Form
             form={form}
             layout="vertical"
             className={styles.formPerfil}
             onFinish={handleOnSubmit}
           >
-            <Form.Item label="Senha atual:" name="oldPassword">
+            <Form.Item label="Senha atual:" name="oldPassword" rules={[{required: true, message: 'Campo obrigatório!'}]}>
               <Input.Password placeholder="Digite a senha" />
             </Form.Item>
             <Form.Item
               label="Nova senha:"
               name="newPassword"
-              rules={[validatorPassword('oldPassword')]}
+              rules={[validatorPassword('oldPassword'), {required: true, message: 'Campo obrigatório!'}]}
             >
               <Input.Password placeholder="Digite a nova senha" />
             </Form.Item>
             <Form.Item
               label="Confirmar senha:"
               name="confirmPassword"
-              rules={[validatorPassword('newPassword', true)]}
+              rules={[validatorPassword('newPassword'), {required: true, message: 'Campo obrigatório!'}]}
             >
               <Input.Password placeholder="Confirme a senha" />
             </Form.Item>
@@ -101,4 +97,4 @@ const PerfilContainer = ({
   );
 };
 
-export default PerfilContainer;
+export default Profile;

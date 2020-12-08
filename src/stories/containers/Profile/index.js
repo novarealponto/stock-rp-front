@@ -2,24 +2,24 @@ import React, { useState } from 'react';
 import { action } from '@storybook/addon-actions';
 import { Form } from 'antd';
 
-import PerfilContainer from '../../../containers/Profile';
+import ProfileContainer from '../../../containers/Profile';
 
 export default {
   title: 'Containers/Perfil',
-  component: PerfilContainer,
+  component: ProfileContainer,
 };
 
 const handleCancelAction = action('CANCEL ACTION');
 const handleOnSubmitAction = action('SUBMIT ACTION');
-const setEditarAction = action('SET EDITAR ACTION');
+const setEditAction = action('SET EDITAR ACTION');
 
 const Template = (args) => {
-  const [editar, setEditar] = useState(false);
+  const [edit, setEdit] = useState(false);
   const [form] = Form.useForm();
 
   const handleCancel = () => {
     form.resetFields();
-    setEditar(false);
+    setEdit(false);
     handleCancelAction(true);
   };
 
@@ -28,14 +28,14 @@ const Template = (args) => {
   };
   
   const showAlterPassword = () => {
-    setEditar(!editar);
-    setEditarAction(true);
+    setEdit(!edit);
+    setEditAction(true);
   };
   
   return (
-    <PerfilContainer
+    <ProfileContainer
       {...args}
-      editar={editar}
+      edit={edit}
       form={form}
       handleCancel={handleCancel}
       handleOnSubmit={handleOnSubmit}
