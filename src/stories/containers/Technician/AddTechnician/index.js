@@ -6,7 +6,7 @@ import AddTechinician from '../../../../containers/Technician/AddTechinician'
 import { getRotation } from '../../../../utils'
 
 export default {
-  title: 'Containers/Technician',
+  title: 'Containers/Technician/AddTechnician',
   component: AddTechinician,
 }
 
