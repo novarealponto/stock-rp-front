@@ -27,7 +27,6 @@ import GerenciarUsuarioRoute from "./Gerenciar/GerenciarUsuarios";
 import NotificacaoRoute from "./Gerenciar/Notificacoes";
 import NovaEntradaRoute from "./Cadastros/NovaEntrada";
 import NovoFornecedorRoute from "./Cadastros/NovoFornecedor";
-import NovoTecnicoRoute from "./Cadastros/NovoTecnico";
 import NovoTipoContaRoute from "./Cadastros/NovoTipoConta";
 import NovoUsuarioRoute from "./Cadastros/NovoUsuario";
 import OsDashRoute from "./Gerenciar/Os";
@@ -110,9 +109,6 @@ class PagesRoute extends Component {
             component={NovoFornecedorRoute}
           />
           <Route path="/logged/product" component={Product} />
-          {!this.props.auth.modulo && (
-            <Route path="/logged/novoTecnico" component={NovoTecnicoRoute} />
-          )}
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
