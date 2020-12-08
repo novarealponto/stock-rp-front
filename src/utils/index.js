@@ -1,19 +1,16 @@
 export const getRotation = (lastNumberPlate) => {
-  switch (lastNumberPlate.toString()) {
-    case '1':
-    case '2':
-      return 'Segunda-feira';
-    case '3':
-    case '4':
-      return 'Terça-feira';
-    case '5':
-    case '6':
-      return 'Quarta-feira';
-    case '7':
-    case '8':
-      return 'Quinta-feira';
-    case '9':
-    case '0':
-      return 'Sexta-feira';
-  }
+  const rotation = {
+    1: 'Segunda-feira',
+    2: 'Segunda-feira',
+    3: 'Terça-feira',
+    4: 'Terça-feira',
+    5: 'Quarta-feira',
+    6: 'Quarta-feira',
+    7: 'Quinta-feira',
+    8: 'Quinta-feira',
+    9: 'Sexta-feira',
+    0: 'Sexta-feira',
+  };
+
+  return rotation[lastNumberPlate];
 };
