@@ -106,7 +106,7 @@ const AddTechinician = ({
           <Col span={10}>
             <div className={styles.divWrapperCar}>
               <Form.Item
-                style={{ width: '80%' }}
+                style={{ width: "calc(100% - 42px)" }}
                 name="car"
                 label="Carro"
                 rules={[{ required: true }]}
