@@ -56,7 +56,7 @@ const AddTechnician = () => {
       setCarList([...carList, buildCar(data) ])
       closeModalNewCar()
     }catch (error) {
-      messageError('Erro ao cadastras carro')
+      messageError('Houve um erro ao cadastrar carro')
       closeModalNewCar()
     }
   };
@@ -71,7 +71,7 @@ const AddTechnician = () => {
       messageSucess('Técnico cadastrado com sucesso')
       form.resetFields();
     } catch (error) {
-      messageError('Erro ao cadastras técnico')
+      messageError('Houve um erro ao cadastrar técnico')
     }
   };
 

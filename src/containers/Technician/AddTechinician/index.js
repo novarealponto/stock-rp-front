@@ -1,10 +1,22 @@
 import React from 'react';
-import { Button, Col, DatePicker, Form, Input, Row, Select, Switch } from 'antd';
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Row,
+  Select,
+  Switch,
+  Typography,
+} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import styles from './style.module.css';
 import Modal from '../../../components/Modal';
 import { validatePlate } from '../../../utils/validators';
+
+const { Title } = Typography;
 
 const ModalNewCar = ({ closeModal, form, saveModal, title, visible }) => {
   return (
@@ -16,7 +28,7 @@ const ModalNewCar = ({ closeModal, form, saveModal, title, visible }) => {
     >
       <Form form={form} name="newCar" layout="vertical" onFinish={saveModal}>
         <Form.Item name="model" label="Modelo" rules={[{ required: true }]}>
-          <Input placeholder="Digite o modelo" />
+          <Input placeholder="Digite o modelo do carro" />
         </Form.Item>
 
         <Row gutter={24}>
@@ -25,7 +37,7 @@ const ModalNewCar = ({ closeModal, form, saveModal, title, visible }) => {
               <DatePicker
                 className={styles.datePicker}
                 picker="year"
-                placeholder="selecione o ano"
+                placeholder="Selecione o ano"
               />
             </Form.Item>
           </Col>
@@ -62,7 +74,7 @@ const AddTechinician = ({
 }) => {
   return (
     <div className={styles.container}>
-      <h1>Técnico</h1>
+      <Title>Técnico</Title>
       <Form
         form={form}
         layout="vertical"
@@ -72,7 +84,7 @@ const AddTechinician = ({
         <Row gutter={24}>
           <Col span={16}>
             <Form.Item name="name" label="Nome" rules={[{ required: true }]}>
-              <Input placeholder="Digite o nome" />
+              <Input placeholder="Digite o nome do técnico" />
             </Form.Item>
           </Col>
 
