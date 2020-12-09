@@ -1,11 +1,6 @@
 import React from 'react';
-import { 
-  Form,
-  Button,
-  Input, 
-  Card, 
-  Avatar 
-} from 'antd';
+import { Form, Button, Input, Card, Avatar, Row, Col } from 'antd';
+import 'antd/dist/antd.css';
 
 import styles from './style.module.css';
 
@@ -37,63 +32,85 @@ const Profile = ({
   };
 
   return (
-    <div className={styles.divCard}>
-        <h1 className={styles.h1Perfil}>Perfil</h1>
-      <div className={styles.divLinhaCardPerfil}>
-          <Card className={styles.cardPerfil}>
-            <div className={styles.bgWrapperPerfil}>
-              <Avatar size={170}>USER</Avatar>
-            </div>
-          </Card>
-          <Button type="primary" onClick={showAlterPassword} style={{ width: '220px', marginBottom: '20px' }}>
-            Alterar senha
-          </Button>
-
-        <div className={styles.divInputs}>
-          <label className={styles.labelInputs}>Usuário:</label>
-          <Input className={styles.perfilInputs} readOnly value={username} />
-
-          <label className={styles.labelInputs}>Tipo de conta:</label>
-          <Input className={styles.perfilInputs} readOnly value={typeAccount} />
-        </div>
-        {edit && (
-          <Form
-            form={form}
-            layout="vertical"
-            className={styles.formPerfil}
-            onFinish={handleOnSubmit}
-          >
-            <Form.Item label="Senha atual:" name="oldPassword" rules={[{required: true, message: 'Campo obrigatório!'}]}>
-              <Input.Password placeholder="Digite a senha" />
-            </Form.Item>
-            <Form.Item
-              label="Nova senha:"
-              name="newPassword"
-              rules={[validatorPassword('oldPassword'), {required: true, message: 'Campo obrigatório!'}]}
+    <div className={styles.divMainProfile}>
+      <Row>
+        <Col span={12} offset={6} align="center">
+          <h1 className={styles.h1Perfil}>Perfil</h1>
+          <>
+            <Card className={styles.cardPerfil}>
+              <>
+                <Avatar size={170} style={{ fontSize: '70px' }}>
+                  {username.substr(0, 1).toUpperCase()}
+                </Avatar>
+              </>
+            </Card>
+            <Button
+              type="primary"
+              onClick={showAlterPassword}
+              style={{ width: '220px', marginBottom: '20px' }}
             >
-              <Input.Password placeholder="Digite a nova senha" />
-            </Form.Item>
-            <Form.Item
-              label="Confirmar senha:"
-              name="confirmPassword"
-              rules={[validatorPassword('newPassword'), {required: true, message: 'Campo obrigatório!'}]}
+              Alterar senha
+            </Button>
+
+            <Form
+              form={form}
+              layout="vertical"
+              className={styles.formPerfil}
+              onFinish={handleOnSubmit}
+              size={100}
             >
-              <Input.Password placeholder="Confirme a senha" />
-            </Form.Item>
-            <Form.Item>
-              <div className={styles.divBtn}>
-                <Button type="danger" className={styles.actionBtn} onClick={handleCancel}>
-                  Cancelar
-                </Button>
-                <Button type="primary" htmlType="submit">
-                  Salvar
-                </Button>
-              </div>
-            </Form.Item>
-          </Form>
-        )}
+              <Form.Item label="Usuário:">
+                <Input readOnly value={username} />
+              </Form.Item>
+              <Form.Item label="Tipo de conta:">
+                <Input readOnly value={typeAccount} />
+              </Form.Item>
+              {edit && (
+                <>
+                  <Form.Item
+                    label="Senha atual:"
+                    name="oldPassword"
+                    rules={[{ required: true, message: 'Campo obrigatório!' }]}
+                  >
+                    <Input.Password placeholder="Digite a senha" />
+                  </Form.Item>
+                  <Form.Item
+                    label="Nova senha:"
+                    name="newPassword"
+                    rules={[
+                      validatorPassword('oldPassword'),
+                      { required: true, message: 'Campo obrigatório!' },
+                    ]}
+                  >
+                    <Input.Password placeholder="Digite a nova senha" />
+                  </Form.Item>
+                  <Form.Item
+                    label="Confirmar senha:"
+                    name="confirmPassword"
+                    rules={[
+                      validatorPassword('newPassword'),
+                      { required: true, message: 'Campo obrigatório!' },
+                    ]}
+                  >
+                    <Input.Password placeholder="Confirme a senha" />
+                  </Form.Item>
+                  <Form.Item>
+                    <div className={styles.divBtn}>
+                      <Button type="danger" className={styles.actionBtn} onClick={handleCancel}>
+                        Cancelar
+                      </Button>
+                      <Button type="primary" htmlType="submit">
+                        Salvar
+                      </Button>
+                    </div>
+                  </Form.Item>
+                </>
+              )}
+            </Form>
+          </>
+        </Col>
+      </Row>
       </div>
-    </div>
   );
 };
 

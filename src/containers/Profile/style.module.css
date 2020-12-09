@@ -1,54 +1,22 @@
 .actionBtn {
   margin-right: 5px;
 }
-.bgWrapperPerfil{
-  align-items: center;
-  display: flex;
-  height: 170px;
-  justify-content: center;
-  overflow: hidden;
-}
-.divCard {
-  align-items: center;
-  background-color: white;
-  border-radius: 2px;
-  display: flex;
-  flex-direction: column;
-  height: 95%;
-  position: static;
-  width: 96%;
+.cardPerfil {
+  width: 220px;
 }
 .divBtn {
   display: flex;
   justify-content: flex-end;
   width: 100%;
 }
-.divLinhaCardPerfil {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 50px 0 10px 0;
+.divMainProfile{
+  height: 100vh;
   width: 100%;
 }
-.divInputs{
-  display: flex;
-  flex-direction: column;
-  width: 40%;
-}
-.formPerfil{
-  width: 40%;
-}
 .h1Perfil {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 2.2em;
   font-weight: 500;
   margin-top: 25px;
-}
-.labelInputs{
-  padding: 0 0 8px;
-}
-.perfilInputs{
-  margin-bottom: 20px !important;
 }
