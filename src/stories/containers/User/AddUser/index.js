@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form } from 'antd';
 import { action } from '@storybook/addon-actions';
 
-import buildUser from '../../../../pages/User/AddUser/userSpec';
+import buildUser from '../../../../utils/userSpec';
 import AddUser from '../../../../containers/User/AddUser';
 import PERMISSIONS from '../../../../utils/permissions';
 
