@@ -13,7 +13,7 @@ import NovoTecnicoRoute from "./Cadastros/NovoTecnico";
 import NovaEntradaRoute from "./Cadastros/NovaEntrada";
 import EstoqueRoute from "./Gerenciar/Estoque";
 import ReservaKitRoute from "./Reservas/ReservaKit";
-import NovoUsuarioRoute from "./Cadastros/NovoUsuario";
+import User from "./User";
 import GerenciarEntradaRoute from "./Gerenciar/Entrada";
 import RomanieoRoute from "./Reservas/Romaneio";
 import ReservaExternoRoute from "./Reservas/ReservaOs";
@@ -102,7 +102,7 @@ class PagesRoute extends Component {
       return (
         <Switch>
           <Route exact path="/logged/dash" component={Dash} />
-          <Route path="/logged/novoUsuario" component={NovoUsuarioRoute} />
+          <Route path="/logged/user" component={User} />
           <Route path="/logged/novoTipoConta" component={NovoTipoContaRoute} />
           <Route
             path="/logged/novoFornecedor"
