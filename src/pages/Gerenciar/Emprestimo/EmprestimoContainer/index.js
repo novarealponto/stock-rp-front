@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Button, Select, Input, Modal, message, DatePicker, Spin } from "antd";
-import moment from "moment";
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Button, Select, Input, Modal, message, DatePicker, Spin } from 'antd'
+import moment from 'moment'
 
-import "./index.css";
-import { getAllEquipsService } from "../../../../services/equip";
+import './index.css'
+import { getAllEquipsService } from '../../../../services/equip'
 import {
   addEprestimo,
   updateEprestimo,
   getEprestimoService,
   deleteEmprestimoService,
   CreatePDFEmprestimo,
-} from "../../../../services/emprestimo";
-import { getItens } from "../../../../services/produto";
-import { getTecnico } from "../../../../services/tecnico";
-import { validator, masks } from "./validator";
+} from '../../../../services/emprestimo'
+import { getItens } from '../../../../services/produto'
+import { getTecnico } from '../../../../services/tecnico'
+import { validator, masks } from './validator'
 
 import {
   PlusOutlined,
@@ -22,10 +22,10 @@ import {
   DeleteOutlined,
   RollbackOutlined,
   PrinterOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons'
 
-const { Option } = Select;
-const { TextArea } = Input;
+const { Option } = Select
+const { TextArea } = Input
 
 class EmprestimoContainer extends Component {
   state = {
@@ -35,7 +35,7 @@ class EmprestimoContainer extends Component {
     reservados: [],
     avancado: true,
     loading: false,
-    observacao: "",
+    observacao: '',
     modalInClient: false,
     modalReservados: false,
     modalDisp: false,
@@ -50,50 +50,50 @@ class EmprestimoContainer extends Component {
     fieldFalha: {
       cnpj: false,
     },
-    tecnico: "Não selecionado",
-    razaoSocial: "",
-    nomeProduto: "",
-    productId: "",
-    technicianId: "",
-    serialNumber: "",
-    emprestimoId: "",
-    select: "disponiveis",
+    tecnico: 'Não selecionado',
+    razaoSocial: '',
+    nomeProduto: '',
+    productId: '',
+    technicianId: '',
+    serialNumber: '',
+    emprestimoId: '',
+    select: 'disponiveis',
     search: false,
-    fabricanteSearch: "",
-    razaoSocialSearch: "",
-    nomeProdutoSearch: "",
-    serialNumberSearch: "",
-  };
+    fabricanteSearch: '',
+    razaoSocialSearch: '',
+    nomeProdutoSearch: '',
+    serialNumberSearch: '',
+  }
 
   onChangeTechnician = (value, props) => {
     this.setState({
       tecnico: value,
       technicianId: props.props.id,
-    });
-  };
+    })
+  }
 
   showModal = () => {
     this.setState({
       visible: true,
-    });
-  };
+    })
+  }
 
   handleCancel = (e) => {
     this.setState({
       modalDisp: false,
       modalInClient: false,
       modalReservados: false,
-      cnpj: "",
-      razaoSocial: "",
-      serialNumber: "",
-      data: "",
-      tecnico: "Não  selecionado",
+      cnpj: '',
+      razaoSocial: '',
+      serialNumber: '',
+      data: '',
+      tecnico: 'Não  selecionado',
       retorno: {},
       atualizar: {},
-    });
-  };
+    })
+  }
 
-  getAllTecnico = async (name) => {
+  getAllTechnician = async (name) => {
     const query = {
       filters: {
         technician: {
@@ -102,38 +102,38 @@ class EmprestimoContainer extends Component {
           },
         },
       },
-    };
+    }
 
     await getTecnico(query).then((resposta) =>
       this.setState({
         tecnicoArray: resposta.data,
       })
-    );
-  };
+    )
+  }
 
   componentDidMount = async () => {
-    await this.getAllItens();
-    await this.getAllTecnico();
-    await this.getAllEquips();
-  };
+    await this.getAllItens()
+    await this.getAllTechnician()
+    await this.getAllEquips()
+  }
 
   getEprestimo = async () => {
     await this.setState({
       loading: true,
-    });
-    const { select } = this.state;
+    })
+    const { select } = this.state
 
-    let dateExpedition = null;
+    let dateExpedition = null
 
-    if (select === "emCliente") {
+    if (select === 'emCliente') {
       dateExpedition = {
-        start: "2019/01/01",
+        start: '2019/01/01',
         end: new Date(),
-      };
+      }
     } else {
       dateExpedition = {
         start: new Date(),
-      };
+      }
     }
 
     const query = {
@@ -158,8 +158,8 @@ class EmprestimoContainer extends Component {
       },
       page: this.state.page,
       total: this.state.total,
-    };
-    const { status, data } = await getEprestimoService(query);
+    }
+    const { status, data } = await getEprestimoService(query)
 
     if (status === 200) {
       await this.setState({
@@ -167,17 +167,17 @@ class EmprestimoContainer extends Component {
         page: data.page,
         count: data.count,
         show: data.show,
-      });
+      })
     }
     await this.setState({
       loading: false,
-    });
-  };
+    })
+  }
 
   getAllEquips = async () => {
     await this.setState({
       loading: true,
-    });
+    })
 
     const query = {
       filters: {
@@ -202,9 +202,9 @@ class EmprestimoContainer extends Component {
       },
       page: this.state.page,
       total: this.state.total,
-    };
+    }
 
-    const { status, data } = await getAllEquipsService(query);
+    const { status, data } = await getAllEquipsService(query)
 
     if (status === 200) {
       this.setState({
@@ -212,29 +212,29 @@ class EmprestimoContainer extends Component {
         page: data.page,
         count: data.count,
         show: data.show,
-      });
+      })
     }
     this.setState({
       loading: false,
-    });
-  };
+    })
+  }
 
   changePages = async (pages) => {
     await this.setState({
       page: pages,
-    });
+    })
 
     switch (this.state.select) {
-      case "emCliente":
-      case "reservados":
-        await this.getEprestimo();
-        break;
-      case "disponiveis":
-        await this.getAllEquips();
-        break;
+      case 'emCliente':
+      case 'reservados':
+        await this.getEprestimo()
+        break
+      case 'disponiveis':
+        await this.getAllEquips()
+        break
       default:
     }
-  };
+  }
 
   getAllItens = async () => {
     const query = {
@@ -245,31 +245,31 @@ class EmprestimoContainer extends Component {
           },
         },
       },
-    };
+    }
 
     await getItens(query).then((resposta) => {
       this.setState({
         itemArray: resposta.data,
-      });
-    });
-  };
+      })
+    })
+  }
 
   onChangeItem = (value, product) => {
     this.setState({
       nomeProduto: value,
       productId: product.props.product.id,
-    });
-  };
+    })
+  }
 
   errorNumeroSerie = () => {
-    message.error("Este equipamento ja foi registrado");
-  };
+    message.error('Este equipamento ja foi registrado')
+  }
 
   onChangeTecnico = async (value) => {
     await this.setState({
       tecnico: value,
-    });
-  };
+    })
+  }
 
   newEprestimo = async () => {
     const {
@@ -279,7 +279,7 @@ class EmprestimoContainer extends Component {
       serialNumber,
       technicianId,
       observacao: observation,
-    } = this.state;
+    } = this.state
 
     const value = {
       cnpj,
@@ -288,79 +288,79 @@ class EmprestimoContainer extends Component {
       serialNumber,
       technicianId,
       observation,
-    };
+    }
 
     // eslint-disable-next-line no-unused-vars
-    const { status, data } = await addEprestimo(value);
+    const { status, data } = await addEprestimo(value)
 
     if (status === 200) {
       this.setState({
         modalDisp: false,
-        cnpj: "",
-        razaoSocial: "",
-        dateExpedition: "",
-        serialNumber: "",
-        technicianId: "",
+        cnpj: '',
+        razaoSocial: '',
+        dateExpedition: '',
+        serialNumber: '',
+        technicianId: '',
         tecnico: undefined,
         data: undefined,
-      });
-      await this.getAllEquips();
+      })
+      await this.getAllEquips()
 
-      await this.getEprestimo();
+      await this.getEprestimo()
     }
-  };
+  }
 
   onChange = async (e) => {
-    const { name, value } = masks(e.target.name, e.target.value);
+    const { name, value } = masks(e.target.name, e.target.value)
 
     await this.setState({
       [name]: value,
-    });
+    })
 
-    if (name.indexOf("Search") !== -1) {
+    if (name.indexOf('Search') !== -1) {
       switch (this.state.select) {
-        case "emCliente":
-        case "reservados":
-          await this.setState({ page: 1 });
-          await this.getEprestimo();
-          break;
-        case "disponiveis":
-          await this.setState({ page: 1 });
-          await this.getAllEquips();
-          break;
+        case 'emCliente':
+        case 'reservados':
+          await this.setState({ page: 1 })
+          await this.getEprestimo()
+          break
+        case 'disponiveis':
+          await this.setState({ page: 1 })
+          await this.getAllEquips()
+          break
         default:
       }
     }
-  };
+  }
 
   onBlur = (e) => {
-    const { fieldFalha } = validator(e.target.name, e.target.value, this.state);
+    const { fieldFalha } = validator(e.target.name, e.target.value, this.state)
 
     this.setState({
       fieldFalha,
-    });
-  };
+    })
+  }
 
   onFocus = (e) => {
-    const { name } = e.target;
-    const { fieldFalha } = this.state;
+    const { name } = e.target
+    const { fieldFalha } = this.state
 
-    fieldFalha[name] = false;
+    fieldFalha[name] = false
 
     this.setState({
       fieldFalha,
-    });
-  };
+    })
+  }
 
   onChangeData = (date) => {
     this.setState({
       data: date,
-    });
-  };
+    })
+  }
 
   disabledDate = (current) => {
-    return current && current < moment().subtract(1, "day");
-  };
+    return current && current < moment().subtract(1, 'day')
+  }
 
   ModalDisponiveis = () => (
     <Modal
@@ -377,7 +377,7 @@ class EmprestimoContainer extends Component {
         <div className="div-inputs">
           <Input
             className="input-100"
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             name="razaoSocial"
             value={this.state.razaoSocial}
             placeholder="Digite a razão social"
@@ -394,9 +394,9 @@ class EmprestimoContainer extends Component {
           <div className="div-inputs">
             <Input
               className={`input-100 ${
-                this.state.fieldFalha.cnpj && "div-inputError"
+                this.state.fieldFalha.cnpj && 'div-inputError'
               }`}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               name="cnpj"
               value={this.state.cnpj}
               placeholder="Digite o cnpj"
@@ -443,19 +443,17 @@ class EmprestimoContainer extends Component {
             <Select
               className="input-100"
               defaultValue="Não selecionado"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               onChange={this.onChangeTechnician}
               showSearch
-              onSearch={(name) => this.getAllTecnico(name)}
+              onSearch={(name) => this.getAllTechnician(name)}
               placeholder="Nenhum tecnicos cadastrado"
               optionFilterProp="children"
               value={this.state.tecnico}
               name="technician"
               onFocus={this.onFocusTecnico}
               filterOption={(input, option) =>
-                option.children
-                  .toLowerCase()
-                  .indexOf(input.toLowerCase()) >= 0
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
               {this.state.tecnicoArray.map((valor) => (
@@ -468,22 +466,22 @@ class EmprestimoContainer extends Component {
         </div>
       </div>
     </Modal>
-  );
+  )
 
   deleteEmprestimo = async () => {
-    const { id } = this.state.retorno;
+    const { id } = this.state.retorno
 
-    const { status, data } = await deleteEmprestimoService({ id });
+    const { status, data } = await deleteEmprestimoService({ id })
 
-    if (status === 200 && data === "sucesso") {
-      await this.getAllEquips();
+    if (status === 200 && data === 'sucesso') {
+      await this.getAllEquips()
 
-      await this.getEprestimo();
+      await this.getEprestimo()
     }
     this.setState({
       modalInClient: false,
-    });
-  };
+    })
+  }
 
   ModalInClient = () => (
     <Modal
@@ -500,7 +498,7 @@ class EmprestimoContainer extends Component {
           <Input
             readOnly
             className="input-100"
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             name="razaoSocial"
             value={this.state.retorno.razaoSocial}
             onChange={this.onChange}
@@ -515,7 +513,7 @@ class EmprestimoContainer extends Component {
             <Input
               readOnly
               className="input-100"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               name="cnpj"
               value={this.state.retorno.cnpj}
               onChange={this.onChange}
@@ -529,7 +527,7 @@ class EmprestimoContainer extends Component {
             <Input
               readOnly
               className="input-100"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               name="razaoSocial"
               value={this.state.retorno.createdAt}
               onChange={this.onChange}
@@ -545,7 +543,7 @@ class EmprestimoContainer extends Component {
             <Input
               readOnly
               className="input-100"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               name="razaoSocial"
               value={this.state.retorno.dateExpedition}
               onChange={this.onChange}
@@ -554,7 +552,7 @@ class EmprestimoContainer extends Component {
         </div>
       </div>
     </Modal>
-  );
+  )
 
   ModalConfirmDelet = () => (
     <Modal
@@ -562,14 +560,14 @@ class EmprestimoContainer extends Component {
       visible={this.state.modalConfirmDelet}
       onOk={this.excluirEmprestimo}
       onCancel={() =>
-        this.setState({ modalConfirmDelet: false, emprestimoId: "" })
+        this.setState({ modalConfirmDelet: false, emprestimoId: '' })
       }
       okText="Confirmar"
       cancelText="Cancelar"
     >
       <h4>Aperte em "Confirmar" se deseja excluir a solicitação</h4>
     </Modal>
-  );
+  )
 
   ModalReservados = () => (
     <Modal
@@ -587,7 +585,7 @@ class EmprestimoContainer extends Component {
           <Input
             readOnly
             className="input-100"
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             name="razaoSocial"
             value={this.state.atualizar.razaoSocial}
             onChange={this.onChange}
@@ -598,11 +596,11 @@ class EmprestimoContainer extends Component {
       <div className="div-rs1-emprestimo">
         <div className="div-data-emprestimo">
           <div className="div-textData1-emprestimo">Data solicitação:</div>
-          <div className="div-inputs" style={{ marginRight: "15px" }}>
+          <div className="div-inputs" style={{ marginRight: '15px' }}>
             <Input
               readOnly
               className="input-100"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               name="razaoSocial"
               value={this.state.atualizar.createdAt}
               onChange={this.onChange}
@@ -610,7 +608,7 @@ class EmprestimoContainer extends Component {
           </div>
         </div>
 
-        <div className="div-data-emprestimo" style={{ width: "52%" }}>
+        <div className="div-data-emprestimo" style={{ width: '52%' }}>
           <div className="div-textData1-emprestimo">Data atendimento:</div>
           <div className="div-inputs">
             <DatePicker
@@ -650,7 +648,7 @@ class EmprestimoContainer extends Component {
             <Input
               readOnly
               className="input-100"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               name="cnpj"
               value={this.state.atualizar.cnpj}
               onChange={this.onChange}
@@ -664,19 +662,17 @@ class EmprestimoContainer extends Component {
             <Select
               className="input-100"
               defaultValue="Não selecionado"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               onChange={this.onChangeTechnician}
               showSearch
-              onSearch={(name) => this.getAllTecnico(name)}
+              onSearch={(name) => this.getAllTechnician(name)}
               placeholder="Nenhum tecnicos cadastrado"
               optionFilterProp="children"
               value={this.state.tecnico}
               name="technician"
               onFocus={this.onFocusTecnico}
               filterOption={(input, option) =>
-                option.children
-                  .toLowerCase()
-                  .indexOf(input.toLowerCase()) >= 0
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
               {this.state.tecnicoArray.map((valor) => (
@@ -689,7 +685,7 @@ class EmprestimoContainer extends Component {
         </div>
       </div>
     </Modal>
-  );
+  )
 
   testDisponivel = () => {
     if (this.state.disponiveis.length !== 0) {
@@ -697,12 +693,8 @@ class EmprestimoContainer extends Component {
         return (
           <div className="div-100-Gentrada">
             <div className="div-lines-RPerda">
-              <div className="cel-produto-cabecalho-emprestimo">
-                {item.name}
-              </div>
-              <div className="cel-fabricante-cabecalho-estoque">
-                {item.mark}
-              </div>
+              <div className="cel-produto-cabecalho-emprestimo">{item.name}</div>
+              <div className="cel-fabricante-cabecalho-estoque">{item.mark}</div>
               <div className="cel-numSerie-cabecalho-estoque">
                 {item.serialNumber}
               </div>
@@ -723,43 +715,43 @@ class EmprestimoContainer extends Component {
             </div>
             <div className=" div-separate1-Gentrada" />
           </div>
-        );
-      });
+        )
+      })
     } else {
       return (
         <div className="div-naotemnada">
           Não há nenhum empréstimo até o momento
         </div>
-      );
+      )
     }
-  };
+  }
 
   handleUpdate = async () => {
-    const { atualizar, technicianId } = this.state;
+    const { atualizar, technicianId } = this.state
 
     await updateEprestimo({
       ...atualizar,
       technicianId,
-    });
+    })
 
-    this.handleCancel();
-    await this.getEprestimo();
-  };
+    this.handleCancel()
+    await this.getEprestimo()
+  }
 
   excluirEmprestimo = async () => {
-    const { emprestimoId: id } = this.state;
+    const { emprestimoId: id } = this.state
 
     this.setState({
       modalConfirmDelet: false,
-      emprestimoId: "",
-    });
+      emprestimoId: '',
+    })
 
-    const value = { id, force: true };
+    const value = { id, force: true }
 
-    await deleteEmprestimoService(value);
-    await this.getEprestimo();
-    await this.getAllEquips();
-  };
+    await deleteEmprestimoService(value)
+    await this.getEprestimo()
+    await this.getAllEquips()
+  }
 
   update = async (item) => {
     const {
@@ -771,24 +763,24 @@ class EmprestimoContainer extends Component {
       observation,
       technician,
       technicianId,
-    } = item;
+    } = item
 
-    const { name, value } = masks("cnpj", cnpj);
+    const { name, value } = masks('cnpj', cnpj)
 
     this.setState({
       modalReservados: true,
       atualizar: {
         razaoSocial,
         createdAt,
-        dateExpedition: moment(dateExpedition.replace(/\D/gi, ""), "DDMMYYYY"),
+        dateExpedition: moment(dateExpedition.replace(/\D/gi, ''), 'DDMMYYYY'),
         [name]: value,
         observation,
         id,
       },
       tecnico: technician,
       technicianId,
-    });
-  };
+    })
+  }
 
   tableReserved = () => {
     if (this.state.reservados.length !== 0) {
@@ -829,16 +821,16 @@ class EmprestimoContainer extends Component {
             </div>
             <div className=" div-separate1-Gentrada" />
           </div>
-        );
-      });
+        )
+      })
     } else {
       return (
         <div className="div-naotemnada">
           Não há nenhum empréstimo até o momento
         </div>
-      );
+      )
     }
-  };
+  }
 
   tableInClient = () => {
     if (this.state.reservados.length !== 0) {
@@ -846,9 +838,7 @@ class EmprestimoContainer extends Component {
         return (
           <div className="div-100-Gentrada">
             <div className="div-lines-RPerda">
-              <div className="cel-produto-cabecalho-estoque">
-                {item.product}
-              </div>
+              <div className="cel-produto-cabecalho-estoque">{item.product}</div>
               <div className="cel-razaosocial-cabecalho-emprestimo">
                 {item.razaoSocial}
               </div>
@@ -867,16 +857,16 @@ class EmprestimoContainer extends Component {
             </div>
             <div className=" div-separate1-Gentrada" />
           </div>
-        );
-      });
+        )
+      })
     } else {
       return (
         <div className="div-naotemnada">
           Não há nenhum empréstimo até o momento
         </div>
-      );
+      )
     }
-  };
+  }
 
   Pages = () => (
     <div className="footer-Gentrada100-button">
@@ -959,7 +949,7 @@ class EmprestimoContainer extends Component {
         </Button>
       ) : null}
     </div>
-  );
+  )
 
   onChangeSelect = async (value) => {
     await this.setState({
@@ -969,32 +959,32 @@ class EmprestimoContainer extends Component {
       count: 1,
       show: 1,
       total: 10,
-      fabricanteSearch: "",
-      razaoSocialSearch: "",
-      nomeProdutoSearch: "",
-      serialNumberSearch: "",
-    });
+      fabricanteSearch: '',
+      razaoSocialSearch: '',
+      nomeProdutoSearch: '',
+      serialNumberSearch: '',
+    })
 
     switch (value) {
-      case "emCliente":
-      case "reservados":
-        await this.getEprestimo();
-        break;
-      case "disponiveis":
-        await this.getAllEquips();
-        break;
+      case 'emCliente':
+      case 'reservados':
+        await this.getEprestimo()
+        break
+      case 'disponiveis':
+        await this.getAllEquips()
+        break
       default:
     }
 
     this.setState({
       loading: false,
-    });
-  };
+    })
+  }
 
   retorno = (item) => {
-    const { razaoSocial, cnpj, createdAt, dateExpedition, id } = item;
+    const { razaoSocial, cnpj, createdAt, dateExpedition, id } = item
 
-    const { name, value } = masks("cnpj", cnpj);
+    const { name, value } = masks('cnpj', cnpj)
 
     this.setState({
       modalInClient: true,
@@ -1005,39 +995,39 @@ class EmprestimoContainer extends Component {
         [name]: value,
         id,
       },
-    });
-  };
+    })
+  }
 
   createPDFEmprestimo = async () => {
-    let type = null;
-    let dateExpedition = null;
-    let rows = [];
-    let query = {};
+    let type = null
+    let dateExpedition = null
+    let rows = []
+    let query = {}
 
     switch (this.state.select) {
-      case "disponiveis":
-        type = "Disponiveis";
-        break;
-      case "reservados":
-        type = "Reservados";
+      case 'disponiveis':
+        type = 'Disponiveis'
+        break
+      case 'reservados':
+        type = 'Reservados'
         dateExpedition = {
           start: new Date(),
-        };
-        break;
-      case "emCliente":
-        type = "Em Cliente";
+        }
+        break
+      case 'emCliente':
+        type = 'Em Cliente'
         dateExpedition = {
-          start: "2019/01/01",
+          start: '2019/01/01',
           end: new Date(),
-        };
-        break;
+        }
+        break
       default:
-        break;
+        break
     }
 
     switch (this.state.select) {
-      case "emCliente":
-      case "reservados":
+      case 'emCliente':
+      case 'reservados':
         query = {
           filters: {
             emprestimo: {
@@ -1048,14 +1038,14 @@ class EmprestimoContainer extends Component {
           },
           page: 1,
           total: null,
-        };
-
-        const { status, data } = await getEprestimoService(query);
-        if (status === 200) {
-          rows = data.rows;
         }
-        break;
-      case "disponiveis":
+
+        const { status, data } = await getEprestimoService(query)
+        if (status === 200) {
+          rows = data.rows
+        }
+        break
+      case 'disponiveis':
         query = {
           filters: {
             equip: {
@@ -1067,19 +1057,19 @@ class EmprestimoContainer extends Component {
           },
           page: 1,
           total: null,
-        };
-        const response = await getAllEquipsService(query);
+        }
+        const response = await getAllEquipsService(query)
 
         if (response.status === 200) {
-          rows = response.data.rows;
+          rows = response.data.rows
         }
-        break;
+        break
       default:
-        break;
+        break
     }
 
-    await CreatePDFEmprestimo(type, rows);
-  };
+    await CreatePDFEmprestimo(type, rows)
+  }
 
   Search = () => {
     const {
@@ -1087,10 +1077,10 @@ class EmprestimoContainer extends Component {
       razaoSocialSearch,
       nomeProdutoSearch,
       serialNumberSearch,
-    } = this.state;
+    } = this.state
 
     switch (this.state.select) {
-      case "emCliente":
+      case 'emCliente':
         return (
           <div className="div-linha-avancado-Rtecnico">
             <div className="div-linha1-avancado-Rtecnico">
@@ -1098,7 +1088,7 @@ class EmprestimoContainer extends Component {
                 <Input
                   placeholder="Nome do produto"
                   name="nomeProdutoSearch"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   value={nomeProdutoSearch}
                   onChange={this.onChange}
                 />
@@ -1107,7 +1097,7 @@ class EmprestimoContainer extends Component {
                 <Input
                   placeholder="Razão social"
                   name="razaoSocialSearch"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   value={razaoSocialSearch}
                   onChange={this.onChange}
                 />
@@ -1116,15 +1106,15 @@ class EmprestimoContainer extends Component {
                 <Input
                   placeholder="Número de série"
                   name="serialNumberSearch"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   value={serialNumberSearch}
                   onChange={this.onChange}
                 />
               </div>
             </div>
           </div>
-        );
-      case "reservados":
+        )
+      case 'reservados':
         return (
           <div className="div-linha-avancado-Rtecnico">
             <div className="div-linha1-avancado-Rtecnico">
@@ -1132,7 +1122,7 @@ class EmprestimoContainer extends Component {
                 <Input
                   placeholder="Nome do produto"
                   name="nomeProdutoSearch"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   value={nomeProdutoSearch}
                   onChange={this.onChange}
                 />
@@ -1141,7 +1131,7 @@ class EmprestimoContainer extends Component {
                 <Input
                   placeholder="Razão social"
                   name="razaoSocialSearch"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   value={razaoSocialSearch}
                   onChange={this.onChange}
                 />
@@ -1150,15 +1140,15 @@ class EmprestimoContainer extends Component {
                 <Input
                   placeholder="Número de série"
                   name="serialNumberSearch"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   value={serialNumberSearch}
                   onChange={this.onChange}
                 />
               </div>
             </div>
           </div>
-        );
-      case "disponiveis":
+        )
+      case 'disponiveis':
         return (
           <div className="div-linha-avancado-Rtecnico">
             <div className="div-linha1-avancado-Rtecnico">
@@ -1166,7 +1156,7 @@ class EmprestimoContainer extends Component {
                 <Input
                   placeholder="Nome do produto"
                   name="nomeProdutoSearch"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   value={nomeProdutoSearch}
                   onChange={this.onChange}
                 />
@@ -1175,7 +1165,7 @@ class EmprestimoContainer extends Component {
                 <Input
                   placeholder="Fabricante"
                   name="fabricanteSearch"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   value={fabricanteSearch}
                   onChange={this.onChange}
                 />
@@ -1184,18 +1174,18 @@ class EmprestimoContainer extends Component {
                 <Input
                   placeholder="Número de série"
                   name="serialNumberSearch"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   value={serialNumberSearch}
                   onChange={this.onChange}
                 />
               </div>
             </div>
           </div>
-        );
+        )
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   render() {
     return (
@@ -1211,7 +1201,7 @@ class EmprestimoContainer extends Component {
           <div className="div-select-emprestimo">
             <Select
               value={this.state.select}
-              style={{ width: "20%" }}
+              style={{ width: '20%' }}
               onChange={this.onChangeSelect}
             >
               <Option value="disponiveis">DISPONÍVEIS</Option>
@@ -1219,10 +1209,10 @@ class EmprestimoContainer extends Component {
               <Option value="emCliente">EM CLIENTE</Option>
             </Select>
 
-            <div style={{ display: "flex" }}>
+            <div style={{ display: 'flex' }}>
               <PrinterOutlined
                 id="imprimir"
-                style={{ fontSize: "32px", marginRight: "20px" }}
+                style={{ fontSize: '32px', marginRight: '20px' }}
                 onClick={this.createPDFEmprestimo}
               />
               <Button
@@ -1232,34 +1222,32 @@ class EmprestimoContainer extends Component {
                   await this.setState({
                     search: !this.state.search,
                     avancado: !this.state.avancado,
-                  });
+                  })
 
                   switch (this.state.select) {
-                    case "emCliente":
-                    case "reservados":
-                      await this.getEprestimo();
-                      break;
-                    case "disponiveis":
-                      await this.getAllEquips();
-                      break;
+                    case 'emCliente':
+                    case 'reservados':
+                      await this.getEprestimo()
+                      break
+                    case 'disponiveis':
+                      await this.getAllEquips()
+                      break
                     default:
                   }
                 }}
               >
-                {this.state.avancado ? "Avançado" : "Ocultar"}
+                {this.state.avancado ? 'Avançado' : 'Ocultar'}
               </Button>
             </div>
           </div>
 
           {this.state.search && <this.Search />}
 
-          {this.state.select === "disponiveis" && (
+          {this.state.select === 'disponiveis' && (
             <div className="div-main-emprestimo">
               <div className="div-cabecalho-estoque">
                 <div className="cel-produto-cabecalho-emprestimo">Produto</div>
-                <div className="cel-fabricante-cabecalho-estoque">
-                  Fabricante
-                </div>
+                <div className="cel-fabricante-cabecalho-estoque">Fabricante</div>
                 <div className="cel-numSerie-cabecalho-estoque">Num. Serie</div>
                 <div className="cel-acao-cabecalho-emprestimo" />
               </div>
@@ -1276,7 +1264,7 @@ class EmprestimoContainer extends Component {
               </div>
             </div>
           )}
-          {this.state.select === "reservados" && (
+          {this.state.select === 'reservados' && (
             <div className="div-main-emprestimo">
               <div className="div-cabecalho-estoque">
                 <div className="cel-produto-cabecalho-emprestimo">Produto</div>
@@ -1299,7 +1287,7 @@ class EmprestimoContainer extends Component {
               </div>
             </div>
           )}
-          {this.state.select === "emCliente" && (
+          {this.state.select === 'emCliente' && (
             <div className="div-main-emprestimo">
               <div className="div-cabecalho-estoque">
                 <div className="cel-produto-cabecalho-estoque">Produto</div>
@@ -1324,14 +1312,14 @@ class EmprestimoContainer extends Component {
           )}
         </div>
       </>
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
     auth: state.auth,
-  };
+  }
 }
 
-export default connect(mapStateToProps)(EmprestimoContainer);
+export default connect(mapStateToProps)(EmprestimoContainer)

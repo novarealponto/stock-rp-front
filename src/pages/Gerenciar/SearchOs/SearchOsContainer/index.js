@@ -1,21 +1,32 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import moment from 'moment';
-import * as R from 'ramda';
-import './index.css';
-import { Input, DatePicker, InputNumber, Button, message, Select, Modal } from 'antd';
-import { validators, masks } from './validators';
-import { getOsByOs, updateReservaOs } from '../../../../services/reservaOs';
-import { getAllStatusExpedition, addStatusExpedition } from '../../../../services/statusExpedition';
-import { getProdutoByEstoque, getProdutos } from '../../../../services/produto';
-import { getTecnico } from '../../../../services/tecnico';
-import { getSerial } from '../../../../services/serialNumber';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import moment from 'moment'
+import * as R from 'ramda'
+import './index.css'
+import {
+  Input,
+  DatePicker,
+  InputNumber,
+  Button,
+  message,
+  Select,
+  Modal,
+} from 'antd'
+import { validators, masks } from './validators'
+import { getOsByOs, updateReservaOs } from '../../../../services/reservaOs'
+import {
+  getAllStatusExpedition,
+  addStatusExpedition,
+} from '../../../../services/statusExpedition'
+import { getProdutoByEstoque, getProdutos } from '../../../../services/produto'
+import { getTecnico } from '../../../../services/tecnico'
+import { getSerial } from '../../../../services/serialNumber'
 
-import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons'
 
-const { TextArea } = Input;
-const { Option } = Select;
+const { TextArea } = Input
+const { Option } = Select
 
 class SearchOsDash extends Component {
   state = {
@@ -42,7 +53,7 @@ class SearchOsDash extends Component {
     quant: 1,
     quantObj: {},
     carrinho: this.props.osUpdateValue.products.filter(
-      item => item.missOut === '0' && item.output === '0' && item.return === '0'
+      (item) => item.missOut === '0' && item.output === '0' && item.return === '0'
     ),
     estoque: 'ESTOQUE',
     categoria: '',
@@ -52,184 +63,188 @@ class SearchOsDash extends Component {
       razaoSocial: false,
       cnpj: false,
       data: false,
-      technician: false
+      technician: false,
     },
     message: {
       Os: '',
       razaoSocial: '',
       cnpj: '',
       data: '',
-      technician: ''
-    }
-  };
+      technician: '',
+    },
+  }
 
   redirectGerenciarOs = () => {
     this.setState({
-      redirect: true
-    });
-  };
+      redirect: true,
+    })
+  }
 
-  openModais = e => {
+  openModais = (e) => {
     this.setState({
-      modalAddStatus: true
-    });
-  };
+      modalAddStatus: true,
+    })
+  }
 
   renderRedirect = () => {
     if (!this.props.auth.updateRos) {
-      return <Redirect to="/logged/dash" />;
+      return <Redirect to="/logged/dash" />
     }
 
     if (this.state.redirect) {
-      return <Redirect push to="/logged/Os/dash" />;
+      return <Redirect push to="/logged/Os/dash" />
     }
-  };
+  }
 
-  getAllTecnico = async name => {
+  getAllTechnician = async (name) => {
     const query = {
       filters: {
         technician: {
           specific: {
-            name
-          }
-        }
-      }
-    };
-    await getTecnico(query).then(resposta =>
+            name,
+          },
+        },
+      },
+    }
+    await getTecnico(query).then((resposta) =>
       this.setState({
-        tecnicoArray: resposta.data
+        tecnicoArray: resposta.data,
       })
-    );
-  };
+    )
+  }
 
-  errorNumeroSerie = value => {
-    message.error(value, 10);
-  };
+  errorNumeroSerie = (value) => {
+    message.error(value, 10)
+  }
 
-  filter = async e => {
+  filter = async (e) => {
     await this.setState({
-      numeroSerieTest: e.target.value
-    });
+      numeroSerieTest: e.target.value,
+    })
 
-    const teste = this.state.numeroSerieTest.split(/\n/, 10);
+    const teste = this.state.numeroSerieTest.split(/\n/, 10)
 
-    if (/\n/.test(this.state.numeroSerieTest[this.state.numeroSerieTest.length - 1])) {
-      let count = 0;
+    if (
+      /\n/.test(this.state.numeroSerieTest[this.state.numeroSerieTest.length - 1])
+    ) {
+      let count = 0
 
       // eslint-disable-next-line array-callback-return
-      teste.map(valor => {
-        if (valor === teste[teste.length - 2]) count++;
-      });
+      teste.map((valor) => {
+        if (valor === teste[teste.length - 2]) count++
+      })
 
-      let mensagem = 'Este equipamento ja foi inserido nessa reserva';
+      let mensagem = 'Este equipamento ja foi inserido nessa reserva'
 
-      const resp = await getSerial(teste[teste.length - 2]);
+      const resp = await getSerial(teste[teste.length - 2])
 
       if (resp.data) {
         if (resp.data.productBase.product.name !== this.state.nomeProduto) {
-          mensagem = 'Este equipamento não contém esse número de série';
-          count++;
+          mensagem = 'Este equipamento não contém esse número de série'
+          count++
         }
         if (resp.data.reserved) {
-          count++;
+          count++
           if (resp.data.deletedAt) {
             if (resp.data.osParts) {
-              mensagem = `Este equipamento ja foi liberado para a OS: ${resp.data.osPart.o.os}`;
+              mensagem = `Este equipamento ja foi liberado para a OS: ${resp.data.osPart.o.os}`
             } else if (resp.data.freeMarketPart) {
-              mensagem = `Este equipamento foi liberado para mercado livre com código de restreamento: ${resp.data.freeMarketPart.freeMarket.trackingCode}`;
+              mensagem = `Este equipamento foi liberado para mercado livre com código de restreamento: ${resp.data.freeMarketPart.freeMarket.trackingCode}`
             }
           } else {
-            mensagem = `Este equipamento ja foi reservado para a OS: ${resp.data.osPart.o.os}`;
+            mensagem = `Este equipamento ja foi reservado para a OS: ${resp.data.osPart.o.os}`
           }
         }
       } else {
-        mensagem = 'Este equipamento não consta na base de dados';
-        count++;
+        mensagem = 'Este equipamento não consta na base de dados'
+        count++
       }
 
       if (count > 1) {
-        this.errorNumeroSerie(mensagem);
+        this.errorNumeroSerie(mensagem)
 
-        teste.splice(teste.length - 2, 1);
+        teste.splice(teste.length - 2, 1)
 
-        const testeArray = teste.toString();
+        const testeArray = teste.toString()
 
         this.setState({
-          numeroSerieTest: testeArray.replace(/,/gi, '\n')
-        });
+          numeroSerieTest: testeArray.replace(/,/gi, '\n'),
+        })
       }
     }
-  };
+  }
 
   getAllStatusExpedition = async () => {
-    const { status, data } = await getAllStatusExpedition();
+    const { status, data } = await getAllStatusExpedition()
 
     if (status === 200) {
       this.setState({
-        allStatus: data.map(item => item.status).filter(item => item !== 'EMPRESTIMO')
-      });
+        allStatus: data
+          .map((item) => item.status)
+          .filter((item) => item !== 'EMPRESTIMO'),
+      })
     }
-  };
+  }
 
   componentDidMount = async () => {
-    await this.getAllItens();
-    await this.getAllTecnico();
-    await this.getAllStatusExpedition();
+    await this.getAllItens()
+    await this.getAllTechnician()
+    await this.getAllStatusExpedition()
 
     // eslint-disable-next-line array-callback-return
-    await this.state.carrinho.map(item => {
+    await this.state.carrinho.map((item) => {
       this.setState({
         quantObj: {
           ...this.state.quantObj,
-          [`quant${item.name}`]: item.amount
-        }
-      });
-    });
+          [`quant${item.name}`]: item.amount,
+        },
+      })
+    })
 
-    let textArea = {};
+    let textArea = {}
 
     // eslint-disable-next-line array-callback-return
-    this.state.carrinho.map(item => {
+    this.state.carrinho.map((item) => {
       if (item.serial) {
         textArea = {
           ...textArea,
           [item.id]: item.serialNumbers
-            .map(testeValor => testeValor.serialNumber)
+            .map((testeValor) => testeValor.serialNumber)
             .toString()
-            .replace(/,/gi, '\n')
-        };
+            .replace(/,/gi, '\n'),
+        }
       }
-    });
+    })
 
     await this.setState({
-      textArea
-    });
-  };
+      textArea,
+    })
+  }
 
-  getAllItens = async name => {
+  getAllItens = async (name) => {
     const query = {
       filters: {
         product: {
           specific: {
-            name
-          }
+            name,
+          },
         },
         stockBase: {
           specific: {
-            stockBase: this.state.estoque
-          }
-        }
+            stockBase: this.state.estoque,
+          },
+        },
       },
-      stockBaseId: this.state.estoque
-    };
+      stockBaseId: this.state.estoque,
+    }
 
-    await getProdutoByEstoque(query).then(resposta =>
+    await getProdutoByEstoque(query).then((resposta) =>
       this.setState({
-        itemArray: resposta.data
+        itemArray: resposta.data,
       })
-    );
-    this.setState({ categoria: '' });
-  };
+    )
+    this.setState({ categoria: '' })
+  }
 
   onChangeItem = async (value, props) => {
     await this.setState({
@@ -237,76 +252,76 @@ class SearchOsDash extends Component {
       categoria: props.props.category,
       productBaseId: props.props.id,
       serial: props.props.serial,
-      disp: parseInt(props.props.available, 10)
-    });
-  };
+      disp: parseInt(props.props.available, 10),
+    })
+  }
 
   success = () => {
-    message.success('A reserva foi efetuada');
-  };
+    message.success('A reserva foi efetuada')
+  }
 
   error = () => {
-    message.error('A reserva não foi efetuada');
-  };
+    message.error('A reserva não foi efetuada')
+  }
 
   errorProduto = () => {
-    message.error('Verifique se todos os campos estão selecionados');
-  };
+    message.error('Verifique se todos os campos estão selecionados')
+  }
 
-  onChangeData = date => {
+  onChangeData = (date) => {
     this.setState({
-      data: date
-    });
-  };
+      data: date,
+    })
+  }
 
-  getAllProducts = async name => {
+  getAllProducts = async (name) => {
     const query = {
       filters: {
         product: {
           specific: {
             serial: true,
-            name
-          }
-        }
-      }
-    };
+            name,
+          },
+        },
+      },
+    }
 
-    await getProdutos(query).then(resposta =>
+    await getProdutos(query).then((resposta) =>
       this.setState({
-        itemArray: resposta.data.rows.map(item => {
-          const resp = { name: item.name, id: item.id };
-          return resp;
-        })
+        itemArray: resposta.data.rows.map((item) => {
+          const resp = { name: item.name, id: item.id }
+          return resp
+        }),
       })
-    );
-  };
+    )
+  }
 
-  onChangeStatus = async valor => {
+  onChangeStatus = async (valor) => {
     if (this.state.status === 'CONSERTO' || valor === 'CONSERTO') {
       await this.setState({
         serialNumber: '',
         numeroSerieTest: '',
         productBaseId: '',
-        nomeProduto: 'Não selecionado'
-      });
+        nomeProduto: 'Não selecionado',
+      })
     }
 
     await this.setState({
       serialNumber: '',
       status: valor,
       nomeProduto: 'Não selecionado',
-      serial: false
-    });
+      serial: false,
+    })
 
     if (valor === 'CONSERTO') {
-      this.getAllProducts();
+      this.getAllProducts()
     } else {
-      await this.getAllItens();
+      await this.getAllItens()
     }
-  };
+  }
 
   getOs = async () => {
-    const os = await getOsByOs(this.state.Os);
+    const os = await getOsByOs(this.state.Os)
 
     if (os.status === 200) {
       if (os.data.razaoSocial) {
@@ -322,105 +337,105 @@ class SearchOsDash extends Component {
             razaoSocial: false,
             cnpj: false,
             data: false,
-            technician: false
+            technician: false,
           },
           message: {
             Os: '',
             razaoSocial: '',
             cnpj: '',
             data: '',
-            technician: ''
-          }
-        });
+            technician: '',
+          },
+        })
       } else {
         this.setState({
-          readOnly: false
-        });
+          readOnly: false,
+        })
       }
     }
-  };
+  }
 
-  onBlurValidator = e => {
+  onBlurValidator = (e) => {
     const { nome, valor, fieldFalha, message } = validators(
       e.target.name,
       e.target.value,
       this.state
-    );
+    )
 
     this.setState({
       [nome]: valor,
       fieldFalha,
-      message
-    });
-  };
+      message,
+    })
+  }
 
-  onFocus = e => {
+  onFocus = (e) => {
     this.setState({
       fieldFalha: {
         ...this.state.fieldFalha,
-        [e.target.name]: false
+        [e.target.name]: false,
       },
       message: {
         ...this.state.message,
-        [e.target.name]: false
-      }
-    });
-  };
+        [e.target.name]: false,
+      },
+    })
+  }
 
   onFocusTecnico = () => {
     this.setState({
       fieldFalha: {
         ...this.state.fieldFalha,
-        technician: false
+        technician: false,
       },
       message: {
         ...this.state.message,
-        technician: false
-      }
-    });
-  };
+        technician: false,
+      },
+    })
+  }
 
   updateTargetReservaOs = async () => {
-    const osParts = await this.state.carrinho.map(item => {
-      let resp = {};
+    const osParts = await this.state.carrinho.map((item) => {
+      let resp = {}
       if (R.prop('id', item)) {
         resp = {
           id: item.id,
-          amount: this.state.quantObj[`quant${item.name}`].toString()
-        };
+          amount: this.state.quantObj[`quant${item.name}`].toString(),
+        }
       } else {
         resp = {
           ...item,
-          amount: this.state.quantObj[`quant${item.name}`].toString()
-        };
+          amount: this.state.quantObj[`quant${item.name}`].toString(),
+        }
       }
-      return resp;
-    });
+      return resp
+    })
 
     const value = {
       id: this.props.osUpdateValue.id,
       date: this.state.data,
       technicianId: this.state.tecnicoId,
-      osParts
-    };
+      osParts,
+    }
 
     this.setState({
-      loading: true
-    });
+      loading: true,
+    })
 
-    const resposta = await updateReservaOs(value);
+    const resposta = await updateReservaOs(value)
 
     if (resposta.status === 422) {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message
-      });
-      await this.error();
+        message: resposta.data.fields[0].message,
+      })
+      await this.error()
       this.setState({
         loading: false,
-        messageError: false
-      });
+        messageError: false,
+      })
     }
     if (resposta.status === 200) {
       this.setState({
@@ -430,70 +445,70 @@ class SearchOsDash extends Component {
         data: '',
         carrinho: [],
         // tecnicoId: '',
-        messageSuccess: true
-      });
-      await this.success();
+        messageSuccess: true,
+      })
+      await this.success()
       this.setState({
         loading: false,
         messageSuccess: false,
-        redirect: true
-      });
+        redirect: true,
+      })
     }
-  };
+  }
 
-  onChangeEstoque = async value => {
+  onChangeEstoque = async (value) => {
     await this.setState({
       estoque: value,
       nomeProduto: 'Não selecionado',
       productBaseId: '',
       serial: '',
-      disp: 0
-    });
-    await this.getAllItens();
-  };
+      disp: 0,
+    })
+    await this.getAllItens()
+  }
 
   onChangeSelect = (value, props) => {
     this.setState({
       tecnico: value,
-      tecnicoId: props.props.id
-    });
-  };
+      tecnicoId: props.props.id,
+    })
+  }
 
-  onChange = e => {
-    const { nome, valor } = masks(e.target.name, e.target.value);
+  onChange = (e) => {
+    const { nome, valor } = masks(e.target.name, e.target.value)
 
     this.setState({
-      [nome]: valor
-    });
-  };
+      [nome]: valor,
+    })
+  }
 
-  onChangeTextArea = e => {
+  onChangeTextArea = (e) => {
     this.setState({
       textArea: {
         ...this.state.textArea,
-        [e.target.name]: e.target.value
-      }
-    });
-  };
+        [e.target.name]: e.target.value,
+      },
+    })
+  }
 
-  onChangeQuant = value => {
+  onChangeQuant = (value) => {
     this.setState({
-      quant: value
-    });
-  };
+      quant: value,
+    })
+  }
 
   onChangeUpdateQuant = (name, value) => {
     this.setState({
       quantObj: {
         ...this.state.quantObj,
-        [`quant${name}`]: value
-      }
-    });
-  };
+        [`quant${name}`]: value,
+      },
+    })
+  }
 
-  errorSelecionado = value => {
-    message.error(value);
-  };
+  errorSelecionado = (value) => {
+    message.error(value)
+  }
 
   modalStatus = () => (
     <Modal
@@ -509,7 +524,11 @@ class SearchOsDash extends Component {
           <div className="div-text-produtos">Status:</div>
           <Input
             allowClear={!this.state.fieldFalha.newStatus}
-            className={this.state.fieldFalha.newStatus ? 'div-inputError-tecnico' : 'input-100'}
+            className={
+              this.state.fieldFalha.newStatus
+                ? 'div-inputError-tecnico'
+                : 'input-100'
+            }
             placeholder="Digite o status"
             name="newStatus"
             value={this.state.newStatus}
@@ -523,50 +542,54 @@ class SearchOsDash extends Component {
         </div>
       </div>
     </Modal>
-  );
+  )
 
   handleOk = async () => {
     const value = {
-      status: this.state.newStatus
-    };
+      status: this.state.newStatus,
+    }
 
-    await addStatusExpedition(value);
+    await addStatusExpedition(value)
     this.setState({
-      modalAddStatus: false
-    });
+      modalAddStatus: false,
+    })
 
-    await this.getAllStatusExpedition();
-  };
+    await this.getAllStatusExpedition()
+  }
 
   addCarrinho = () => {
-    if (this.state.nomeProduto !== 'Não selecionado' && this.state.status !== 'Não selecionado') {
-      const array = this.state.carrinho.map(value => value.name);
+    if (
+      this.state.nomeProduto !== 'Não selecionado' &&
+      this.state.status !== 'Não selecionado'
+    ) {
+      const array = this.state.carrinho.map((value) => value.name)
 
-      if (array.filter(value => value === this.state.nomeProduto).length > 0) {
-        this.errorSelecionado('Este item já foi selecionado');
+      if (array.filter((value) => value === this.state.nomeProduto).length > 0) {
+        this.errorSelecionado('Este item já foi selecionado')
         this.setState({
           nomeProduto: 'Não selecionado',
-          status: 'Não selecionado'
-        });
-        return;
+          status: 'Não selecionado',
+        })
+        return
       }
 
       if (
         this.state.serial &&
-        this.state.numeroSerieTest.split(/\n/).filter(item => (item ? item : null)).length !==
-          this.state.quant &&
+        this.state.numeroSerieTest
+          .split(/\n/)
+          .filter((item) => (item ? item : null)).length !== this.state.quant &&
         this.state.categoria !== 'peca'
       ) {
         this.errorSelecionado(
           'Quantidade de numero de serie não condiz com a quantidade adicionada'
-        );
-        return;
+        )
+        return
       }
 
       let itemAdd = {
         status: this.state.status,
-        name: this.state.nomeProduto
-      };
+        name: this.state.nomeProduto,
+      }
 
       if (this.state.status === 'CONSERTO') {
         itemAdd = {
@@ -575,10 +598,10 @@ class SearchOsDash extends Component {
           serialNumber: this.state.serialNumber,
           serialNumbers: this.state.numeroSerieTest
             .split(/\n/)
-            .filter(item => (item ? item : null)),
+            .filter((item) => (item ? item : null)),
           description: this.state.observacao,
-          amount: 1
-        };
+          amount: 1,
+        }
       } else {
         itemAdd = {
           ...itemAdd,
@@ -587,15 +610,15 @@ class SearchOsDash extends Component {
           stockBase: this.state.estoque,
           serialNumberArray: this.state.numeroSerieTest
             .split(/\n/)
-            .filter(item => (item ? item : null)),
-          serial: this.state.serial
-        };
+            .filter((item) => (item ? item : null)),
+          serial: this.state.serial,
+        }
       }
 
       this.setState({
         quantObj: {
           ...this.state.quantObj,
-          [`quant${this.state.nomeProduto}`]: this.state.quant
+          [`quant${this.state.nomeProduto}`]: this.state.quant,
         },
         carrinho: [itemAdd, ...this.state.carrinho],
         nomeProduto: 'Não selecionado',
@@ -603,38 +626,38 @@ class SearchOsDash extends Component {
         quant: 1,
         estoque: 'ESTOQUE',
         serial: false,
-        numeroSerieTest: ''
-      });
-      let textArea = {};
+        numeroSerieTest: '',
+      })
+      let textArea = {}
 
       // eslint-disable-next-line array-callback-return
-      this.state.carrinho.map(item => {
+      this.state.carrinho.map((item) => {
         if (item.serial) {
           textArea = {
             ...textArea,
-            [item.id]: ''
-          };
+            [item.id]: '',
+          }
         }
-      });
+      })
 
       this.setState({
-        textArea
-      });
-    } else this.errorProduto();
-  };
+        textArea,
+      })
+    } else this.errorProduto()
+  }
 
-  remove = value => {
-    const oldCarrinho = this.state.carrinho;
-    const newCarrinho = oldCarrinho.filter(valor => valor !== value);
+  remove = (value) => {
+    const oldCarrinho = this.state.carrinho
+    const newCarrinho = oldCarrinho.filter((valor) => valor !== value)
 
     this.setState({
-      carrinho: newCarrinho
-    });
-  };
+      carrinho: newCarrinho,
+    })
+  }
 
-  disabledDate = current => {
-    return current && current < moment().subtract(1, 'day');
-  };
+  disabledDate = (current) => {
+    return current && current < moment().subtract(1, 'day')
+  }
 
   render() {
     return (
@@ -677,7 +700,9 @@ class SearchOsDash extends Component {
                 value={this.props.osUpdateValue.razaoSocial}
               />
               {this.state.fieldFalha.razaoSocial ? (
-                <p className="div-feedbackError">{this.state.message.razaoSocial}</p>
+                <p className="div-feedbackError">
+                  {this.state.message.razaoSocial}
+                </p>
               ) : null}
             </div>
           </div>
@@ -706,10 +731,14 @@ class SearchOsDash extends Component {
             <div className="div-textData-Os">Data do atendimento:</div>
             <div className="div-inputs">
               <DatePicker
-                disabledDate={this.disabledDate }
-                disabled={!!this.state.carrinho.filter(valor => !!valor.technicianReserve).length}
+                disabledDate={this.disabledDate}
+                disabled={
+                  !!this.state.carrinho.filter(
+                    (valor) => !!valor.technicianReserve
+                  ).length
+                }
                 className={
-                  this.state.fieldFalha.data ? "div-inputError-OS" : "input-100"
+                  this.state.fieldFalha.data ? 'div-inputError-OS' : 'input-100'
                 }
                 onChange={this.onChangeData}
                 name="data"
@@ -729,7 +758,11 @@ class SearchOsDash extends Component {
             <div className="div-inputs">
               {this.state.tecnicoArray.length === 0 ? (
                 <Select
-                  className={this.state.fieldFalha.technician ? 'div-inputError-OS' : 'input-100'}
+                  className={
+                    this.state.fieldFalha.technician
+                      ? 'div-inputError-OS'
+                      : 'input-100'
+                  }
                   value="Nenhum tecnicos cadastrado"
                   name="technician"
                   onFocus={this.onFocusTecnico}
@@ -739,25 +772,30 @@ class SearchOsDash extends Component {
                 <Select
                   className={
                     this.state.fieldFalha.technician
-                      ? "div-inputError-OS"
-                      : "input-100"
+                      ? 'div-inputError-OS'
+                      : 'input-100'
                   }
-                disabled={!!this.state.carrinho.filter(valor => !!valor.technicianReserve).length}
-                defaultValue="Não selecionado"
-                  style={{ width: "100%" }}
+                  disabled={
+                    !!this.state.carrinho.filter(
+                      (valor) => !!valor.technicianReserve
+                    ).length
+                  }
+                  defaultValue="Não selecionado"
+                  style={{ width: '100%' }}
                   onChange={this.onChangeSelect}
                   showSearch
-                  onSearch={name => this.getAllTecnico(name)}
+                  onSearch={(name) => this.getAllTechnician(name)}
                   placeholder="Nenhum tecnicos cadastrado"
                   optionFilterProp="children"
                   value={this.state.tecnico}
                   name="technician"
                   onFocus={this.onFocusTecnico}
                   filterOption={(input, option) =>
-                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                    0
                   }
                 >
-                  {this.state.tecnicoArray.map(valor => (
+                  {this.state.tecnicoArray.map((valor) => (
                     <Option props={valor} value={valor.name}>
                       {valor.name}
                     </Option>
@@ -765,7 +803,9 @@ class SearchOsDash extends Component {
                 </Select>
               )}
               {this.state.fieldFalha.technician ? (
-                <p className="div-feedbackError">{this.state.message.technician}</p>
+                <p className="div-feedbackError">
+                  {this.state.message.technician}
+                </p>
               ) : null}
             </div>
           </div>
@@ -794,8 +834,8 @@ class SearchOsDash extends Component {
                 style={{ width: '100%' }}
                 onChange={this.onChangeStatus}
               >
-                {this.state.allStatus.map(item => {
-                  return <Option value={item}>{item.toUpperCase()}</Option>;
+                {this.state.allStatus.map((item) => {
+                  return <Option value={item}>{item.toUpperCase()}</Option>
                 })}
               </Select>
               <this.modalStatus />
@@ -820,8 +860,8 @@ class SearchOsDash extends Component {
               showSearch
               onSearch={
                 this.state.status === 'CONSERTO'
-                  ? name => this.getAllProducts(name)
-                  : name => this.getAllItens(name)
+                  ? (name) => this.getAllProducts(name)
+                  : (name) => this.getAllItens(name)
               }
               style={{ width: '100%' }}
               placeholder="Selecione o produto"
@@ -832,7 +872,7 @@ class SearchOsDash extends Component {
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
-              {this.state.itemArray.map(value => (
+              {this.state.itemArray.map((value) => (
                 <Option props={value} value={value.name}>
                   {value.name}
                 </Option>
@@ -900,7 +940,9 @@ class SearchOsDash extends Component {
               className="button"
               type="primary"
               onClick={
-                this.state.status === 'Não selecionado' ? this.errorStatus : this.addCarrinho
+                this.state.status === 'Não selecionado'
+                  ? this.errorStatus
+                  : this.addCarrinho
               }
             >
               Adicionar
@@ -926,7 +968,7 @@ class SearchOsDash extends Component {
               <label className="label-quant-SearchOs">Quantidade</label>
             </div>
             <div className="div-linhaSepareteProdutos-Os"></div>
-            {this.state.carrinho.map(valor => (
+            {this.state.carrinho.map((valor) => (
               <div className="div-linha-SearchOs">
                 <label className="label-produto-Os">{valor.name}</label>
                 <label className="label-quant-SearchOs">
@@ -934,7 +976,9 @@ class SearchOsDash extends Component {
                     min={1}
                     disabled={valor.serial || valor.technicianReserve}
                     value={this.state.quantObj[`quant${valor.name}`]}
-                    onChange={value => this.onChangeUpdateQuant(valor.name, value)}
+                    onChange={(value) =>
+                      this.onChangeUpdateQuant(valor.name, value)
+                    }
                   />
                   UN
                 </label>
@@ -954,7 +998,11 @@ class SearchOsDash extends Component {
 
         {this.state.carrinho.length !== 0 ? (
           <div className="div-buttonSalvar-Os">
-            <Button type="primary" className="button" onClick={this.updateTargetReservaOs}>
+            <Button
+              type="primary"
+              className="button"
+              onClick={this.updateTargetReservaOs}
+            >
               Salvar
             </Button>
           </div>
@@ -962,15 +1010,15 @@ class SearchOsDash extends Component {
 
         {this.state.redirect ? <Redirect to="/logged/Os/dash" /> : null}
       </div>
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
     osUpdateValue: state.osUpdateValue,
-    auth: state.auth
-  };
+    auth: state.auth,
+  }
 }
 
-export default connect(mapStateToProps)(SearchOsDash);
+export default connect(mapStateToProps)(SearchOsDash)
