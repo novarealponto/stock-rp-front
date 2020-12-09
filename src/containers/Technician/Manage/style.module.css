@@ -1,20 +1,21 @@
+.container {
+  padding: 50px;
+  position: relative;
+  width: 100%;
+}
+
+.container button {
+  margin-bottom: 20px;
+  width: 200px;
+}
+
 .icon {
   font-size: 30px;
 }
 
-.container {
-  width: 100%;
-  position: relative;
-}
-
-.wrapperSearchButton{
+.wrapperSearchButton {
+  align-items: flex-end;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
-}
-
-.container button{
-  width: 200px;
-  margin-bottom: 20px;
 }
