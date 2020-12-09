@@ -56,6 +56,7 @@
     "@storybook/node-logger": "^6.1.5",
     "@storybook/preset-create-react-app": "^3.1.5",
     "@storybook/react": "^6.1.5",
+    "@types/antd": "^1.0.0",
     "babel-loader": "^8.2.2",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-node": "^4.1.0",
