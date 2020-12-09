@@ -1,101 +1,101 @@
-import React, { Component } from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
+import React, { Component } from 'react'
+import { Route, Redirect, Switch } from 'react-router-dom'
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import Dash from "./Dash";
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import Dash from './Dash'
 
-import { auth } from "../services/auth";
-import { Logout } from "./Login/LoginRedux/action";
-import NovoFornecedorRoute from "./Cadastros/NovoFornecedor";
-import Product from "./Product";
-import NovoTecnicoRoute from "./Cadastros/NovoTecnico";
-import NovaEntradaRoute from "./Cadastros/NovaEntrada";
-import EstoqueRoute from "./Gerenciar/Estoque";
-import ReservaKitRoute from "./Reservas/ReservaKit";
-import User from "./User";
-import GerenciarEntradaRoute from "./Gerenciar/Entrada";
-import RomanieoRoute from "./Reservas/Romaneio";
-import ReservaExternoRoute from "./Reservas/ReservaOs";
-import ReservaMLRoute from "./Reservas/ReservaML";
-import RelatorioOsRoute from "./Relatorios/RelatorioOs";
-import RelatorioPerdaRoute from "./Relatorios/RelatorioPerda";
-import RelatorioMLRoute from "./Relatorios/RelatorioML";
-import AddKitRoute from "./Gerenciar/Kit";
-import SearchOsRoute from "./Gerenciar/SearchOs";
-import OsDashRoute from "./Gerenciar/Os";
-import NovoTipoContaRoute from "./Cadastros/NovoTipoConta";
-import PerfilDashRoute from "./Gerenciar/Perfil";
-import GerenciarProdutoRoute from "./Gerenciar/Produto";
-import * as R from "ramda";
-import uuidValidate from "uuid-validate";
-import GerenciarFornecedorRoute from "./Gerenciar/GerenciarFornecedores";
-import GerenciarUsuarioRoute from "./Gerenciar/GerenciarUsuarios";
-import GerenciarTecnicoRoute from "./Gerenciar/GerenciarTecnico";
-import GerenciarProdutosDashRoute from "./Gerenciar/GerenciarProdutos";
-import GerenciarEntradaDashRoute from "./Gerenciar/GerenciarEntrada";
-import NotificacaoRoute from "./Gerenciar/Notificacoes";
-import EmprestimoRoute from "./Gerenciar/Emprestimo";
-import RelatorioEmprestimoRoute from "./Relatorios/RelatorioEmprestimo";
-import SaidaSupRoute from "./Suprimentos/Saida";
-import GerenciarEstoqueSupRoute from "./Suprimentos/Ger.Estoque";
-import GerenciarCadastrosSupRoute from "./Suprimentos/Ger.Cadastros";
-import EntradaSupRoute from "./Suprimentos/Entrada";
-import CadastroProdutosSupRoute from "./Suprimentos/Cad.Produtos";
-import CadastroFornecedorSupRoute from "./Suprimentos/Cad.Fornecedor";
-import EditarFornecedorSupRoute from "./Suprimentos/Edit.Fornecedor";
-import RelatorioMapRoute from "./Relatorios/RelatorioMapeamento";
-import RelatorioVendasRoute from "./Relatorios/RelatorioVendas";
-import RelatorioSuprimentosRoute from "./Relatorios/RelatorioSuprimentos";
-import ReservaInternoRoute from "./Reservas/ReservaInterno";
-import RelatorioComprasRoute from "./Relatorios/RelatorioCompras";
-import RelatorioGastosRoute from "./Relatorios/RelatorioGastos";
-import RelatorioInternoRoute from "./Relatorios/RelatorioInterno";
+import { auth } from '../services/auth'
+import { Logout } from './Login/LoginRedux/action'
+import AddKitRoute from './Gerenciar/Kit'
+import * as R from 'ramda'
+import CadastroFornecedorSupRoute from './Suprimentos/Cad.Fornecedor'
+import CadastroProdutosSupRoute from './Suprimentos/Cad.Produtos'
+import EditarFornecedorSupRoute from './Suprimentos/Edit.Fornecedor'
+import EntradaSupRoute from './Suprimentos/Entrada'
+import EmprestimoRoute from './Gerenciar/Emprestimo'
+import EstoqueRoute from './Gerenciar/Estoque'
+import GerenciarCadastrosSupRoute from './Suprimentos/Ger.Cadastros'
+import GerenciarEntradaDashRoute from './Gerenciar/GerenciarEntrada'
+import GerenciarEntradaRoute from './Gerenciar/Entrada'
+import GerenciarEstoqueSupRoute from './Suprimentos/Ger.Estoque'
+import GerenciarFornecedorRoute from './Gerenciar/GerenciarFornecedores'
+import GerenciarProdutosDashRoute from './Gerenciar/GerenciarProdutos'
+import GerenciarProdutoRoute from './Gerenciar/Produto'
+import GerenciarTecnicoRoute from './Gerenciar/GerenciarTecnico'
+import GerenciarUsuarioRoute from './Gerenciar/GerenciarUsuarios'
+import NotificacaoRoute from './Gerenciar/Notificacoes'
+import NovaEntradaRoute from './Cadastros/NovaEntrada'
+import NovoFornecedorRoute from './Cadastros/NovoFornecedor'
+import NovoTipoContaRoute from './Cadastros/NovoTipoConta'
+import OsDashRoute from './Gerenciar/Os'
+import PerfilDashRoute from './Gerenciar/Perfil'
+import Product from './Product'
+import RelatorioComprasRoute from './Relatorios/RelatorioCompras'
+import RelatorioEmprestimoRoute from './Relatorios/RelatorioEmprestimo'
+import RelatorioGastosRoute from './Relatorios/RelatorioGastos'
+import RelatorioInternoRoute from './Relatorios/RelatorioInterno'
+import RelatorioMapRoute from './Relatorios/RelatorioMapeamento'
+import RelatorioMLRoute from './Relatorios/RelatorioML'
+import RelatorioOsRoute from './Relatorios/RelatorioOs'
+import RelatorioPerdaRoute from './Relatorios/RelatorioPerda'
+import RelatorioSuprimentosRoute from './Relatorios/RelatorioSuprimentos'
+import RelatorioVendasRoute from './Relatorios/RelatorioVendas'
+import ReservaExternoRoute from './Reservas/ReservaOs'
+import ReservaInternoRoute from './Reservas/ReservaInterno'
+import ReservaKitRoute from './Reservas/ReservaKit'
+import ReservaMLRoute from './Reservas/ReservaML'
+import RomanieoRoute from './Reservas/Romaneio'
+import SaidaSupRoute from './Suprimentos/Saida'
+import SearchOsRoute from './Gerenciar/SearchOs'
+import TechnicianRoute from './Technician'
+import uuidValidate from 'uuid-validate'
+import User from './User'
 
 class PagesRoute extends Component {
   state = {
-    auth: true
-  };
+    auth: true,
+  }
 
-  hasAuth = R.has("auth");
-  hasToken = R.has("token");
+  hasAuth = R.has('auth')
+  hasToken = R.has('token')
 
   forceLogout = async () => {
     if (!this.hasAuth(this.props)) {
-      await this.logout();
+      await this.logout()
     } else if (!this.hasToken(this.props.auth)) {
-      await this.logout();
+      await this.logout()
     } else if (!uuidValidate(this.props.auth.token)) {
-      await this.logout();
+      await this.logout()
     }
-  };
+  }
 
   logout = async () => {
-    await this.props.Logout(this.props.auth.token);
-  };
+    await this.props.Logout(this.props.auth.token)
+  }
 
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username
-    };
+      username: this.props.auth.username,
+    }
 
-    let response = {};
+    let response = {}
 
-    response = await auth(value).then(resp =>
+    response = await auth(value).then((resp) =>
       this.setState({
-        auth: resp ? resp.data : false
+        auth: resp ? resp.data : false,
       })
-    );
+    )
 
-    return response;
-  };
+    return response
+  }
 
   componentDidMount = async () => {
-    await this.auth();
+    await this.auth()
 
-    await this.forceLogout();
-  };
+    await this.forceLogout()
+  }
 
   render() {
     if (this.state.auth) {
@@ -104,14 +104,8 @@ class PagesRoute extends Component {
           <Route exact path="/logged/dash" component={Dash} />
           <Route path="/logged/user" component={User} />
           <Route path="/logged/novoTipoConta" component={NovoTipoContaRoute} />
-          <Route
-            path="/logged/novoFornecedor"
-            component={NovoFornecedorRoute}
-          />
+          <Route path="/logged/novoFornecedor" component={NovoFornecedorRoute} />
           <Route path="/logged/product" component={Product} />
-          {!this.props.auth.modulo && (
-            <Route path="/logged/novoTecnico" component={NovoTecnicoRoute} />
-          )}
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
@@ -133,10 +127,7 @@ class PagesRoute extends Component {
             path="/logged/relatorioEmprestimo"
             component={RelatorioEmprestimoRoute}
           />
-          <Route
-            path="/logged/relatorioPerda"
-            component={RelatorioPerdaRoute}
-          />
+          <Route path="/logged/relatorioPerda" component={RelatorioPerdaRoute} />
           <Route path="/logged/relatorioMap" component={RelatorioMapRoute} />
           <Route path="/logged/relatorioML" component={RelatorioMLRoute} />
           <Route
@@ -185,6 +176,8 @@ class PagesRoute extends Component {
           <Route path="/logged/emprestimo" component={EmprestimoRoute} />
           <Route path="/logged/notificacao" component={NotificacaoRoute} />
 
+          <Route path="/logged/technician/" component={TechnicianRoute} />
+
           {this.props.auth.suprimento && (
             <Switch>
               <Route path="/logged/saidaSup" component={SaidaSupRoute} />
@@ -215,25 +208,22 @@ class PagesRoute extends Component {
           )}
           <Redirect to="/logged/dash" />
         </Switch>
-      );
+      )
     } else {
-      this.logout();
-      return <Redirect to="/login" />;
+      this.logout()
+      return <Redirect to="/login" />
     }
   }
 }
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators({ Logout }, dispach);
+  return bindActionCreators({ Logout }, dispach)
 }
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
-  };
+    auth: state.auth,
+  }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(PagesRoute);
+export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute)

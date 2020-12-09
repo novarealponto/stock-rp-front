@@ -5,7 +5,7 @@ import jsPDF from "jspdf";
 import * as R from "ramda";
 import moment from "moment/min/moment-with-locales";
 
-export const getCarro = async () => {
+export const getCars = async () => {
   const storeObject = store.getState();
 
   const headers = {
@@ -86,7 +86,7 @@ export const getAllTecnico = async (query) => {
   return response;
 };
 
-export const newTecnico = async (values) => {
+export const newTechnician = async (values) => {
   const storeObject = store.getState();
 
   const headers = {
@@ -137,7 +137,7 @@ export const updateTecnico = async (values) => {
   return response;
 };
 
-export const newCarro = async (values) => {
+export const newCar = async (values) => {
   const storeObject = store.getState();
 
   const headers = {

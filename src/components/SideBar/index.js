@@ -180,12 +180,12 @@ class SideBar extends Component {
               }}
             />
           );
-        case 'newTecnico_add':
+        case 'newTechnician_add':
           return (
             <Redirect
               push
               to={{
-                pathname: '/logged/novoTecnico/add',
+                pathname: '/logged/technician/add',
                 state: { from: this.props.location }
               }}
             />
@@ -626,7 +626,7 @@ class SideBar extends Component {
               Usuário
             </Menu.Item>
             {!this.props.auth.modulo && (
-              <Menu.Item disabled={!this.props.auth.addTec} key="newTecnico_add">
+              <Menu.Item disabled={!this.props.auth.addTec} key="newTechnician_add">
                 <UserAddOutlined />
                 Técnico
               </Menu.Item>

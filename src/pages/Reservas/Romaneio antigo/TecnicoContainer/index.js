@@ -20,7 +20,7 @@ import { Redirect } from "react-router-dom";
 import locale from "antd/es/date-picker/locale/pt_BR";
 
 import { getEprestimoService } from "../../../../services/emprestimo";
-import { getTecnico, createPDF, getCarro } from "../../../../services/tecnico";
+import { getTecnico, createPDF, getCars } from "../../../../services/tecnico";
 import {
   getTodasOs,
   baixaReservaOs,
@@ -73,7 +73,7 @@ class ReservaTecnico extends Component {
   };
 
   getAllCarro = async () => {
-    await getCarro().then(resposta =>
+    await getCars().then(resposta =>
       this.setState({
         carroArray: resposta.data
       })
