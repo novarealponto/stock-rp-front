@@ -28,7 +28,6 @@ import NotificacaoRoute from "./Gerenciar/Notificacoes";
 import NovaEntradaRoute from "./Cadastros/NovaEntrada";
 import NovoFornecedorRoute from "./Cadastros/NovoFornecedor";
 import NovoTipoContaRoute from "./Cadastros/NovoTipoConta";
-import NovoUsuarioRoute from "./Cadastros/NovoUsuario";
 import OsDashRoute from "./Gerenciar/Os";
 import PerfilDashRoute from "./Gerenciar/Perfil";
 import Product from "./Product";
@@ -51,6 +50,7 @@ import SaidaSupRoute from "./Suprimentos/Saida";
 import SearchOsRoute from "./Gerenciar/SearchOs";
 import TechnicianRoute from './Technician'
 import uuidValidate from "uuid-validate";
+import User from "./User";
 
 class PagesRoute extends Component {
   state = {
@@ -102,7 +102,7 @@ class PagesRoute extends Component {
       return (
         <Switch>
           <Route exact path="/logged/dash" component={Dash} />
-          <Route path="/logged/novoUsuario" component={NovoUsuarioRoute} />
+          <Route path="/logged/user" component={User} />
           <Route path="/logged/novoTipoConta" component={NovoTipoContaRoute} />
           <Route
             path="/logged/novoFornecedor"

@@ -1,5 +1,5 @@
 import React from 'react'
-import ManagerContainer from '../../../containers/Product/Manager'
+import ManagerContainer from '../../../containers/Product/Manage'
 
 const Manager = () => {
   return (

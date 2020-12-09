@@ -155,7 +155,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: '/logged/novoUsuario/add',
+                pathname: '/logged/user/add',
                 state: { from: this.props.location }
               }}
             />
