@@ -54,11 +54,11 @@ import User from "./User";
 
 class PagesRoute extends Component {
   state = {
-    auth: true
+    auth: true,
   };
 
-  hasAuth = R.has("auth");
-  hasToken = R.has("token");
+  hasAuth = R.has('auth');
+  hasToken = R.has('token');
 
   forceLogout = async () => {
     if (!this.hasAuth(this.props)) {
@@ -77,14 +77,14 @@ class PagesRoute extends Component {
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username
+      username: this.props.auth.username,
     };
 
     let response = {};
 
-    response = await auth(value).then(resp =>
+    response = await auth(value).then((resp) =>
       this.setState({
-        auth: resp ? resp.data : false
+        auth: resp ? resp.data : false,
       })
     );
 
@@ -104,10 +104,7 @@ class PagesRoute extends Component {
           <Route exact path="/logged/dash" component={Dash} />
           <Route path="/logged/user" component={User} />
           <Route path="/logged/novoTipoConta" component={NovoTipoContaRoute} />
-          <Route
-            path="/logged/novoFornecedor"
-            component={NovoFornecedorRoute}
-          />
+          <Route path="/logged/novoFornecedor" component={NovoFornecedorRoute} />
           <Route path="/logged/product" component={Product} />
           <Route
             path="/logged/gerenciarProduto"
@@ -130,10 +127,7 @@ class PagesRoute extends Component {
             path="/logged/relatorioEmprestimo"
             component={RelatorioEmprestimoRoute}
           />
-          <Route
-            path="/logged/relatorioPerda"
-            component={RelatorioPerdaRoute}
-          />
+          <Route path="/logged/relatorioPerda" component={RelatorioPerdaRoute} />
           <Route path="/logged/relatorioMap" component={RelatorioMapRoute} />
           <Route path="/logged/relatorioML" component={RelatorioMLRoute} />
           <Route
@@ -182,7 +176,7 @@ class PagesRoute extends Component {
           <Route path="/logged/emprestimo" component={EmprestimoRoute} />
           <Route path="/logged/notificacao" component={NotificacaoRoute} />
 
-          <Route path='/logged/technician/' component={TechnicianRoute} />
+          <Route path="/logged/technician/" component={TechnicianRoute} />
 
           {this.props.auth.suprimento && (
             <Switch>
@@ -228,11 +222,8 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(PagesRoute);
+export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);
