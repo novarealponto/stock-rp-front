@@ -10,7 +10,7 @@ import {
   getResourcesByTypeAccount,
   NovoUsuarioService
 } from '../../../services/usuario';
-import buildUser from './userSpec';
+import buildUser from '../../../utils/userSpec';
 import AddUserContainer from '../../../containers/User/AddUser';
 import PERMISSIONS from '../../../utils/permissions';
 
