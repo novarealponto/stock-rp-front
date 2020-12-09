@@ -1,75 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import faker from 'faker';
-import { find, filter, match, length } from 'ramda';
+import React, { useState } from 'react'
+import { action } from '@storybook/addon-actions'
+import { filter, length, match } from 'ramda'
+import { Form, message } from 'antd'
+import { name, random } from 'faker'
 
-import ManageTechinicians from '../../../../containers/Technician/Manage';
+import ManageTechinicians from '../../../../containers/Technician/Manage'
 
-const initialData = [];
+const initialData = []
 
 for (let i = 0; i < 100; i++) {
   initialData.push({
     key: i,
-    name: faker.name.findName(),
-    external: faker.random.boolean(),
+    name: name.findName(),
+    external: random.boolean(),
     plate: `AAA12${i}`,
     dueDateCnh: '01010101',
-  });
+  })
 }
-
-const initialQuery = {
-  name: '',
-  plate: '',
-  dueDateCnh: '',
-};
 
 export default {
   title: 'Containers/Technician/Manage',
   component: ManageTechinicians,
-};
+}
+
+const onChangeTable = action('Change current pagination of table')
+const onClickButtonAvancedSearh = action('Show inputs search form')
+const onClickButtonSearh = action('Submit search form')
 
 const Template = (args) => {
-  const [avancedSearch, setAvancedSearch] = useState(false);
-  const [query, setQuery] = useState(initialQuery);
-  const [data, setData] = useState(initialData);
+  const [avancedSearch, setAvancedSearch] = useState(false)
+  const [data, setData] = useState(initialData)
+  const [formQuery] = Form.useForm()
 
-  const handleClickAvancedSearch = () => setAvancedSearch(!avancedSearch);
+  const applyMatch = (key, object, query) =>
+    match(createRegex(query[key]), object[key])
 
-  const onChange = ({ target: { name, value } }) => {
-    setQuery({ ...query, [name]: value });
-  };
+  const createRegex = (pattern) => new RegExp(`${pattern}`, 'gi')
 
-  useEffect(() => {
-    setData(filterData(initialData));
-  }, [query]);
-
-  const createRegex = (pattern) => new RegExp(`${pattern}`, 'gi');
-
-  const applyMatch = (key, object) =>  match(createRegex(query[key]), object[key]);
-
-  const filterData = (data) => {
+  const filterData = (query) => {
     const callback = (item) => {
       return (
-        length(applyMatch('name', item)) > 0 &&
-        length(applyMatch('plate', item)) > 0 &&
-        length(applyMatch('dueDateCnh', item)) > 0
-      );
-    };
+        length(applyMatch('name', item, query)) > 0 &&
+        length(applyMatch('plate', item, query)) > 0 &&
+        length(applyMatch('dueDateCnh', item, query)) > 0
+      )
+    }
+    return filter(callback, initialData)
+  }
 
-    return filter(callback, data);
-  };
+  const handleClickAvancedSearch = (eventOnClick) => {
+    onClickButtonAvancedSearh(eventOnClick)
+    setAvancedSearch(!avancedSearch)
+  }
+
+  const handleClickEditLine = () =>
+    message.warning('Page para aditar o técino ainda não foi implementada')
+
+  const handleOnChangeTable = ({ current }) => {
+    onChangeTable(current)
+  }
+
+  const handleSubmitFormQuery = (queryFormData) => {
+    onClickButtonSearh(queryFormData)
+    setData(filterData(queryFormData))
+  }
 
   return (
     <ManageTechinicians
       {...args}
-      query={query}
-      onChange={onChange}
-      handleClickAvancedSearch={handleClickAvancedSearch}
-      data={data}
       avancedSearch={avancedSearch}
+      data={data}
+      formQuery={formQuery}
+      handleClickAvancedSearch={handleClickAvancedSearch}
+      handleClickEditLine={handleClickEditLine}
+      handleSubmitFormQuery={handleSubmitFormQuery}
+      onChangeTable={handleOnChangeTable}
     />
-  );
-};
+  )
+}
 
-export const Default = Template.bind({});
+export const Default = Template.bind({})
 
-Default.args = {};
+Default.args = {
+  pagination: {},
+}
