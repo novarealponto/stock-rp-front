@@ -24,7 +24,7 @@ export default {
 }
 
 const onChangeTable = action('Change current pagination of table')
-const onClickButtonAvancedSearh = action('Show inputs search form')
+const onClickButtonAvancedSearh = action('Show/Hide inputs search form')
 const onClickButtonSearh = action('Submit search form')
 const onClickEditLine = action('Send message warning')
 
@@ -54,8 +54,10 @@ const Template = (args) => {
     setAvancedSearch(!avancedSearch)
   }
 
-  const handleClickEditLine = (eventOnClick) => onClickEditLine(eventOnClick)
-  message.warning('Page para aditar o técino ainda não foi implementada')
+  const handleClickEditLine = (eventOnClick) => {
+    onClickEditLine(eventOnClick)
+    message.warning('Page para aditar o técino ainda não foi implementada')
+  }
 
   const handleOnChangeTable = ({ current }) => {
     onChangeTable(current)
