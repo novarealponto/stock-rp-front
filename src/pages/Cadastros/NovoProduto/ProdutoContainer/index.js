@@ -38,6 +38,7 @@ const initialState = {
   },
   responsibleUser: 'modrp',
 };
+
 class NovoProduto extends Component {
   state = initialState;
 
@@ -231,7 +232,6 @@ class NovoProduto extends Component {
       visibleMark,
       visibleType,
     } = this.state;
-
 
     return (
       <AddProduct
