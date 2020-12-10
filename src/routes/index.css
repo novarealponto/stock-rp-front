@@ -1,10 +1,7 @@
 .div-body {
   height: 100vh !important;
   width: calc(100% - 190px) !important;
-  display: flex;
-  justify-content: center;
-  /* background-color: #f0f2f5; */
-  align-items: center;
+  padding: 30px;
 }
 .div-body-sSidebar {
   height: 100vh !important;
