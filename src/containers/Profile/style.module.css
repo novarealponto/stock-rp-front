@@ -1,22 +1,18 @@
 .actionBtn {
   margin-right: 5px;
 }
+
 .cardPerfil {
   width: 220px;
 }
+
 .divBtn {
   display: flex;
   justify-content: flex-end;
   width: 100%;
 }
+
 .divMainProfile{
   height: 100vh;
   width: 100%;
-}
-.h1Perfil {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
-    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  font-size: 2.2em;
-  font-weight: 500;
-  margin-top: 25px;
 }

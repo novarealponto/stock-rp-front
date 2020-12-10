@@ -1,8 +1,9 @@
 import React from 'react';
-import { Form, Button, Input, Card, Avatar, Row, Col } from 'antd';
-import 'antd/dist/antd.css';
+import { Form, Button, Input, Card, Avatar, Row, Col, Typography } from 'antd';
 
 import styles from './style.module.css';
+
+const { Title } = Typography;
 
 const Profile = ({
   edit,
@@ -35,82 +36,79 @@ const Profile = ({
     <div className={styles.divMainProfile}>
       <Row>
         <Col span={12} offset={6} align="center">
-          <h1 className={styles.h1Perfil}>Perfil</h1>
-          <>
-            <Card className={styles.cardPerfil}>
-              <>
-                <Avatar size={170} style={{ fontSize: '70px' }}>
-                  {username.substr(0, 1).toUpperCase()}
-                </Avatar>
-              </>
-            </Card>
-            <Button
-              type="primary"
-              onClick={showAlterPassword}
-              style={{ width: '220px', marginBottom: '20px' }}
-            >
-              Alterar senha
-            </Button>
+        <Title level={2} style={{marginTop: '25px'}}>Perfil</Title>
 
-            <Form
-              form={form}
-              layout="vertical"
-              className={styles.formPerfil}
-              onFinish={handleOnSubmit}
-              size={100}
-            >
-              <Form.Item label="Usuário:">
-                <Input readOnly value={username} />
-              </Form.Item>
-              <Form.Item label="Tipo de conta:">
-                <Input readOnly value={typeAccount} />
-              </Form.Item>
-              {edit && (
-                <>
-                  <Form.Item
-                    label="Senha atual:"
-                    name="oldPassword"
-                    rules={[{ required: true, message: 'Campo obrigatório!' }]}
-                  >
-                    <Input.Password placeholder="Digite a senha" />
-                  </Form.Item>
-                  <Form.Item
-                    label="Nova senha:"
-                    name="newPassword"
-                    rules={[
-                      validatorPassword('oldPassword'),
-                      { required: true, message: 'Campo obrigatório!' },
-                    ]}
-                  >
-                    <Input.Password placeholder="Digite a nova senha" />
-                  </Form.Item>
-                  <Form.Item
-                    label="Confirmar senha:"
-                    name="confirmPassword"
-                    rules={[
-                      validatorPassword('newPassword'),
-                      { required: true, message: 'Campo obrigatório!' },
-                    ]}
-                  >
-                    <Input.Password placeholder="Confirme a senha" />
-                  </Form.Item>
-                  <Form.Item>
-                    <div className={styles.divBtn}>
-                      <Button type="danger" className={styles.actionBtn} onClick={handleCancel}>
-                        Cancelar
-                      </Button>
-                      <Button type="primary" htmlType="submit">
-                        Salvar
-                      </Button>
-                    </div>
-                  </Form.Item>
-                </>
-              )}
-            </Form>
-          </>
+          <Card className={styles.cardPerfil}>
+            <Avatar size={170} style={{ fontSize: '70px' }}>
+              {username.substr(0, 1).toUpperCase()}
+            </Avatar>
+          </Card>
+          <Button
+            type="primary"
+            onClick={showAlterPassword}
+            style={{ width: '220px', marginBottom: '20px' }}
+          >
+            Alterar senha
+          </Button>
+
+          <Form
+            form={form}
+            layout="vertical"
+            className={styles.formPerfil}
+            onFinish={handleOnSubmit}
+            size={100}
+          >
+            <Form.Item label="Usuário:">
+              <Input readOnly value={username} />
+            </Form.Item>
+            <Form.Item label="Tipo de conta:">
+              <Input readOnly value={typeAccount} />
+            </Form.Item>
+            {edit && (
+              <>
+                <Form.Item
+                  label="Senha atual:"
+                  name="oldPassword"
+                  rules={[{ required: true, message: 'Campo obrigatório!' }]}
+                >
+                  <Input.Password placeholder="Digite a senha" />
+                </Form.Item>
+                <Form.Item
+                  label="Nova senha:"
+                  name="newPassword"
+                  rules={[
+                    validatorPassword('oldPassword'),
+                    { required: true, message: 'Campo obrigatório!' },
+                  ]}
+                >
+                  <Input.Password placeholder="Digite a nova senha" />
+                </Form.Item>
+                <Form.Item
+                  label="Confirmar senha:"
+                  name="confirmPassword"
+                  rules={[
+                    validatorPassword('newPassword'),
+                    { required: true, message: 'Campo obrigatório!' },
+                  ]}
+                >
+                  <Input.Password placeholder="Confirme a senha" />
+                </Form.Item>
+                <Form.Item>
+                  <div className={styles.divBtn}>
+                    <Button type="danger" className={styles.actionBtn} onClick={handleCancel}>
+                      Cancelar
+                    </Button>
+                    <Button type="primary" htmlType="submit">
+                      Salvar
+                    </Button>
+                  </div>
+                </Form.Item>
+              </>
+            )}
+          </Form>
         </Col>
       </Row>
-      </div>
+    </div>
   );
 };
 
