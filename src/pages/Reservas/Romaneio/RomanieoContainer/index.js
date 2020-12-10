@@ -343,7 +343,7 @@ class RomanieoContainer extends Component {
         }
 
         let reserved =
-          data.reserved && data.productBase.product.category === 'peca'
+        (data.reserved || !!data.deletedAt) && data.productBase.product.category === 'peca'
 
         R.map((item) => {
           if (
