@@ -29,7 +29,7 @@ import NovaEntradaRoute from './Cadastros/NovaEntrada'
 import NovoFornecedorRoute from './Cadastros/NovoFornecedor'
 import NovoTipoContaRoute from './Cadastros/NovoTipoConta'
 import OsDashRoute from './Gerenciar/Os'
-import PerfilDashRoute from './Gerenciar/Perfil'
+import Profile from './Profile'
 import Product from './Product'
 import RelatorioComprasRoute from './Relatorios/RelatorioCompras'
 import RelatorioEmprestimoRoute from './Relatorios/RelatorioEmprestimo'
@@ -152,7 +152,7 @@ class PagesRoute extends Component {
           />
           <Route path="/logged/searchOs" component={SearchOsRoute} />
           <Route path="/logged/Os" component={OsDashRoute} />
-          <Route path="/logged/profile" component={PerfilDashRoute} />
+          <Route path="/logged/profile" component={Profile} />
           <Route
             path="/logged/gerenciarProdutosDash"
             component={GerenciarProdutosDashRoute}
