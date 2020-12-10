@@ -87,7 +87,7 @@ const Profile = ({
                   label="Confirmar senha:"
                   name="confirmPassword"
                   rules={[
-                    validatorPassword('newPassword'),
+                    validatorPassword('newPassword', true),
                     { required: true, message: 'Campo obrigatório!' },
                   ]}
                 >
