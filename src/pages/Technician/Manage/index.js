@@ -61,7 +61,7 @@ function Manage() {
   const handleClickAvancedSearch = () => setAvancedSearch(!avancedSearch)
 
   const handleClickEditLine = () =>
-    message.warning('Page para aditar o técino ainda não foi implementada', 5000)
+    message.warning('Page para aditar o técino ainda não foi implementada')
 
   const handleOnChangeTable = ({ current }) => {
     setCurrent(current)
