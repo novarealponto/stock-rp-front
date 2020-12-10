@@ -188,7 +188,7 @@ class RomanieoContainer extends Component {
     await this.getAllTechnician()
   }
 
-  getAllTechnician = async () => {
+  getAllTecnico = async () => {
     await getTecnico().then((resposta) =>
       this.setState({
         tecnicoArray: resposta.data,
@@ -667,12 +667,10 @@ class RomanieoContainer extends Component {
         },
         os: {
           specific: {
-            date: this.state.data
-              ? {
-                  start: this.state.data,
-                  end: this.state.data,
-                }
-              : undefined,
+            date: {
+              start: this.state.data,
+              end: this.state.data,
+            },
           },
         },
       },
