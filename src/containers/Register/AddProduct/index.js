@@ -1,20 +1,14 @@
-import React from 'react'
-import {
-  Button,
-  Input,
-  InputNumber,
-  Select,
-  Switch,
-} from 'antd'
-import styles from './style.module.css'
-import classNames from 'classnames'
+import React from 'react';
+import { Button, Form, Input, InputNumber, Select, Switch } from 'antd';
+import styles from './style.module.css';
+import classNames from 'classnames';
 
-import Modal from '../../../components/Modal'
+import Modal from '../../../components/Modal';
 
-import { PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons';
 
-const { Option } = Select
-const { TextArea } = Input
+const { Option } = Select;
+const { TextArea } = Input;
 
 const AddProduct = ({
   addNewProduct,
@@ -31,8 +25,6 @@ const AddProduct = ({
   loading,
   mark,
   marksList,
-  newMark,
-  newType,
   onBlurValidator,
   openModalMark,
   openModalType,
@@ -45,63 +37,79 @@ const AddProduct = ({
   visibleType,
   prateleira,
 }) => {
+  const ModalMarca = () => {
+    const [form] = Form.useForm();
 
-  const ModalMarca = () => (
-    <Modal
-      title="Adicionar Marca"
-      visible={visibleMark}
-      closeModal={closeModal}
-      saveModal={() => saveModalData('mark')}
-    >
-      <div className={styles.formGroup}>
-        <label>Marca</label>
-          <Input
-            className={classNames({ [styles.inputError]: formErrors.newMark })}
-            placeholder="Digite a marca"
-            name="newMark"
-            value={newMark}
-            onChange={handleOnChange}
-          />
+    return (
+      <Modal
+        title="Adicionar Marca"
+        visible={visibleMark}
+        closeModal={closeModal}
+        saveModal={() =>
+          form
+            .validateFields()
+            .then((data) => {
+              form.resetFields();
+              saveModalData({ data, type: 'mark' });
+            })
+            .catch((info) => {
+              console.log('Validate Failed:', info);
+            })
+        }
+      >
+        <div className={styles.formGroup}>
+          <Form form={form} layout="vertical" name="productTypeForm">
+            <Form.Item name="newMark" label="Marca" rules={[{ required: true }]}>
+              <Input
+                className={classNames({ [styles.inputError]: formErrors.newMark })}
+                placeholder="Digite a marca"
+              />
+            </Form.Item>
+          </Form>
+        </div>
+      </Modal>
+    );
+  };
 
-        {formErrors.newMark && (
-          <small className={styles.errorMessage}>
-            {formErrors.newMark}
-          </small>
-        )}
-      </div>
-    </Modal>
-  )
+  const ModalType = () => {
+    const [form] = Form.useForm();
 
-  const ModalType = () => (
-    <Modal
-      title="Adicionar Tipo"
-      visible={visibleType}
-      closeModal={closeModal}
-      saveModal={() => saveModalData('type')}
-    >
-      <div className={styles.formGroup}>
-        <label>Tipo
-          <Input
-            className={classNames({ [styles.inputError]: formErrors.newType })}
-            placeholder="Digite um tipo"
-            name="newType"
-            value={newType}
-            onChange={handleOnChange}
-          />
-        </label>
-        {formErrors.newType && (
-          <p className="div-feedbackError">{formErrors.newType}</p>
-        )}
-      </div>
-    </Modal>
-  )
+    return (
+      <Modal
+        title="Adicionar Tipo"
+        visible={visibleType}
+        closeModal={closeModal}
+        saveModal={() =>
+          form
+            .validateFields()
+            .then((data) => {
+              form.resetFields();
+              saveModalData({ data, type: 'type' });
+            })
+            .catch((info) => {
+              console.log('Validate Failed:', info);
+            })
+        }
+      >
+        <div className={styles.formGroup}>
+          <Form form={form} layout="vertical" name="productTypeForm">
+            <Form.Item name="newType" label="Tipo" rules={[{ required: true }]}>
+              <Input
+                className={classNames({ [styles.inputError]: formErrors.newType })}
+                placeholder="Digite um tipo"
+              />
+            </Form.Item>
+          </Form>
+        </div>
+      </Modal>
+    );
+  };
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Produtos</h1>
 
       <div className={styles.form}>
-
         <div className={styles.formGroup}>
           <label>Item</label>
           <Input
@@ -113,19 +121,15 @@ const AddProduct = ({
             onBlur={onBlurValidator}
           />
 
-          {formErrors.item && (
-            <small className={styles.errorMessage}>
-              {formErrors.item}
-            </small>
-          )}
+          {formErrors.item && <small className={styles.errorMessage}>{formErrors.item}</small>}
         </div>
 
         <div className={styles.formGroup}>
           <label>Categoria</label>
           <Select
             value={category}
-            style={{ width: "100%" }}
-            onChange={value => handleOnChange({ target: { value, name: 'category' } })}
+            style={{ width: '100%' }}
+            onChange={(value) => handleOnChange({ target: { value, name: 'category' } })}
             name="category"
           >
             <Option value="Equipamento">Equipamento</Option>
@@ -142,19 +146,15 @@ const AddProduct = ({
               placeholder="Selecione o produto"
               optionFilterProp="children"
               filterOption={(input, option) =>
-                option.props.children
-                  .toLowerCase()
-                  .indexOf(input.toLowerCase()) >= 0
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
               name="mark"
               value={mark}
-              style={{ width: "100%" }}
-              onChange={value => handleOnChange({ target: { value, name: 'mark' } })}
-              onSearch={mark => getAllMarca(mark)}
+              style={{ width: '100%' }}
+              onChange={(value) => handleOnChange({ target: { value, name: 'mark' } })}
+              onSearch={(mark) => getAllMarca(mark)}
             >
-              {marksList && marksList.map(item => (
-                <Option value={item.mark}>{item.mark}</Option>
-              ))}
+              {marksList && marksList.map((item) => <Option value={item.mark}>{item.mark}</Option>)}
             </Select>
             <Button
               className={styles.addButtonPlus}
@@ -175,16 +175,11 @@ const AddProduct = ({
           <div className={styles.inputWithButton}>
             <Select
               value={type}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               name="type"
-              onChange={value => handleOnChange({ target: { value, name: 'type' } })}
+              onChange={(value) => handleOnChange({ target: { value, name: 'type' } })}
             >
-              {typesList && typesList.map(item => (
-                <Option value={item.type}>
-                  {item.type}
-                </Option>
-              ))
-              }
+              {typesList && typesList.map((item) => <Option value={item.type}>{item.type}</Option>)}
             </Select>
 
             <Button
@@ -207,14 +202,12 @@ const AddProduct = ({
             placeholder="12345"
             name="quantMin"
             value={quantMin}
-            onChange={value => handleOnChange({ target: { value, name: 'quantMin' } })}
+            onChange={(value) => handleOnChange({ target: { value, name: 'quantMin' } })}
             onBlur={onBlurValidator}
           />
 
           {formErrors.quantMin && (
-            <small className={styles.errorMessage}>
-              {formErrors.quantMin}
-            </small>
+            <small className={styles.errorMessage}>{formErrors.quantMin}</small>
           )}
         </div>
 
@@ -223,9 +216,8 @@ const AddProduct = ({
           <Switch
             name="serial"
             checked={serial}
-            onChange={value => handleOnChange({ target: { value, name: 'serial' } })}
+            onChange={(value) => handleOnChange({ target: { value, name: 'serial' } })}
           />
-
         </div>
       </div>
 
@@ -241,30 +233,16 @@ const AddProduct = ({
             onChange={handleOnChange}
           />
         </div>
-
       </div>
       <div className={styles.form}>
-
         <div className={styles.formGroupLocation}>
           <label className="div-inputs">Corredor </label>
-          <Input
-            placeholder="12345"
-            name="corredor"
-            value={corredor}
-            onChange={handleOnChange}
-          />
-
+          <Input placeholder="12345" name="corredor" value={corredor} onChange={handleOnChange} />
         </div>
 
         <div className={styles.formGroupLocation}>
           <label>Coluna</label>
-          <Input
-            placeholder="12345"
-            name="coluna"
-            value={coluna}
-            onChange={handleOnChange}
-          />
-
+          <Input placeholder="12345" name="coluna" value={coluna} onChange={handleOnChange} />
         </div>
 
         <div className={styles.formGroupLocation}>
@@ -275,32 +253,20 @@ const AddProduct = ({
             value={prateleira}
             onChange={handleOnChange}
           />
-
         </div>
 
         <div className={styles.formGroupLocation}>
           <label>Gaveta</label>
-          <Input
-            placeholder="12345"
-            name="gaveta"
-            value={gaveta}
-            onChange={handleOnChange}
-          />
-
+          <Input placeholder="12345" name="gaveta" value={gaveta} onChange={handleOnChange} />
         </div>
       </div>
       <div className={styles.saveButton}>
-        <Button
-          className="button"
-          type="primary"
-          loading={loading}
-          onClick={addNewProduct}
-        >
+        <Button className="button" type="primary" loading={loading} onClick={addNewProduct}>
           Salvar
-          </Button>
+        </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddProduct
+export default AddProduct;
