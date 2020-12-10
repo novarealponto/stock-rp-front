@@ -7,7 +7,7 @@ import Manage from './Manage'
 const Technician = () => (
   <Switch>
     <Route exact path="/logged/technician/add" component={AddTechnician} />
-    <Route exact path="/logged/technician/manage" component={Manage} />
+    <Route exact path="/logged/technician/manager" component={Manage} />
   </Switch>
 )
 
