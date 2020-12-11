@@ -1,16 +1,12 @@
-import React, { Component } from "react";
-import { Input, Button, Select, Modal, message, Switch } from "antd";
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { validators, masks } from "./validators";
-import {
-  updateTecnico,
-  newCar,
-  getCars,
-} from "../../../../services/tecnico";
-import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
+import React, { Component } from 'react'
+import { Input, Button, Select, Modal, message, Switch } from 'antd'
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { validators, masks } from './validators'
+import { updateTechnician, newCar, getCars } from '../../../../services/tecnico'
+import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons'
 
-const { Option } = Select;
+const { Option } = Select
 
 class GerenciarTecnico extends Component {
   state = {
@@ -22,116 +18,116 @@ class GerenciarTecnico extends Component {
     nome: this.props.tecnicoUpdateValue.name,
     cnh: this.props.tecnicoUpdateValue.CNH.replace(
       /(\d{2})(\d{2})(\d{4})/,
-      "$1/$2/$3"
+      '$1/$2/$3'
     ),
-    carro: "",
+    carro: '',
     placa: this.props.tecnicoUpdateValue.plate,
-    rodizio: "",
+    rodizio: '',
     loading: false,
     modalCarro: false,
-    newModelo: "",
-    newPlaca: "",
-    newAno: "",
+    newModelo: '',
+    newPlaca: '',
+    newAno: '',
     fieldFalha: {
       nome: false,
       cnh: false,
     },
     message: {
-      nome: "",
-      cnh: "",
+      nome: '',
+      cnh: '',
     },
-  };
+  }
 
   redirectGerenciarCadastros = () => {
     this.setState({
       redirect: true,
-    });
-  };
+    })
+  }
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect push to="/logged/gerenciarProduto/dash" />;
+      return <Redirect push to="/logged/gerenciarProduto/dash" />
     }
-  };
+  }
 
   onChangeExterno = () => {
     this.setState({
       externo: !this.state.externo,
-    });
-  };
+    })
+  }
 
   getAllCarro = async () => {
     await getCars().then((resposta) =>
       this.setState({
         carroArray: resposta.data,
       })
-    );
-  };
+    )
+  }
 
   success = () => {
-    message.success("O cadastro foi efetuado");
-  };
+    message.success('O cadastro foi efetuado')
+  }
 
   error = () => {
-    message.error("O cadastro não foi efetuado");
-  };
+    message.error('O cadastro não foi efetuado')
+  }
 
   onChangeSelect = async (value) => {
     await this.setState({
       placa: value,
-    });
+    })
 
-    this.rodizio();
-  };
+    this.rodizio()
+  }
 
   rodizio = () => {
-    if (this.state.placa[this.state.placa.length - 1] === "1") {
+    if (this.state.placa[this.state.placa.length - 1] === '1') {
       this.setState({
-        rodizio: "SEGUNDA",
-      });
-    } else if (this.state.placa[this.state.placa.length - 1] === "2") {
+        rodizio: 'SEGUNDA',
+      })
+    } else if (this.state.placa[this.state.placa.length - 1] === '2') {
       this.setState({
-        rodizio: "SEGUNDA",
-      });
-    } else if (this.state.placa[this.state.placa.length - 1] === "3") {
+        rodizio: 'SEGUNDA',
+      })
+    } else if (this.state.placa[this.state.placa.length - 1] === '3') {
       this.setState({
-        rodizio: "TERÇA",
-      });
-    } else if (this.state.placa[this.state.placa.length - 1] === "4") {
+        rodizio: 'TERÇA',
+      })
+    } else if (this.state.placa[this.state.placa.length - 1] === '4') {
       this.setState({
-        rodizio: "TERÇA",
-      });
-    } else if (this.state.placa[this.state.placa.length - 1] === "5") {
+        rodizio: 'TERÇA',
+      })
+    } else if (this.state.placa[this.state.placa.length - 1] === '5') {
       this.setState({
-        rodizio: "QUARTA",
-      });
-    } else if (this.state.placa[this.state.placa.length - 1] === "6") {
+        rodizio: 'QUARTA',
+      })
+    } else if (this.state.placa[this.state.placa.length - 1] === '6') {
       this.setState({
-        rodizio: "QUARTA",
-      });
-    } else if (this.state.placa[this.state.placa.length - 1] === "7") {
+        rodizio: 'QUARTA',
+      })
+    } else if (this.state.placa[this.state.placa.length - 1] === '7') {
       this.setState({
-        rodizio: "QUINTA",
-      });
-    } else if (this.state.placa[this.state.placa.length - 1] === "8") {
+        rodizio: 'QUINTA',
+      })
+    } else if (this.state.placa[this.state.placa.length - 1] === '8') {
       this.setState({
-        rodizio: "QUINTA",
-      });
-    } else if (this.state.placa[this.state.placa.length - 1] === "9") {
+        rodizio: 'QUINTA',
+      })
+    } else if (this.state.placa[this.state.placa.length - 1] === '9') {
       this.setState({
-        rodizio: "SEXTA",
-      });
-    } else if (this.state.placa[this.state.placa.length - 1] === "0") {
+        rodizio: 'SEXTA',
+      })
+    } else if (this.state.placa[this.state.placa.length - 1] === '0') {
       this.setState({
-        rodizio: "SEXTA",
-      });
+        rodizio: 'SEXTA',
+      })
     }
-  };
+  }
 
   saveTargetUpdateTechnician = async () => {
     this.setState({
       loading: true,
-    });
+    })
 
     const values = {
       id: this.props.tecnicoUpdateValue.id,
@@ -139,9 +135,9 @@ class GerenciarTecnico extends Component {
       CNH: this.state.cnh,
       plate: this.state.placa,
       external: this.state.externo,
-    };
+    }
 
-    const resposta = await updateTecnico(values);
+    const resposta = await updateTechnician(values)
 
     if (resposta.status === 422) {
       // this.setState({
@@ -149,131 +145,131 @@ class GerenciarTecnico extends Component {
       //   fieldFalha: resposta.data.fields[0].field,
       //   message: resposta.data.fields[0].message,
       // })
-      await this.error();
+      await this.error()
       this.setState({
         loading: false,
         messageError: false,
-      });
+      })
     }
     if (resposta.status === 200) {
       this.setState({
         messageSuccess: true,
-      });
-      await this.success();
+      })
+      await this.success()
       this.setState({
         loading: false,
         messageSuccess: false,
-      });
+      })
     }
-  };
+  }
 
   saveTargetnewCar = async () => {
     this.setState({
       loading: true,
-    });
+    })
 
     const values = {
       model: this.state.newModelo,
       year: this.state.newAno,
       plate: this.state.newPlaca,
-    };
+    }
 
-    const resposta = await newCar(values);
+    const resposta = await newCar(values)
 
     if (resposta.status === 422) {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
         message: resposta.data.fields[0].message,
-      });
-      await this.error();
+      })
+      await this.error()
       this.setState({
         loading: false,
         messageError: false,
-      });
+      })
     }
     if (resposta.status === 200) {
       this.setState({
-        newModelo: "",
-        newPlaca: "",
-        newAno: "",
+        newModelo: '',
+        newPlaca: '',
+        newAno: '',
         fieldFalha: {
           ...this.state.fieldFalha,
           newPlaca: false,
         },
         message: {
           ...this.state.message,
-          newPlaca: "",
+          newPlaca: '',
         },
         messageSuccess: true,
-      });
-      await this.success();
+      })
+      await this.success()
       this.setState({
         loading: false,
         messageSuccess: false,
         modalCarro: false,
-      });
+      })
     }
 
-    this.getAllCarro();
-  };
+    this.getAllCarro()
+  }
 
   openModal = () => {
     this.setState({
       modalCarro: true,
-    });
-  };
+    })
+  }
 
   handleOk = () => {
     this.setState({
       modalCarro: false,
-      newAno: "",
-      newModelo: "",
-      newPlaca: "",
+      newAno: '',
+      newModelo: '',
+      newPlaca: '',
       fieldFalha: {
         ...this.state.fieldFalha,
         newPlaca: false,
       },
       message: {
         ...this.state.message,
-        newPlaca: "",
+        newPlaca: '',
       },
-    });
-  };
+    })
+  }
 
   componentDidMount = async () => {
-    await this.getAllCarro();
+    await this.getAllCarro()
 
-    await this.rodizio();
-  };
+    await this.rodizio()
+  }
 
   onChange = (e) => {
-    const { nome, valor } = masks(e.target.name, e.target.value);
+    const { nome, valor } = masks(e.target.name, e.target.value)
 
     this.setState({
       [nome]: valor,
-    });
-  };
+    })
+  }
 
   onChangeNormal = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
   onBlurValidator = (e) => {
     const { nome, valor, fieldFalha, message } = validators(
       e.target.name,
       e.target.value,
       this.state
-    );
+    )
 
     this.setState({
       [nome]: valor,
       fieldFalha,
       message,
-    });
-  };
+    })
+  }
 
   onFocus = (e) => {
     this.setState({
@@ -285,8 +281,8 @@ class GerenciarTecnico extends Component {
         ...this.state.message,
         [e.target.name]: false,
       },
-    });
-  };
+    })
+  }
 
   onFocusCar = () => {
     this.setState({
@@ -298,8 +294,8 @@ class GerenciarTecnico extends Component {
         ...this.state.message,
         car: false,
       },
-    });
-  };
+    })
+  }
 
   modalCarro = () => (
     <Modal
@@ -345,8 +341,8 @@ class GerenciarTecnico extends Component {
             allowClear={!this.state.fieldFalha.newPlaca}
             className={
               this.state.fieldFalha.newPlaca
-                ? "div-inputError-tecnico"
-                : "input-100"
+                ? 'div-inputError-tecnico'
+                : 'input-100'
             }
             placeholder="ABC-1234"
             name="newPlaca"
@@ -361,7 +357,7 @@ class GerenciarTecnico extends Component {
         </div>
       </div>
     </Modal>
-  );
+  )
 
   render() {
     return (
@@ -388,8 +384,8 @@ class GerenciarTecnico extends Component {
                 allowClear={!this.state.fieldFalha.nome}
                 className={
                   this.state.fieldFalha.nome
-                    ? "div-inputError-tecnico"
-                    : "input-100"
+                    ? 'div-inputError-tecnico'
+                    : 'input-100'
                 }
                 placeholder="Digite o nome"
                 name="nome"
@@ -411,8 +407,8 @@ class GerenciarTecnico extends Component {
                 allowClear={!this.state.fieldFalha.cnh}
                 className={
                   this.state.fieldFalha.cnh
-                    ? "div-inputError-tecnico"
-                    : "input-100"
+                    ? 'div-inputError-tecnico'
+                    : 'input-100'
                 }
                 placeholder="DD/MM/AAAA"
                 name="cnh"
@@ -435,13 +431,13 @@ class GerenciarTecnico extends Component {
               {this.state.carroArray.length !== 0 ? (
                 <Select
                   value={this.state.placa}
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="car"
                   onFocus={this.onFocusCar}
                   className={
                     this.state.fieldFalha.car
-                      ? "div-inputError-produtos"
-                      : "input-100"
+                      ? 'div-inputError-produtos'
+                      : 'input-100'
                   }
                   onChange={this.onChangeSelect}
                 >
@@ -501,7 +497,7 @@ class GerenciarTecnico extends Component {
           </Button>
         </div>
       </div>
-    );
+    )
   }
 }
 
@@ -509,7 +505,7 @@ function mapStateToProps(state) {
   return {
     auth: state.auth,
     tecnicoUpdateValue: state.tecnicoUpdateValue,
-  };
+  }
 }
 
-export default connect(mapStateToProps)(GerenciarTecnico);
+export default connect(mapStateToProps)(GerenciarTecnico)
