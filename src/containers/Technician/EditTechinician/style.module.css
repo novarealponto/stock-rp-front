@@ -1,0 +1,28 @@
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.container form {
+  width: 100%;
+}
+
+.datePicker {
+  width: 100%;
+}
+
+.divWrapperCar button {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.formItemButtonSave {
+  align-items: flex-end;
+  display: flex;
+  width: 100%;
+}
