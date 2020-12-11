@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { action } from '@storybook/addon-actions'
 import { filter, length, match } from 'ramda'
-import { Form, message } from 'antd'
+import { Form } from 'antd'
 import { name, random } from 'faker'
 
-import ManageTechinicians from '../../../../containers/Technician/Manage'
+import ManagerContainer from '../../../../containers/Technician/Manage'
 
 const initialData = []
 
@@ -19,14 +19,15 @@ for (let i = 0; i < 100; i++) {
 }
 
 export default {
-  title: 'Containers/Technician/Manage',
-  component: ManageTechinicians,
+  title: 'Containers/Technician',
+  component: ManagerContainer,
 }
 
+const goToAddTechnicianAction = action('Redirect to create technician page')
+const goToUpdateTechnicianAction = action('Redirect to edit technician page')
 const onChangeTable = action('Change current pagination of table')
 const onClickButtonAvancedSearh = action('Show/Hide inputs search form')
 const onClickButtonSearh = action('Submit search form')
-const onClickEditLine = action('Send message warning')
 
 const Template = (args) => {
   const [avancedSearch, setAvancedSearch] = useState(false)
@@ -54,14 +55,12 @@ const Template = (args) => {
     setAvancedSearch(!avancedSearch)
   }
 
-  const handleClickEditLine = (eventOnClick) => {
-    onClickEditLine(eventOnClick)
-    message.warning('Page para aditar o técino ainda não foi implementada')
-  }
+  const handleOnChangeTable = ({ current }) => onChangeTable(current)
 
-  const handleOnChangeTable = ({ current }) => {
-    onChangeTable(current)
-  }
+  const goAddTechnician = (eventOnClick) => goToAddTechnicianAction(eventOnClick)
+
+  const goToUpdateTechnician = (technicianLineClicked) =>
+    goToUpdateTechnicianAction(technicianLineClicked)
 
   const handleSubmitFormQuery = (queryFormData) => {
     onClickButtonSearh(queryFormData)
@@ -69,21 +68,22 @@ const Template = (args) => {
   }
 
   return (
-    <ManageTechinicians
+    <ManagerContainer
       {...args}
       avancedSearch={avancedSearch}
       data={data}
       formQuery={formQuery}
+      goToUpdateTechnician={goToUpdateTechnician}
+      goAddTechnician={goAddTechnician}
       handleClickAvancedSearch={handleClickAvancedSearch}
-      handleClickEditLine={handleClickEditLine}
       handleSubmitFormQuery={handleSubmitFormQuery}
       onChangeTable={handleOnChangeTable}
     />
   )
 }
 
-export const Default = Template.bind({})
+export const Manager = Template.bind({})
 
-Default.args = {
+Manager.args = {
   pagination: {},
 }
