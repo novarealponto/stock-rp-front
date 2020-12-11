@@ -2,6 +2,7 @@ export default {
   CLEAR: {
     OS: 'CLEAR_OS',
     PROVIDER: 'CLEAR_PROVIDER',
+    TECNICO: "CLEAR_TECNICO"
   },
   EDITAR: {
     PROVIDER: 'EDITAR_PROVIDER',
@@ -20,4 +21,4 @@ export default {
     TECNICO: 'INICIAL_STATE_REDIRECT_TECNICO',
     USUARIO: 'INICIAL_STATE_REDIRECT_USUARIO',
   },
-}
+};
