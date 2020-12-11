@@ -112,7 +112,7 @@ export const newTechnician = async (values) => {
   return response
 }
 
-export const updateTecnico = async (values) => {
+export const updateTechnician = async (values) => {
   const storeObject = store.getState()
 
   const headers = {
