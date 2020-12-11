@@ -14,8 +14,9 @@ const Technician = ({
   avancedSearch,
   data,
   formQuery,
+  goToUpdateTechnician,
+  goAddTechnician,
   handleClickAvancedSearch,
-  handleClickEditLine,
   handleSubmitFormQuery,
   pagination,
   onChangeTable,
@@ -50,9 +51,14 @@ const Technician = ({
     {
       dataIndex: 'actions',
       key: 'actions',
-      render: () => (
-        <EditTwoTone style={{ fontSize: 16 }} onClick={handleClickEditLine} />
-      ),
+      render: (_, technician) => {
+        return (
+          <EditTwoTone
+            style={{ fontSize: 16 }}
+            onClick={() => goToUpdateTechnician(technician)}
+          />
+        )
+      },
       title: 'Ações',
     },
   ]
@@ -61,7 +67,10 @@ const Technician = ({
     <div className={styles.container}>
       <Row justify="end" gutter={24}>
         <Col>
-          <Button onClick={handleClickAvancedSearch}>Avançado</Button>
+          <Button onClick={handleClickAvancedSearch}>Filtrar</Button>
+          <Button type="primary" onClick={goAddTechnician}>
+            Cadastrar um novo Técnico
+          </Button>
         </Col>
       </Row>
 
