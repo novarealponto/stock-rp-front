@@ -31,6 +31,7 @@ import NovoTipoContaRoute from './Cadastros/NovoTipoConta'
 import OsDashRoute from './Gerenciar/Os'
 import Profile from './Profile'
 import Product from './Product'
+import ProductType from './ProductType'
 import RelatorioComprasRoute from './Relatorios/RelatorioCompras'
 import RelatorioEmprestimoRoute from './Relatorios/RelatorioEmprestimo'
 import RelatorioGastosRoute from './Relatorios/RelatorioGastos'
@@ -106,6 +107,7 @@ class PagesRoute extends Component {
           <Route path="/logged/novoTipoConta" component={NovoTipoContaRoute} />
           <Route path="/logged/novoFornecedor" component={NovoFornecedorRoute} />
           <Route path="/logged/product" component={Product} />
+          <Route path="/logged/productType" component={ProductType} />
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
