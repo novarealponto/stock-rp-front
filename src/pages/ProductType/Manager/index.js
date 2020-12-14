@@ -31,7 +31,7 @@ const Manager = () => {
   }, [visibleModalAddProductType])
 
   const addKey = (array, key) => {
-   return map((data) => {
+    return map((data) => {
       return { ...data, key: data[key] }
     }, array)
   }
