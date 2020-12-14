@@ -1,16 +1,12 @@
 import React from 'react'
-// import { action } from '@storybook/addon-actions'
 
 import DashContainer from '../../../containers/Dash'
 
 export default {
   title: 'Containers/Dash',
-  component: DashContainer,
-  args: {
-    // onSubmit: action('Submit form to sign in')
-  }
+  component: DashContainer
 }
 
-const Template = (args) => <DashContainer {...args} />
+const Template = () => <DashContainer />
 
 export const Default = Template.bind({})
