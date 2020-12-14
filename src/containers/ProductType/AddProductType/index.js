@@ -28,9 +28,7 @@ const AddProductType = ({ form, handleSubmit }) => {
             </Col>
             <Col flex="80px">
               <Form.Item>
-                <Button htmlType="submit"
-                //  type="primary"
-                 >
+                <Button htmlType="submit" type="primary">
                   Salvar
                 </Button>
               </Form.Item>
