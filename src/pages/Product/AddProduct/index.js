@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, message } from 'antd';
 import { compose } from 'ramda';
+import PropTypes from 'prop-types';
 
 import {
   newProduto,
@@ -11,15 +12,12 @@ import {
 import AddProductContainer from '../../../containers/Product/AddProduct';
 import buildProduct from '../../../utils/productSpec';
 
-const success = () => {
-  message.success('O cadastro foi efetuado');
-};
+const success = () => message.success('O cadastro foi efetuado');
+const errorMessage = () => message.error('O cadastro não foi efetuado');
 
-const errorMessage = () => {
-  message.error('O cadastro não foi efetuado');
-};
-
-const AddProduct = () => {
+const AddProduct = ({
+  auth,
+}) => {
   const [form] = Form.useForm();
   const [marksList, setMarkList] = useState([])
   const [typesList, setTypesList] = useState([])
@@ -41,19 +39,9 @@ const AddProduct = () => {
     }
   };
 
-  const getAllMarca = async (mark) => {
-    const query = {
-      filters: {
-        mark: {
-          specific: {
-            mark,
-          },
-        },
-      },
-    };
-
+  const getAllMarca = async () => {
     try {
-      const { data, status } = await getMarca(query);
+      const { data, status } = await getMarca({});
       if (status === 404 || status === 422 || status === 500) {
         throw new Error('422 Unprocessable Entity!')
       }
@@ -64,12 +52,9 @@ const AddProduct = () => {
   };
 
   const handleSubmit = async (formData) => {
-    const { modulo } = this.props.auth;
-
-    const productFormatted = buildProduct({...formData, modulo });
-
+    const { modulo } = auth
     try {
-      await newProduto(productFormatted);
+      await newProduto(buildProduct({...formData, modulo }));
       form.resetFields();
       await success();
     } catch (error) {
@@ -94,5 +79,11 @@ const mapStateToProps = ({ auth }) => ({
 const enhanced = compose(
   connect(mapStateToProps),
 );
+
+AddProduct.propTypes = {
+  auth: PropTypes.shape({
+    modulo: PropTypes.bool.isRequired,
+  }).isRequired,
+};
 
 export default enhanced(AddProduct);

@@ -15,9 +15,7 @@ const handleSubmitAction = action('On submit user form!');
 const Template = (args) => {
   const [form] = Form.useForm();
 
-  const handleSubmit = formData => {
-    handleSubmitAction(buildProduct(formData));
-  }
+  const handleSubmit = formData => handleSubmitAction(buildProduct(formData));
 
   return (
     <AddProduct

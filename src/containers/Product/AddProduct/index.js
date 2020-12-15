@@ -26,7 +26,7 @@ const AddProduct = ({
   typesList,
 }) => (
   <Form form={form} onFinish={handleSubmit}>
-      <Row justify="center">
+    <Row justify="center">
       <Col>
         <Title level={3}>Produto</Title>
       </Col>
@@ -61,7 +61,16 @@ const AddProduct = ({
           rules={formRequireRules}
         >
           <Select placeholder="Selecione a marcar!">
-            {marksList && marksList.map((item) => <Option key={item.mark} value={item.mark}>{item.mark}</Option>)}
+            {marksList && marksList.map(
+              (item) => (
+                <Option
+                  key={item.mark}
+                  value={item.mark}
+                >
+                  {item.mark}
+                </Option>
+              )
+            )}
           </Select>
         </Form.Item>
       </Col>
@@ -72,7 +81,16 @@ const AddProduct = ({
           rules={formRequireRules}
         >
           <Select placeholder="Selecione o tipo!">
-            {typesList && typesList.map((item) => <Option key={item.type} value={item.type}>{item.type}</Option>)}
+            {typesList && typesList.map(
+              (item) => (
+                <Option
+                  key={item.type}
+                  value={item.type}
+                >
+                  {item.type}
+                </Option>
+              )
+            )}
           </Select>
         </Form.Item>
       </Col>
