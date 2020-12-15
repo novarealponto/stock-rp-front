@@ -1,283 +1,89 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { message } from 'antd';
+import { Form, message } from 'antd';
+import { compose } from 'ramda';
+import PropTypes from 'prop-types';
 
-import { validators } from './validators';
 import {
-  newMarca,
-  newTipo,
   newProduto,
   getTipo,
   getMarca,
 } from '../../../services/produto';
 import AddProductContainer from '../../../containers/Product/AddProduct';
-import buildProduct from './productSpec';
+import buildProduct from '../../../utils/productSpec';
 
-const initialState = {
-  messageError: false,
-  typesList: [],
-  marksList: [],
-  messageSuccess: false,
-  itemArray: [],
-  item: '',
-  corredor: '',
-  coluna: '',
-  prateleira: '',
-  gaveta: '',
-  category: 'Equipamento',
-  mark: 'Não selecionado',
-  type: 'Não selecionado',
-  descricao: '',
-  quantMin: 1,
-  visibleMark: false,
-  visibleType: false,
-  newDescricao: '',
-  loading: false,
-  serial: false,
-  formErrors: {
-    item: null,
-  },
-  message: {
-    item: '',
-    quantMin: '',
-  },
-  responsibleUser: 'modrp',
-};
+const success = () => message.success('O cadastro foi efetuado');
+const errorMessage = () => message.error('O cadastro não foi efetuado');
 
-class AddProduct extends Component {
-  state = initialState;
+const AddProduct = ({
+  auth,
+}) => {
+  const [form] = Form.useForm();
+  const [marksList, setMarkList] = useState([])
+  const [typesList, setTypesList] = useState([])
 
-  onChangeQuantMin = (value) => {
-    this.setState({
-      quantMin: value ? value : 1,
-    });
-  };
+  useEffect(() => {
+    getAllMarca();
+    getAllTipo();
+  }, []);
 
-  success = () => {
-    message.success('O cadastro foi efetuado');
-  };
-
-  error = () => {
-    message.error('O cadastro não foi efetuado');
-  };
-
-  errorQuant = () => {
-    message.error('Coloque a quantidade mínima');
-  };
-
-  componentDidMount = async () => {
-    await this.getAllMarca();
-    await this.getAllTipo();
-  };
-
-  getAllTipo = async () => {
+  const getAllTipo = async () => {
     try {
-      const { data } = await getTipo();
-      this.setState({ typesList: data });
+      const { data, status } = await getTipo();
+      if (status === 404 || status === 422 || status === 500) {
+        throw new Error('422 Unprocessable Entity!')
+      }
+      setTypesList(data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  getAllMarca = async (mark) => {
-    const query = {
-      filters: {
-        mark: {
-          specific: {
-            mark,
-          },
-        },
-      },
-    };
-
+  const getAllMarca = async () => {
     try {
-      const { data } = await getMarca(query);
-      this.setState({ marksList: data, newMarca: '' });
-    } catch (error) {
-      this.error();
-    }
-  };
-
-  addNewProduct = async () => {
-    this.setState({ loading: true });
-    const { modulo } = this.props.auth;
-
-    const productFormatted = buildProduct({
-      ...this.state,
-      modulo,
-    });
-
-    try {
-      await newProduto(productFormatted);
-      this.setState(initialState);
-      await this.success();
-    } catch (error) {
-      await this.error();
-      console.log(error);
-    }
-  };
-
-  createNewMark = async (values) => {
-    const { responsibleUser } = this.state;
-    const { newMark: mark } = values;
-    const data = {
-      manufacturer: mark,
-      mark,
-      responsibleUser,
-    };
-
-    try {
-      const { status } = await newMarca(data);
-      await this.getAllMarca();
-
-      if (status === 200 || status === 201) {
-        this.success();
-      } else {
-        this.error();
+      const { data, status } = await getMarca({});
+      if (status === 404 || status === 422 || status === 500) {
+        throw new Error('422 Unprocessable Entity!')
       }
+      setMarkList(data);
     } catch (error) {
-      this.error();
+      console.log(error)
     }
   };
 
-  createNewType = async (values) => {
-    const { responsibleUser } = this.state;
-    const { newType: type } = values;
-    const data = {
-      type,
-      responsibleUser,
-    };
-
+  const handleSubmit = async (formData) => {
+    const { modulo } = auth
     try {
-      const { status } = await newTipo(data);
-      await this.getAllTipo();
-      if (status === 200 || status === 201) {
-        this.success();
-      } else {
-        this.error();
-      }
+      await newProduto(buildProduct({...formData, modulo }));
+      form.resetFields();
+      await success();
     } catch (error) {
-      this.error();
+      errorMessage();
     }
   };
 
-  saveModalData = async (eventSubmit) => {
-    if (eventSubmit.type === 'mark') {
-      await this.createNewMark(eventSubmit.data);
-    }
-
-    if (eventSubmit.type === 'type') {
-      await this.createNewType(eventSubmit.data);
-    }
-
-    this.handleCancel();
-  };
-
-  handleCancel = () =>
-    this.setState({
-      visibleMark: false,
-      visibleType: false,
-    });
-
-  openModalMark = () => {
-    this.setState({
-      visibleMark: true,
-    });
-  };
-
-  openModalType = () => {
-    this.setState({
-      visibleType: true,
-    });
-  };
-
-  handleOnChange = ({ target }) => {
-    const { name, value } = target;
-    this.setState({ [name]: value });
-  };
-
-  onBlurValidator = ({ target }) => {
-    const { formErrors } = this.state;
-    const { name, value } = target;
-    const messageError = validators(name, value);
-
-    this.setState({
-      [name]: value,
-      formErrors: {
-        ...formErrors,
-        [name]: messageError,
-      },
-    });
-  };
-
-  renderRedirect = () => {
-    if (!this.props.auth.addProd) {
-      return <Redirect to="/logged/dash" />;
-    }
-  };
-
-  render() {
-    const {
-      category,
-      corredor,
-      coluna,
-      descricao,
-      formErrors,
-      gaveta,
-      item,
-      loading,
-      message,
-      mark,
-      marksList,
-      prateleira,
-      quantMin,
-      serial,
-      type,
-      typesList,
-      visibleMark,
-      visibleType,
-    } = this.state;
-
-
-    return (
-      <AddProductContainer
-        addNewProduct={this.addNewProduct}
-        category={category}
-        coluna={coluna}
-        corredor={corredor}
-        closeModal={this.handleCancel}
-        descricao={descricao}
-        formErrors={formErrors}
-        gaveta={gaveta}
-        getAllMarca={this.getAllMarca}
-        handleOnChange={this.handleOnChange}
-        item={item}
-        loading={loading}
-        mark={mark}
-        marksList={marksList}
-        message={message}
-        onBlurValidator={this.onBlurValidator}
-        onFocus={this.onFocus}
-        openModalType={this.openModalType}
-        openModalMark={this.openModalMark}
-        prateleira={prateleira}
-        quantMin={quantMin}
-        saveModalData={this.saveModalData}
-        serial={serial}
-        typesList={typesList}
-        type={type}
-        visibleMark={visibleMark}
-        visibleType={visibleType}
-      />
-    );
-  }
+  return (
+    <AddProductContainer
+      form={form}
+      handleSubmit={handleSubmit}
+      marksList={marksList}
+      typesList={typesList}
+    />
+  );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    auth: state.auth,
-  };
+const mapStateToProps = ({ auth }) => ({
+  auth,
+})
+
+const enhanced = compose(
+  connect(mapStateToProps),
+);
+
+AddProduct.propTypes = {
+  auth: PropTypes.shape({
+    modulo: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
-export default connect(mapStateToProps)(AddProduct);
+export default enhanced(AddProduct);
