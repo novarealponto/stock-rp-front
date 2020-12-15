@@ -49,6 +49,7 @@ import RomanieoRoute from './Reservas/Romaneio'
 import SaidaSupRoute from './Suprimentos/Saida'
 import SearchOsRoute from './Gerenciar/SearchOs'
 import TechnicianRoute from './Technician'
+import TypeAcconuntRoute from './TypeAcconunt'
 import uuidValidate from 'uuid-validate'
 import User from './User'
 
@@ -177,6 +178,8 @@ class PagesRoute extends Component {
           <Route path="/logged/notificacao" component={NotificacaoRoute} />
 
           <Route path="/logged/technician/" component={TechnicianRoute} />
+
+          <Route path="/logged/typeAccount/" component={TypeAcconuntRoute} />
 
           {this.props.auth.suprimento && (
             <Switch>
