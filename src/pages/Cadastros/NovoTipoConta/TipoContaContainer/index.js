@@ -3,7 +3,7 @@ import "./index.css";
 import { Input, Card, Checkbox, Button, message } from "antd";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { NovoTipoContaService } from "../../../../services/novoTipoConta";
+import { newTypeAccount } from "../../../../services/typeAccount";
 
 import { ArrowLeftOutlined } from "@ant-design/icons";
 class NovoTipoConta extends Component {
@@ -184,7 +184,7 @@ class NovoTipoConta extends Component {
       suprimento: this.state.permission.suprimento,
     };
 
-    const resposta = await NovoTipoContaService(values);
+    const resposta = await newTypeAccount(values);
 
     if (resposta.status === 422) {
       this.setState({
