@@ -1,29 +1,26 @@
 import React from 'react'
-import { Button, Col, Form, Input, Row, Typography } from 'antd'
+import { Button, Form, Input, Row, Typography } from 'antd'
 
 import CardPermissions from '../../../components/CardPermissions'
 
 const { Title } = Typography
 
-const AddTypeAccount = ({ permissions }) => {
+const AddTypeAccount = ({ permissions, form , handleSubmit }) => {
   return (
     <Row justify="center">
-      <Col>
-        <Title level={3}>Novo tipo de conta</Title>
-      </Col>
-      <Form>
-        <Col span={24}>
-          <Form.Item
-            label="Tipo de conta: "
-            name="type"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
+      <Title level={3}>Novo tipo de conta</Title>
+      <Form form={form} onFinish={handleSubmit}>
+        <Form.Item
+          label="Tipo de conta: "
+          name="typeName"
+          rules={[{ required: true }]}
+        >
+          <Input placeholder="Digite o nome do tipo de conta" />
+        </Form.Item>
 
-          <CardPermissions permissions={permissions} />
-        </Col>
-        <Row justify="end" style={{ marginTop: '20px'}}>
+        <CardPermissions permissions={permissions} />
+
+        <Row justify="end" style={{ marginTop: '20px' }}>
           <Form.Item>
             <Button htmlType="submit" type="primary">
               Salvar
