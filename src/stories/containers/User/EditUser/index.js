@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form } from 'antd';
 import { action } from '@storybook/addon-actions';
 import { path } from 'ramda'
+
 import buildUser from '../../../../utils/userSpec';
 import EditUser from '../../../../containers/User/EditUser';
 import PERMISSIONS from '../../../../utils/permissions';
@@ -17,12 +18,17 @@ const handleSubmitAction = action('On submit user form!');
 const Template = (args) => {
   const [allowCustomPermissions, setAllowCustomPermissions] = useState(false);
   const [form] = Form.useForm();
-  form.setFieldsValue({
-    ...args.userData.resource,
-    allowCustomPermissions: path(['userData', 'customized'], args),
-    userName: path(['userData', 'username'], args),
-    typeAccount: path(['userData', 'typeName'], args),
-  })
+
+  useEffect(() => {
+    const handleSetForm = () => form.setFieldsValue({
+      ...args.userData.resource,
+      allowCustomPermissions: path(['userData', 'customized'], args),
+      userName: path(['userData', 'username'], args),
+      typeAccount: path(['userData', 'typeName'], args),
+    })
+
+    handleSetForm();
+  }, [])
 
   const handleSubmit = formData => {
     handleSubmitAction({
