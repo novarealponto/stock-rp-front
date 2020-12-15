@@ -1,0 +1,7 @@
+.managerUserContainer {
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 30px 16px;
+  position: relative;
+  width: 100%;
+}

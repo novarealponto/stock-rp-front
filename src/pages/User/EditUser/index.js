@@ -2,28 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 import { Form, message } from 'antd';
-import { compose, pathOr } from 'ramda';
+import { compose, path } from 'ramda';
 import PropTypes from 'prop-types';
 
 import {
-  getTypeAccount,
   getResourcesByTypeAccount,
-  NovoUsuarioService
+  getTypeAccount,
+  updateUsuario,
 } from '../../../services/usuario';
 import buildUser from '../../../utils/userSpec';
-import AddUserContainer from '../../../containers/User/AddUser';
+import EditUserContainer from '../../../containers/User/EditUser';
 import PERMISSIONS from '../../../utils/permissions';
 
-const createUserText = 'Usuário cadastrado com sucesso!'
-const unableCreateUserText = 'Não foi possível cadastrar o usuário!'
+const createUserText = 'Usuário alterado com sucesso!'
+const unableCreateUserText = 'Não foi possível alterar o usuário!'
 const unableSetThatAccountType = 'Não foi possível pegar as permissões desse tipo de conta!'
 
 const successMessage = messageText => message.success(messageText);
 const errorMessage = messageText => message.error(messageText);
 
-const AddUser = ({
-  allowAddTypeAccount,
-  history,
+const EditUser = ({
+  usuarioUpdateValue,
 }) => {
   const [allowCustomPermissions, setAllowCustomPermissions] = useState(false);
   const [form] = Form.useForm();
@@ -31,11 +30,22 @@ const AddUser = ({
   const [typeAccounts, setTypeAccounts] = useState([])
 
   useEffect(() => {
+    const handleSetForm = () => form.setFieldsValue({
+      ...usuarioUpdateValue.resource,
+      allowCustomPermissions: path(['customized'], usuarioUpdateValue),
+      userName: path(['username'], usuarioUpdateValue),
+      typeAccount: path(['typeName'], usuarioUpdateValue),
+    })
+
+    setAllowCustomPermissions(path(['customized'], usuarioUpdateValue))
     if (shouldRequest) {
+      handleSetForm()
       getAllTypeAccount()
     }
   }, [
+    form,
     shouldRequest,
+    usuarioUpdateValue,
   ])
 
   const getAllTypeAccount = async () => {
@@ -60,10 +70,6 @@ const AddUser = ({
       console.log({ status: responseStatus, error })
     };
   };
-
-  const goToAddTypeAccount = () => (
-    history.push('/logged/novoTipoConta/add')
-  );
 
   const handleAllowSetCustomPermissions = () => (
     setAllowCustomPermissions(!allowCustomPermissions)
@@ -93,17 +99,17 @@ const AddUser = ({
   }
 
   const handleSubmit = async (formData) => {
+    const userParser = {
+      id: path(['id'], usuarioUpdateValue),
+      ...buildUser(formData),
+    };
+
     try {
-      const { status } = await NovoUsuarioService(
-        buildUser({
-          ...formData,
-          allowCustomPermissions,
-        })
-      );
-      if (status === 422) {
-        throw new Error('422 Unprocessable Entity!')
+      const { status } = await updateUsuario(userParser);
+
+      if (status === 422 || status === 500) {
+        throw new Error('Unprocessable Entity!')
       }
-      form.resetFields()
       successMessage(createUserText)
     } catch (error) {
       errorMessage(unableCreateUserText)
@@ -111,11 +117,9 @@ const AddUser = ({
   };
 
   return (
-    <AddUserContainer
-      allowAddTypeAccount={allowAddTypeAccount}
+    <EditUserContainer
       allowCustomPermissions={allowCustomPermissions}
       form={form}
-      goToAddTypeAccount={goToAddTypeAccount}
       handleAllowSetCustomPermissions={handleAllowSetCustomPermissions}
       handleOnTypeAccountChange={handleOnTypeAccountChange}
       handleSubmit={handleSubmit}
@@ -125,23 +129,54 @@ const AddUser = ({
   )
 }
 
-const mapStateToProps = ({ auth }) => {
-  const allowAddTypeAccount = pathOr(false, ['addTypeAccount'], auth);
-  return ({
-    allowAddTypeAccount,
-  });
-};
+const mapStateToProps = ({
+  usuarioUpdateValue,
+}) => ({
+  usuarioUpdateValue
+});
 
 const enhanced = compose(
   connect(mapStateToProps),
   withRouter,
 );
 
-AddUser.propTypes = {
-  allowAddTypeAccount: PropTypes.bool.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+EditUser.propTypes = {
+  usuarioUpdateValue: PropTypes.shape({
+    customized: PropTypes.bool.isRequired,
+    id: PropTypes.string.isRequired,
+    resource: PropTypes.shape({
+      addAccessories: PropTypes.bool.isRequired,
+      addAnalyze: PropTypes.bool.isRequired,
+      addCar: PropTypes.bool.isRequired,
+      addCompany: PropTypes.bool.isRequired,
+      addEntr: PropTypes.bool.isRequired,
+      addEntry: PropTypes.bool.isRequired,
+      addEquip: PropTypes.bool.isRequired,
+      addEquipType: PropTypes.bool.isRequired,
+      addFonr: PropTypes.bool.isRequired,
+      addKit: PropTypes.bool.isRequired,
+      addKitOut: PropTypes.bool.isRequired,
+      addMark: PropTypes.bool.isRequired,
+      addOutPut: PropTypes.bool.isRequired,
+      addPart: PropTypes.bool.isRequired,
+      addProd: PropTypes.bool.isRequired,
+      addRML: PropTypes.bool.isRequired,
+      addROs: PropTypes.bool.isRequired,
+      addStatus: PropTypes.bool.isRequired,
+      addTec: PropTypes.bool.isRequired,
+      addType: PropTypes.bool.isRequired,
+      addTypeAccount: PropTypes.bool.isRequired,
+      addUser: PropTypes.bool.isRequired,
+      delROs: PropTypes.bool.isRequired,
+      gerROs: PropTypes.bool.isRequired,
+      modulo: PropTypes.bool.isRequired,
+      suprimento: PropTypes.bool.isRequired,
+      tecnico: PropTypes.bool.isRequired,
+      updateRos: PropTypes.bool.isRequired,
+    }).isRequired,
+    typeName: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
   }).isRequired,
 };
 
-export default enhanced(AddUser);
+export default enhanced(EditUser);
