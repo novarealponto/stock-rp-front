@@ -6,8 +6,8 @@ import { compose, path } from 'ramda';
 import PropTypes from 'prop-types';
 
 import {
-  getTypeAccount,
   getResourcesByTypeAccount,
+  getTypeAccount,
   updateUsuario,
 } from '../../../services/usuario';
 import buildUser from '../../../utils/userSpec';
@@ -30,7 +30,7 @@ const EditUser = ({
   const [typeAccounts, setTypeAccounts] = useState([])
 
   useEffect(() => {
-    form.setFieldsValue({
+    const handleSetForm = () => form.setFieldsValue({
       ...usuarioUpdateValue.resource,
       allowCustomPermissions: path(['customized'], usuarioUpdateValue),
       userName: path(['username'], usuarioUpdateValue),
@@ -39,10 +39,10 @@ const EditUser = ({
 
     setAllowCustomPermissions(path(['customized'], usuarioUpdateValue))
     if (shouldRequest) {
+      handleSetForm()
       getAllTypeAccount()
     }
   }, [
-    allowCustomPermissions,
     form,
     shouldRequest,
     usuarioUpdateValue,

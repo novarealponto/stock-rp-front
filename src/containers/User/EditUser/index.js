@@ -81,7 +81,7 @@ const EditUser = ({
                 name="userName"
                 rules={formRequireRules}
               >
-                <Input />
+                <Input readOnly />
               </Form.Item>
             </Col>
 

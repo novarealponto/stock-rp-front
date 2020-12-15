@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
+import { compose, isEmpty, path, pathOr } from 'ramda';
+import PropTypes from 'prop-types';
 
 import { redirectValueUsuario } from '../../Gerenciar/Produto/ProdutoRedux/action';
 import { getUsers } from '../../../services/usuario';
 import ManagerContainer from '../../../containers/User/Manager';
-import { compose, isEmpty, path, pathOr } from 'ramda';
 
 const Manager = ({
   auth,
@@ -20,7 +20,7 @@ const Manager = ({
 
   useEffect(() => {
     if (shouldRequest) {
-      getAllUsers()
+      getAllUsers({ total: 10 })
     }
   }, [
     shouldRequest,
@@ -55,9 +55,9 @@ const Manager = ({
             modulo: path(['modulo'], auth),
           }
         },
-        page: 1,
-        total: 10,
       },
+      page: 1,
+      total: 10,
     };
 
     if (isEmpty(username)) {
@@ -67,11 +67,16 @@ const Manager = ({
     return getAllUsers(query)
   }
 
+  const handlePaginations = async ({ current }) => {
+    await getAllUsers({ total: 10, page: current })
+  }
+
   return (
     <ManagerContainer
       data={data}
       goToAddUser={goToAddUser}
       goToUpdateUser={goToUpdateUser}
+      handlePaginations={handlePaginations}
       handleSearch={handleSearch}
       loading={loading}
     />

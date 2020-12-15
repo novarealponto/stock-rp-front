@@ -60,6 +60,7 @@ const Manager = ({
   data,
   goToAddUser,
   goToUpdateUser,
+  handlePaginations,
   handleSearch,
   loading,
 }) => {
@@ -69,7 +70,7 @@ const Manager = ({
         <Col span={24}>
           <Title level={3}>Gerenciar usuários</Title>
         </Col>
-        <Col span={22}>
+        <Col span={16} md={{ span: 18 }}>
           <Search
             placeholder="Filtre pelo nome do usuário"
             onSearch={handleSearch}
@@ -77,7 +78,7 @@ const Manager = ({
             enterButton="Pesquisar"
           />
         </Col>
-        <Col span={2}>
+        <Col span={8} md={{ span: 6 }}>
           <Button type="primary" onClick={goToAddUser}>
             Adicionar Usuário
           </Button>
@@ -87,6 +88,7 @@ const Manager = ({
             loading={loading}
             columns={columns(goToUpdateUser)}
             dataSource={data}
+            onChange={handlePaginations}
           />
         </Col>
       </Row>
@@ -104,6 +106,7 @@ Manager.propTypes = {
   ),
   goToAddUser: PropTypes.func.isRequired,
   goToUpdateUser: PropTypes.func.isRequired,
+  handlePaginations: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 };
