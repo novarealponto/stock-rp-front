@@ -1,51 +1,85 @@
 import React, { useState, useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
-import { compose, length, filter, match } from 'ramda'
+import { map } from 'ramda'
+import { Form, message } from 'antd'
 
+import buildProductType from '../../../utils/productTypeSpec'
+import filterData from '../../../utils/filterData'
 import ManagerContainer from '../../../containers/ProductType/Manager'
 import { getAllProductType } from '../../../services/produto'
-import { message } from 'antd'
+import { newProductType } from '../../../services/produto'
 
-const Manager = ({ history }) => {
+const Manager = () => {
   const [dataSource, setDataSource] = useState([])
+  const [formAddProductType] = Form.useForm()
   const [initialDataSource, setInitialDataSource] = useState([])
+  const [searching, setSearching] = useState(false)
+  const [visibleModalAddProductType, setVisibleModalAddProductType] = useState(
+    false
+  )
 
   useEffect(() => {
     getAllProductType().then(({ data: dataSource }) => {
-      setDataSource(dataSource)
-      setInitialDataSource(dataSource)
+      setInitialDataSource(addKey(dataSource, 'type'))
+      setSearching(false)
     })
-  }, [])
+  }, [searching])
 
-  const applyMatch = (key, object, value) =>
-    match(createRegex(value), object[key])
+  useEffect(() => {
+    getAllProductType().then(({ data: dataSource }) => {
+      setDataSource(addKey(dataSource, 'type'))
+    })
+  }, [visibleModalAddProductType])
 
-  const createRegex = (pattern) => new RegExp(`${pattern}`, 'gi')
-
-  const filterData = (searchValue) => {
-    const callback = (item) => {
-      return length(applyMatch('type', item, searchValue)) > 0
-    }
-    return filter(callback, initialDataSource)
+  const addKey = (array, key) => {
+   return map((data) => {
+      return { ...data, key: data[key] }
+    }, array)
   }
 
-  const goToAddProductType = () => history.push('add')
+  const closeModalAddProductType = () => {
+    setVisibleModalAddProductType(false)
+    formAddProductType.resetFields()
+  }
 
-  const goToUpdateProductType = () =>
-    message.warning('Editar tipo de produto ainda não foi implementado')
+  const handleAddProductType = async (addProductTypeFormData) => {
+    setSearching(true)
+    try {
+      const { status } = await newProductType(
+        buildProductType(addProductTypeFormData)
+      )
 
-  const handleSearch = (searchValue) => setDataSource(filterData(searchValue))
+      if (status !== 200 && status !== 201) {
+        throw new Error()
+      }
+
+      setVisibleModalAddProductType(false)
+      formAddProductType.resetFields()
+      message.success('Tipo de produto cadastro com sucesso')
+    } catch (err) {
+      message.error('Erro ao casdastrar tipo de produto')
+      console.log(err)
+    }
+  }
+
+  const handleSearch = (searchValue) => {
+    setDataSource(filterData({ type: searchValue }, initialDataSource))
+    setSearching(true)
+  }
+
+  const openModalAddProductType = () => setVisibleModalAddProductType(true)
 
   return (
     <ManagerContainer
       dataSource={dataSource}
-      goToAddProductType={goToAddProductType}
-      goToUpdateProductType={goToUpdateProductType}
+      closeModalAddProductType={closeModalAddProductType}
+      formAddProductType={formAddProductType}
       handleSearch={handleSearch}
+      handleAddProductType={handleAddProductType}
+      openModalAddProductType={openModalAddProductType}
+      searching={searching}
+      visibleModalAddProductType={visibleModalAddProductType}
     />
   )
 }
 
-const enhanced = compose(withRouter)
-
-export default enhanced(Manager)
+export default Manager
