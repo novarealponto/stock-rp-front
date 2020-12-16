@@ -8,8 +8,8 @@ const { Search } = Input
 
 const columns = [
   {
-    dataIndex: 'typeAccount',
-    key: 'typeAccount',
+    dataIndex: 'typeName',
+    key: 'typeName',
     title: 'Tipo de conta',
   },
 ]

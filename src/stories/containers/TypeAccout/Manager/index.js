@@ -15,7 +15,7 @@ const initialData = []
 for (let key = 0; key < 100; key++) {
   initialData.push({
     key,
-    typeAccount: name.firstName(),
+    typeName: name.firstName(),
   })
 }
 
@@ -28,7 +28,7 @@ const Template = (args) => {
   const goToAddTypeAccount = (eventClick) => goToAddTypeAccountAction(eventClick)
 
   const handleSearch = (searchValue) => {
-    setData(filterData({ typeAccount: searchValue }, initialData))
+    setData(filterData({ typeName: searchValue }, initialData))
     handleSearchAction(searchValue)
   }
 
