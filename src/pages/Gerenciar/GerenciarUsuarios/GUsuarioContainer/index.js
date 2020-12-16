@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import { Input, Select, Card, Checkbox, Switch, Button, message } from "antd";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import React, { Component } from 'react'
+import { Input, Select, Card, Checkbox, Switch, Button, message } from 'antd'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import { ArrowLeftOutlined } from '@ant-design/icons'
 
 import {
-  getTypeAccount,
   getResourcesByTypeAccount,
   updateUsuario,
-} from "../../../../services/usuario";
+} from '../../../../services/usuario'
+import { getTypeAccount } from '../../../../services/typeAccount'
 
-const { Option } = Select;
+const { Option } = Select
 
 class GerenciarUsuario extends Component {
   state = {
@@ -20,7 +20,7 @@ class GerenciarUsuario extends Component {
     permission: {
       addUser: this.props.usuarioUpdateValue.resource.addUser,
       addTypeAccount: this.props.usuarioUpdateValue.resource.addTypeAccount,
-      responsibleUser: "modrp",
+      responsibleUser: 'modrp',
       addTec: this.props.usuarioUpdateValue.resource.addTec,
       addCar: this.props.usuarioUpdateValue.resource.addCar,
       addMark: this.props.usuarioUpdateValue.resource.addMark,
@@ -41,27 +41,27 @@ class GerenciarUsuario extends Component {
     },
     typeAccountArray: [],
     typeName: this.props.usuarioUpdateValue.typeName,
-  };
+  }
 
   redirectGerenciarCadastros = () => {
     this.setState({
       redirect: true,
-    });
-  };
+    })
+  }
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect push to="/logged/gerenciarProduto/dash" />;
+      return <Redirect push to="/logged/gerenciarProduto/dash" />
     }
-  };
+  }
 
   success = () => {
-    message.success("Novo usuário cadastrado");
-  };
+    message.success('Novo usuário cadastrado')
+  }
 
   error = () => {
-    message.error("Usuário não cadastrado");
-  };
+    message.error('Usuário não cadastrado')
+  }
 
   getAllTypeAccount = async () => {
     const query = {
@@ -72,24 +72,24 @@ class GerenciarUsuario extends Component {
           },
         },
       },
-    };
+    }
 
     await getTypeAccount(query).then((resposta) =>
       this.setState({
         typeAccountArray: resposta.data.rows,
       })
-    );
-  };
+    )
+  }
 
   componentDidMount = async () => {
-    await this.getAllTypeAccount();
-  };
+    await this.getAllTypeAccount()
+  }
 
   onChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
   onChangePermission = (e) => {
     this.setState({
@@ -97,24 +97,24 @@ class GerenciarUsuario extends Component {
         ...this.state.permission,
         [e.target.name]: e.target.checked,
       },
-    });
-  };
+    })
+  }
 
   onChangeAble = async () => {
     await this.setState({
       checkboxAble: !this.state.checkboxAble,
-    });
+    })
 
     if (!this.state.checkboxAble) {
-      await this.handleChange(this.state.typeName);
+      await this.handleChange(this.state.typeName)
     }
-  };
+  }
 
   handleChange = async (value) => {
     await this.setState({
       typeName: value,
       checkboxAble: false,
-    });
+    })
 
     const query = {
       filters: {
@@ -124,7 +124,7 @@ class GerenciarUsuario extends Component {
           },
         },
       },
-    };
+    }
 
     await getResourcesByTypeAccount(query).then((resposta) =>
       this.setState({
@@ -157,13 +157,13 @@ class GerenciarUsuario extends Component {
           suprimento: resposta.data.suprimento,
         },
       })
-    );
-  };
+    )
+  }
 
   saveTargetUpdateUser = async () => {
     this.setState({
       loading: true,
-    });
+    })
 
     const values = {
       id: this.props.usuarioUpdateValue.id,
@@ -172,7 +172,7 @@ class GerenciarUsuario extends Component {
       customized: this.state.checkboxAble,
       addUser: this.state.permission.addUser,
       addTypeAccount: this.state.permission.addTypeAccount,
-      responsibleUser: "modrp",
+      responsibleUser: 'modrp',
       addTec: this.state.permission.addTec,
       addCar: this.state.permission.addCar,
       addMark: this.state.permission.addMark,
@@ -197,28 +197,28 @@ class GerenciarUsuario extends Component {
       addPart: this.state.permission.addPart,
       addAccessories: this.state.permission.addAccessories,
       suprimento: this.state.permission.suprimento,
-    };
+    }
 
-    const resposta = await updateUsuario(values);
+    const resposta = await updateUsuario(values)
 
     if (resposta.status === 422) {
       this.setState({
         messageError: true,
-      });
-      await this.error();
+      })
+      await this.error()
       this.setState({
         loading: false,
         messageError: false,
-      });
+      })
     }
     if (resposta.status === 200) {
-      await this.success();
+      await this.success()
       this.setState({
         loading: false,
         messageSuccess: false,
-      });
+      })
     }
-  };
+  }
 
   render() {
     return (
@@ -255,7 +255,7 @@ class GerenciarUsuario extends Component {
             {this.state.typeAccountArray.length !== 0 ? (
               <Select
                 value={this.state.typeName}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 onChange={this.handleChange}
               >
                 {this.state.typeAccountArray.map((valor) => (
@@ -562,7 +562,7 @@ class GerenciarUsuario extends Component {
           </div>
         </div>
 
-        {this.state.user !== "" ? (
+        {this.state.user !== '' ? (
           <div className="div-button-tipo">
             <Button
               type="primary"
@@ -575,7 +575,7 @@ class GerenciarUsuario extends Component {
           </div>
         ) : null}
       </div>
-    );
+    )
   }
 }
 
@@ -583,7 +583,7 @@ function mapStateToProps(state) {
   return {
     auth: state.auth,
     usuarioUpdateValue: state.usuarioUpdateValue,
-  };
+  }
 }
 
-export default connect(mapStateToProps)(GerenciarUsuario);
+export default connect(mapStateToProps)(GerenciarUsuario)
