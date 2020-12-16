@@ -6,10 +6,10 @@ import { compose, pathOr } from 'ramda';
 import PropTypes from 'prop-types';
 
 import {
-  getTypeAccount,
   getResourcesByTypeAccount,
   NovoUsuarioService
 } from '../../../services/usuario';
+import { getTypeAccount } from '../../../services/typeAccount'
 import buildUser from '../../../utils/userSpec';
 import AddUserContainer from '../../../containers/User/AddUser';
 import PERMISSIONS from '../../../utils/permissions';
