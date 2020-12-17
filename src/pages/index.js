@@ -27,7 +27,6 @@ import GerenciarTecnicoRoute from './Gerenciar/GerenciarTecnico'
 import GerenciarUsuarioRoute from './Gerenciar/GerenciarUsuarios'
 import NotificacaoRoute from './Gerenciar/Notificacoes'
 import NovaEntradaRoute from './Cadastros/NovaEntrada'
-import NovoFornecedorRoute from './Cadastros/NovoFornecedor'
 import NovoTipoContaRoute from './Cadastros/NovoTipoConta'
 import Profile from './Profile'
 import Product from './Product'
@@ -106,7 +105,6 @@ class PagesRoute extends Component {
           <Route exact path="/logged/dash" component={Dash} />
           <Route path="/logged/user" component={User} />
           <Route path="/logged/novoTipoConta" component={NovoTipoContaRoute} />
-          <Route path="/logged/novoFornecedor" component={NovoFornecedorRoute} />
           <Route path="/logged/product" component={Product} />
           <Route path="/logged/entry" component={Entry} />
           <Route path="/logged/productType" component={ProductType} />
