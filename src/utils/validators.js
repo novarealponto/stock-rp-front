@@ -42,12 +42,6 @@ export const validateEmail = async (value) => {
   }
 }
 
-export const validatePlate = async (value) => {
-  if (/\W/.test(value)) {
-    return Promise.reject(new Error('Digite apenas caracteres alfanumérico'))
-  }
-}
-
 export const validateSerialNumberForEntry = async (
   currentTargetValue,
   options = {
@@ -100,5 +94,11 @@ export const validateSerialNumberForEntry = async (
   return {
     length: length(currentValueSerialNumber),
     serialNumbers: currentValueSerialNumber,
+  }
+}
+
+export const validatePlate = async (value) => {
+  if (/\W/.test(value)) {
+    return Promise.reject(new Error('Digite apenas caracteres alfanumérico'))
   }
 }
