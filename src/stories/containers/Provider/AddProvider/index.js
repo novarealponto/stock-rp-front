@@ -12,7 +12,7 @@ export default {
 
 const handleSubmitAction = action('Register new provider')
 
-const Template = (args) => {
+const Template = () => {
   const [form] = Form.useForm()
 
   const handleSubmit = (providerFormData) => {
@@ -21,7 +21,7 @@ const Template = (args) => {
   }
 
   return (
-    <AddProviderContainer args={args} form={form} handleSubmit={handleSubmit} />
+    <AddProviderContainer form={form} handleSubmit={handleSubmit} />
   )
 }
 

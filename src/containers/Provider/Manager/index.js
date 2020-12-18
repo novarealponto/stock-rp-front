@@ -1,10 +1,11 @@
 import React from 'react'
 import { Button, Col, Input, Row, Table, Typography } from 'antd'
+import { EditTwoTone } from '@ant-design/icons'
 
 const { Search } = Input
 const { Title } = Typography
 
-const columns = [
+const columns = (goToUpdateProvider) => [
   {
     dataIndex: 'cnpj',
     title: 'CNPJ',
@@ -25,11 +26,22 @@ const columns = [
     dataIndex: 'telphone',
     title: 'Telefone',
   },
+  {
+    dataIndex: 'action',
+    title: 'Ação',
+    render: (_, provider) => (
+      <EditTwoTone
+        onClick={() => goToUpdateProvider(provider)}
+        style={{ fontSize: 16 }}
+      />
+    ),
+  },
 ]
 
 const Manager = ({
   dataSource,
   goToAddProvider,
+  goToUpdateProvider,
   handleSearch,
   onChangeTable,
   pagination,
@@ -57,7 +69,7 @@ const Manager = ({
         </Col>
       </Row>
       <Table
-        columns={columns}
+        columns={columns(goToUpdateProvider)}
         dataSource={dataSource}
         loading={searching}
         onChange={onChangeTable}

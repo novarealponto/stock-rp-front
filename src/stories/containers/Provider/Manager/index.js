@@ -69,4 +69,5 @@ export const Manager = Template.bind({})
 
 Manager.args = {
   goToAddProvider: action('Go to page add provider'),
+  goToUpdateProvider: action('Go to page update provider'),
 }
