@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { map } from 'ramda'
+import { compose, map } from 'ramda'
+import { withRouter } from 'react-router-dom'
 
 import ManagerContainer from '../../../containers/Provider/Manager'
 import { getAllFornecedor } from '../../../services/fornecedores'
@@ -10,7 +11,7 @@ const insertKey = (array, key) => {
   }, array)
 }
 
-const Manager = () => {
+const Manager = ({ history }) => {
   const [allProviders, setAllProviders] = useState([])
   const [pagination, setPagination] = useState({})
   const [page, setPage] = useState(1)
@@ -21,6 +22,8 @@ const Manager = () => {
   useEffect(() => {
     getAllProviders()
   }, [page, pageSize, searchValue])
+
+  const goToAddProvider = () => history.push('add')
 
   const handleSearch = (searchValue) => {
     setPage(1)
@@ -59,6 +62,7 @@ const Manager = () => {
   return (
     <ManagerContainer
       dataSource={allProviders}
+      goToAddProvider={goToAddProvider}
       handleSearch={handleSearch}
       onChangeTable={onChangeTable}
       pagination={pagination}
@@ -67,4 +71,6 @@ const Manager = () => {
   )
 }
 
-export default Manager
+const enhanced = compose(withRouter)
+
+export default enhanced(Manager)
