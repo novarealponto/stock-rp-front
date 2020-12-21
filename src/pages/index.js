@@ -109,6 +109,7 @@ class PagesRoute extends Component {
           <Route path="/logged/productType" component={ProductType} />
           <Route path="/logged/entry" component={Entry} />
           <Route path="/logged/provider" component={Provider} />
+          <Route path="/logged/entry" component={Entry} />
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
