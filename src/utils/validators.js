@@ -2,6 +2,7 @@ import { has, isEmpty, length, path } from 'ramda'
 import { isValid as cpnjIsValid } from '@fnando/cnpj'
 import { string, setLocale } from 'yup'
 
+import { getSerial } from '../services/serialNumber'
 import { getAddressByZipCode } from '../services/fornecedores'
 import { getSerial } from '../services/serialNumber'
 
