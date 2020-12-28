@@ -20,6 +20,30 @@ const Manager = ({ history }) => {
   const [searchValue, setSearchValue] = useState('')
 
   useEffect(() => {
+    const getAllProviders = () => {
+      setSearching(true)
+      const query = {
+        filters: {
+          company: {
+            global: {
+              fields: ['razaoSocial', 'nameContact', 'cnpj', 'state', 'telphone'],
+              value: searchValue,
+            },
+          },
+        },
+        page,
+        total: pageSize,
+      }
+
+      getAllFornecedor(query).then(
+        ({ data: { rows: allProvidersResponse, count: total } }) => {
+          setPagination({ total })
+          setAllProviders(insertKey(allProvidersResponse, 'id'))
+          setSearching(false)
+        }
+      )
+    }
+
     getAllProviders()
   }, [page, pageSize, searchValue])
 
@@ -28,30 +52,6 @@ const Manager = ({ history }) => {
   const handleSearch = (searchValue) => {
     setPage(1)
     setSearchValue(searchValue)
-  }
-
-  const getAllProviders = () => {
-    setSearching(true)
-    const query = {
-      filters: {
-        company: {
-          global: {
-            fields: ['razaoSocial', 'nameContact', 'cnpj', 'state', 'telphone'],
-            value: searchValue,
-          },
-        },
-      },
-      page,
-      total: pageSize,
-    }
-
-    getAllFornecedor(query).then(
-      ({ data: { rows: allProvidersResponse, count: total } }) => {
-        setPagination({ total })
-        setAllProviders(insertKey(allProvidersResponse, 'id'))
-        setSearching(false)
-      }
-    )
   }
 
   const onChangeTable = ({ current, pageSize }) => {
