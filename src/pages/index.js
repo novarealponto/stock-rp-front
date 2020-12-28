@@ -47,6 +47,7 @@ import ReservaMLRoute from './Reservas/ReservaML'
 import RomanieoRoute from './Reservas/Romaneio'
 import SaidaSupRoute from './Suprimentos/Saida'
 import SearchOsRoute from './Gerenciar/SearchOs'
+import Stock from './Stock'
 import TechnicianRoute from './Technician'
 import TypeAcconuntRoute from './TypeAcconunt'
 import uuidValidate from 'uuid-validate'
@@ -111,12 +112,12 @@ class PagesRoute extends Component {
           <Route path="/logged/entry" component={Entry} />
           <Route path="/logged/productType" component={ProductType} />
           <Route path="/logged/provider" component={Provider} />
-          <Route path="/logged/entry" component={Entry} />
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
           />
           <Route path="/logged/entrada" component={NovaEntradaRoute} />
+          <Route exact path="/logged/stock/manager" component={Stock} />
           <Route
             path="/logged/gerenciarEntrada"
             component={GerenciarEntradaRoute}
