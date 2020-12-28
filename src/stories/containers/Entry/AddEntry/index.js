@@ -27,10 +27,9 @@ const Template = (args) => {
     const currentTargetValue = target.value
 
     try {
-      const response = await validateSerialNumberForEntry(
-        currentTargetValue,
-        true
-      )
+      const response = await validateSerialNumberForEntry(currentTargetValue, {
+        noRequest: true,
+      })
 
       if (has('error', response)) {
         const { error, serialNumbers } = response
