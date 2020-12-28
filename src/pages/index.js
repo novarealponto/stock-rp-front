@@ -15,7 +15,6 @@ import EditarFornecedorSupRoute from './Suprimentos/Edit.Fornecedor'
 import EntradaSupRoute from './Suprimentos/Entrada'
 import Entry from './Entry'
 import EmprestimoRoute from './Gerenciar/Emprestimo'
-import EstoqueRoute from './Gerenciar/Estoque'
 import GerenciarCadastrosSupRoute from './Suprimentos/Ger.Cadastros'
 import GerenciarEntradaDashRoute from './Gerenciar/GerenciarEntrada'
 import GerenciarEntradaRoute from './Gerenciar/Entrada'
@@ -121,7 +120,6 @@ class PagesRoute extends Component {
             path="/logged/gerenciarEntrada"
             component={GerenciarEntradaRoute}
           />
-          <Route path="/logged/estoque" component={EstoqueRoute} />
           <Route path="/logged/reservaKit" component={ReservaKitRoute} />
           <Route path="/logged/romaneio" component={RomanieoRoute} />
           <Route path="/logged/Rexterno" component={ReservaExternoRoute} />
