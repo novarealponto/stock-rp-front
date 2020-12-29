@@ -652,10 +652,6 @@ class SideBar extends Component {
               <SettingOutlined />
               Produto
             </Menu.Item>
-            <Menu.Item disabled={!this.props.auth.addProd} key="productType">
-              <SettingOutlined />
-              Tipo de Produto
-            </Menu.Item>
             <Menu.Item
               disabled={!this.props.auth.addFonr}
               key="novoFornecedor_add"
