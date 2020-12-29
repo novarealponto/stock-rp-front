@@ -160,16 +160,6 @@ class SideBar extends Component {
               }}
             />
           )
-        case 'notificacao_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/notificacao/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
         case 'novoTipoConta_add':
           return (
             <Redirect
@@ -185,7 +175,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: '/logged/technician/manager',
+                pathname: '/logged/technician/add',
                 state: { from: this.props.location },
               }}
             />
@@ -651,10 +641,6 @@ class SideBar extends Component {
             <Menu.Item disabled={!this.props.auth.addProd} key="novoProduto_add">
               <SettingOutlined />
               Produto
-            </Menu.Item>
-            <Menu.Item disabled={!this.props.auth.addProd} key="productType">
-              <SettingOutlined />
-              Tipo de Produto
             </Menu.Item>
             <Menu.Item
               disabled={!this.props.auth.addFonr}
