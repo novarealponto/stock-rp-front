@@ -107,7 +107,7 @@ const Manager = ({
   <>
     <Row justify="center">
       <Col>
-        <Title level={3}>Manager Os</Title>
+        <Title level={3}>Gerenciar Os</Title>
       </Col>
     </Row>
 
