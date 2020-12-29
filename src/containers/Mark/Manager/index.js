@@ -54,6 +54,7 @@ const Manager = ({
     <Row gutter={[10, 20]}>
       <Col flex="auto">
         <Search
+          allowClear
           enterButton
           onSearch={handleOnSearch}
           placeholder="Pesquisar ..."
