@@ -51,6 +51,7 @@ import SearchOsRoute from './Gerenciar/SearchOs'
 import TechnicianRoute from './Technician'
 import uuidValidate from 'uuid-validate'
 import User from './User'
+import Os from './Manager/Os'
 
 class PagesRoute extends Component {
   state = {
@@ -151,6 +152,7 @@ class PagesRoute extends Component {
             component={RelatorioSuprimentosRoute}
           />
           <Route path="/logged/searchOs" component={SearchOsRoute} />
+          <Route exact path="/logged/Os/manager" component={Os} />
           <Route path="/logged/Os" component={OsDashRoute} />
           <Route path="/logged/profile" component={Profile} />
           <Route
