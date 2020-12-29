@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { Menu, Tooltip } from 'antd';
-import './index.css';
-import { Redirect } from 'react-router-dom';
-import { Logout } from '../../pages/Login/LoginRedux/action';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as R from 'ramda';
-import uuidValidate from 'uuid-validate';
+import React, { Component } from 'react'
+import { Menu, Tooltip } from 'antd'
+import './index.css'
+import { Redirect } from 'react-router-dom'
+import { Logout } from '../../pages/Login/LoginRedux/action'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as R from 'ramda'
+import uuidValidate from 'uuid-validate'
 
-import { auth } from '../../services/auth';
-import { hasNotifications } from '../../services/notificacao';
+import { auth } from '../../services/auth'
+import { hasNotifications } from '../../services/notificacao'
 import {
   DollarCircleOutlined,
   ShoppingOutlined,
@@ -30,10 +30,10 @@ import {
   SettingOutlined,
   BankOutlined,
   UnorderedListOutlined,
-  ShoppingCartOutlined
-} from '@ant-design/icons';
+  ShoppingCartOutlined,
+} from '@ant-design/icons'
 
-const SubMenu = Menu.SubMenu;
+const SubMenu = Menu.SubMenu
 
 class SideBar extends Component {
   state = {
@@ -41,114 +41,114 @@ class SideBar extends Component {
     current: '0',
     redirect: false,
     open: [],
-    auth: true
-  };
+    auth: true,
+  }
 
   hasNotifications = async () => {
-    await hasNotifications().then(resp =>
+    await hasNotifications().then((resp) =>
       this.setState({
-        notificacao: resp.data
+        notificacao: resp.data,
       })
-    );
-  };
+    )
+  }
 
   auth = async () => {
     const value = {
       token: this.props.auth.token,
-      username: this.props.auth.username
-    };
+      username: this.props.auth.username,
+    }
 
-    let response = {};
+    let response = {}
 
-    response = await auth(value).then(resp =>
+    response = await auth(value).then((resp) =>
       this.setState({
-        auth: resp ? resp.data : false
+        auth: resp ? resp.data : false,
       })
-    );
+    )
 
-    return response;
-  };
+    return response
+  }
 
-  hasAuth = R.has('auth');
-  hasToken = R.has('token');
+  hasAuth = R.has('auth')
+  hasToken = R.has('token')
 
   forceLogout = async () => {
     if (!this.hasAuth(this.props)) {
-      await this.logout();
+      await this.logout()
     } else if (!this.hasToken(this.props.auth)) {
-      await this.logout();
+      await this.logout()
     } else if (!uuidValidate(this.props.auth.token)) {
-      await this.logout();
+      await this.logout()
     }
-  };
+  }
 
   componentDidMount = async () => {
-    await this.forceLogout();
-  };
+    await this.forceLogout()
+  }
 
   logout = async () => {
-    await this.props.Logout(this.props.auth.token);
+    await this.props.Logout(this.props.auth.token)
 
     this.setState({
       current: 'logout',
-      redirect: true
-    });
-  };
+      redirect: true,
+    })
+  }
 
   handleClickCompany = async (current, keyPath) => {
-    await this.auth();
+    await this.auth()
 
     if (!this.state.auth) {
-      await this.logout();
-      return;
+      await this.logout()
+      return
     }
 
     this.setState({
       current,
       redirect: true,
-      open: [keyPath]
-    });
-  };
+      open: [keyPath],
+    })
+  }
 
   changeRedirectState = () => {
     this.setState({
-      redirect: false
-    });
-  };
+      redirect: false,
+    })
+  }
 
   handleClickAtalhos = async (current, keyPath) => {
-    await this.auth();
+    await this.auth()
 
     if (!this.state.auth) {
-      await this.logout();
-      return;
+      await this.logout()
+      return
     }
 
     this.setState({
       current,
       redirect: true,
-      open: [keyPath]
-    });
-  };
+      open: [keyPath],
+    })
+  }
 
-  handleClick = async e => {
-    await this.auth();
+  handleClick = async (e) => {
+    await this.auth()
 
     if (!this.state.auth) {
-      await this.logout();
-      return;
+      await this.logout()
+      return
     }
 
     this.setState({
       current: e.key,
       redirect: true,
-      open: [e.keyPath[1]]
-    });
-  };
+      open: [e.keyPath[1]],
+    })
+  }
 
   render() {
     if (this.state.redirect) {
-      this.changeRedirectState();
+      this.changeRedirectState()
       switch (this.state.current) {
         case 'novoUsuario_add':
           return (
@@ -156,424 +156,424 @@ class SideBar extends Component {
               push
               to={{
                 pathname: '/logged/user/add',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'notificacao_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/notificacao/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'novoTipoConta_add':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/novoTipoConta/add',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'newTechnician_add':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/technician/add',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'novoProduto_add':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/product/add',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'novoFornecedor_add':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/novoFornecedor/add',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'gerenciarProduto_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/product/manager',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'entrada_add':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/entrada/add',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'entrada_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/gerenciarEntrada/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'estoque_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/estoque/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'reservaKit_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/reservaKit/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'reservaKit_add':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/reservaKitAdd/add',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'romaneio_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/romaneio/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'Rexterno_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/Rexterno/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'externo_add':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/externo/add',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'Rinterno_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/Rinterno/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'Os_dash':
           return (
             <Redirect
               push
               to={{
-                pathname: '/logged/Os/dash',
-                state: { from: this.props.location }
+                pathname: '/logged/os/manager',
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'searchOs_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/searchOs/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'reservaML_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/reservaML/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'relatorioOs_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/relatorioOs/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'relatorioEmprestimo_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/relatorioEmprestimo/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'relatorioInterno_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/relatorioInterno/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'relatorioPerda_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/relatorioPerda/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'relatorioML_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/relatorioML/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'relatorioVendas_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/relatorioVendas/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'relatorioMap_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/relatorioMap/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'relatorioSup_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/RelatorioSuprimentos/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'relatorioCompras_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/RelatorioCompras/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'relatorioGastos_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/RelatorioGastos/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'profile_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/profile/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'gerenciarProdutosDash_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/gerenciarProdutosDash/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'gerenciarFornecedor_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/gerenciarFornecedor/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'gerenciarUsuario_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/gerenciarUsuario/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'gerenciarTecnico_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/gerenciarTecnico/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'gerenciarEntrada_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/entradaDash/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'emprestimo_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/emprestimo/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'gerenciarCadastrosSup_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/gerenciarCadastrosSup/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'gerenciarEstoqueSup_dash':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/gerenciarEstoqueSup/dash',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'cadastroFornecedorSup_add':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/cadastroFornecedorSup/add',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'cadastroProdutosSup_add':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/cadastroProdutosSup/add',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'entradaSup_add':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/entradaSup/add',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'saidaSup_add':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/saidaSup/add',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'logout':
-          return <Redirect to="/login" />;
+          return <Redirect to="/login" />
         default:
-          return <Redirect to="/logged/dash" />;
+          return <Redirect to="/logged/dash" />
       }
     }
     return (
@@ -600,7 +600,11 @@ class SideBar extends Component {
             />
           </Tooltip>
           <Tooltip placement="bottom" title={'Logout'}>
-            <LogoutOutlined key="logout" className="menuIcon-icon" onClick={() => this.logout()} />
+            <LogoutOutlined
+              key="logout"
+              className="menuIcon-icon"
+              onClick={() => this.logout()}
+            />
           </Tooltip>
         </div>
 
@@ -626,7 +630,10 @@ class SideBar extends Component {
               Usuário
             </Menu.Item>
             {!this.props.auth.modulo && (
-              <Menu.Item disabled={!this.props.auth.addTec} key="newTechnician_add">
+              <Menu.Item
+                disabled={!this.props.auth.addTec}
+                key="newTechnician_add"
+              >
                 <UserAddOutlined />
                 Técnico
               </Menu.Item>
@@ -635,7 +642,10 @@ class SideBar extends Component {
               <SettingOutlined />
               Produto
             </Menu.Item>
-            <Menu.Item disabled={!this.props.auth.addFonr} key="novoFornecedor_add">
+            <Menu.Item
+              disabled={!this.props.auth.addFonr}
+              key="novoFornecedor_add"
+            >
               <BankOutlined />
               Fornecedor
             </Menu.Item>
@@ -701,11 +711,17 @@ class SideBar extends Component {
                 </span>
               }
             >
-              <Menu.Item disabled={!this.props.auth.addKitOut} key="reservaKit_dash">
+              <Menu.Item
+                disabled={!this.props.auth.addKitOut}
+                key="reservaKit_dash"
+              >
                 <ShoppingCartOutlined />
                 Kit
               </Menu.Item>
-              <Menu.Item disabled={!this.props.auth.addOutPut} key="romaneio_dash">
+              <Menu.Item
+                disabled={!this.props.auth.addOutPut}
+                key="romaneio_dash"
+              >
                 <FilePdfOutlined />
                 Romaneio
               </Menu.Item>
@@ -818,27 +834,45 @@ class SideBar extends Component {
                 </span>
               }
             >
-              <Menu.Item key="cadastroProdutosSup_add" disabled={!this.props.auth.suprimento}>
+              <Menu.Item
+                key="cadastroProdutosSup_add"
+                disabled={!this.props.auth.suprimento}
+              >
                 <UnorderedListOutlined />
                 Cad. Produtos
               </Menu.Item>
-              <Menu.Item key="cadastroFornecedorSup_add" disabled={!this.props.auth.suprimento}>
+              <Menu.Item
+                key="cadastroFornecedorSup_add"
+                disabled={!this.props.auth.suprimento}
+              >
                 <UnorderedListOutlined />
                 Cad. Fornecedor
               </Menu.Item>
-              <Menu.Item key="entradaSup_add" disabled={!this.props.auth.suprimento}>
+              <Menu.Item
+                key="entradaSup_add"
+                disabled={!this.props.auth.suprimento}
+              >
                 <UnorderedListOutlined />
                 Entrada
               </Menu.Item>
-              <Menu.Item key="saidaSup_add" disabled={!this.props.auth.suprimento}>
+              <Menu.Item
+                key="saidaSup_add"
+                disabled={!this.props.auth.suprimento}
+              >
                 <UnorderedListOutlined />
                 Saida
               </Menu.Item>
-              <Menu.Item key="gerenciarCadastrosSup_dash" disabled={!this.props.auth.suprimento}>
+              <Menu.Item
+                key="gerenciarCadastrosSup_dash"
+                disabled={!this.props.auth.suprimento}
+              >
                 <UnorderedListOutlined />
                 Ger. Cadastros
               </Menu.Item>
-              <Menu.Item key="gerenciarEstoqueSup_dash" disabled={!this.props.auth.suprimento}>
+              <Menu.Item
+                key="gerenciarEstoqueSup_dash"
+                disabled={!this.props.auth.suprimento}
+              >
                 <UnorderedListOutlined />
                 Ger. Estoque
               </Menu.Item>
@@ -846,21 +880,18 @@ class SideBar extends Component {
           )}
         </Menu>
       </div>
-    );
+    )
   }
 }
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators({ Logout }, dispach);
+  return bindActionCreators({ Logout }, dispach)
 }
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
-  };
+    auth: state.auth,
+  }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(SideBar);
+export default connect(mapStateToProps, mapDispacthToProps)(SideBar)

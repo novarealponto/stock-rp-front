@@ -28,7 +28,6 @@ import NotificacaoRoute from './Gerenciar/Notificacoes'
 import NovaEntradaRoute from './Cadastros/NovaEntrada'
 import NovoFornecedorRoute from './Cadastros/NovoFornecedor'
 import NovoTipoContaRoute from './Cadastros/NovoTipoConta'
-import OsDashRoute from './Gerenciar/Os'
 import Profile from './Profile'
 import Product from './Product'
 import RelatorioComprasRoute from './Relatorios/RelatorioCompras'
@@ -153,7 +152,6 @@ class PagesRoute extends Component {
           />
           <Route path="/logged/searchOs" component={SearchOsRoute} />
           <Route exact path="/logged/Os/manager" component={Os} />
-          <Route path="/logged/Os" component={OsDashRoute} />
           <Route path="/logged/profile" component={Profile} />
           <Route
             path="/logged/gerenciarProdutosDash"
