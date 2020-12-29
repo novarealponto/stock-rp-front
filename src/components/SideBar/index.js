@@ -200,16 +200,6 @@ class SideBar extends Component {
               }}
             />
           )
-        case 'productType':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/productType/manager',
-                state: { from: this.props.location },
-              }}
-            />
-          )
         case 'novoFornecedor_add':
           return (
             <Redirect
