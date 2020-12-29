@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { action } from '@storybook/addon-actions'
 import { commerce } from 'faker'
 import { Form } from 'antd'
+import filterData from '../../../../utils/filterData'
 
 import ManagerContainer from '../../../../containers/Mark/Manager'
 
@@ -27,6 +28,7 @@ const handleOnClickNewMarkAction = action('open modal NewMark')
 const handleOnSearchAction = action('Search')
 
 const Template = (args) => {
+  const [dataSource, setDataSource] = useState(marksList)
   const [formCreateMark] = Form.useForm()
   const [visibleCreateMark, setVisibleCreateMark] = useState(false)
 
@@ -46,21 +48,23 @@ const Template = (args) => {
     setVisibleCreateMark(true)
   }
 
+  const handleOnSearch = (searchValue) => {
+    handleOnSearchAction(searchValue)
+    setDataSource(filterData({ mark: searchValue }, marksList))
+  }
+
   return (
     <ManagerContainer
       {...args}
-      dataSource={marksList}
+      dataSource={dataSource}
       formCreateMark={formCreateMark}
       handleCancelCreateMark={handleCancelCreateMark}
       handleOkCreateMark={handleOkCreateMark}
       handleOnClickNewMark={handleOnClickNewMark}
+      handleOnSearch={handleOnSearch}
       visibleCreateMark={visibleCreateMark}
     />
   )
 }
 
 export const AddMark = Template.bind({})
-
-AddMark.args = {
-  handleOnSearch: handleOnSearchAction,
-}
