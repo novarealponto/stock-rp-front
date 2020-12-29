@@ -58,6 +58,7 @@ import ECommerce from './ECommerce'
 import Mark from './Mark'
 import Reception from './Reception'
 import ProductType from './ProductType'
+import Os from './Manager/Os'
 
 class PagesRoute extends Component {
   state = {
