@@ -56,6 +56,7 @@ import User from './User'
 import Os from './Os'
 import Reception from './Reception'
 import ProductType from './ProductType'
+import Os from './Manager/Os'
 
 class PagesRoute extends Component {
   state = {
