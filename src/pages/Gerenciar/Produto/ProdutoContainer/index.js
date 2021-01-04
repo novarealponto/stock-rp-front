@@ -1,24 +1,28 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import './index.css';
-import { Spin, Button, Input, Select, Tooltip } from 'antd';
-import { getProdutos } from '../../../../services/produto';
-import { getAllFornecedor } from '../../../../services/fornecedores';
-import { getAllTecnico } from '../../../../services/tecnico';
-import { getUsers } from '../../../../services/usuario';
-import { masks } from './validators';
+import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import './index.css'
+import { Spin, Button, Input, Select, Tooltip } from 'antd'
+import { getProdutos } from '../../../../services/produto'
+import { getAllFornecedor } from '../../../../services/fornecedores'
+import { getAllTechnician } from '../../../../services/tecnico'
+import { getUsers } from '../../../../services/usuario'
+import { masks } from './validators'
 import {
   redirectValueProduto,
   redirectValueFornecedor,
   redirectValueUsuario,
-  redirectValueTecnico
-} from '../ProdutoRedux/action';
+  redirectValueTecnico,
+} from '../ProdutoRedux/action'
 
-import { EditOutlined, CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
+import {
+  EditOutlined,
+  CheckCircleTwoTone,
+  CloseCircleTwoTone,
+} from '@ant-design/icons'
 
-const { Option } = Select;
+const { Option } = Select
 class GerenciarProdutoDash extends Component {
   state = {
     redirect: '',
@@ -41,97 +45,97 @@ class GerenciarProdutoDash extends Component {
     categoria: '',
     loading: false,
     userArray: {
-      rows: []
+      rows: [],
     },
     tecnicoArray: {
-      rows: []
+      rows: [],
     },
     fornecedorArray: {
-      rows: []
+      rows: [],
     },
     OsArray: {
-      rows: []
+      rows: [],
     },
     avancado: false,
     page: 1,
     total: 10,
     count: 0,
-    show: 0
-  };
+    show: 0,
+  }
 
-  onChangeUsuario = async e => {
-    const { nome, valor } = masks(e.target.name, e.target.value);
-
-    await this.setState({
-      [nome]: valor
-    });
-
-    await this.getAllUsers();
-  };
-
-  onChangeTecnico = async e => {
-    const { nome, valor } = masks(e.target.name, e.target.value);
+  onChangeUsuario = async (e) => {
+    const { nome, valor } = masks(e.target.name, e.target.value)
 
     await this.setState({
-      [nome]: valor
-    });
+      [nome]: valor,
+    })
 
-    await this.getAllTecnicos();
-  };
+    await this.getAllUsers()
+  }
 
-  onChangeFornecedor = async e => {
-    const { nome, valor } = masks(e.target.name, e.target.value);
-
-    await this.setState({
-      [nome]: valor
-    });
-
-    await this.getAllFornecedor();
-  };
-
-  onChangeProduto = async e => {
-    const { nome, valor } = masks(e.target.name, e.target.value);
+  onChangeTecnico = async (e) => {
+    const { nome, valor } = masks(e.target.name, e.target.value)
 
     await this.setState({
-      [nome]: valor
-    });
+      [nome]: valor,
+    })
 
-    await this.getAllProdutos();
-  };
+    await this.getAllTechnicians()
+  }
 
-  handleChange = async value => {
+  onChangeFornecedor = async (e) => {
+    const { nome, valor } = masks(e.target.name, e.target.value)
+
     await this.setState({
-      categoria: value
-    });
+      [nome]: valor,
+    })
 
-    await this.getAllProdutos();
-  };
+    await this.getAllFornecedor()
+  }
 
-  handleChangeGerenciar = async value => {
+  onChangeProduto = async (e) => {
+    const { nome, valor } = masks(e.target.name, e.target.value)
+
+    await this.setState({
+      [nome]: valor,
+    })
+
+    await this.getAllProdutos()
+  }
+
+  handleChange = async (value) => {
+    await this.setState({
+      categoria: value,
+    })
+
+    await this.getAllProdutos()
+  }
+
+  handleChangeGerenciar = async (value) => {
     await this.setState({
       gerenciar: value,
-      page: 1
-    });
+      page: 1,
+    })
 
     switch (value) {
       case 'usuario':
-        await this.getAllUsers();
-        break;
+        await this.getAllUsers()
+        break
       case 'tecnico':
-        await this.getAllTecnicos();
-        break;
+        await this.getAllTechnicians()
+        break
       case 'produtos':
-        await this.getAllProdutos();
-        break;
+        await this.getAllProdutos()
+        break
       case 'fornecedor':
-        await this.getAllFornecedor();
-        break;
+        await this.getAllFornecedor()
+        break
       default:
-        break;
+        break
     }
 
     // await this.getAllUsers()
-  };
+  }
 
   avancado = () => {
     this.setState({
@@ -151,40 +155,40 @@ class GerenciarProdutoDash extends Component {
       produto: '',
       marca: '',
       tipo: '',
-      categoria: ''
-    });
-  };
+      categoria: '',
+    })
+  }
 
-  changePages = pages => {
+  changePages = (pages) => {
     this.setState(
       {
-        page: pages
+        page: pages,
       },
       async () => {
         switch (this.state.gerenciar) {
           case 'usuario':
-            await this.getAllUsers();
-            break;
+            await this.getAllUsers()
+            break
           case 'tecnico':
-            await this.getAllTecnicos();
-            break;
+            await this.getAllTechnicians()
+            break
           case 'produtos':
-            await this.getAllProdutos();
-            break;
+            await this.getAllProdutos()
+            break
           case 'fornecedor':
-            await this.getAllFornecedor();
-            break;
+            await this.getAllFornecedor()
+            break
           default:
-            break;
+            break
         }
       }
-    );
-  };
+    )
+  }
 
   getAllFornecedor = async () => {
     await this.setState({
-      loading: true
-    });
+      loading: true,
+    })
 
     const query = {
       filters: {
@@ -194,106 +198,106 @@ class GerenciarProdutoDash extends Component {
             razaoSocial: this.state.razaoSocial,
             state: this.state.uf,
             nameContact: this.state.nome,
-            telphone: this.state.telefone.replace(/\D/gi, '')
-          }
-        }
+            telphone: this.state.telefone.replace(/\D/gi, ''),
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
-    };
+      total: this.state.total,
+    }
 
-    await getAllFornecedor(query).then(resposta =>
+    await getAllFornecedor(query).then((resposta) =>
       this.setState({
         fornecedorArray: resposta.data,
         count: resposta.data.count,
         page: resposta.data.page,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
-    );
+    )
 
     await this.setState({
-      loading: false
-    });
-  };
+      loading: false,
+    })
+  }
 
-  getAllTecnicos = async () => {
+  getAllTechnicians = async () => {
     await this.setState({
-      loading: true
-    });
+      loading: true,
+    })
 
     const query = {
       filters: {
         technician: {
           specific: {
             name: this.state.tecnico,
-            CNH: this.state.cnh.replace(/\D/gi, '')
-          }
+            CNH: this.state.cnh.replace(/\D/gi, ''),
+          },
         },
         car: {
           specific: {
-            plate: this.state.placa
-          }
-        }
+            plate: this.state.placa,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
-    };
+      total: this.state.total,
+    }
 
-    await getAllTecnico(query).then(resposta => {
+    await getAllTechnician(query).then((resposta) => {
       this.setState({
         tecnicoArray: resposta.data,
         count: resposta.data.count,
         page: resposta.data.page,
-        show: resposta.data.show
-      });
-    });
+        show: resposta.data.show,
+      })
+    })
 
     await this.setState({
-      loading: false
-    });
-  };
+      loading: false,
+    })
+  }
 
   getAllUsers = async () => {
     await this.setState({
-      loading: true
-    });
+      loading: true,
+    })
 
     const query = {
       filters: {
         user: {
           specific: {
             username: this.state.usuario,
-            modulo: this.props.auth.modulo
-          }
+            modulo: this.props.auth.modulo,
+          },
         },
         typeAccount: {
           specific: {
-            typeName: this.state.tipoConta
-          }
-        }
+            typeName: this.state.tipoConta,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
-    };
+      total: this.state.total,
+    }
 
-    await getUsers(query).then(resposta =>
+    await getUsers(query).then((resposta) =>
       this.setState({
         userArray: resposta.data,
         count: resposta.data.count,
         page: resposta.data.page,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
-    );
+    )
 
     await this.setState({
-      loading: false
-    });
-  };
+      loading: false,
+    })
+  }
 
   getAllProdutos = async () => {
     await this.setState({
-      loading: true
-    });
+      loading: true,
+    })
 
     const query = {
       filters: {
@@ -301,41 +305,41 @@ class GerenciarProdutoDash extends Component {
           specific: {
             name: this.state.produto,
             category: this.state.categoria,
-            modulo: this.props.auth.modulo
-          }
+            modulo: this.props.auth.modulo,
+          },
         },
         mark: {
           specific: {
-            mark: this.state.marca
-          }
+            mark: this.state.marca,
+          },
         },
         equipType: {
           specific: {
-            type: this.state.tipo
-          }
-        }
+            type: this.state.tipo,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
-    };
+      total: this.state.total,
+    }
 
-    await getProdutos(query).then(resposta =>
+    await getProdutos(query).then((resposta) =>
       this.setState({
         OsArray: resposta.data,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
-    );
+    )
 
     await this.setState({
-      loading: false
-    });
-  };
+      loading: false,
+    })
+  }
 
   componentDidMount = async () => {
-    await this.getAllProdutos();
-  };
+    await this.getAllProdutos()
+  }
 
   Pages = () => (
     <div className="footer-Gentrada-button">
@@ -397,7 +401,8 @@ class GerenciarProdutoDash extends Component {
           {this.state.page + 2}
         </Button>
       ) : null}
-      {this.state.page + 2 < this.state.count / this.state.total && this.state.page < 3 ? (
+      {this.state.page + 2 < this.state.count / this.state.total &&
+      this.state.page < 3 ? (
         <Button
           className="button"
           type="primary"
@@ -406,7 +411,8 @@ class GerenciarProdutoDash extends Component {
           {this.state.page + 3}
         </Button>
       ) : null}
-      {this.state.page + 3 < this.state.count / this.state.total && this.state.page < 2 ? (
+      {this.state.page + 3 < this.state.count / this.state.total &&
+      this.state.page < 2 ? (
         <Button
           className="button"
           type="primary"
@@ -416,11 +422,11 @@ class GerenciarProdutoDash extends Component {
         </Button>
       ) : null}
     </div>
-  );
+  )
 
   produtos = () => {
     if (this.state.OsArray.rows.length !== 0) {
-      return this.state.OsArray.rows.map(line => (
+      return this.state.OsArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div
             style={{
@@ -428,7 +434,7 @@ class GerenciarProdutoDash extends Component {
               height: 'auto',
               minHeight: '60px',
               display: 'flex',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
             // className="div-lines-Rtecnico"
           >
@@ -452,15 +458,17 @@ class GerenciarProdutoDash extends Component {
           </div>
           <div className=" div-separate1-Gentrada" />
         </div>
-      ));
+      ))
     } else {
-      return <div className="div-naotemnada">Não há nenhum produto cadastrado</div>;
+      return (
+        <div className="div-naotemnada">Não há nenhum produto cadastrado</div>
+      )
     }
-  };
+  }
 
   usuario = () => {
     if (this.state.userArray.rows.length !== 0) {
-      return this.state.userArray.rows.map(line => (
+      return this.state.userArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div
             // className="div-lines-Rtecnico"
@@ -469,11 +477,15 @@ class GerenciarProdutoDash extends Component {
               height: 'auto',
               minHeight: '60px',
               display: 'flex',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
-            <div className="cel-usuario-cabecalho-GCadastros">{line.username}</div>
-            <div className="cel-tipoConta-cabecalho-GCadastros">{line.typeName}</div>
+            <div className="cel-usuario-cabecalho-GCadastros">
+              {line.username}
+            </div>
+            <div className="cel-tipoConta-cabecalho-GCadastros">
+              {line.typeName}
+            </div>
             <div className="cel-customizado-cabecalho-GCadastros">
               {line.customized ? (
                 <CheckCircleTwoTone twoToneColor="#52c41a" />
@@ -496,15 +508,17 @@ class GerenciarProdutoDash extends Component {
           </div>
           <div className=" div-separate1-Gentrada" />
         </div>
-      ));
+      ))
     } else {
-      return <div className="div-naotemnada">Não há nenhum usuário cadastrado</div>;
+      return (
+        <div className="div-naotemnada">Não há nenhum usuário cadastrado</div>
+      )
     }
-  };
+  }
 
   tecnico = () => {
     if (this.state.tecnicoArray.rows.length !== 0) {
-      return this.state.tecnicoArray.rows.map(line => (
+      return this.state.tecnicoArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div
             // className="div-lines-Rtecnico"
@@ -513,7 +527,7 @@ class GerenciarProdutoDash extends Component {
               height: 'auto',
               minHeight: '60px',
               display: 'flex',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <div className="cel-tecnico-cabecalho-GCadastros">{line.name}</div>
@@ -543,15 +557,17 @@ class GerenciarProdutoDash extends Component {
           </div>
           <div className=" div-separate1-Gentrada" />
         </div>
-      ));
+      ))
     } else {
-      return <div className="div-naotemnada">Não há nenhum técnico cadastrado</div>;
+      return (
+        <div className="div-naotemnada">Não há nenhum técnico cadastrado</div>
+      )
     }
-  };
+  }
 
   fornecedor = () => {
     if (this.state.fornecedorArray.rows.length !== 0) {
-      return this.state.fornecedorArray.rows.map(line => (
+      return this.state.fornecedorArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div
             // className="div-lines-Rtecnico"
@@ -560,15 +576,20 @@ class GerenciarProdutoDash extends Component {
               height: 'auto',
               minHeight: '60px',
               display: 'flex',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <div className="cel-cnpj-cabecalho-GCadastros">
-              {line.cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')}
+              {line.cnpj.replace(
+                /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
+                '$1.$2.$3/$4-$5'
+              )}
             </div>
             <div className="cel-rs-cabecalho-GCadastros">{line.razaoSocial}</div>
             <div className="cel-uf-cabecalho-GCadastros">{line.state}</div>
-            <div className="cel-nome-cabecalho-GCadastros">{line.nameContact}</div>
+            <div className="cel-nome-cabecalho-GCadastros">
+              {line.nameContact}
+            </div>
             <div className="cel-telefone-cabecalho-GCadastros">
               {line.telphone.replace(/(\d{2})(\d{4,5})(\d{4})/, '($1) $2-$3')}
             </div>
@@ -587,13 +608,15 @@ class GerenciarProdutoDash extends Component {
           </div>
           <div className=" div-separate1-Gentrada" />
         </div>
-      ));
+      ))
     } else {
-      return <div className="div-naotemnada">Não há nenhum fornecedor cadastrado</div>;
+      return (
+        <div className="div-naotemnada">Não há nenhum fornecedor cadastrado</div>
+      )
     }
-  };
+  }
 
-  redirectProduto = async produto => {
+  redirectProduto = async (produto) => {
     const value = {
       id: produto.id,
       name: produto.name,
@@ -608,16 +631,16 @@ class GerenciarProdutoDash extends Component {
       corredor: produto.corredor,
       coluna: produto.coluna,
       prateleira: produto.prateleira,
-      gaveta: produto.gaveta
-    };
-    await this.props.redirectValueProduto(value);
+      gaveta: produto.gaveta,
+    }
+    await this.props.redirectValueProduto(value)
 
     await this.setState({
-      redirect: 'produto'
-    });
-  };
+      redirect: 'produto',
+    })
+  }
 
-  redirectFornecedor = async fornecedor => {
+  redirectFornecedor = async (fornecedor) => {
     const value = {
       id: fornecedor.id,
       cnpj: fornecedor.cnpj,
@@ -632,64 +655,66 @@ class GerenciarProdutoDash extends Component {
       referencePoint: fornecedor.referencePoint,
       nameContact: fornecedor.nameContact,
       email: fornecedor.email,
-      telphone: fornecedor.telphone
-    };
+      telphone: fornecedor.telphone,
+    }
 
-    await this.props.redirectValueFornecedor(value);
+    await this.props.redirectValueFornecedor(value)
 
     await this.setState({
-      redirect: 'fornecedor'
-    });
-  };
+      redirect: 'fornecedor',
+    })
+  }
 
-  redirectUsuario = async usuario => {
+  redirectUsuario = async (usuario) => {
     const value = {
       id: usuario.id,
       customized: usuario.customized,
       typeName: usuario.typeName,
       username: usuario.username,
-      resource: usuario.resource
-    };
+      resource: usuario.resource,
+    }
 
-    await this.props.redirectValueUsuario(value);
+    await this.props.redirectValueUsuario(value)
 
     await this.setState({
-      redirect: 'usuario'
-    });
-  };
+      redirect: 'usuario',
+    })
+  }
 
-  redirectTecnico = async tecnico => {
+  redirectTecnico = async (tecnico) => {
     const value = {
       id: tecnico.id,
       name: tecnico.name,
       CNH: tecnico.CNH,
       plate: tecnico.plate,
-      external: tecnico.external
-    };
+      external: tecnico.external,
+    }
 
-    await this.props.redirectValueTecnico(value);
+    await this.props.redirectValueTecnico(value)
 
     await this.setState({
-      redirect: 'tecnico'
-    });
-  };
+      redirect: 'tecnico',
+    })
+  }
 
   renderRedirect = () => {
     // eslint-disable-next-line default-case
     switch (this.state.redirect) {
       case 'produto':
-        return <Redirect exact push path to="/logged/gerenciarProdutosDash/dash" />;
+        return (
+          <Redirect exact push path to="/logged/gerenciarProdutosDash/dash" />
+        )
       // eslint-disable-next-line no-duplicate-case
       case 'fornecedor':
-        return <Redirect exact push path to="/logged/gerenciarFornecedor/dash" />;
+        return <Redirect exact push path to="/logged/gerenciarFornecedor/dash" />
       // eslint-disable-next-line no-duplicate-case
       case 'usuario':
-        return <Redirect exact push path to="/logged/gerenciarUsuario/dash" />;
+        return <Redirect exact push path to="/logged/gerenciarUsuario/dash" />
       // eslint-disable-next-line no-duplicate-case
       case 'tecnico':
-        return <Redirect exact push path to="/logged/gerenciarTecnico/dash" />;
+        return <Redirect exact push path to="/logged/gerenciarTecnico/dash" />
     }
-  };
+  }
 
   Tables = () => {
     if (this.state.gerenciar === 'produtos') {
@@ -713,14 +738,18 @@ class GerenciarProdutoDash extends Component {
             this.produtos()
           )}
         </div>
-      );
+      )
     } else if (this.state.gerenciar === 'usuario') {
       return (
         <div className="div-tables-GCadastros">
           <div className="div-cabecalho-GCadastros">
             <div className="cel-usuario-cabecalho-GCadastros">Usuário</div>
-            <div className="cel-tipoConta-cabecalho-GCadastros">Tipo de conta</div>
-            <div className="cel-customizado-cabecalho-GCadastros">Customizado</div>
+            <div className="cel-tipoConta-cabecalho-GCadastros">
+              Tipo de conta
+            </div>
+            <div className="cel-customizado-cabecalho-GCadastros">
+              Customizado
+            </div>
             <div className="cel-edit-cabecalho-GCadastros" />
           </div>
 
@@ -733,7 +762,7 @@ class GerenciarProdutoDash extends Component {
             this.usuario()
           )}
         </div>
-      );
+      )
     } else if (this.state.gerenciar === 'fornecedor') {
       return (
         <div className="div-tables-GCadastros">
@@ -755,7 +784,7 @@ class GerenciarProdutoDash extends Component {
             this.fornecedor()
           )}
         </div>
-      );
+      )
     } else if (this.state.gerenciar === 'tecnico') {
       return (
         <div className="div-tables-GCadastros">
@@ -776,9 +805,9 @@ class GerenciarProdutoDash extends Component {
             this.tecnico()
           )}
         </div>
-      );
+      )
     }
-  };
+  }
 
   Avancado = () => {
     if (this.state.avancado && this.state.gerenciar === 'produtos') {
@@ -860,7 +889,7 @@ class GerenciarProdutoDash extends Component {
             </div>
           </div>
         </div>
-      );
+      )
     } else if (this.state.avancado && this.state.gerenciar === 'fornecedor') {
       return (
         <div className="div-linha-avancado-Rtecnico">
@@ -938,7 +967,7 @@ class GerenciarProdutoDash extends Component {
             </div>
           </div>
         </div>
-      );
+      )
     } else if (this.state.avancado && this.state.gerenciar === 'tecnico') {
       return (
         <div className="div-linha-avancado-Rtecnico">
@@ -988,7 +1017,7 @@ class GerenciarProdutoDash extends Component {
             </div>
           </div>
         </div>
-      );
+      )
     } else if (this.state.avancado && this.state.gerenciar === 'usuario') {
       return (
         <div className="div-linha-avancado-Rtecnico">
@@ -1025,7 +1054,7 @@ class GerenciarProdutoDash extends Component {
             </div>
           </div>
         </div>
-      );
+      )
     } else {
       return (
         <div className="div-avancado-GCadastros">
@@ -1043,9 +1072,9 @@ class GerenciarProdutoDash extends Component {
             Avançado
           </Button>
         </div>
-      );
+      )
     }
-  };
+  }
 
   render() {
     return (
@@ -1062,7 +1091,7 @@ class GerenciarProdutoDash extends Component {
 
         {this.renderRedirect()}
       </div>
-    );
+    )
   }
 }
 
@@ -1072,19 +1101,16 @@ function mapDispacthToProps(dispach) {
       redirectValueProduto,
       redirectValueFornecedor,
       redirectValueUsuario,
-      redirectValueTecnico
+      redirectValueTecnico,
     },
     dispach
-  );
+  )
 }
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
-  };
+    auth: state.auth,
+  }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(GerenciarProdutoDash);
+export default connect(mapStateToProps, mapDispacthToProps)(GerenciarProdutoDash)

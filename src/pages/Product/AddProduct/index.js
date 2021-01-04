@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import {
   newProduto,
-  getTipo,
+  getAllProductType,
   getMarca,
 } from '../../../services/produto';
 import AddProductContainer from '../../../containers/Product/AddProduct';
@@ -29,7 +29,7 @@ const AddProduct = ({
 
   const getAllTipo = async () => {
     try {
-      const { data, status } = await getTipo();
+      const { data, status } = await getAllProductType();
       if (status === 404 || status === 422 || status === 500) {
         throw new Error('422 Unprocessable Entity!')
       }
@@ -37,7 +37,7 @@ const AddProduct = ({
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const getAllMarca = async () => {
     try {
@@ -49,7 +49,7 @@ const AddProduct = ({
     } catch (error) {
       console.log(error)
     }
-  };
+  }
 
   const handleSubmit = async (formData) => {
     const { modulo } = auth
@@ -60,7 +60,7 @@ const AddProduct = ({
     } catch (error) {
       errorMessage();
     }
-  };
+  }
 
   return (
     <AddProductContainer

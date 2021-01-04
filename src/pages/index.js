@@ -49,6 +49,7 @@ import RomanieoRoute from './Reservas/Romaneio'
 import SaidaSupRoute from './Suprimentos/Saida'
 import SearchOsRoute from './Gerenciar/SearchOs'
 import TechnicianRoute from './Technician'
+import TypeAcconuntRoute from './TypeAcconunt'
 import uuidValidate from 'uuid-validate'
 import User from './User'
 
@@ -104,8 +105,10 @@ class PagesRoute extends Component {
           <Route exact path="/logged/dash" component={Dash} />
           <Route path="/logged/user" component={User} />
           <Route path="/logged/novoTipoConta" component={NovoTipoContaRoute} />
-          <Route path="/logged/product" component={Product} />
           <Route path="/logged/provider" component={Provider} />
+          <Route path="/logged/novoFornecedor" component={NovoFornecedorRoute} />
+          <Route path="/logged/product" component={Product} />
+          <Route path="/logged/productType" component={ProductType} />
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
@@ -177,6 +180,8 @@ class PagesRoute extends Component {
           <Route path="/logged/notificacao" component={NotificacaoRoute} />
 
           <Route path="/logged/technician/" component={TechnicianRoute} />
+
+          <Route path="/logged/typeAccount/" component={TypeAcconuntRoute} />
 
           {this.props.auth.suprimento && (
             <Switch>

@@ -1,136 +1,134 @@
-import React, { Component } from "react";
-import "./index.css";
-import { Select, InputNumber, Button, message, Input } from "antd";
-import { getProdutoByEstoque } from "../../../../services/produto";
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
+import React, { Component } from 'react'
+import './index.css'
+import { Select, InputNumber, Button, message, Input } from 'antd'
+import { getProdutoByEstoque } from '../../../../services/produto'
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-import { getTecnico } from "../../../../services/tecnico";
-import { NewKit, getKitDefaultValue } from "../../../../services/kit";
-import { getSerial } from "../../../../services/serialNumber";
+import { getTecnico } from '../../../../services/tecnico'
+import { NewKit, getKitDefaultValue } from '../../../../services/kit'
+import { getSerial } from '../../../../services/serialNumber'
 
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined } from '@ant-design/icons'
 
-const { TextArea } = Input;
-const { Option } = Select;
+const { TextArea } = Input
+const { Option } = Select
 
 class AddKit extends Component {
   state = {
     redirect: false,
     serial: false,
     disp: 1,
-    numeroSerieTest: "",
+    numeroSerieTest: '',
     itemArray: [],
     carrinho: [],
-    item: "Não selecionado",
+    item: 'Não selecionado',
     quant: 1,
-    estoque: "ESTOQUE",
+    estoque: 'ESTOQUE',
     quantTec: 1,
-  };
+  }
 
   redirectReservaOs = () => {
     this.setState({
       redirect: true,
-    });
-  };
+    })
+  }
 
   renderRedirect = () => {
     if (!this.props.auth.addKit) {
-      return <Redirect to="/logged/dash" />;
+      return <Redirect to="/logged/dash" />
     }
 
     if (this.state.redirect) {
-      return <Redirect push to="/logged/reservaKit/dash" />;
+      return <Redirect push to="/logged/reservaKit/dash" />
     }
-  };
+  }
 
-  getAllTecnico = async () => {
+  getAllTechnician = async () => {
     const query = {
       external: true,
-    };
+    }
 
     await getTecnico(query).then((resposta) =>
       this.setState({
         quantTec: resposta.data.length,
       })
-    );
-  };
+    )
+  }
 
   getKitDefault = async () => {
-    const query = {};
+    const query = {}
 
     await getKitDefaultValue(query).then((resposta) =>
       this.setState({
         carrinho: resposta.data.rows,
       })
-    );
-  };
+    )
+  }
   errorNumeroSerie = (value) => {
-    message.error(value, 10);
-  };
+    message.error(value, 10)
+  }
 
   filter = async (e) => {
     await this.setState({
       numeroSerieTest: e.target.value,
-    });
+    })
 
-    const teste = this.state.numeroSerieTest.split(/\n/, 10);
+    const teste = this.state.numeroSerieTest.split(/\n/, 10)
 
     if (
-      /\n/.test(
-        this.state.numeroSerieTest[this.state.numeroSerieTest.length - 1]
-      )
+      /\n/.test(this.state.numeroSerieTest[this.state.numeroSerieTest.length - 1])
     ) {
-      let count = 0;
+      let count = 0
 
       // eslint-disable-next-line array-callback-return
       teste.map((valor) => {
-        if (valor === teste[teste.length - 2]) count++;
-      });
+        if (valor === teste[teste.length - 2]) count++
+      })
 
-      let mensagem = "Este equipamento ja foi inserido nessa reserva";
+      let mensagem = 'Este equipamento ja foi inserido nessa reserva'
 
-      const resp = await getSerial(teste[teste.length - 2]);
+      const resp = await getSerial(teste[teste.length - 2])
 
       if (resp.data) {
         if (resp.data.reserved) {
-          count++;
+          count++
           if (resp.data.deletedAt) {
             if (resp.data.osParts) {
-              mensagem = `Este equipamento ja foi liberado para a OS: ${resp.data.osPart.o.os}`;
+              mensagem = `Este equipamento ja foi liberado para a OS: ${resp.data.osPart.o.os}`
             } else if (resp.data.freeMarketPart) {
-              mensagem = `Este equipamento foi liberado para mercado livre com código de restreamento: ${resp.data.freeMarketPart.freeMarket.trackingCode}`;
+              mensagem = `Este equipamento foi liberado para mercado livre com código de restreamento: ${resp.data.freeMarketPart.freeMarket.trackingCode}`
             }
           } else {
-            mensagem = `Este equipamento ja foi reservado para a OS: ${resp.data.osPart.o.os}`;
+            mensagem = `Este equipamento ja foi reservado para a OS: ${resp.data.osPart.o.os}`
           }
         }
       } else {
-        mensagem = "Este equipamento não consta na base de dados";
-        count++;
+        mensagem = 'Este equipamento não consta na base de dados'
+        count++
       }
 
       if (count > 1) {
-        this.errorNumeroSerie(mensagem);
+        this.errorNumeroSerie(mensagem)
 
-        teste.splice(teste.length - 2, 1);
+        teste.splice(teste.length - 2, 1)
 
-        const testeArray = teste.toString();
+        const testeArray = teste.toString()
 
         this.setState({
-          numeroSerieTest: testeArray.replace(/,/gi, "\n"),
-        });
+          numeroSerieTest: testeArray.replace(/,/gi, '\n'),
+        })
       }
     }
-  };
+  }
 
   componentDidMount = async () => {
-    await this.getAllItens();
+    await this.getAllItens()
 
-    await this.getAllTecnico();
+    await this.getAllTechnician()
 
-    await this.getKitDefault();
-  };
+    await this.getKitDefault()
+  }
 
   getAllItens = async (name) => {
     const query = {
@@ -147,49 +145,49 @@ class AddKit extends Component {
         },
       },
       kit: true,
-    };
+    }
 
     await getProdutoByEstoque(query).then((resposta) =>
       this.setState({
         itemArray: resposta.data,
       })
-    );
-  };
+    )
+  }
   onChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
   onChangeEstoque = async (valor) => {
     await this.setState({
       estoque: valor,
-    });
+    })
 
-    await this.getAllItens();
-  };
+    await this.getAllItens()
+  }
 
   onChangeQuant = (value) => {
     this.setState({
       quant: value,
-    });
-  };
+    })
+  }
 
   errorProduto = () => {
-    message.error("O produto é obrigatório para essa ação ser realizada");
-  };
+    message.error('O produto é obrigatório para essa ação ser realizada')
+  }
 
   errorSelecionado = () => {
-    message.error("Este item já foi selecionado");
-  };
+    message.error('Este item já foi selecionado')
+  }
 
   onChangeItem = (value, props) => {
     this.setState({
       item: value,
       productBaseId: props.props.id,
       disp: parseInt(props.props.available, 10),
-    });
-  };
+    })
+  }
 
   saveTargetNewKit = async () => {
     const value = {
@@ -197,60 +195,60 @@ class AddKit extends Component {
         const resp = {
           productBaseId: valor.productBaseId,
           amount: valor.amount.toString(),
-        };
-        return resp;
+        }
+        return resp
       }),
-    };
+    }
 
-    const resposta = await NewKit(value);
+    const resposta = await NewKit(value)
 
     if (resposta.status === 422) {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
         message: resposta.data.fields[0].message,
-      });
-      await this.error();
+      })
+      await this.error()
       this.setState({
         loading: false,
         messageError: false,
-      });
+      })
     }
     if (resposta.status === 200) {
       this.setState({
         carrinho: [],
-        item: "Não selecionado",
+        item: 'Não selecionado',
         quant: 1,
-        estoque: "ESTOQUE",
+        estoque: 'ESTOQUE',
         messageSuccess: true,
-      });
-      await this.success();
+      })
+      await this.success()
       this.setState({
         loading: false,
         messageSuccess: false,
         redirect: true,
-      });
+      })
     }
-  };
+  }
 
   success = () => {
-    message.success("O cadastro foi efetuado");
-  };
+    message.success('O cadastro foi efetuado')
+  }
 
   error = () => {
-    message.error("O cadastro não foi efetuado");
-  };
+    message.error('O cadastro não foi efetuado')
+  }
 
   addCarrinho = async () => {
-    if (this.state.item !== "Não selecionado") {
-      const array = this.state.carrinho.map((value) => value.itemCarrinho);
+    if (this.state.item !== 'Não selecionado') {
+      const array = this.state.carrinho.map((value) => value.itemCarrinho)
 
       if (array.filter((value) => value === this.state.item).length > 0) {
-        this.errorSelecionado();
+        this.errorSelecionado()
         this.setState({
-          item: "",
-        });
-        return;
+          item: '',
+        })
+        return
       }
 
       await this.setState({
@@ -262,21 +260,21 @@ class AddKit extends Component {
           },
           ...this.state.carrinho,
         ],
-        item: "Não selecionado",
+        item: 'Não selecionado',
         quant: 1,
-        estoque: "ESTOQUE",
-      });
-    } else this.errorProduto();
-  };
+        estoque: 'ESTOQUE',
+      })
+    } else this.errorProduto()
+  }
 
   remove = (value) => {
-    const oldCarrinho = this.state.carrinho;
-    const newCarrinho = oldCarrinho.filter((valor) => valor !== value);
+    const oldCarrinho = this.state.carrinho
+    const newCarrinho = oldCarrinho.filter((valor) => valor !== value)
 
     this.setState({
       carrinho: newCarrinho,
-    });
-  };
+    })
+  }
 
   render() {
     return (
@@ -297,15 +295,13 @@ class AddKit extends Component {
             <div className="div-textNome-Os">Nome do produto:</div>
             <Select
               showSearch
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               optionFilterProp="children"
               value={this.state.item}
               onChange={this.onChangeItem}
               onSearch={(name) => this.getAllItens(name)}
               filterOption={(input, option) =>
-                option.children
-                  .toLowerCase()
-                  .indexOf(input.toLowerCase()) >= 0
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
               {this.state.itemArray.map((value) => (
@@ -333,7 +329,7 @@ class AddKit extends Component {
             <div className="div-text-Os">Estoque:</div>
             <Select
               value={this.state.estoque}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               onChange={this.onChangeEstoque}
             >
               <Option value="ESTOQUE">ESTOQUE</Option>
@@ -402,14 +398,14 @@ class AddKit extends Component {
           )}
         </div>
       </div>
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
     auth: state.auth,
-  };
+  }
 }
 
-export default connect(mapStateToProps)(AddKit);
+export default connect(mapStateToProps)(AddKit)

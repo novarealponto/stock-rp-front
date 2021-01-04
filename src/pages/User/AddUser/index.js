@@ -62,7 +62,7 @@ const AddUser = ({
   };
 
   const goToAddTypeAccount = () => (
-    history.push('/logged/novoTipoConta/add')
+    history.push('/logged/typeAccount/add')
   );
 
   const handleAllowSetCustomPermissions = () => (

@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import { DatePicker, Button, Input, Select, Spin } from "antd";
-import { getTecnico } from "../../../../services/tecnico";
-import { getTodasOsInterno } from "../../../../services/reservaOs";
-import moment from "moment";
+import React, { Component } from 'react'
+import { DatePicker, Button, Input, Select, Spin } from 'antd'
+import { getTecnico } from '../../../../services/tecnico'
+import { getTodasOsInterno } from '../../../../services/reservaOs'
+import moment from 'moment'
 
-const { Option } = Select;
+const { Option } = Select
 
 class RelatorioInterno extends Component {
   state = {
     avancado: false,
-    os: "",
-    rs: "",
-    data: "",
-    tecnico: "",
+    os: '',
+    rs: '',
+    data: '',
+    tecnico: '',
     tecnicoArray: [],
-    valueDate: { start: "2019/01/01" },
+    valueDate: { start: '2019/01/01' },
     page: 1,
     total: 10,
     count: 0,
@@ -23,12 +23,12 @@ class RelatorioInterno extends Component {
     OsArray: {
       rows: [],
     },
-  };
+  }
 
   getAllOs = async () => {
     this.setState({
       loading: true,
-    });
+    })
 
     const query = {
       filters: {
@@ -46,7 +46,7 @@ class RelatorioInterno extends Component {
       },
       page: this.state.page,
       total: this.state.total,
-    };
+    }
 
     await getTodasOsInterno(query).then((resposta) =>
       this.setState({
@@ -55,12 +55,12 @@ class RelatorioInterno extends Component {
         count: resposta.data.count,
         show: resposta.data.show,
       })
-    );
+    )
 
     this.setState({
       loading: false,
-    });
-  };
+    })
+  }
 
   changePages = (pages) => {
     this.setState(
@@ -68,63 +68,63 @@ class RelatorioInterno extends Component {
         page: pages,
       },
       () => {
-        this.getAllOs();
+        this.getAllOs()
       }
-    );
-  };
+    )
+  }
 
-  getAllTecnico = async () => {
+  getAllTechnician = async () => {
     await getTecnico().then((resposta) =>
       this.setState({
         tecnicoArray: resposta.data,
       })
-    );
-  };
+    )
+  }
 
   onChangeTecnico = async (value) => {
     await this.setState({
       tecnico: value,
-    });
+    })
 
-    await this.getAllOs();
-  };
+    await this.getAllOs()
+  }
 
   componentDidMount = async () => {
-    await this.getAllOs();
+    await this.getAllOs()
 
-    await this.getAllTecnico();
-  };
+    await this.getAllTechnician()
+  }
 
   avancado = () => {
     this.setState({
       avancado: !this.state.avancado,
-    });
-  };
+    })
+  }
 
   onChange = async (e) => {
     await this.setState({
       [e.target.name]: e.target.value,
-    });
+    })
 
-    await this.getAllOs();
-  };
+    await this.getAllOs()
+  }
 
   searchDate = async (e) => {
-    if (!e[0] || !e[1]) return;
+    if (!e[0] || !e[1]) return
     await this.setState({
       valueDate: { start: e[0]._d, end: e[1]._d },
-    });
+    })
 
-    await this.getAllOs();
-  };
+    await this.getAllOs()
+  }
 
   formatDateFunct = (date) => {
-    moment.locale("pt-br");
-    const formatDate = moment(date).format("L");
-    const formatHours = moment(date).format("LT");
-    const dateformated = `${formatDate} ${formatHours}`;
-    return dateformated;
-  };
+    moment.locale('pt-br')
+    const formatDate = moment(date).format('L')
+    const formatHours = moment(date).format('LT')
+    const dateformated = `${formatDate} ${formatHours}`
+    return dateformated
+  }
 
   mais = async (line) => {
     await this.setState({
@@ -134,8 +134,8 @@ class RelatorioInterno extends Component {
       lineSelected: {
         rows: [line],
       },
-    });
-  };
+    })
+  }
 
   test = () => {
     if (this.state.OsArray.rows.length !== 0) {
@@ -186,13 +186,13 @@ class RelatorioInterno extends Component {
           ) : null}
           <div className=" div-separate1-Gentrada" />
         </div>
-      ));
+      ))
     } else {
       return (
         <div className="div-naotemnada">Não há nenhuma reserva finalizada</div>
-      );
+      )
     }
-  };
+  }
 
   Pages = () => (
     <div className="footer-Gentrada100-button">
@@ -275,7 +275,7 @@ class RelatorioInterno extends Component {
         </Button>
       ) : null}
     </div>
-  );
+  )
 
   render() {
     return (
@@ -296,7 +296,7 @@ class RelatorioInterno extends Component {
                 <div className="div-textRs-Os">Razão social:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="rs"
                   value={this.state.rs}
                   placeholder="Digite o razão social"
@@ -323,12 +323,12 @@ class RelatorioInterno extends Component {
                 {this.state.tecnicoArray.length === 0 ? (
                   <Select
                     value="Nenhum tecnico cadastrado"
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                   ></Select>
                 ) : (
                   <Select
                     value={this.state.tecnico}
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                     onChange={this.onChangeTecnico}
                   >
                     <Option value="">TODOS</Option>
@@ -368,8 +368,8 @@ class RelatorioInterno extends Component {
           <this.Pages />
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default RelatorioInterno;
+export default RelatorioInterno

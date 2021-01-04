@@ -1,35 +1,35 @@
-import React, { Component } from "react";
-import { Input, DatePicker, InputNumber, Button, message, Select } from "antd";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { newReservaInterno } from "../../../../services/reservaOs";
-import { getItens } from "../../../../services/produto";
-import { getTecnico } from "../../../../services/tecnico";
-import { getSerial } from "../../../../services/serialNumber";
-import moment from "moment";
+import React, { Component } from 'react'
+import { Input, DatePicker, InputNumber, Button, message, Select } from 'antd'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import { newReservaInterno } from '../../../../services/reservaOs'
+import { getItens } from '../../../../services/produto'
+import { getTecnico } from '../../../../services/tecnico'
+import { getSerial } from '../../../../services/serialNumber'
+import moment from 'moment'
 
-const { Option } = Select;
-const { TextArea } = Input;
+const { Option } = Select
+const { TextArea } = Input
 
 class Rinterno extends Component {
   state = {
     readOnly: false,
     serial: false,
     disp: 1,
-    numeroSerieTest: "",
+    numeroSerieTest: '',
     tecnicoArray: [],
     allStatus: [],
-    status: "Não selecionado",
+    status: 'Não selecionado',
     itemArray: [],
     messageError: false,
     messageSuccess: false,
-    Os: "",
-    razaoSocial: "",
-    data: "",
-    tecnico: "Não selecionado",
-    nomeProduto: "Não selecionado",
-    productId: "",
-    tecnicoId: "",
+    Os: '',
+    razaoSocial: '',
+    data: '',
+    tecnico: 'Não selecionado',
+    nomeProduto: 'Não selecionado',
+    productId: '',
+    tecnicoId: '',
     quant: 1,
     carrinho: [],
     fieldFalha: {
@@ -41,16 +41,16 @@ class Rinterno extends Component {
       serialNumber: false,
     },
     message: {
-      Os: "",
-      razaoSocial: "",
-      cnpj: "",
-      data: "",
-      technician: "",
-      serialNumber: "",
+      Os: '',
+      razaoSocial: '',
+      cnpj: '',
+      data: '',
+      technician: '',
+      serialNumber: '',
     },
-  };
+  }
 
-  getAllTecnico = async (name) => {
+  getAllTechnician = async (name) => {
     const query = {
       filters: {
         technician: {
@@ -59,85 +59,83 @@ class Rinterno extends Component {
           },
         },
       },
-    };
+    }
     await getTecnico(query).then((resposta) =>
       this.setState({
         tecnicoArray: resposta.data,
       })
-    );
-  };
+    )
+  }
 
   errorNumeroSerie = (value) => {
-    message.error(value, 10);
-  };
+    message.error(value, 10)
+  }
 
   filter = async (e) => {
     await this.setState({
       numeroSerieTest: e.target.value,
-    });
+    })
 
-    const teste = this.state.numeroSerieTest.split(/\n/, 10);
+    const teste = this.state.numeroSerieTest.split(/\n/, 10)
 
     if (
-      /\n/.test(
-        this.state.numeroSerieTest[this.state.numeroSerieTest.length - 1]
-      )
+      /\n/.test(this.state.numeroSerieTest[this.state.numeroSerieTest.length - 1])
     ) {
-      let count = 0;
+      let count = 0
 
       // eslint-disable-next-line array-callback-return
       teste.map((valor) => {
-        if (valor === teste[teste.length - 2]) count++;
-      });
+        if (valor === teste[teste.length - 2]) count++
+      })
 
-      let mensagem = "Este equipamento ja foi inserido nessa reserva";
+      let mensagem = 'Este equipamento ja foi inserido nessa reserva'
 
-      const resp = await getSerial(teste[teste.length - 2]);
+      const resp = await getSerial(teste[teste.length - 2])
 
       if (resp.data) {
         if (resp.data.productBase.product.name !== this.state.nomeProduto) {
-          mensagem = "Este equipamento não contém esse número de série";
-          count++;
+          mensagem = 'Este equipamento não contém esse número de série'
+          count++
         }
         if (resp.data.reserved) {
-          count++;
+          count++
           if (resp.data.deletedAt) {
             if (resp.data.osParts) {
-              mensagem = `Este equipamento ja foi liberado para a OS: ${resp.data.osPart.o.os}`;
+              mensagem = `Este equipamento ja foi liberado para a OS: ${resp.data.osPart.o.os}`
             } else if (resp.data.freeMarketPart) {
-              mensagem = `Este equipamento foi liberado para mercado livre com código de restreamento: ${resp.data.freeMarketPart.freeMarket.trackingCode}`;
+              mensagem = `Este equipamento foi liberado para mercado livre com código de restreamento: ${resp.data.freeMarketPart.freeMarket.trackingCode}`
             }
           } else {
-            mensagem = `Este equipamento ja foi reservado para a OS: ${resp.data.osPart.o.os}`;
+            mensagem = `Este equipamento ja foi reservado para a OS: ${resp.data.osPart.o.os}`
           }
         }
       } else {
-        mensagem = "Este equipamento não consta na base de dados";
-        count++;
+        mensagem = 'Este equipamento não consta na base de dados'
+        count++
       }
 
       if (count > 1) {
-        this.errorNumeroSerie(mensagem);
+        this.errorNumeroSerie(mensagem)
 
-        teste.splice(teste.length - 2, 1);
+        teste.splice(teste.length - 2, 1)
 
-        const testeArray = teste.toString();
+        const testeArray = teste.toString()
 
         this.setState({
-          numeroSerieTest: testeArray.replace(/,/gi, "\n"),
-        });
+          numeroSerieTest: testeArray.replace(/,/gi, '\n'),
+        })
       }
     }
 
     this.setState({
-      quant: this.state.numeroSerieTest.split("\n").length - 1,
-    });
-  };
+      quant: this.state.numeroSerieTest.split('\n').length - 1,
+    })
+  }
 
   componentDidMount = async () => {
-    await this.getAllItens();
-    await this.getAllTecnico();
-  };
+    await this.getAllItens()
+    await this.getAllTechnician()
+  }
 
   getAllItens = async (name) => {
     const query = {
@@ -149,14 +147,14 @@ class Rinterno extends Component {
           },
         },
       },
-    };
+    }
 
     await getItens(query).then((resposta) =>
       this.setState({
         itemArray: resposta.data,
       })
-    );
-  };
+    )
+  }
 
   onChangeItem = async (value, props) => {
     await this.setState({
@@ -164,26 +162,26 @@ class Rinterno extends Component {
       productId: props.props.id,
       serial: props.props.serial,
       disp: parseInt(props.props.available, 10),
-    });
-  };
+    })
+  }
 
   success = () => {
-    message.success("A reserva foi efetuada");
-  };
+    message.success('A reserva foi efetuada')
+  }
 
   error = () => {
-    message.error("A reserva não foi efetuada");
-  };
+    message.error('A reserva não foi efetuada')
+  }
 
   errorProduto = () => {
-    message.error("O produto é obrigatório para essa ação ser realizada");
-  };
+    message.error('O produto é obrigatório para essa ação ser realizada')
+  }
 
   onChangeData = (date) => {
     this.setState({
       data: date,
-    });
-  };
+    })
+  }
 
   // onBlurValidator = e => {
   //   const { nome, valor, fieldFalha, message } = validators(
@@ -209,8 +207,8 @@ class Rinterno extends Component {
         ...this.state.message,
         [e.target.name]: false,
       },
-    });
-  };
+    })
+  }
 
   onFocusTecnico = () => {
     this.setState({
@@ -222,105 +220,101 @@ class Rinterno extends Component {
         ...this.state.message,
         technician: false,
       },
-    });
-  };
+    })
+  }
 
   saveTargetNewReservaOs = async () => {
     this.setState({
       loading: true,
-    });
+    })
 
     const values = {
       razaoSocial: this.state.razaoSocial,
       date: this.state.data,
       technicianId: this.state.technicianId,
       reserveInternoParts: this.state.carrinho,
-    };
+    }
 
-    const resposta = await newReservaInterno(values);
+    const resposta = await newReservaInterno(values)
 
     if (resposta.status === 422) {
       this.setState({
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
         message: resposta.data.fields[0].message,
-      });
-      await this.error();
+      })
+      await this.error()
       this.setState({
         loading: false,
         messageError: false,
-      });
+      })
     }
     if (resposta.status === 200) {
       this.setState({
-        razaoSocial: "",
-        data: "",
+        razaoSocial: '',
+        data: '',
         carrinho: [],
         serial: false,
-        numeroSerieTest: "",
-        nomeProduto: "Não selecionado",
-        tecnico: "Não selecionado",
+        numeroSerieTest: '',
+        nomeProduto: 'Não selecionado',
+        tecnico: 'Não selecionado',
         messageSuccess: true,
-      });
-      await this.success();
+      })
+      await this.success()
       this.setState({
         loading: false,
         messageSuccess: false,
-      });
+      })
     }
 
-    await this.getAllItens();
-  };
+    await this.getAllItens()
+  }
 
   disabledDate = (current) => {
-    return current && current < moment().subtract(1, "day");
-  };
+    return current && current < moment().subtract(1, 'day')
+  }
 
   onChangeTecnico = (value) => {
     this.setState({
       tecnico: value,
-    });
-  };
+    })
+  }
 
   onChangeSelect = (value, props) => {
     this.setState({
       tecnico: value,
       technicianId: props.props.id,
-    });
-  };
+    })
+  }
 
   onChangeQuant = (value) => {
     this.setState({
       quant: value,
-    });
-  };
+    })
+  }
 
   onChange = (e) => {
-    const { name: nome, value: valor } = e.target;
+    const { name: nome, value: valor } = e.target
 
     this.setState({
       [nome]: valor,
-    });
-  };
+    })
+  }
 
   errorSelecionado = (value) => {
-    message.error(value);
-  };
+    message.error(value)
+  }
 
   addCarrinho = () => {
-    if (this.state.nomeProduto !== "Não selecionado" || "") {
-      const array = this.state.carrinho.map(
-        (value) => value.nomeProdutoCarrinho
-      );
+    if (this.state.nomeProduto !== 'Não selecionado' || '') {
+      const array = this.state.carrinho.map((value) => value.nomeProdutoCarrinho)
 
-      if (
-        array.filter((value) => value === this.state.nomeProduto).length > 0
-      ) {
-        this.errorSelecionado("Este item já foi selecionado");
+      if (array.filter((value) => value === this.state.nomeProduto).length > 0) {
+        this.errorSelecionado('Este item já foi selecionado')
         this.setState({
-          nomeProduto: "",
-        });
-        return;
+          nomeProduto: '',
+        })
+        return
       }
 
       if (
@@ -330,9 +324,9 @@ class Rinterno extends Component {
           .filter((item) => (item ? item : null)).length !== this.state.quant
       ) {
         this.errorSelecionado(
-          "Quantidade de numero de serie não condiz com a quantidade adicionada"
-        );
-        return;
+          'Quantidade de numero de serie não condiz com a quantidade adicionada'
+        )
+        return
       }
 
       this.setState({
@@ -348,28 +342,28 @@ class Rinterno extends Component {
           },
           ...this.state.carrinho,
         ],
-        nomeProduto: "Não selecionado",
+        nomeProduto: 'Não selecionado',
         quant: 1,
         serial: false,
-        numeroSerieTest: "",
-      });
-    } else this.errorProduto();
-  };
+        numeroSerieTest: '',
+      })
+    } else this.errorProduto()
+  }
 
   remove = (value) => {
-    const oldCarrinho = this.state.carrinho;
-    const newCarrinho = oldCarrinho.filter((valor) => valor !== value);
+    const oldCarrinho = this.state.carrinho
+    const newCarrinho = oldCarrinho.filter((valor) => valor !== value)
 
     this.setState({
       carrinho: newCarrinho,
-    });
-  };
+    })
+  }
 
   renderRedirect = () => {
     if (!this.props.auth.addROs) {
-      return <Redirect to="/logged/dash" />;
+      return <Redirect to="/logged/dash" />
     }
-  };
+  }
 
   render() {
     return (
@@ -390,10 +384,10 @@ class Rinterno extends Component {
                 }
                 className={
                   this.state.fieldFalha.razaoSocial
-                    ? "div-inputError-OS"
-                    : "input-100"
+                    ? 'div-inputError-OS'
+                    : 'input-100'
                 }
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 name="razaoSocial"
                 value={this.state.razaoSocial}
                 placeholder="Digite a razão social"
@@ -417,7 +411,7 @@ class Rinterno extends Component {
               <DatePicker
                 disabledDate={this.disabledDate}
                 className={
-                  this.state.fieldFalha.data ? "div-inputError-OS" : "input-100"
+                  this.state.fieldFalha.data ? 'div-inputError-OS' : 'input-100'
                 }
                 onChange={this.onChangeData}
                 name="data"
@@ -438,14 +432,14 @@ class Rinterno extends Component {
               <Select
                 className={
                   this.state.fieldFalha.technician
-                    ? "div-inputError-OS"
-                    : "input-100"
+                    ? 'div-inputError-OS'
+                    : 'input-100'
                 }
                 defaultValue="Não selecionado"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 onChange={this.onChangeSelect}
                 showSearch
-                onSearch={(name) => this.getAllTecnico(name)}
+                onSearch={(name) => this.getAllTechnician(name)}
                 placeholder="Nenhum tecnicos cadastrado"
                 optionFilterProp="children"
                 value={this.state.tecnico}
@@ -475,7 +469,7 @@ class Rinterno extends Component {
             <Select
               showSearch
               onSearch={(name) => this.getAllItens(name)}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               placeholder="Selecione o produto"
               optionFilterProp="children"
               value={this.state.nomeProduto}
@@ -567,14 +561,14 @@ class Rinterno extends Component {
           </div>
         ) : null}
       </div>
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
     auth: state.auth,
-  };
+  }
 }
 
-export default connect(mapStateToProps)(Rinterno);
+export default connect(mapStateToProps)(Rinterno)

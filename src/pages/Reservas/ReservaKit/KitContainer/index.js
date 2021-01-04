@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import "./index.css";
+import React, { Component } from 'react'
+import './index.css'
 import {
   Button,
   Select,
@@ -10,36 +10,36 @@ import {
   Spin,
   message,
   DatePicker,
-} from "antd";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+} from 'antd'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 // import * as R from 'ramda'
 
-import { getTecnico } from "../../../../services/tecnico";
+import { getTecnico } from '../../../../services/tecnico'
 // import { baixaReservaOs } from '../../../../services/reservaOs';
-import { getKit, baixasKitOut } from "../../../../services/kit";
-import { getOsByOs } from "../../../../services/reservaOs";
+import { getKit, baixasKitOut } from '../../../../services/kit'
+import { getOsByOs } from '../../../../services/reservaOs'
 
 import {
   ArrowRightOutlined,
   AlertOutlined,
   PlusOutlined,
   EditOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons'
 
-const { Option } = Select;
+const { Option } = Select
 
 class ReservaKit extends Component {
   state = {
-    valueDate: { start: "2019/01/01" },
+    valueDate: { start: '2019/01/01' },
     modalBaixa: false,
     produtoSelecionado: {
       products: {},
     },
-    os: "",
+    os: '',
     avancado: false,
-    produto: "",
-    data: "",
+    produto: '',
+    data: '',
     teste: NaN,
     teste1: 1,
     totalModal: 0,
@@ -50,23 +50,23 @@ class ReservaKit extends Component {
     kitArray: {
       rows: [],
     },
-    tecnico: "Não selecionado",
+    tecnico: 'Não selecionado',
     redirect: false,
     page: 1,
     total: 10,
     count: 0,
     show: 0,
     message: {
-      Os: "",
+      Os: '',
     },
     fieldFalha: {
       Os: false,
     },
-  };
+  }
 
   aviso = () => {
-    message.warning("Finalize ou cancele a expedição!");
-  };
+    message.warning('Finalize ou cancele a expedição!')
+  }
 
   changePages = (pages) => {
     this.setState(
@@ -74,23 +74,23 @@ class ReservaKit extends Component {
         page: pages,
       },
       () => {
-        this.getAllKit();
+        this.getAllKit()
       }
-    );
-  };
+    )
+  }
 
   messageError = () => {
-    message.error("Essa OS não consta no nosso sistema ou já foi liberado");
-  };
+    message.error('Essa OS não consta no nosso sistema ou já foi liberado')
+  }
 
   messageErrorKit = () => {
-    message.error("É necessário informar a Os");
-  };
+    message.error('É necessário informar a Os')
+  }
 
   getAllKit = async () => {
     this.setState({
       loading: true,
-    });
+    })
 
     const query = {
       filters: {
@@ -112,7 +112,7 @@ class ReservaKit extends Component {
       },
       page: this.state.page,
       total: this.state.total,
-    };
+    }
 
     await getKit(query).then((resposta) =>
       this.setState({
@@ -121,84 +121,84 @@ class ReservaKit extends Component {
         count: resposta.data.count,
         show: resposta.data.show,
       })
-    );
+    )
 
     this.setState({
       loading: false,
-    });
-  };
+    })
+  }
 
   closeModal = () => {
     this.setState({
       modalBaixa: false,
-      os: "",
+      os: '',
       incluidos: 0,
       liberados: 0,
       perdas: 0,
       teste: 0,
       teste1: 1,
-    });
-  };
+    })
+  }
 
   saveTargetNewKitOut = async () => {
-    if (!(this.state.os === "" && this.state.liberados.toString() !== "0")) {
+    if (!(this.state.os === '' && this.state.liberados.toString() !== '0')) {
       const values = {
         reposicao: this.state.incluidos.toString(),
         expedicao: this.state.liberados.toString(),
         perda: this.state.perdas.toString(),
         os: this.state.os,
         kitPartId: this.state.produtoSelecionado.products.kitPartId,
-      };
+      }
 
-      const resposta = await baixasKitOut(values);
+      const resposta = await baixasKitOut(values)
 
       if (resposta.status === 422) {
         this.setState({
           messageError: true,
           fieldFalha: resposta.data.fields[0].field,
           message: resposta.data.fields[0].message,
-        });
+        })
         await this.error(
           resposta.data.fields[0].field.message
             ? resposta.data.fields[0].message.message
-            : "A reserva não foi efetuada"
-        );
+            : 'A reserva não foi efetuada'
+        )
         this.setState({
-          os: "",
+          os: '',
           incluidos: 0,
           liberados: 0,
           perdas: 0,
           messageError: false,
-        });
+        })
       }
       if (resposta.status === 200) {
         this.setState({
           modalBaixa: false,
-          os: "",
+          os: '',
           incluidos: 0,
           liberados: 0,
           perdas: 0,
           messageSuccess: true,
-        });
-        await this.success();
+        })
+        await this.success()
         this.setState({
           messageSuccess: false,
-        });
+        })
 
-        await this.getAllKit();
+        await this.getAllKit()
       }
     } else {
-      await this.messageErrorKit();
+      await this.messageErrorKit()
     }
-  };
+  }
 
   success = () => {
-    message.success("A reserva foi efetuada");
-  };
+    message.success('A reserva foi efetuada')
+  }
 
   error = (value) => {
-    message.error(value);
-  };
+    message.error(value)
+  }
 
   handleOkModalPeca = async () => {
     await this.setState({
@@ -208,8 +208,8 @@ class ReservaKit extends Component {
       },
       teste: NaN,
       teste1: 1,
-    });
-  };
+    })
+  }
 
   openModalDetalhes = async (valor) => {
     await this.setState({
@@ -219,93 +219,93 @@ class ReservaKit extends Component {
       },
       totalModal: parseInt(valor.amount, 10),
       teste: parseInt(valor.amount, 10),
-    });
-  };
+    })
+  }
 
   onChange = async (e) => {
     await this.setState({
       [e.target.name]: e.target.value,
-    });
+    })
 
-    await this.getAllKit();
-  };
+    await this.getAllKit()
+  }
 
   onChangeOs = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
   avancado = () => {
     this.setState({
       avancado: !this.state.avancado,
-    });
-  };
+    })
+  }
 
-  getAllTecnico = async () => {
+  getAllTechnician = async () => {
     const query = {
       external: true,
-    };
+    }
 
     await getTecnico(query).then((resposta) =>
       this.setState({
         tecnicoArray: resposta.data,
       })
-    );
-  };
+    )
+  }
 
   componentDidMount = async () => {
-    await this.getAllTecnico();
+    await this.getAllTechnician()
 
     if (this.state.tecnicoArray.length !== 0) {
       await this.setState({
         tecnico: this.state.tecnicoArray[0].name,
-      });
+      })
     }
 
-    await this.getAllKit();
-  };
+    await this.getAllKit()
+  }
 
   setRedirect = () => {
     this.setState({
       redirect: true,
-    });
-  };
+    })
+  }
 
   renderRedirect = () => {
     if (!this.props.auth.addKitOut) {
-      return <Redirect to="/logged/dash" />;
+      return <Redirect to="/logged/dash" />
     }
 
     if (this.state.redirect) {
-      return <Redirect push to="/logged/reservaKitAdd/add" />;
+      return <Redirect push to="/logged/reservaKitAdd/add" />
     }
-  };
+  }
 
   onChangeTecnico = async (value) => {
     await this.setState({
       tecnico: value,
-    });
+    })
 
-    await this.getAllKit();
-  };
+    await this.getAllKit()
+  }
 
   onChangeModal = (value) => {
     this.setState({
       teste: value,
-    });
-  };
+    })
+  }
 
   onChangeModal1 = (value) => {
     this.setState({
       teste1: value,
-    });
-  };
+    })
+  }
 
   retornar = async () => {
     const menos =
       parseInt(this.state.produtoSelecionado.products.amount, 10) +
-      this.state.teste1;
+      this.state.teste1
 
     this.setState({
       produtoSelecionado: {
@@ -317,13 +317,13 @@ class ReservaKit extends Component {
       totalModal: menos,
       incluidos: this.state.incluidos + this.state.teste1,
       teste1: 1,
-    });
-  };
+    })
+  }
 
   perda = async () => {
     const menos =
       parseInt(this.state.produtoSelecionado.products.amount, 10) -
-      this.state.teste;
+      this.state.teste
 
     this.setState({
       produtoSelecionado: {
@@ -335,17 +335,17 @@ class ReservaKit extends Component {
       totalModal: menos,
       perdas: this.state.perdas + this.state.teste,
       teste: 1,
-    });
-  };
+    })
+  }
 
   liberar = async () => {
-    if (this.state.os === "") {
-      return this.messageErrorKit();
+    if (this.state.os === '') {
+      return this.messageErrorKit()
     }
 
     const menos =
       parseInt(this.state.produtoSelecionado.products.amount, 10) -
-      this.state.teste;
+      this.state.teste
 
     this.setState({
       produtoSelecionado: {
@@ -357,19 +357,19 @@ class ReservaKit extends Component {
       totalModal: menos,
       liberados: this.state.liberados + this.state.teste,
       teste: 1,
-    });
-  };
+    })
+  }
 
   searchDate = async (e) => {
-    if (!e[0] || !e[1]) return;
+    if (!e[0] || !e[1]) return
     await this.setState({
       valueDate: { start: e[0]._d, end: e[1]._d },
-    });
-    await this.getAllKit();
-  };
+    })
+    await this.getAllKit()
+  }
 
   getOs = async () => {
-    const os = await getOsByOs(this.state.os);
+    const os = await getOsByOs(this.state.os)
 
     if (os.status === 200) {
       if (os.data.razaoSocial) {
@@ -378,22 +378,22 @@ class ReservaKit extends Component {
             Os: false,
           },
           message: {
-            Os: "",
+            Os: '',
           },
-        });
+        })
       } else {
         this.setState(
           {
             fieldFalha: {
               Os: true,
             },
-            os: "",
+            os: '',
           },
           this.messageError()
-        );
+        )
       }
     }
-  };
+  }
 
   Pages = () => (
     <div className="footer-Gentrada-button">
@@ -476,7 +476,7 @@ class ReservaKit extends Component {
         </Button>
       ) : null}
     </div>
-  );
+  )
 
   modalDetalhesLinha = () => (
     <Modal
@@ -522,7 +522,7 @@ class ReservaKit extends Component {
               min={1}
               max={this.state.produtoSelecionado.products.amount}
               defaultValue={this.state.teste}
-              style={{ width: "90%" }}
+              style={{ width: '90%' }}
               value={this.state.teste}
               onChange={this.onChangeModal}
             />
@@ -555,7 +555,7 @@ class ReservaKit extends Component {
               min={1}
               max={this.state.produtoSelecionado.products.quantMax}
               defaultValue={this.state.teste1}
-              style={{ width: "90%" }}
+              style={{ width: '90%' }}
               value={this.state.teste1}
               onChange={this.onChangeModal1}
             />
@@ -582,7 +582,7 @@ class ReservaKit extends Component {
         </div>
       </div>
     </Modal>
-  );
+  )
 
   test = () => {
     if (this.state.kitArray.rows.length !== 0) {
@@ -605,15 +605,15 @@ class ReservaKit extends Component {
           </div>
           <div className="div-separate1-kit"></div>
         </div>
-      ));
+      ))
     } else {
       return (
         <div className="div-naotemnada">
           Não há nenhuma reserva finalizada até o momento
         </div>
-      );
+      )
     }
-  };
+  }
 
   render() {
     return (
@@ -644,7 +644,7 @@ class ReservaKit extends Component {
                 <div className="div-text-Os">Produto:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="produto"
                   value={this.state.produto}
                   placeholder="Digite o nome do produto"
@@ -685,12 +685,12 @@ class ReservaKit extends Component {
                 {this.state.tecnicoArray.length === 0 ? (
                   <Select
                     value="Nenhum tecnico cadastrado"
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                   ></Select>
                 ) : (
                   <Select
                     value={this.state.tecnico}
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                     onChange={this.onChangeTecnico}
                   >
                     {this.state.tecnicoArray.map((valor) => (
@@ -738,14 +738,14 @@ class ReservaKit extends Component {
 
         <this.Pages />
       </div>
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
     auth: state.auth,
-  };
+  }
 }
 
-export default connect(mapStateToProps)(ReservaKit);
+export default connect(mapStateToProps)(ReservaKit)

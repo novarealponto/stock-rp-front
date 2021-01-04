@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { action } from '@storybook/addon-actions'
 import { Form } from 'antd'
 
@@ -63,9 +63,9 @@ const Template = (args) => {
   )
 }
 
-export const Default = Template.bind({})
+export const Add = Template.bind({})
 
-Default.args = {
+Add.args = {
   carList: [
     { model: 'name 1', plate: 'AAA-1231' },
     { model: 'name 2', plate: 'AAA-1232' },

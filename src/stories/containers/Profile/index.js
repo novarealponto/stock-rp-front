@@ -26,12 +26,12 @@ const Template = (args) => {
   const handleOnSubmit = (formData) => {
     handleOnSubmitAction(formData);
   };
-  
+
   const showAlterPassword = () => {
     setEdit(!edit);
     setEditAction(true);
   };
-  
+
   return (
     <ProfileContainer
       {...args}
