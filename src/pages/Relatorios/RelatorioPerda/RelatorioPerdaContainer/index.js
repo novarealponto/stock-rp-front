@@ -1,40 +1,39 @@
-import React, { Component } from "react";
-import "./index.css";
-import { DatePicker, Select, Button, Input, Spin } from "antd";
-import { getTecnico } from "../../../../services/tecnico";
-import { getRelatorioPerda } from "../../../../services/realatorioPerda";
+import React, { Component } from 'react'
+import './index.css'
+import { DatePicker, Select, Button, Input, Spin } from 'antd'
+import { getTecnico } from '../../../../services/tecnico'
+import { getRelatorioPerda } from '../../../../services/realatorioPerda'
 // import { getRelatVendas } from "../../../../services/produto";
 
-const { Option } = Select;
+const { Option } = Select
 
 class GerenciarEntrada extends Component {
   state = {
-    valueDate: { start: "2019/01/01" },
+    valueDate: { start: '2019/01/01' },
     avancado: false,
     tecnicoArray: [],
-    tecnico: "",
-    data: "",
-    produto: "",
+    tecnico: '',
+    data: '',
+    produto: '',
     relatorioArray: {
       rows: [],
     },
     loading: false,
-  };
+  }
 
-  getAllTecnico = async () => {
+  getAllTechnician = async () => {
     await getTecnico().then((resposta) =>
       this.setState({
         tecnicoArray: resposta.data,
       })
-    );
-  };
+    )
+  }
 
   componentDidMount = async () => {
-    await this.getAllTecnico();
+    await this.getAllTechnician()
 
-    await this.getRelatorio();
-
-  };
+    await this.getRelatorio()
+  }
 
   // getAllOs = async () => {
   //   // this.setState({
@@ -90,19 +89,19 @@ class GerenciarEntrada extends Component {
   avancado = () => {
     this.setState({
       avancado: !this.state.avancado,
-    });
-  };
+    })
+  }
 
   getRelatorio = async () => {
     this.setState({
       loading: true,
-    });
+    })
 
     const query = {
       filters: {
         kitOut: {
           specific: {
-            action: "perda",
+            action: 'perda',
             createdAt: this.state.valueDate,
           },
         },
@@ -122,34 +121,34 @@ class GerenciarEntrada extends Component {
           },
         },
       },
-    };
+    }
 
     await getRelatorioPerda(query).then((resposta) =>
       this.setState({
         relatorioArray: resposta.data,
       })
-    );
+    )
 
     this.setState({
       loading: false,
-    });
-  };
+    })
+  }
 
   onChange = async (e) => {
     await this.setState({
       [e.target.name]: e.target.value,
-    });
+    })
 
-    await this.getRelatorio();
-  };
+    await this.getRelatorio()
+  }
 
   searchDate = async (e) => {
-    if (!e[0] || !e[1]) return;
+    if (!e[0] || !e[1]) return
     await this.setState({
       valueDate: { start: e[0]._d, end: e[1]._d },
-    });
-    await this.getRelatorio();
-  };
+    })
+    await this.getRelatorio()
+  }
 
   onChangeTecnico = (value) => {
     this.setState(
@@ -157,8 +156,8 @@ class GerenciarEntrada extends Component {
         tecnico: value,
       },
       this.getRelatorio
-    );
-  };
+    )
+  }
 
   test = () => {
     if (this.state.relatorioArray.rows.length !== 0) {
@@ -167,23 +166,21 @@ class GerenciarEntrada extends Component {
           <div className="div-lines-RPerda">
             <div className="cel-produto-cabecalho-RPerda">{line.name}</div>
             <div className="cel-quant-cabecalho-RPerda">{line.amount}</div>
-            <div className="cel-usuario-cabecalho-RPerda">
-              {line.technician}
-            </div>
+            <div className="cel-usuario-cabecalho-RPerda">{line.technician}</div>
             <div className="cel-data-cabecalho-RPerda">{line.createdAt}</div>
             <div className="cel-os-cabecalho-RPerda">
-              {line.os !== undefined ? line.os : "KIT"}
+              {line.os !== undefined ? line.os : 'KIT'}
             </div>
           </div>
           <div className=" div-separate1-Gentrada" />
         </div>
-      ));
+      ))
     } else {
       return (
         <div className="div-naotemnada">Não há nenhuma perda até o momento</div>
-      );
+      )
     }
-  };
+  }
 
   render() {
     return (
@@ -204,7 +201,7 @@ class GerenciarEntrada extends Component {
                 <div className="div-text-Os">Produto:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="produto"
                   value={this.state.produto}
                   placeholder="Digite o produto"
@@ -229,12 +226,12 @@ class GerenciarEntrada extends Component {
                 {this.state.tecnicoArray.length === 0 ? (
                   <Select
                     value="Nenhum tecnico cadastrado"
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                   ></Select>
                 ) : (
                   <Select
                     value={this.state.tecnico}
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                     onChange={this.onChangeTecnico}
                   >
                     <Option value="">TODOS</Option>
@@ -271,8 +268,8 @@ class GerenciarEntrada extends Component {
           this.test()
         )}
       </div>
-    );
+    )
   }
 }
 
-export default GerenciarEntrada;
+export default GerenciarEntrada

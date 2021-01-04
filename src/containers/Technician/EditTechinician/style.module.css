@@ -14,11 +14,6 @@
   width: 100%;
 }
 
-.divWrapperCar {
-  display: flex;
-  justify-content: space-between;
-}
-
 .divWrapperCar button {
   align-items: center;
   display: flex;
