@@ -1,20 +1,20 @@
-import actions from "../../../../store/actions";
+import actions from '../../../../store/actions'
 
 const INICIAL_STATE_REDIRECT_PRODUTO = {
-  name: "",
-  category: "",
-  mark: "",
-  type: "",
-  manufacturer: "",
-  description: "",
-  sku: "",
-  minimumStock: "",
+  name: '',
+  category: '',
+  mark: '',
+  type: '',
+  manufacturer: '',
+  description: '',
+  sku: '',
+  minimumStock: '',
   serial: false,
-  corredor: "",
-  coluna: "",
-  prateleira: "",
-  gaveta: "",
-};
+  corredor: '',
+  coluna: '',
+  prateleira: '',
+  gaveta: '',
+}
 
 export function produtoUpdateValue(
   state = INICIAL_STATE_REDIRECT_PRODUTO,
@@ -22,28 +22,28 @@ export function produtoUpdateValue(
 ) {
   switch (action.type) {
     case actions.REDIRECT.PRODUTO:
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload }
     default:
-      return state;
+      return state
   }
 }
 
 const INICIAL_STATE_REDIRECT_FORNECEDOR = {
-  id: "",
-  cnpj: "",
-  razaoSocial: "",
-  zipCode: "",
-  state: "",
-  city: "",
-  neighborhood: "",
-  street: "",
-  number: "",
-  complement: "",
-  referencePoint: "",
-  nameContact: "",
-  email: "",
-  telphone: "",
-};
+  id: '',
+  cnpj: '',
+  razaoSocial: '',
+  zipCode: '',
+  state: '',
+  city: '',
+  neighborhood: '',
+  street: '',
+  number: '',
+  complement: '',
+  referencePoint: '',
+  nameContact: '',
+  email: '',
+  telphone: '',
+}
 
 export function fornecedorUpdateValue(
   state = INICIAL_STATE_REDIRECT_FORNECEDOR,
@@ -51,20 +51,20 @@ export function fornecedorUpdateValue(
 ) {
   switch (action.type) {
     case actions.REDIRECT.FORNECEDOR:
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload }
     default:
-      return state;
+      return state
   }
 }
 
 const INICIAL_STATE_REDIRECT_USUARIO = {
-  id: "",
-  customized: "",
-  typeName: "",
-  username: "",
-  resource: "",
-  redirect: "",
-};
+  id: '',
+  customized: '',
+  typeName: '',
+  username: '',
+  resource: '',
+  redirect: '',
+}
 
 export function usuarioUpdateValue(
   state = INICIAL_STATE_REDIRECT_USUARIO,
@@ -72,19 +72,19 @@ export function usuarioUpdateValue(
 ) {
   switch (action.type) {
     case actions.REDIRECT.USUARIO:
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload }
     default:
-      return state;
+      return state
   }
 }
 
 const INICIAL_STATE_REDIRECT_TECNICO = {
-  id: "",
-  name: "",
-  CNH: "",
-  plate: "",
-  external: "",
-};
+  id: '',
+  name: '',
+  CNH: '',
+  plate: '',
+  external: '',
+}
 
 export function tecnicoUpdateValue(
   state = INICIAL_STATE_REDIRECT_TECNICO,
@@ -92,8 +92,10 @@ export function tecnicoUpdateValue(
 ) {
   switch (action.type) {
     case actions.REDIRECT.TECNICO:
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload }
+    case actions.CLEAR.TECNICO:
+      return INICIAL_STATE_REDIRECT_TECNICO
     default:
-      return state;
+      return state
   }
 }

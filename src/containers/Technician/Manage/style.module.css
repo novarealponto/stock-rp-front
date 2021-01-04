@@ -1,0 +1,20 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.container button {
+  margin-bottom: 20px;
+  width: 200px;
+}
+
+.icon {
+  font-size: 30px;
+}
+
+.wrapperSearchButton {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

@@ -4,7 +4,7 @@ import { Form, message } from 'antd'
 import AddTechinicianContainer from '../../../containers/Technician/AddTechinician'
 import { getCars, newCar } from '../../../services/tecnico'
 import buildCar from './carSpec'
-import buildTechnician from './technicianSpec'
+import buildTechnician from '../../../utils/technicianSpec'
 import { getRotation } from '../../../utils'
 import { newTechnician } from '../../../services/tecnico'
 

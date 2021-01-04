@@ -18,6 +18,7 @@ export default {
     PROVIDER: "EDITAR_PROVIDER"
   },
   CLEAR: {
-    PROVIDER: "CLEAR_PROVIDER"
+    PROVIDER: "CLEAR_PROVIDER",
+    TECNICO: "CLEAR_TECNICO"
   }
 };

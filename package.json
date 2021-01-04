@@ -6,7 +6,7 @@
     "@ant-design/icons": "4.0.5",
     "@fnando/cnpj": "0.1.1",
     "@fnando/cpf": "0.1.1",
-    "antd": "4.6.5",
+    "antd": "^4.9.2",
     "axios": "0.18.1",
     "classnames": "2.2.6",
     "howler": "2.2.0",
@@ -56,12 +56,14 @@
     "@storybook/node-logger": "^6.1.5",
     "@storybook/preset-create-react-app": "^3.1.5",
     "@storybook/react": "^6.1.5",
+    "@types/antd": "^1.0.0",
     "babel-loader": "^8.2.2",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-node": "^4.1.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "faker": "^5.1.0",
     "prettier": "^2.1.2"
   }
 }

@@ -7,6 +7,7 @@ const momentFormat = (value) => moment(value).format('DDMMYYYY');
 const TechnicianSpec = {
   CNH: pipe(prop('dueDateCnh'), momentFormat),
   external: pipe(prop('external'), forceBoolean),
+  id: pathOr('', ['id']),
   name: prop('name'),
   plate: pipe(prop('car')),
   responsibleUser: pathOr('modrp', ['responsibleUser'])
