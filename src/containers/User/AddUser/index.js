@@ -1,8 +1,6 @@
-import React from  'react';
+import React from 'react'
 import {
   Button,
-  Card,
-  Checkbox,
   Col,
   Form,
   Input,
@@ -10,20 +8,23 @@ import {
   Select,
   Switch,
   Typography,
-} from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import PropTypes from 'prop-types';
+} from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
+import PropTypes from 'prop-types'
 
-import styles from './style.module.css';
+import styles from './style.module.css'
+import CardPermissions from '../../../components/CardPermissions'
 
-const { Title } = Typography;
-const { Option } = Select;
-const requiredMessage = 'Este campo é obrigatório!';
+const { Title } = Typography
+const { Option } = Select
+const requiredMessage = 'Este campo é obrigatório!'
 
-const formRequireRules = [{
-  message: requiredMessage,
-  required: true,
-}];
+const formRequireRules = [
+  {
+    message: requiredMessage,
+    required: true,
+  },
+]
 
 const AddUser = ({
   allowAddTypeAccount,
@@ -36,118 +37,84 @@ const AddUser = ({
   permissions,
   typeAccounts,
 }) => {
-    const renderCheckbox = ({
-      label,
-      name,
-      value,
-    }) => (
-      <Col
-        className={styles.checkBoxheight}
-        span={12}
-        key={name}
-      >
+
+  const renderTypeAccountOptions = (typeAccountItem, index) => (
+    <Option key={index} value={typeAccountItem.typeName}>
+      {typeAccountItem.typeName}
+    </Option>
+  )
+
+  return (
+    <div className={styles.addUserContainer}>
+      <Form form={form} onFinish={handleSubmit}>
+        <Row justify="center">
+          <Col>
+            <Title level={3}>Novo usuário</Title>
+          </Col>
+        </Row>
+        <Row gutter={[8, 8]}>
+          <Col span={12}>
+            <Form.Item label="Usuário" name="userName" rules={formRequireRules}>
+              <Input />
+            </Form.Item>
+          </Col>
+
+          <Col span={12}>
+            <Row gutter={[8, 8]}>
+              <Col flex="1 1 200px">
+                <Form.Item
+                  label="Tipo de conta"
+                  name="typeAccount"
+                  rules={formRequireRules}
+                >
+                  <Select
+                    onChange={handleOnTypeAccountChange}
+                    placeholder="Selecione o tipo de conta!"
+                  >
+                    {typeAccounts && typeAccounts.map(renderTypeAccountOptions)}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col flex="0 1 100px">
+                {allowAddTypeAccount && (
+                  <Button onClick={goToAddTypeAccount} type="primary">
+                    <PlusOutlined />
+                  </Button>
+                )}
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+
         <Form.Item
-          name={name}
+          label="Habilitar customização:"
+          name="allowCustomPermissions"
           valuePropName="checked"
         >
-          <Checkbox
-            disabled={!allowCustomPermissions}
-            checked={value}
-          >
-            {label}
-          </Checkbox>
+          <Switch onChange={handleAllowSetCustomPermissions} />
         </Form.Item>
-      </Col>
-    );
 
-    const renderTypeAccountOptions = (typeAccountItem, index) => (
-      <Option
-        key={index}
-        value={typeAccountItem.typeName}
-      >
-        {typeAccountItem.typeName}
-      </Option>
-    );
-
-    return (
-      <div className={styles.addUserContainer}>
-        <Form form={form} onFinish={handleSubmit}>
-          <Row justify="center">
-            <Col>
-              <Title level={3}>Novo usuário</Title>
-            </Col>
-          </Row>
-          <Row gutter={[8, 8]}>
-            <Col span={12}>
-              <Form.Item
-                label="Usuário"
-                name="userName"
-                rules={formRequireRules}
+        <CardPermissions
+          permissions={permissions}
+          disabled={!allowCustomPermissions}
+        />
+        <Row justify="end">
+          <Col>
+            <Form.Item>
+              <Button
+                htmlType="submit"
+                type="primary"
+                style={{ marginTop: '20px' }}
               >
-                <Input />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Row gutter={[8, 8]}>
-                <Col flex="1 1 200px">
-                  <Form.Item
-                    label="Tipo de conta"
-                    name="typeAccount"
-                    rules={formRequireRules}
-                  >
-                    <Select
-                      onChange={handleOnTypeAccountChange}
-                      placeholder="Selecione o tipo de conta!"
-                    >
-                      {typeAccounts && typeAccounts.map(renderTypeAccountOptions)}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col flex="0 1 100px">
-                  { allowAddTypeAccount && (
-                    <Button
-                      onClick={goToAddTypeAccount}
-                      type="primary"
-                    >
-                      <PlusOutlined />
-                    </Button>
-                  )}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-
-          <Form.Item
-            label="Habilitar customização:"
-            name="allowCustomPermissions"
-            valuePropName="checked"
-          >
-            <Switch onChange={handleAllowSetCustomPermissions} />
-          </Form.Item>
-
-          <Card>
-            <Row>
-              {permissions && permissions.map(renderCheckbox)}
-            </Row>
-          </Card>
-          <Row justify="end">
-            <Col>
-              <Form.Item>
-                <Button
-                  htmlType="submit"
-                  type="primary"
-                  style={{ marginTop: '20px' }}
-                >
-                  Salvar
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </div>
-    );
-};
+                Salvar
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+    </div>
+  )
+}
 
 AddUser.propTypes = {
   allowAddTypeAccount: PropTypes.bool.isRequired,
@@ -161,13 +128,13 @@ AddUser.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       label: PropTypes.string,
-    }),
+    })
   ).isRequired,
   typeAccounts: PropTypes.arrayOf(
     PropTypes.shape({
       typeName: PropTypes.string.isRequired,
-    }).isRequired,
+    }).isRequired
   ),
-};
+}
 
-export default AddUser;
+export default AddUser
