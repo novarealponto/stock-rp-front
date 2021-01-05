@@ -1,24 +1,11 @@
-import React, { Component } from "react";
-import {
-  Input,
-  InputNumber,
-  Select,
-  Button,
-  Modal,
-  Switch,
-  message,
-} from "antd";
-import { connect } from "react-redux";
-import { validators, masks } from "./validators";
-import {
-  newMarca,
-  newTipo,
-  updateProduto,
-  getTipo,
-  getMarca,
-} from "../../../../services/produto";
-import { Redirect } from "react-router-dom";
-import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
+import React, { Component } from 'react';
+import './index.css';
+import { Input, InputNumber, Select, Button, Modal, Switch, message } from 'antd';
+import { connect } from 'react-redux';
+import { validators, masks } from './validators';
+import { newMarca, newTipo, updateProduto, getTipo, getMarca } from '../../../../services/produto';
+import { Redirect } from 'react-router-dom';
+import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -46,10 +33,10 @@ class GerenciarProdutos extends Component {
     modalMarca: false,
     modalTipo: false,
     modalFabricante: false,
-    newMarca: "",
-    newFabricante: "",
-    newTipo: "",
-    newDescricao: "",
+    newMarca: '',
+    newFabricante: '',
+    newTipo: '',
+    newDescricao: '',
     loading: false,
     serial: this.props.produtoUpdateValue.serial,
     fieldFalha: {
@@ -57,8 +44,8 @@ class GerenciarProdutos extends Component {
       quantMin: false,
     },
     message: {
-      item: "",
-      quantMin: "",
+      item: '',
+      quantMin: '',
     },
   };
 
@@ -94,15 +81,15 @@ class GerenciarProdutos extends Component {
   };
 
   success = () => {
-    message.success("O cadastro foi efetuado");
+    message.success('O cadastro foi efetuado');
   };
 
   error = () => {
-    message.error("O cadastro não foi efetuado");
+    message.error('O cadastro não foi efetuado');
   };
 
   errorQuant = () => {
-    message.error("Coloque a quantidade mínima");
+    message.error('Coloque a quantidade mínima');
   };
 
   componentDidMount = async () => {
@@ -151,7 +138,7 @@ class GerenciarProdutos extends Component {
       name: this.state.item,
       type: this.state.tipo,
       serial: this.state.serial,
-      responsibleUser: "modrp",
+      responsibleUser: 'modrp',
       corredor: this.state.corredor,
       coluna: this.state.coluna,
       prateleira: this.state.prateleira,
@@ -188,7 +175,7 @@ class GerenciarProdutos extends Component {
     const values = {
       manufacturer: this.state.newFabricante,
       mark: this.state.newMarca,
-      responsibleUser: "modrp",
+      responsibleUser: 'modrp',
     };
 
     const resposta = await newMarca(values);
@@ -206,8 +193,8 @@ class GerenciarProdutos extends Component {
     }
     if (resposta.status === 200) {
       this.setState({
-        newMarca: "",
-        newFabricante: "",
+        newMarca: '',
+        newFabricante: '',
         messageSuccess: true,
       });
       await this.success();
@@ -233,7 +220,7 @@ class GerenciarProdutos extends Component {
   saveTargetNewTipo = async () => {
     const values = {
       type: this.state.newTipo,
-      responsibleUser: "modrp",
+      responsibleUser: 'modrp',
     };
 
     const resposta = await newTipo(values);
@@ -251,7 +238,7 @@ class GerenciarProdutos extends Component {
     }
     if (resposta.status === 200) {
       this.setState({
-        newTipo: "",
+        newTipo: '',
         messageSuccess: true,
       });
       await this.success();
@@ -293,9 +280,9 @@ class GerenciarProdutos extends Component {
   handleChange = (value) => {
     this.setState({
       categoria: value,
-      marca: "Não selecionado",
-      fabricante: "",
-      tipo: "Não selecionado",
+      marca: 'Não selecionado',
+      fabricante: '',
+      tipo: 'Não selecionado',
     });
 
     this.getAllMarca();
@@ -376,11 +363,7 @@ class GerenciarProdutos extends Component {
           <div className="div-text-produtos">Marca:</div>
           <Input
             allowClear={!this.state.fieldFalha.newMarca}
-            className={
-              this.state.fieldFalha.newMarca
-                ? "div-inputError-tecnico"
-                : "input-100"
-            }
+            className={this.state.fieldFalha.newMarca ? 'div-inputError-tecnico' : 'input-100'}
             placeholder="Digite a marca"
             name="newMarca"
             value={this.state.newMarca}
@@ -427,9 +410,7 @@ class GerenciarProdutos extends Component {
         <div className="linhaTexto-GOs">
           <div className="div-nome-40">
             <div>
-              <ArrowLeftOutlined
-                onClick={() => this.redirectGerenciarCadastros()}
-              />
+              <ArrowLeftOutlined onClick={() => this.redirectGerenciarCadastros()} />
             </div>
             {this.renderRedirect()}
           </div>
@@ -444,11 +425,7 @@ class GerenciarProdutos extends Component {
             <div className="div-inputs">
               <Input
                 allowClear={!this.state.fieldFalha.item}
-                className={
-                  this.state.fieldFalha.item
-                    ? "div-inputError-produtos"
-                    : "input-100"
-                }
+                className={this.state.fieldFalha.item ? 'div-inputError-produtos' : 'input-100'}
                 placeholder="Digite o item"
                 name="item"
                 value={this.state.item}
@@ -466,7 +443,7 @@ class GerenciarProdutos extends Component {
             <div className="div-text-produtos">Categoria:</div>
             <Select
               value={this.state.categoria}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               onChange={this.handleChange}
             >
               <Option value="Equipamento">Equipamento</Option>
@@ -484,20 +461,14 @@ class GerenciarProdutos extends Component {
                 placeholder="Selecione o produto"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
-                  option.props.children
-                    .toLowerCase()
-                    .indexOf(input.toLowerCase()) >= 0
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
                 name="mark"
                 value={this.state.marca}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 onChange={this.handleChangeMarca}
                 onFocus={this.onFocusMark}
-                className={
-                  this.state.fieldFalha.mark
-                    ? "div-inputError-produtos"
-                    : "input-100"
-                }
+                className={this.state.fieldFalha.mark ? 'div-inputError-produtos' : 'input-100'}
               >
                 {this.state.marcaArray.map((valor) => (
                   <Option value={valor.mark}>{valor.mark}</Option>
@@ -522,7 +493,7 @@ class GerenciarProdutos extends Component {
           <this.modalMarca />
         </div>
 
-        {this.state.categoria === "Equipamento" ? (
+        {this.state.categoria === 'Equipamento' ? (
           <div className="linha1-produtos">
             <div className="div-tipo-produtos">
               <div className="div-text-produtos">Tipo:</div>
@@ -530,14 +501,10 @@ class GerenciarProdutos extends Component {
                 {this.state.tipoArray.length !== 0 ? (
                   <Select
                     value={this.state.tipo}
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                     name="type"
                     onFocus={this.onFocusType}
-                    className={
-                      this.state.fieldFalha.type
-                        ? "div-inputError-produtos"
-                        : "input-100"
-                    }
+                    className={this.state.fieldFalha.type ? 'div-inputError-produtos' : 'input-100'}
                     onChange={this.handleChangeTipo}
                   >
                     {this.state.tipoArray.map((valor) => (
@@ -545,10 +512,7 @@ class GerenciarProdutos extends Component {
                     ))}
                   </Select>
                 ) : (
-                  <Select
-                    value="Nenhum tipo cadastrado"
-                    style={{ width: "100%" }}
-                  ></Select>
+                  <Select value="Nenhum tipo cadastrado" style={{ width: '100%' }}></Select>
                 )}
                 {this.state.fieldFalha.type ? (
                   <p className="div-feedbackError">{this.state.message.type}</p>
@@ -602,11 +566,7 @@ class GerenciarProdutos extends Component {
               <Input
                 disabled
                 allowClear={!this.state.fieldFalha.codigo}
-                className={
-                  this.state.fieldFalha.codigo
-                    ? "div-inputError-produtos"
-                    : "input-100"
-                }
+                className={this.state.fieldFalha.codigo ? 'div-inputError-produtos' : 'input-100'}
                 placeholder="12345"
                 name="codigo"
                 value={this.state.codigo}
@@ -625,11 +585,7 @@ class GerenciarProdutos extends Component {
             <div className="div-inputs">
               <InputNumber
                 min={1}
-                className={
-                  this.state.fieldFalha.quantMin
-                    ? "div-inputError-produtos"
-                    : "input-100"
-                }
+                className={this.state.fieldFalha.quantMin ? 'div-inputError-produtos' : 'input-100'}
                 placeholder="12345"
                 name="quantMin"
                 value={this.state.quantMin}
@@ -638,19 +594,14 @@ class GerenciarProdutos extends Component {
                 onFocus={this.onFocus}
               />
               {this.state.fieldFalha.quantMin ? (
-                <p className="div-feedbackError">
-                  {this.state.message.quantMin}
-                </p>
+                <p className="div-feedbackError">{this.state.message.quantMin}</p>
               ) : null}
             </div>
           </div>
 
           <div className="div-serial-produtos">
             <div className="div-textSerial-produtos">Número de série:</div>
-            <Switch
-              checked={this.state.serial}
-              onChange={this.onChangeSerial}
-            />
+            <Switch checked={this.state.serial} onChange={this.onChangeSerial} />
           </div>
         </div>
 
