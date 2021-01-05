@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
+import './index.css'
 import { Input, InputNumber, Select, Button, Modal, Switch, message } from 'antd'
 import { connect } from 'react-redux'
 import { validators, masks } from './validators'
 import {
   newMarca,
-  newProductType,
+  newTipo,
   updateProduto,
-  getAllProductType,
+  getTipo,
   getMarca,
 } from '../../../../services/produto'
 import { Redirect } from 'react-router-dom'
