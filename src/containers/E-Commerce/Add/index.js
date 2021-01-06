@@ -138,7 +138,12 @@ const ECommerce = ({
               >
                 {map(
                   ({ key, max, name, serial }) => (
-                    <Option key={key} max={max} serial={serial} value={name}>
+                    <Option
+                      key={key}
+                      max={max}
+                      serial={serial ? 'true' : undefined}
+                      value={name}
+                    >
                       {name}
                     </Option>
                   ),

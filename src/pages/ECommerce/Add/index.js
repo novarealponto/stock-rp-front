@@ -42,7 +42,7 @@ const AddECommerce = () => {
   const handleChangeProduct = (_, { key, max, serial }) => {
     setMax(max)
     setProductBaseId(key)
-    setVisibleTextArea(serial)
+    setVisibleTextArea(!!serial)
   }
 
   const hanldeOnSubmit = async (formData) => {
@@ -87,7 +87,7 @@ const AddECommerce = () => {
 
   useEffect(() => {
     getAllProdutoByEstoque()
-  }, [])
+  }, [getAllProdutoByEstoque])
 
   return (
     <AddECommerceContainer
