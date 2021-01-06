@@ -1,8 +1,8 @@
 import React from 'react'
-import { ConfigProvider } from 'antd'
-import ptBR from 'antd/lib/locale/pt_BR'
 import 'moment/locale/pt-br'
 import fake from 'faker'
+import ptBR from 'antd/lib/locale/pt_BR'
+import { ConfigProvider } from 'antd'
 
 fake.locale = 'pt_PT'
 
