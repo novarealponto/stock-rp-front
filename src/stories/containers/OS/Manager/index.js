@@ -7,7 +7,7 @@ import { generate } from '@fnando/cnpj'
 import ManagerOsContainer from '../../../../containers/Manager/Os'
 
 export default {
-  title: 'Containers/Manager',
+  title: 'Containers/Os',
   component: ManagerOsContainer,
 }
 
@@ -67,9 +67,9 @@ const Template = (args) => {
   )
 }
 
-export const Os = Template.bind({})
+export const Manager = Template.bind({})
 
-Os.args = {
+Manager.args = {
   handleOnChangeTable: handleOnChangeTableAction,
   handleOnClickEdit: handleOnClickEditAction,
   handleOnClickDelet: handleOnClickDeletAction,
