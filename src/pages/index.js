@@ -27,8 +27,6 @@ import GerenciarUsuarioRoute from './Gerenciar/GerenciarUsuarios'
 import NotificacaoRoute from './Gerenciar/Notificacoes'
 import NovaEntradaRoute from './Cadastros/NovaEntrada'
 import NovoTipoContaRoute from './Cadastros/NovoTipoConta'
-import OsDashRoute from './Gerenciar/Os'
-import Os from './Os'
 import Profile from './Profile'
 import Product from './Product'
 import ProductType from './ProductType'
@@ -54,7 +52,7 @@ import Stock from './Stock'
 import TechnicianRoute from './Technician'
 import uuidValidate from 'uuid-validate'
 import User from './User'
-import Os from './Manager/Os'
+import Os from './Os'
 
 class PagesRoute extends Component {
   state = {
@@ -112,8 +110,7 @@ class PagesRoute extends Component {
           <Route path="/logged/entry" component={Entry} />
           <Route path="/logged/productType" component={ProductType} />
           <Route path="/logged/provider" component={Provider} />
-          <Route path="/logged/Os/add" component={Os} />
-          <Route path="/logged/Os" component={OsDashRoute} />
+          <Route path="/logged/Os" component={Os} />
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
@@ -159,7 +156,6 @@ class PagesRoute extends Component {
             component={RelatorioSuprimentosRoute}
           />
           <Route path="/logged/searchOs" component={SearchOsRoute} />
-          <Route exact path="/logged/Os/manager" component={Os} />
           <Route path="/logged/profile" component={Profile} />
           <Route
             path="/logged/gerenciarProdutosDash"
