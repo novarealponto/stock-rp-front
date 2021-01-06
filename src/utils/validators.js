@@ -1,5 +1,6 @@
 import { has, isEmpty, length, path } from 'ramda'
-import { isValid as cpnjIsValid } from '@fnando/cnpj'
+import { isValid as cnpjIsValid } from '@fnando/cnpj'
+import { isValid as cpfIsValid } from '@fnando/cpf'
 import { string, setLocale } from 'yup'
 
 import { getAddressByZipCode } from '../services/fornecedores'
@@ -27,10 +28,18 @@ export const validateCEP = async (form, value) => {
 }
 
 export const validateCNPJ = (form, value) => {
-  if (!cpnjIsValid(value)) {
+  if (!cnpjIsValid(value)) {
     return Promise.reject(new Error('CNPJ inválido'))
   } else {
     return Promise.resolve(form.setFields([{ name: 'cnpj', value, errors: [] }]))
+  }
+}
+
+export const validateCPFOrCNPJ = (form, value) => {
+  if (cnpjIsValid(value) || cpfIsValid(value)) {
+    return Promise.resolve(form.setFields([{ name: 'cnpj', value, errors: [] }]))
+  } else {
+    return Promise.reject(new Error('CNPJ ou CPF inválido'))
   }
 }
 
@@ -79,16 +88,16 @@ export const validateSerialNumberForEntry = async (
     return setSerialNumberModal('Limite atingido!')
   }
 
-  if (noRequest) return
+  if (!noRequest) {
+    const { data } = await getSerial(currentValueSerialNumber[lastPosition])
 
-  const { data } = await getSerial(currentValueSerialNumber[lastPosition])
+    if (reserve && !data) {
+      return setSerialNumberModal('Número de série não registrado!')
+    }
 
-  if (reserve && !data) {
-    return setSerialNumberModal('Número de série não registrado!')
-  }
-
-  if (!reserve && data) {
-    return setSerialNumberModal('Número de série já registrado!')
+    if (!reserve && data) {
+      return setSerialNumberModal('Número de série já registrado!')
+    }
   }
 
   return {

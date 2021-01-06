@@ -4,6 +4,24 @@ export default (form, name, value) => {
   let valueMasked = value
 
   switch (name) {
+    case 'cnpjOrCpf':
+      if (length(value.replace(/\D/g, '')) > 11) {
+        valueMasked = value
+          .replace(/\D/g, '')
+          .replace(/(\d{2})(\d)/, '$1.$2')
+          .replace(/(\d{3})(\d)/, '$1.$2')
+          .replace(/(\d{3})(\d)/, '$1/$2')
+          .replace(/(\d{4})(\d)/, '$1-$2')
+          .replace(/(-\d{2})\d+?$/, '$1')
+      } else {
+        valueMasked = value
+          .replace(/\D/g, '')
+          .replace(/(\d{3})(\d)/, '$1.$2')
+          .replace(/(\d{3})(\d)/, '$1.$2')
+          .replace(/(\d{3})(\d)/, '$1-$2')
+          .replace(/(-\d{2})\d+?$/, '$1')
+      }
+      break
     case 'cnpj':
       valueMasked = value
         .replace(/\D/g, '')
