@@ -1,0 +1,11 @@
+.deleteButton {
+  margin: 0 8px;
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  font-size: 24px;
+  transition: all 0.3s;
+}
+.deleteButton:hover {
+  color: #f01b0c;
+}
