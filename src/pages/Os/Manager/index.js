@@ -54,7 +54,7 @@ const Manager = ({ history, redirectValueOs }) => {
   const handleOnClickEdit = (osData) => {
     redirectValueOs(buildRedirectValueOs(osData))
 
-    history.push('/logged/searchOs/dash')
+    history.push('update')
   }
 
   const handleOnSearch = (osSearchFormData) => {
