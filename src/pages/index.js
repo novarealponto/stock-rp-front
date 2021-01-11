@@ -54,6 +54,7 @@ import uuidValidate from 'uuid-validate'
 import User from './User'
 import Os from './Os'
 import Reception from './Reception'
+import ProductType from './ProductType'
 
 class PagesRoute extends Component {
   state = {
@@ -106,6 +107,7 @@ class PagesRoute extends Component {
         <Switch>
           <Route exact path="/logged/dash" component={Dash} />
           <Route path="/logged/user" component={User} />
+          <Route path="/logged/provider" component={Provider} />
           <Route path="/logged/product" component={Product} />
           <Route path="/logged/entry" component={Entry} />
           <Route path="/logged/productType" component={ProductType} />
