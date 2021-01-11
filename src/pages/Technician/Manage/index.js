@@ -97,11 +97,12 @@ const Manager = ({ redirectValueTecnico, history }) => {
   )
 }
 
-const mapStateToProps = () => {}
-
 const mapDispacthToProps = (dispach) =>
   bindActionCreators({ redirectValueTecnico }, dispach)
 
-const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
+const enhanced = compose(
+  connect(() => ({}), mapDispacthToProps),
+  withRouter
+)
 
 export default enhanced(Manager)
