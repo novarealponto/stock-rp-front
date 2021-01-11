@@ -65,9 +65,11 @@ const Technician = ({
 
   return (
     <div className={styles.container}>
-      <Row justify="end" gutter={24}>
+      <Row justify="end" gutter={20}>
         <Col>
           <Button onClick={handleClickAvancedSearch}>Filtrar</Button>
+        </Col>
+        <Col>
           <Button type="primary" onClick={goAddTechnician}>
             Cadastrar um novo Técnico
           </Button>
