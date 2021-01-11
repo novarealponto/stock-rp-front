@@ -190,11 +190,17 @@ const ModalLoan = ({
   technicianList,
   visible,
 }) => {
+  const title = {
+    disponiveis: 'Nova reserva',
+    reservados: 'Atualizar reserva',
+    emCliente: 'Retornar equipamento',
+  }[select]
+
   return (
     <Modal
       onCancel={handleCancel}
       onOk={() => form.submit()}
-      title={'title'}
+      title={title}
       visible={visible}
       width={650}
     >
