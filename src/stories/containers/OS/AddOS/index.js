@@ -1,5 +1,5 @@
 import React from 'react'
-import { actions } from '@storybook/addon-actions'
+import { action } from '@storybook/addon-actions'
 import { commerce, name, random } from 'faker'
 import { Form, message } from 'antd'
 import { has } from 'ramda'
@@ -69,5 +69,5 @@ const Template = (args) => {
 export const AddOS = Template.bind({})
 
 AddOS.args = {
-  handleSubmit: actions('Submit form'),
+  handleSubmit: action('Submit form'),
 }
