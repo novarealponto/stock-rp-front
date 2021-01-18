@@ -28,7 +28,7 @@ const columns = [
     dataIndex: 'username',
   },
   {
-    title: 'Data fe lançamento',
+    title: 'Data de lançamento',
     dataIndex: 'date',
   },
 ]
@@ -48,7 +48,7 @@ const Manager = ({ dataSource, handleOnSearch, onChangeTable, pagination }) => (
         </Col>
         <Col span={7}>
           <Form.Item label="Usuário" name="username">
-            <Input allowClear placeholder="Digite a usuário" />
+            <Input allowClear placeholder="Digite o usuário" />
           </Form.Item>
         </Col>
         <Col span={7}>
