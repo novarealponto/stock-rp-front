@@ -14,7 +14,9 @@ class GerenciarEntrada extends Component {
     rs: '',
     data: '',
     tecnico: '',
+    status: '',
     tecnicoArray: [],
+    statusList: [],
     valueDate: { start: '2019/01/01' },
     page: 1,
     total: 10,
@@ -24,7 +26,17 @@ class GerenciarEntrada extends Component {
     OsArray: {
       rows: [],
     },
-  }
+  };
+
+  getAllStatusExpedition = async () => {
+    const { status, data } = await getAllStatusExpedition();
+
+    if (status === 200) {
+      this.setState({
+        statusList: data,
+      });
+    }
+  };
 
   getAllOs = async () => {
     this.setState({
@@ -51,6 +63,11 @@ class GerenciarEntrada extends Component {
             name: this.state.produto,
           },
         },
+        osParts: {
+          specific: {
+            statusExpeditionId: this.state.status ?  this.state.status: undefined,
+          },
+        },
       },
       order: {
         field: 'deletedAt',
@@ -60,7 +77,7 @@ class GerenciarEntrada extends Component {
       total: this.state.total,
       required: false,
       paranoid: false,
-    }
+    };
 
     await getTodasOs(query).then((resposta) =>
       this.setState({
@@ -73,8 +90,8 @@ class GerenciarEntrada extends Component {
 
     this.setState({
       loading: false,
-    })
-  }
+    });
+  };
 
   changePages = (pages) => {
     this.setState(
@@ -87,7 +104,7 @@ class GerenciarEntrada extends Component {
     )
   }
 
-  getAllTechnician = async () => {
+  getAllTecnico = async () => {
     await getTecnico().then((resposta) =>
       this.setState({
         tecnicoArray: resposta.data,
@@ -98,7 +115,7 @@ class GerenciarEntrada extends Component {
   onChangeTecnico = async (value) => {
     await this.setState({
       tecnico: value,
-    })
+    });
 
     await this.getAllOs()
   }
@@ -106,39 +123,46 @@ class GerenciarEntrada extends Component {
   componentDidMount = async () => {
     await this.getAllOs()
 
-    await this.getAllTechnician()
-  }
+    await this.getAllStatusExpedition();
+    await this.getAllTecnico();
+  };
 
   avancado = () => {
     this.setState({
       avancado: !this.state.avancado,
-    })
-  }
+    });
+  };
 
   onChange = async (e) => {
     await this.setState({
       [e.target.name]: e.target.value,
-    })
+    });
 
     await this.getAllOs()
   }
 
+  onChangeStatus = async (status) => {
+    await this.setState({ status });
+
+    await this.getAllOs();
+  };
+
   searchDate = async (e) => {
-    if (!e[0] || !e[1]) return
+    if (!e[0] || !e[1]) return;
     await this.setState({
       valueDate: { start: e[0]._d, end: e[1]._d },
-    })
+    });
 
     await this.getAllOs()
   }
 
   formatDateFunct = (date) => {
-    moment.locale('pt-br')
-    const formatDate = moment(date).format('L')
-    const formatHours = moment(date).format('LT')
-    const dateformated = `${formatDate} ${formatHours}`
-    return dateformated
-  }
+    moment.locale('pt-br');
+    const formatDate = moment(date).format('L');
+    const formatHours = moment(date).format('LT');
+    const dateformated = `${formatDate} ${formatHours}`;
+    return dateformated;
+  };
 
   mais = async (line) => {
     await this.setState({
@@ -148,8 +172,8 @@ class GerenciarEntrada extends Component {
       lineSelected: {
         rows: [line],
       },
-    })
-  }
+    });
+  };
 
   test = () => {
     if (this.state.OsArray.rows.length !== 0) {
@@ -186,20 +210,10 @@ class GerenciarEntrada extends Component {
                 this.state.lineSelected.rows.map((line) => (
                   <div className="div-branco-mais-ROs">
                     <div className="div-normal-mais-ROs">
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          width: '100%',
-                        }}
-                      >
+                      <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                         {line.products.map((valor) => (
                           <div style={{ display: 'flex', width: '100%' }}>
-                            <div
-                              className="div-peca"
-                              contentEditable
-                              style={{ width: '30%' }}
-                            >
+                            <div className="div-peca" contentEditable style={{ width: '30%' }}>
                               {valor.name}
                             </div>
                             <div className="div-peca" style={{ width: '30%' }}>
@@ -230,9 +244,7 @@ class GerenciarEntrada extends Component {
         </div>
       ))
     } else {
-      return (
-        <div className="div-naotemnada">Não há nenhuma reserva finalizada</div>
-      )
+      return <div className="div-naotemnada">Não há nenhuma reserva finalizada</div>;
     }
   }
 
@@ -296,8 +308,7 @@ class GerenciarEntrada extends Component {
           {this.state.page + 2}
         </Button>
       ) : null}
-      {this.state.page + 2 < this.state.count / this.state.total &&
-      this.state.page < 3 ? (
+      {this.state.page + 2 < this.state.count / this.state.total && this.state.page < 3 ? (
         <Button
           className="button"
           type="primary"
@@ -306,8 +317,7 @@ class GerenciarEntrada extends Component {
           {this.state.page + 3}
         </Button>
       ) : null}
-      {this.state.page + 3 < this.state.count / this.state.total &&
-      this.state.page < 2 ? (
+      {this.state.page + 3 < this.state.count / this.state.total && this.state.page < 2 ? (
         <Button
           className="button"
           type="primary"
@@ -376,10 +386,7 @@ class GerenciarEntrada extends Component {
               <div className="div-tecnico-ROs">
                 <div className="div-text-Rtecnico">Técnico:</div>
                 {this.state.tecnicoArray.length === 0 ? (
-                  <Select
-                    value="Nenhum tecnico cadastrado"
-                    style={{ width: '100%' }}
-                  ></Select>
+                  <Select value="Nenhum tecnico cadastrado" style={{ width: '100%' }}></Select>
                 ) : (
                   <Select
                     value={this.state.tecnico}
@@ -410,16 +417,19 @@ class GerenciarEntrada extends Component {
               </div>
 
               <div className="div-nSerie-GOs">
-                <div className="div-textRs-GOs">N° Serie:</div>
-                <Input
-                  className="input-100"
+                <div className="div-textRs-GOs">Status:</div>
+                <Select
                   style={{ width: '100%' }}
-                  name="nSerie"
-                  value={this.state.nSerie}
-                  placeholder="Digite o produto"
-                  onChange={this.onChange}
+                  value={this.state.status}
+                  onChange={this.onChangeStatus}
                   allowClear
-                />
+                >
+                  {this.state.statusList.map(({status, id}) => (
+                    <Option key={id} value={id}>
+                      {status}
+                    </Option>
+                  ))}
+                </Select>
               </div>
             </div>
           </div>
