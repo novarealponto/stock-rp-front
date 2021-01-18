@@ -1,16 +1,16 @@
 import React from 'react'
-import { Form, message } from 'antd'
+import { bindActionCreators } from 'redux'
 import { compose, pathOr } from 'ramda'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
+import { Form, message } from 'antd'
 
 import buildProvider from '../../../utils/providerSpec'
 import UpdateProviderContainer from '../../../containers/Provider/UpdateProvider'
 import { clearValueFornecedor } from '../../Gerenciar/Produto/ProdutoRedux/action'
 import { updateFornecedor } from '../../../services/fornecedores'
 
-const messageErrorText = 'erro ao atualizar fornecedor'
+const messageErrorText = 'Erro ao atualizar fornecedor'
 const messageSuccessText = 'Fornecedor atualizado com sucesso'
 
 const UpdateProvider = ({

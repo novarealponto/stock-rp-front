@@ -5,8 +5,8 @@ import AddProviderContainer from '../../../containers/Provider/AddProvider'
 import buildProvider from '../../../utils/providerSpec'
 import { newProvider } from '../../../services/fornecedores'
 
-const messageErrorText = 'erro ao cadastrar fornecedor'
-const messageSuccessText = 'Fornecedor cadastrdo com sucesso'
+const messageErrorText = 'Erro ao cadastrar fornecedor'
+const messageSuccessText = 'Fornecedor cadastrado com sucesso'
 
 const AddProvider = () => {
   const [form] = Form.useForm()
