@@ -69,8 +69,8 @@ const Template = (args) => {
   return (
     <ManageProductTypes
       {...args}
-      dataSource={data}
       closeModalAddProductType={closeModalAddProductType}
+      dataSource={data}
       formAddProductType={formAddProductType}
       handleAddProductType={handleAddProductType}
       handleSearch={handleSearch}
