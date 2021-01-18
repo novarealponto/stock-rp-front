@@ -12,7 +12,7 @@ import { validateSerialNumberForEntry } from '../../../utils/validators'
 const baseList = [{ name: 'ESTOQUE' }, { name: 'EMPRESTIMO' }]
 
 const AddEntry = () => {
-  const [alllowInsertSerilNumber, setAlllowInsertSerilNumber] = useState(false)
+  const [alllowInsertSerialNumber, setAlllowInsertSerialNumber] = useState(false)
   const [form] = Form.useForm()
   const [productList, setProductList] = useState([])
   const [productSearch, setProductSearch] = useState('')
@@ -85,16 +85,16 @@ const AddEntry = () => {
 
   return (
     <AddEntyContainer
-      productList={productList}
-      form={form}
-      providerList={providerList}
+      alllowInsertSerialNumber={alllowInsertSerialNumber}
       baseList={baseList}
-      alllowInsertSerilNumber={alllowInsertSerilNumber}
-      onChange={setAlllowInsertSerilNumber}
+      form={form}
       handleSubmit={handleSubmit}
+      onChange={setAlllowInsertSerialNumber}
       onPressEnterTextAreaSerialNumber={onPressEnterTextAreaSerialNumber}
-      onSearchProvider={setProviderSearch}
       onSearchProduct={setProductSearch}
+      onSearchProvider={setProviderSearch}
+      productList={productList}
+      providerList={providerList}
     />
   )
 }

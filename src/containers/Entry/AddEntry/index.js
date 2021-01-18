@@ -25,7 +25,7 @@ const renderOption = ({ children, key, value }) => (element) => {
 }
 
 const AddEntry = ({
-  alllowInsertSerilNumber,
+  alllowInsertSerialNumber,
   baseList,
   form,
   handleSubmit,
@@ -143,7 +143,7 @@ const AddEntry = ({
             {({ getFieldValue }) => {
               return (
                 !getFieldValue('analysis') &&
-                alllowInsertSerilNumber && (
+                alllowInsertSerialNumber && (
                   <Form.Item label="Números de série" name="serialNumbers">
                     <TextArea
                       onPressEnter={onPressEnterTextAreaSerialNumber}

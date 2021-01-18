@@ -73,7 +73,7 @@ export const validateSerialNumberForEntry = async (
   }
 
   if (isEmpty(currentValueSerialNumber[lastPosition])) {
-    return setSerialNumberModal('Insída um número!')
+    return setSerialNumberModal('Insira um número!')
   }
 
   if (findSerialNumber && length(findSerialNumber) > 1) {

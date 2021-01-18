@@ -15,13 +15,13 @@ export default {
 const handleSubmitAction = action('On submit entry form!')
 
 const Template = (args) => {
-  const [alllowInsertSerilNumber, setAlllowInsertSerilNumber] = useState(false)
+  const [alllowInsertSerialNumber, setAlllowInsertSerialNumber] = useState(false)
   const [form] = Form.useForm()
 
   const handleSubmit = (entryFormData) =>
     handleSubmitAction(buildEntry(entryFormData))
 
-  const onChange = setAlllowInsertSerilNumber
+  const onChange = setAlllowInsertSerialNumber
 
   const onPressEnterTextAreaSerialNumber = async ({ target }) => {
     const currentTargetValue = target.value
@@ -45,7 +45,7 @@ const Template = (args) => {
   return (
     <AddEntryContainer
       {...args}
-      alllowInsertSerilNumber={alllowInsertSerilNumber}
+      alllowInsertSerialNumber={alllowInsertSerialNumber}
       form={form}
       handleSubmit={handleSubmit}
       onChange={onChange}
