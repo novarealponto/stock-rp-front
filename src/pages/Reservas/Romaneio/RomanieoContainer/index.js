@@ -329,7 +329,7 @@ class RomanieoContainer extends Component {
         let index = -1
 
         const linhaUnica =
-          data.productBase.product.category === 'equipamento' &&
+          data.productBase.product.category !== 'peca' &&
           data.productBase.product.serial
 
         if (linhaUnica) {
@@ -343,7 +343,8 @@ class RomanieoContainer extends Component {
         }
 
         let reserved =
-        (data.reserved || !!data.deletedAt) && data.productBase.product.category === 'peca'
+          (data.reserved || !!data.deletedAt) &&
+          data.productBase.product.category === 'peca'
 
         R.map((item) => {
           if (
@@ -666,10 +667,12 @@ class RomanieoContainer extends Component {
         },
         os: {
           specific: {
-            date: {
-              start: this.state.data,
-              end: this.state.data,
-            },
+            date: this.state.data
+              ? {
+                  start: this.state.data,
+                  end: this.state.data,
+                }
+              : undefined,
           },
         },
       },
