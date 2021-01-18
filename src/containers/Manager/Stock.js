@@ -48,7 +48,7 @@ const columns = ({ handleOnClickExperiment, handleOnClickInfo }) => [
     dataIndex: 'stock',
   },
   {
-    title: 'Aguard. Anal.',
+    title: 'Aguardando Análise',
     dataIndex: 'preAnalysis',
   },
   {
