@@ -24,7 +24,6 @@ import GerenciarProdutosDashRoute from './Gerenciar/GerenciarProdutos'
 import GerenciarProdutoRoute from './Gerenciar/Produto'
 import GerenciarTecnicoRoute from './Gerenciar/GerenciarTecnico'
 import GerenciarUsuarioRoute from './Gerenciar/GerenciarUsuarios'
-import NotificacaoRoute from './Gerenciar/Notificacoes'
 import NovaEntradaRoute from './Cadastros/NovaEntrada'
 import OsDashRoute from './Gerenciar/Os'
 import Profile from './Profile'
@@ -178,7 +177,6 @@ class PagesRoute extends Component {
             component={GerenciarEntradaDashRoute}
           />
           <Route path="/logged/emprestimo" component={EmprestimoRoute} />
-          <Route path="/logged/notificacao" component={NotificacaoRoute} />
 
           <Route path="/logged/technician/" component={TechnicianRoute} />
 
