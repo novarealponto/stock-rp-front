@@ -97,7 +97,7 @@ const AddEntry = ({
             <Select
               optionFilterProp="children"
               onSearch={onSearchProvider}
-              placeholder="Selecione o Fornecedor"
+              placeholder="Selecione o fornecedor"
               showSearch
             >
               {map(
