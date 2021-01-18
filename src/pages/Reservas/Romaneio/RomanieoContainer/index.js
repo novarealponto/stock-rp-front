@@ -317,7 +317,7 @@ class RomanieoContainer extends Component {
         let index = -1;
 
         const linhaUnica =
-          data.productBase.product.category === 'equipamento' && data.productBase.product.serial;
+          data.productBase.product.category !== 'peca' && data.productBase.product.serial;
 
         if (linhaUnica) {
           index = R.findIndex(R.propEq('serialNumber', serialNumber))(this.state.rows);
@@ -634,10 +634,10 @@ class RomanieoContainer extends Component {
         },
         os: {
           specific: {
-            date: {
+            date: this.state.data ? {
               start: this.state.data,
               end: this.state.data,
-            },
+            } : undefined,
           },
         },
       },

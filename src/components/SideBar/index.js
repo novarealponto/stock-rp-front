@@ -709,18 +709,18 @@ class SideBar extends Component {
                 <FilePdfOutlined />
                 Romaneio
               </Menu.Item>
-              <Menu.Item disabled={!this.props.auth.gerROs} key="Rinterno_dash">
+              {/* <Menu.Item disabled={!this.props.auth.gerROs} key="Rinterno_dash">
                 <FileAddOutlined />
                 Recepção
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item disabled={!this.props.auth.addROs} key="Rexterno_dash">
                 <FileAddOutlined />
-                Externo
+                Saídas
               </Menu.Item>
-              <Menu.Item disabled={!this.props.auth.addRML} key="reservaML_dash">
+              {/* <Menu.Item disabled={!this.props.auth.addRML} key="reservaML_dash">
                 <PieChartOutlined />
                 E-Commerce
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item disabled={!this.props.auth.gerROs} key="Os_dash">
                 <UnorderedListOutlined />
                 Gerenciar Os
