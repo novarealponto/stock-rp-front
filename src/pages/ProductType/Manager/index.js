@@ -70,11 +70,11 @@ const Manager = () => {
 
   return (
     <ManagerContainer
-      dataSource={dataSource}
       closeModalAddProductType={closeModalAddProductType}
+      dataSource={dataSource}
       formAddProductType={formAddProductType}
-      handleSearch={handleSearch}
       handleAddProductType={handleAddProductType}
+      handleSearch={handleSearch}
       openModalAddProductType={openModalAddProductType}
       searching={searching}
       visibleModalAddProductType={visibleModalAddProductType}
