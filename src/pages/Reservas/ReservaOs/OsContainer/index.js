@@ -10,6 +10,7 @@ import { getTecnico } from '../../../../services/tecnico';
 import { getSerial } from '../../../../services/serialNumber';
 import { addStatusExpedition, getAllStatusExpedition } from '../../../../services/statusExpedition';
 import moment from 'moment';
+import { pathOr } from 'ramda';
 import { PlusOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
@@ -143,8 +144,7 @@ class Rexterno extends Component {
               } else if (resp.data.freeMarketPart) {
                 mensagem = `Este equipamento foi liberado para mercado livre com código de restreamento: ${resp.data.freeMarketPart.freeMarket.trackingCode}`;
               }
-            }
-            else {
+            } else {
               mensagem = `Este equipamento ja foi reservado para a OS: ${resp.data.osPart.o.os}`;
             }
           }
@@ -289,7 +289,9 @@ class Rexterno extends Component {
     });
 
     const document =
-      this.state.cnpj.replace(/\D/g, '').length === 14 ? { cnpj: this.state.cnpj } : {cpf : this.state.cnpj};
+      this.state.cnpj.replace(/\D/g, '').length === 14
+        ? { cnpj: this.state.cnpj }
+        : { cpf: this.state.cnpj };
 
     const values = {
       ...document,
@@ -306,10 +308,14 @@ class Rexterno extends Component {
     if (resposta.status === 422) {
       this.setState({
         messageError: true,
-        fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message,
+        fieldFalha: pathOr('Ocorreu um Error!', ['data', 'fields', '0', 'field'], resposta),
+        message: pathOr(
+          'Tente novamente mais tarde!',
+          ['data', 'fields', '0', 'message'],
+          resposta
+        ),
       });
-      message.error(this.state.message.message);
+      message.error(this.state.message);
       this.setState({
         loading: false,
         messageError: false,
@@ -770,7 +776,7 @@ class Rexterno extends Component {
 
         {this.state.status !== 'CONSERTO' &&
         this.state.serial &&
-        this.state.categoria !== 'peca' ? (
+        (this.state.categoria !== 'peca' || this.state.status === 'ECOMMERCE' || this.state.status === 'RECEPÇÃO') ? (
           <div className="div-linha-Os">
             <div className="div-serial-AddKit">
               <div className="div-textSerial-AddKit">Número de série:</div>
