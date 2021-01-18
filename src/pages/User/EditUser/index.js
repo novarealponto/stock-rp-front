@@ -7,9 +7,9 @@ import PropTypes from 'prop-types';
 
 import {
   getResourcesByTypeAccount,
-  getTypeAccount,
   updateUsuario,
 } from '../../../services/usuario';
+import { getTypeAccount } from '../../../services/typeAccount'
 import buildUser from '../../../utils/userSpec';
 import EditUserContainer from '../../../containers/User/EditUser';
 import PERMISSIONS from '../../../utils/permissions';

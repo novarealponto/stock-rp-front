@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Col, Input, Form, Modal, Row, Table, Typography } from 'antd'
+import { Button, Col, Form, Input, Modal, Row, Table, Typography } from 'antd'
 
 const { Search } = Input
 const { Title } = Typography
