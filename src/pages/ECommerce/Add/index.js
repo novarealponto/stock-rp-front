@@ -45,7 +45,7 @@ const AddECommerce = () => {
     setVisibleTextArea(!!serial)
   }
 
-  const hanldeOnSubmit = async (formData) => {
+  const handleOnSubmit = async (formData) => {
     try {
       const { status } = await NewReservaML(buildECommerce(formData))
 
@@ -91,14 +91,14 @@ const AddECommerce = () => {
 
   return (
     <AddECommerceContainer
-      handleChangeProduct={handleChangeProduct}
-      productList={productList}
-      form={form}
-      onPressEnterTextAreaSerialNumber={onPressEnterTextAreaSerialNumber}
-      hanldeOnSubmit={hanldeOnSubmit}
-      max={max}
-      visibleTextArea={visibleTextArea}
-      productBaseId={productBaseId}
+    form={form}
+    handleChangeProduct={handleChangeProduct}
+    handleOnSubmit={handleOnSubmit}
+    max={max}
+    onPressEnterTextAreaSerialNumber={onPressEnterTextAreaSerialNumber}
+    productBaseId={productBaseId}
+    productList={productList}
+    visibleTextArea={visibleTextArea}
     />
   )
 }

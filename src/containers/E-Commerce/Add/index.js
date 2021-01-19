@@ -33,7 +33,7 @@ const renderListProducts = (remove) => (field) => {
                 name={[field.name, 'product']}
                 noStyle
               >
-                <Input placeholder="produto" readOnly />
+                <Input placeholder="Produto" readOnly />
               </Form.Item>
             </Col>
             <Col span={3}>
@@ -42,7 +42,7 @@ const renderListProducts = (remove) => (field) => {
                 name={[field.name, 'quantity']}
                 noStyle
               >
-                <InputNumber placeholder="quantidade" readOnly />
+                <InputNumber placeholder="Quantidade" readOnly />
               </Form.Item>
             </Col>
           </Row>
@@ -61,7 +61,7 @@ const renderListProducts = (remove) => (field) => {
 const ECommerce = ({
   form,
   handleChangeProduct,
-  hanldeOnSubmit,
+  handleOnSubmit,
   max,
   onPressEnterTextAreaSerialNumber,
   productBaseId,
@@ -80,7 +80,7 @@ const ECommerce = ({
         form={form}
         initialValues={{ quantity: 1 }}
         layout="vertical"
-        onFinish={hanldeOnSubmit}
+        onFinish={handleOnSubmit}
         validateTrigger="onBlur"
       >
         <Row gutter={20}>
@@ -90,7 +90,7 @@ const ECommerce = ({
               name="trackingCode"
               rules={[{ required: true }]}
             >
-              <Input placeholder="digite o código de rastreio" />
+              <Input placeholder="Digite o código de rastreio" />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -99,7 +99,7 @@ const ECommerce = ({
               name="name"
               rules={[{ required: true }]}
             >
-              <Input placeholder="digite o nome ou a razao social" />
+              <Input placeholder="Digite o nome ou a razao social" />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -115,7 +115,7 @@ const ECommerce = ({
                 onChange={({ target: { value } }) =>
                   masks(form, 'cnpjOrCpf', value)
                 }
-                placeholder="digite o CPF ou CNPJ"
+                placeholder="Digite o CPF ou CNPJ"
               />
             </Form.Item>
           </Col>
@@ -134,7 +134,7 @@ const ECommerce = ({
             <Form.Item label="Nome do produto" name="product">
               <Select
                 onChange={handleChangeProduct}
-                placeholder="selecione um produto"
+                placeholder="Selecione um produto"
               >
                 {map(
                   ({ key, max, name, serial }) => (

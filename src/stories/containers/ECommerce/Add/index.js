@@ -24,7 +24,7 @@ for (let key = 0; key < 20; key++) {
   })
 }
 
-const hanldeOnSubmitAction = action('Submit form')
+const handleOnSubmitAction = action('Submit form')
 
 const Template = (args) => {
   const [form] = Form.useForm()
@@ -37,8 +37,8 @@ const Template = (args) => {
     setProductBaseId(key)
     setVisibleTextArea(serial)
   }
-  const hanldeOnSubmit = (formData) => {
-    hanldeOnSubmitAction(formData)
+  const handleOnSubmit = (formData) => {
+    handleOnSubmitAction(formData)
     form.resetFields()
     setProductBaseId('')
     setVisibleTextArea(false)
@@ -70,7 +70,7 @@ const Template = (args) => {
     <ECommerceAddContainer
       {...args}
       handleChangeProduct={handleChangeProduct}
-      hanldeOnSubmit={hanldeOnSubmit}
+      handleOnSubmit={handleOnSubmit}
       form={form}
       max={max}
       onPressEnterTextAreaSerialNumber={onPressEnterTextAreaSerialNumber}
