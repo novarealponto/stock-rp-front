@@ -94,14 +94,14 @@ const Manager = ({
                 disabledDate={(current) =>
                   current && current < moment().subtract(1, 'day')
                 }
-                placeholder="Selecione a Data"
+                placeholder="Selecione a data"
                 style={{ width: '100%' }}
               />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item label="Técnico" name="technician" rules={rules}>
-              <Select placeholder="Selecione o Técnico">
+              <Select placeholder="Selecione o técnico">
                 {map(
                   ({ key, name }) => (
                     <Option key={key} value={key}>
@@ -142,7 +142,7 @@ const Manager = ({
             <Form.Item label="Nome do produto" name="product">
               <Select
                 onChange={handleChangeProduct}
-                placeholder="selecione um produto"
+                placeholder="Selecione um produto"
               >
                 {map(
                   ({ category, key, max, name, serial }) => (

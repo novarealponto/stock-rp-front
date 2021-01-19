@@ -30,7 +30,7 @@ const ModalSerialNumbers = ({
           <Search
             allowClear
             onSearch={handleOnSearch}
-            placeholder="número de série"
+            placeholder="Número de série"
           />
         </Form.Item>
       </Form>
