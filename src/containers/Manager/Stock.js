@@ -188,7 +188,6 @@ const Manager = ({
           />
         </Col>
       </Row>
-      z
     </>
   )
 }
