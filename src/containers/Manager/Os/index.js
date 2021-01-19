@@ -51,7 +51,7 @@ const columns = ({ handleOnClickDelet, handleOnClickEdit }) => [
   },
   {
     dataIndex: 'date',
-    title: 'Data de Atendimento',
+    title: 'Data de atendimento',
   },
   {
     dataIndex: 'delete',
