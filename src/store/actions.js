@@ -21,7 +21,6 @@ export default {
   CLEAR: {
     OS: 'CLEAR_OS',
     PROVIDER: 'CLEAR_PROVIDER',
-    PROVIDER: "CLEAR_PROVIDER",
     TECNICO: "CLEAR_TECNICO"
   }
 };
