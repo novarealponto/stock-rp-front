@@ -776,7 +776,10 @@ class Rexterno extends Component {
 
         {this.state.status !== 'CONSERTO' &&
         this.state.serial &&
-        (this.state.categoria !== 'peca' || this.state.status === 'ECOMMERCE' || this.state.status === 'RECEPÇÃO') ? (
+        (this.state.categoria !== 'peca' ||
+          this.state.status === 'CORREIOS' ||
+          this.state.status === 'ECOMMERCE' ||
+          this.state.status === 'RECEPÇÃO') ? (
           <div className="div-linha-Os">
             <div className="div-serial-AddKit">
               <div className="div-textSerial-AddKit">Número de série:</div>

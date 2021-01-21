@@ -791,7 +791,9 @@ class SearchOsDash extends Component {
                 onChange={this.onChangeStatus}
               >
                 {this.state.allStatus
-                  .filter((item) => item !== 'ECOMMERCE' && item !== 'RECEPÇÃO')
+                  .filter(
+                    (item) => item !== 'ECOMMERCE' && item !== 'RECEPÇÃO' && item !== 'CORREIOS'
+                  )
                   .map((item) => {
                     return <Option value={item}>{item.toUpperCase()}</Option>;
                   })}
