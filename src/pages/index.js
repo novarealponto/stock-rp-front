@@ -112,7 +112,6 @@ class PagesRoute extends Component {
           <Route path="/logged/productType" component={ProductType} />
           <Route path="/logged/provider" component={Provider} />
           <Route path="/logged/Os/add" component={Os} />
-          <Route path="/logged/Os" component={OsDashRoute} />
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
