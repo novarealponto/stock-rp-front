@@ -209,7 +209,8 @@ class Rexterno extends Component {
         product: {
           specific: {
             name,
-            serial: this.state.status === 'CONSERTO' ? true : undefined,
+            serial: this.state.status === "CONSERTO" ? true : undefined,
+            category: this.state.status === "CONSERTO" ? 'equipamento' : undefined
           },
         },
         stockBase: {

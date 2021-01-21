@@ -332,6 +332,7 @@ class RomanieoContainer extends Component {
           data.productBase.product.category !== 'peca' &&
           data.productBase.product.serial
 
+
         if (linhaUnica) {
           index = R.findIndex(R.propEq('serialNumber', serialNumber))(
             this.state.rows
