@@ -32,6 +32,13 @@ export function redirectValueTecnico(value) {
     })
 }
 
+export function clearValueFornecedor() {
+  return (dispatch) =>
+    dispatch({
+      type: action.CLEAR.PROVIDER,
+    })
+}
+
 export function clearValueTecnico() {
   return (dispatch) =>
     dispatch({
