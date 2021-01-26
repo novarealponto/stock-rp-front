@@ -149,8 +149,8 @@ class Rexterno extends Component {
             mensagem = 'Este equipamento não contém esse número de série'
             count++
           }
-          if (resp.data.reserved || resp.data.deletedAt) {
-            count++
+          if (resp.data.reserved || resp.data.osPart  || resp.data.deletedAt) {
+            count++;
             if (resp.data.deletedAt) {
               if (resp.data.osPart) {
                 mensagem = `Este equipamento ja foi liberado para a OS: ${resp.data.osPart.o.os}`
