@@ -61,8 +61,6 @@ const ManageProducts = ({
       </Col>
     </Row>
 
-    {console.log(dataSource)}
-
     <Row justify="end" gutter={[0, 10]}>
       <Col>
         {visibleSearch ? (

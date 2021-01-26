@@ -19,7 +19,7 @@ const Manager = ({ history, redirectValueProduto }) => {
   const [visibleSearch, setVisibleSearch] = useState()
 
   const getAllProducts = useCallback(() => {
-    const { sku, product, category, brand, type } = queryProduct
+    const { product, category, brand, type } = queryProduct
     const query = {
       filters: {
         product: {
@@ -55,15 +55,14 @@ const Manager = ({ history, redirectValueProduto }) => {
 
   const handleOnChangeTable = ({ current }) => setPage(current)
 
-  const handleOnClickEdit = (osData) => {
-    redirectValueProduto(buildRedirectValueProduct(osData))
+  const handleOnClickEdit = (productData) => {
+    redirectValueProduto(buildRedirectValueProduct(productData))
 
-    history.push('/logged/Gerenciar/Produto')
+    history.push('/logged/product/edit')
   }
 
   const handleProductSearch = (productSearchFormData) => {
     setQueryProduct(buildQueryProduct(productSearchFormData))
-    console.log(productSearchFormData)
   }
 
   useEffect(() => {

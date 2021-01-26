@@ -1,4 +1,4 @@
-import { applySpec, map, pathOr, pipe } from 'ramda'
+import { applySpec, pathOr } from 'ramda'
 
 export const buildDataSource = applySpec({
     key: pathOr('', ['id']),
@@ -26,19 +26,25 @@ export const buildQueryProduct = applySpec({
 })
 
 export const buildRedirectValueProduct = applySpec({
-    key: pathOr('', ['id']),
-    brand: pathOr('', ['mark']),
-    category: pathOr('', ['category']),
-    column: pathOr('', ['coluna']),
-    drawer: pathOr('', ['gaveta']),
+    id: pathOr('', ['id']),
     key: pathOr('', ['key']),
-    lobby: pathOr('', ['corredor']),
-    mark: pathOr('', ['mark']),
-    product: pathOr('', ['name']),
-    productDescription: pathOr('', ['description']),
-    quantityMin: pathOr('', ['minimumStock']),
+    mark: pathOr('', ['brand']),
+    manufacturer: pathOr('', ['manufacturer']),
+    category: pathOr('', ['category']),
+    brand: pathOr('', ['brand']),
+    category: pathOr('', ['category']),
+    coluna: pathOr('', ['column']),
+    corredor: pathOr('', ['lobby']),
+    product: pathOr('', ['product']),
+    description: pathOr('', ['productDescription']),
+    minimumStock: pathOr('', ['quantityMin']),
     type: pathOr('', ['type']),
-    serialNumber: pathOr(false, ['serial']),
-    shelf: pathOr('', ['prateleira']),
+    serialNumer: pathOr(false, ['serialNumer']),
+    gaveta: pathOr('', ['drawer']),
+    name: pathOr('', ['product']),
+    type: pathOr('', ['type']),
+    serial: pathOr(false, ['serial']),
+    prateleira: pathOr('', ['shelf']),
     sku: pathOr('', ['sku']),
+    manufacturer: pathOr('', ['manufacturer'])
 })
