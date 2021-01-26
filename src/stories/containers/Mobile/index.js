@@ -19,11 +19,11 @@ const products = []
 for (let key = 0; key < 5; key++) {
   const serial = random.boolean()
 
-  // osList.push({
-  //   id: key,
-  //   os: key,
-  //   razaoSocial: company.companyName(),
-  // })
+  osList.push({
+    id: key,
+    os: key,
+    razaoSocial: company.companyName(),
+  })
 
   products.push({
     amount: random.number() % 20,
