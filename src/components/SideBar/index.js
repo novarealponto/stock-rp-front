@@ -160,16 +160,6 @@ class SideBar extends Component {
               }}
             />
           )
-        case 'notificacao_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/notificacao/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
         case 'novoTipoConta_add':
           return (
             <Redirect
@@ -185,7 +175,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: '/logged/technician/manager',
+                pathname: '/logged/technician/add',
                 state: { from: this.props.location },
               }}
             />
@@ -199,18 +189,17 @@ class SideBar extends Component {
                 state: { from: this.props.location },
               }}
             />
-          );
+          )
         case 'productType':
           return (
             <Redirect
               push
               to={{
                 pathname: '/logged/productType/manager',
-                state: { from: this.props.location }
+                state: { from: this.props.location },
               }}
             />
-          );
-
+          )
         case 'novoFornecedor_add':
           return (
             <Redirect
@@ -326,7 +315,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: '/logged/Os/dash',
+                pathname: '/logged/os/manager',
                 state: { from: this.props.location },
               }}
             />
@@ -653,11 +642,10 @@ class SideBar extends Component {
               <SettingOutlined />
               Produto
             </Menu.Item>
-            <Menu.Item disabled={!this.props.auth.addProd} key="productType">
-              <SettingOutlined />
-              Tipo de Produto
-            </Menu.Item>
-            <Menu.Item disabled={!this.props.auth.addFonr} key="novoFornecedor_add">
+            <Menu.Item
+              disabled={!this.props.auth.addFonr}
+              key="novoFornecedor_add"
+            >
               <BankOutlined />
               Fornecedor
             </Menu.Item>

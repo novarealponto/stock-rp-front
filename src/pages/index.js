@@ -25,12 +25,10 @@ import GerenciarProdutosDashRoute from './Gerenciar/GerenciarProdutos'
 import GerenciarProdutoRoute from './Gerenciar/Produto'
 import GerenciarTecnicoRoute from './Gerenciar/GerenciarTecnico'
 import GerenciarUsuarioRoute from './Gerenciar/GerenciarUsuarios'
-import NotificacaoRoute from './Gerenciar/Notificacoes'
 import NovaEntradaRoute from './Cadastros/NovaEntrada'
-import NovoTipoContaRoute from './Cadastros/NovoTipoConta'
-import OsDashRoute from './Gerenciar/Os'
 import Profile from './Profile'
 import Product from './Product'
+import ProductType from './ProductType'
 import Provider from './Provider'
 import RelatorioComprasRoute from './Relatorios/RelatorioCompras'
 import RelatorioEmprestimoRoute from './Relatorios/RelatorioEmprestimo'
@@ -53,6 +51,7 @@ import TechnicianRoute from './Technician'
 import TypeAcconuntRoute from './TypeAcconunt'
 import uuidValidate from 'uuid-validate'
 import User from './User'
+import Os from './Manager/Os'
 
 class PagesRoute extends Component {
   state = {
@@ -105,12 +104,11 @@ class PagesRoute extends Component {
         <Switch>
           <Route exact path="/logged/dash" component={Dash} />
           <Route path="/logged/user" component={User} />
-          <Route path="/logged/novoTipoConta" component={NovoTipoContaRoute} />
           <Route path="/logged/provider" component={Provider} />
-          <Route path="/logged/novoFornecedor" component={NovoFornecedorRoute} />
           <Route path="/logged/product" component={Product} />
           <Route path="/logged/productType" component={ProductType} />
           <Route path="/logged/entry" component={Entry} />
+          <Route path="/logged/provider" component={Provider} />
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
@@ -156,7 +154,7 @@ class PagesRoute extends Component {
             component={RelatorioSuprimentosRoute}
           />
           <Route path="/logged/searchOs" component={SearchOsRoute} />
-          <Route path="/logged/Os" component={OsDashRoute} />
+          <Route exact path="/logged/Os/manager" component={Os} />
           <Route path="/logged/profile" component={Profile} />
           <Route
             path="/logged/gerenciarProdutosDash"
@@ -179,7 +177,6 @@ class PagesRoute extends Component {
             component={GerenciarEntradaDashRoute}
           />
           <Route path="/logged/emprestimo" component={EmprestimoRoute} />
-          <Route path="/logged/notificacao" component={NotificacaoRoute} />
 
           <Route path="/logged/technician/" component={TechnicianRoute} />
 
