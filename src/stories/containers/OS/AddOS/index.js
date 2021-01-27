@@ -4,12 +4,12 @@ import { commerce, name, random } from 'faker'
 import { Form, message } from 'antd'
 import { has } from 'ramda'
 
-import ManagerContainer from '../../../../containers/OS/AddOS'
+import AddOSContainer from '../../../../containers/OS/AddOS'
 import { validateSerialNumberForEntry } from '../../../../utils/validators'
 
 export default {
   title: 'Containers/Os',
-  component: ManagerContainer,
+  component: AddOSContainer,
 }
 
 const productList = []
@@ -22,6 +22,7 @@ const technicianList = []
 
 for (let key = 0; key < 20; key++) {
   productList.push({
+    category: random.boolean() ? 'equipamento' : 'peca',
     key,
     max: random.number() % 30,
     name: commerce.productName(),
@@ -35,6 +36,16 @@ for (let key = 0; key < 20; key++) {
 
 const Template = (args) => {
   const [form] = Form.useForm()
+  const [status, setStatus] = useState('')
+
+  const onChangeStatus = (_, { children }) => {
+    setStatus(children)
+    form.setFieldsValue({
+      product: undefined,
+      quantity: 1,
+      serialNumbers: undefined,
+    })
+  }
 
   const onPressEnterTextAreaSerialNumber = async ({ target }) => {
     const currentTargetValue = target.value
@@ -55,11 +66,13 @@ const Template = (args) => {
   }
 
   return (
-    <ManagerContainer
+    <AddOSContainer
       {...args}
       form={form}
+      onChangeStatus={onChangeStatus}
       onPressEnterTextAreaSerialNumber={onPressEnterTextAreaSerialNumber}
       productList={productList}
+      status={status}
       statusList={statusList}
       technicianList={technicianList}
     />
