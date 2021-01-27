@@ -47,20 +47,20 @@ const EditProduct = ({
           name="category"
           rules={formRequireRules}
         >
-          <Select placeholder="Selecione a categoria!">
-            <Option value="Equipamento">Equipamento</Option>
-            <Option value="Peca">Peca</Option>
-            <Option value="Acessorios">Acessórios</Option>
+          <Select placeholder="Selecione a categoria">
+            <Option value="acessorios">ACESSÓRIOS</Option>
+            <Option value="equipamento">EQUIPAMENTO</Option>
+            <Option value="peca">PEÇA</Option>
           </Select>
         </Form.Item>
       </Col>
       <Col span={8}>
         <Form.Item
-          label="Marcar"
+          label="Marca"
           name="mark"
           rules={formRequireRules}
         >
-          <Select placeholder="Selecione a marcar!">
+          <Select placeholder="Selecione a marca">
             {marksList && marksList.map(
               (item) => (
                 <Option
@@ -80,7 +80,7 @@ const EditProduct = ({
           name="type"
           rules={formRequireRules}
         >
-          <Select placeholder="Selecione o tipo!">
+          <Select placeholder="Selecione o tipo">
             {typesList && typesList.map(
               (item) => (
                 <Option
