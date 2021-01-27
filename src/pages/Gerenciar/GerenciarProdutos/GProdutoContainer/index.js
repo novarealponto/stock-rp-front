@@ -12,6 +12,7 @@ import {
 } from '../../../../services/produto'
 import { Redirect } from 'react-router-dom'
 import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons'
+import { getAllProductType, newProductType } from '../../../../services/produto'
 
 const { Option } = Select
 const { TextArea } = Input

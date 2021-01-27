@@ -3,6 +3,7 @@ import './index.css'
 import { DatePicker, Button, Input, Select, Spin } from 'antd'
 import { getTecnico } from '../../../../services/tecnico'
 import { getTodasOs } from '../../../../services/reservaOs'
+import { getAllStatusExpedition } from '../../../../services/statusExpedition'
 import moment from 'moment'
 
 const { Option } = Select
