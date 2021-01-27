@@ -52,6 +52,7 @@ import TechnicianRoute from './Technician'
 import TypeAcconuntRoute from './TypeAcconunt'
 import uuidValidate from 'uuid-validate'
 import User from './User'
+import ECommerce from './ECommerce'
 
 class PagesRoute extends Component {
   state = {
@@ -103,6 +104,7 @@ class PagesRoute extends Component {
       return (
         <Switch>
           <Route exact path="/logged/dash" component={Dash} />
+          <Route path="/logged/E-Commerce" component={ECommerce} />
           <Route path="/logged/user" component={User} />
           <Route path="/logged/product" component={Product} />
           <Route path="/logged/entry" component={Entry} />
