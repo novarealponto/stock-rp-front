@@ -13,6 +13,7 @@ import CadastroFornecedorSupRoute from './Suprimentos/Cad.Fornecedor'
 import CadastroProdutosSupRoute from './Suprimentos/Cad.Produtos'
 import EditarFornecedorSupRoute from './Suprimentos/Edit.Fornecedor'
 import EntradaSupRoute from './Suprimentos/Entrada'
+import Entry from './Entry'
 import EmprestimoRoute from './Gerenciar/Emprestimo'
 import EstoqueRoute from './Gerenciar/Estoque'
 import GerenciarCadastrosSupRoute from './Suprimentos/Ger.Cadastros'
@@ -106,6 +107,7 @@ class PagesRoute extends Component {
           <Route path="/logged/provider" component={Provider} />
           <Route path="/logged/product" component={Product} />
           <Route path="/logged/productType" component={ProductType} />
+          <Route path="/logged/entry" component={Entry} />
           <Route path="/logged/provider" component={Provider} />
           <Route
             path="/logged/gerenciarProduto"
