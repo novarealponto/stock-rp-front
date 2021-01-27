@@ -52,6 +52,7 @@ import TypeAcconuntRoute from './TypeAcconunt'
 import uuidValidate from 'uuid-validate'
 import User from './User'
 import Os from './Manager/Os'
+import Reception from './Reception'
 
 class PagesRoute extends Component {
   state = {
