@@ -1,19 +1,19 @@
 import actions from '../../../../store/actions'
 
 const INICIAL_STATE_REDIRECT_PRODUTO = {
-  name: '',
   category: '',
-  mark: '',
-  type: '',
-  manufacturer: '',
-  description: '',
-  sku: '',
-  minimumStock: '',
-  serial: false,
-  corredor: '',
   coluna: '',
-  prateleira: '',
+  corredor: '',
+  description: '',
   gaveta: '',
+  manufacturer: '',
+  mark: '',
+  minimumStock: '',
+  name: '',
+  prateleira: '',
+  serial: false,
+  sku: '',
+  type: '',
 }
 
 export function produtoUpdateValue(
@@ -29,20 +29,20 @@ export function produtoUpdateValue(
 }
 
 const INICIAL_STATE_REDIRECT_FORNECEDOR = {
-  id: '',
-  cnpj: '',
-  razaoSocial: '',
-  zipCode: '',
-  state: '',
   city: '',
-  neighborhood: '',
-  street: '',
-  number: '',
+  cnpj: '',
   complement: '',
-  referencePoint: '',
-  nameContact: '',
   email: '',
+  id: '',
+  nameContact: '',
+  neighborhood: '',
+  number: '',
+  razaoSocial: '',
+  referencePoint: '',
+  state: '',
+  street: '',
   telphone: '',
+  zipCode: '',
 }
 
 export function fornecedorUpdateValue(
@@ -58,12 +58,12 @@ export function fornecedorUpdateValue(
 }
 
 const INICIAL_STATE_REDIRECT_USUARIO = {
-  id: '',
   customized: '',
+  id: '',
+  redirect: '',
+  resource: '',
   typeName: '',
   username: '',
-  resource: '',
-  redirect: '',
 }
 
 export function usuarioUpdateValue(
@@ -79,11 +79,11 @@ export function usuarioUpdateValue(
 }
 
 const INICIAL_STATE_REDIRECT_TECNICO = {
+  CNH: '',
+  external: '',
   id: '',
   name: '',
-  CNH: '',
   plate: '',
-  external: '',
 }
 
 export function tecnicoUpdateValue(
