@@ -25,7 +25,7 @@ const { Title } = Typography
 
 const rules = [{ required: true }]
 
-const Manager = ({
+const AddOutput = ({
   form,
   handleSubmit,
   onChangeStatus,
@@ -38,18 +38,20 @@ const Manager = ({
   const [max, setMax] = useState(1)
   const [productBaseId, setProductBaseId] = useState('')
   const [visibleTextArea, setVisibleTextArea] = useState(false)
+  const [category, setCategory] = useState('')
 
-  const handleChangeProduct = (_, { key, max, serial }) => {
+  const handleChangeProduct = (_, { key, max, serial, category }) => {
     setMax(max)
     setProductBaseId(key)
     setVisibleTextArea(serial)
+    setCategory(category)
   }
 
   return (
     <>
       <Row justify="center">
         <Col>
-          <Title level={3}>Reserva Externo</Title>
+          <Title level={3}>Saídas</Title>
         </Col>
       </Row>
 
@@ -65,14 +67,12 @@ const Manager = ({
         }}
         validateTrigger="onBlur"
       >
-        <Row>
-          <Col span={24}>
+        <Row gutter={10}>
+          <Col span={16}>
             <Form.Item label="Razão Social" name="razaoSocial" rules={rules}>
               <Input placeholder="Digite a razão social" />
             </Form.Item>
           </Col>
-        </Row>
-        <Row gutter={10}>
           <Col span={8}>
             <Form.Item
               label="CNPJ"
@@ -86,6 +86,13 @@ const Manager = ({
                 onChange={({ target: { value } }) => masks(form, 'cnpj', value)}
                 placeholder="Digite o CNPJ"
               />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={10}>
+          <Col span={8}>
+            <Form.Item label="Código de rastreamento" name="trackId">
+              <Input placeholder="Digite o código de rastreamento" />
             </Form.Item>
           </Col>
           <Col span={8}>
@@ -149,7 +156,8 @@ const Manager = ({
                     <Option
                       key={key}
                       max={max}
-                      serial={category === 'equipamento' ? serial : undefined}
+                      serial={serial}
+                      category={category}
                       value={name}
                     >
                       {name}
@@ -167,7 +175,12 @@ const Manager = ({
           </Col>
         </Row>
 
-        {(visibleTextArea || status === 'CONSERTO') && (
+        {((visibleTextArea &&
+          (category === 'equipamento' ||
+            status === 'ECOMMERCE' ||
+            status === 'CORREIOS' ||
+            status === 'RECEPÇÃO')) ||
+          status === 'CONSERTO') && (
           <Form.Item label="Números de série" name="serialNumbers">
             <TextArea
               onPressEnter={(event) =>
@@ -297,4 +310,4 @@ const Manager = ({
   )
 }
 
-export default Manager
+export default AddOutput
