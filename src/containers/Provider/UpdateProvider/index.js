@@ -1,6 +1,6 @@
 import React from 'react'
+import { has, map, not, path } from 'ramda'
 import { Button, Col, Form, Input, Row, Typography } from 'antd'
-import { map } from 'ramda'
 
 import {
   validateCEP,
@@ -8,13 +8,17 @@ import {
   validateEmail,
 } from '../../../utils/validators'
 import masks from '../../../utils/masks'
+import { getAddressByZipCode } from '../../../services/fornecedores'
 
 const { Title } = Typography
 
-const renderFormItem = (form) => ({ key, label, name, rules, span }) => (
+const renderFormItem = (form) => ({ key, label, name, onBlur, rules, span }) => (
   <Col key={key} span={span}>
     <Form.Item label={label} name={name} rules={rules}>
-      <Input onChange={({ target: { value } }) => masks(form, name, value)} />
+      <Input
+        onBlur={onBlur}
+        onChange={({ target: { value } }) => masks(form, name, value)}
+      />
     </Form.Item>
   </Col>
 )
@@ -40,6 +44,19 @@ const fieldsForm = (form) => [
   {
     key: 'zipCode',
     label: 'CEP',
+    onBlur: async ({ target: { value } }) => {
+      const { status, data } = await getAddressByZipCode(value)
+
+      if (status === 200 && not(has('erro', data))) {
+        form.setFieldsValue({
+          city: path(['localidade'], data),
+          neighborhood: path(['bairro'], data),
+          referencePoint: path(['complemento'], data),
+          state: path(['uf'], data),
+          street: path(['logradouro'], data),
+        })
+      }
+    },
     name: 'zipCode',
     rules: [
       { required: true },

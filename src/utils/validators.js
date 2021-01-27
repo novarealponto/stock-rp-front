@@ -20,14 +20,6 @@ export const validateCEP = async (form, value) => {
     if (status !== 200 || has('erro', data)) {
       return Promise.reject(new Error('Cep inválido'))
     }
-
-    form.setFieldsValue({
-      city: path(['localidade'], data),
-      neighborhood: path(['bairro'], data),
-      referencePoint: path(['complemento'], data),
-      state: path(['uf'], data),
-      street: path(['logradouro'], data),
-    })
   } catch (err) {
     return Promise.reject(new Error('Cep inválido'))
   }
