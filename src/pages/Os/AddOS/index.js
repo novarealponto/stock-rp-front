@@ -6,6 +6,8 @@ import {
   filter,
   has,
   ifElse,
+  length,
+  lt,
   map,
   pathOr,
   pipe,
@@ -13,7 +15,7 @@ import {
 } from 'ramda'
 import { Form, message } from 'antd'
 
-import AddOsContainer from '../../../containers/OS/AddOS'
+import AddOSContainer from '../../../containers/OS/AddOS'
 import { getAllStatusExpedition } from '../../../services/statusExpedition'
 import { getProdutoByEstoque } from '../../../services/produto'
 import { getTecnico } from '../../../services/tecnico'
@@ -21,7 +23,16 @@ import { newReservaOs } from '../../../services/reservaOs'
 import { validateSerialNumberForEntry } from '../../../utils/validators'
 
 const buildOs = applySpec({
-  cnpj: pathOr('', ['cnpj']),
+  cnpj: ifElse(
+    pipe(pathOr('', ['cnpj']), length, lt(14)),
+    pathOr('', ['cnpj']),
+    () => undefined
+  ),
+  cpf: ifElse(
+    pipe(pathOr('', ['cnpj']), length, lt(14)),
+    () => undefined,
+    pathOr('', ['cnpj'])
+  ),
   date: pathOr(moment(), ['date']),
   osParts: pipe(
     pathOr([], ['products']),
@@ -51,6 +62,7 @@ const buildOs = applySpec({
   razaoSocial: pathOr('', ['razaoSocial']),
   responsibleUser: pathOr('modrp', ['responsibleUser']),
   technicianId: pathOr('', ['technician']),
+  trackId: pathOr('', ['trackId']),
 })
 
 const buildStatus = applySpec({
@@ -88,6 +100,7 @@ const AddOs = () => {
         product: {
           specific: {
             serial: status === 'CONSERTO' ? true : undefined,
+            category: status === 'CONSERTO' ? 'equipamento' : undefined,
           },
         },
         stockBase: {
@@ -168,7 +181,7 @@ const AddOs = () => {
   }, [getAllProdutoByEstoque])
 
   return (
-    <AddOsContainer
+    <AddOSContainer
       form={form}
       handleSubmit={handleSubmit}
       onChangeStatus={onChangeStatus}

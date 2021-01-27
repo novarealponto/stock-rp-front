@@ -132,7 +132,15 @@ const UpdateOS = ({ osUpdateValue, history, clearValueOs }) => {
 
   useEffect(() => {
     getAllStatusExpedition().then(({ data }) =>
-      setStatusList(map(buildStatus, data))
+      setStatusList(
+        filter(
+          ({ status }) =>
+            status !== 'CORREIOS' &&
+            status !== 'ECOMMERCE' &&
+            status !== 'RECEPÇÃO',
+          map(buildStatus, data)
+        )
+      )
     )
     getTecnico({ total: 100 }).then(({ data }) =>
       setTechnicianList(map(buildTechnician, data))

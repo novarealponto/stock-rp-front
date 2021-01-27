@@ -295,7 +295,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: '/logged/Rexterno/dash',
+                pathname: '/logged/os/add',
                 state: { from: this.props.location },
               }}
             />
