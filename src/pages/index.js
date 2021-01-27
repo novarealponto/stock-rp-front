@@ -15,7 +15,6 @@ import EditarFornecedorSupRoute from './Suprimentos/Edit.Fornecedor'
 import EntradaSupRoute from './Suprimentos/Entrada'
 import Entry from './Entry'
 import EmprestimoRoute from './Gerenciar/Emprestimo'
-import EstoqueRoute from './Gerenciar/Estoque'
 import GerenciarCadastrosSupRoute from './Suprimentos/Ger.Cadastros'
 import GerenciarEntradaDashRoute from './Gerenciar/GerenciarEntrada'
 import GerenciarEntradaRoute from './Gerenciar/Entrada'
@@ -47,6 +46,7 @@ import ReservaMLRoute from './Reservas/ReservaML'
 import RomanieoRoute from './Reservas/Romaneio'
 import SaidaSupRoute from './Suprimentos/Saida'
 import SearchOsRoute from './Gerenciar/SearchOs'
+import Stock from './Stock'
 import TechnicianRoute from './Technician'
 import TypeAcconuntRoute from './TypeAcconunt'
 import uuidValidate from 'uuid-validate'
@@ -104,21 +104,24 @@ class PagesRoute extends Component {
         <Switch>
           <Route exact path="/logged/dash" component={Dash} />
           <Route path="/logged/user" component={User} />
-          <Route path="/logged/provider" component={Provider} />
           <Route path="/logged/product" component={Product} />
           <Route path="/logged/productType" component={ProductType} />
           <Route path="/logged/entry" component={Entry} />
           <Route path="/logged/provider" component={Provider} />
+          <Route path="/logged/entry" component={Entry} />
+          <Route path="/logged/productType" component={ProductType} />
+          <Route path="/logged/provider" component={Provider} />
+          <Route path="/logged/Os/add" component={Os} />
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
           />
           <Route path="/logged/entrada" component={NovaEntradaRoute} />
+          <Route exact path="/logged/stock/manager" component={Stock} />
           <Route
             path="/logged/gerenciarEntrada"
             component={GerenciarEntradaRoute}
           />
-          <Route path="/logged/estoque" component={EstoqueRoute} />
           <Route path="/logged/reservaKit" component={ReservaKitRoute} />
           <Route path="/logged/romaneio" component={RomanieoRoute} />
           <Route path="/logged/Rexterno" component={ReservaExternoRoute} />

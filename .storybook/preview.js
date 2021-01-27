@@ -1,8 +1,10 @@
-
 import React from 'react'
-import { ConfigProvider } from 'antd';
+import 'moment/locale/pt-br'
+import fake from 'faker'
 import ptBR from 'antd/lib/locale/pt_BR'
-import 'moment/locale/pt-br';
+import { ConfigProvider } from 'antd'
+
+fake.locale = 'pt_PT'
 
 export const decorators = [
   (Story) => (
@@ -10,8 +12,8 @@ export const decorators = [
       <Story />
     </ConfigProvider>
   ),
-];
+]
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: '^on[A-Z].*' },
 }

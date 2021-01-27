@@ -50,8 +50,13 @@ export const validatePlate = async (value) => {
 
 export const validateSerialNumberForEntry = async (
   currentTargetValue,
-  noRequest = false
+  options = {
+    limit: undefined,
+    noRequest: false,
+    reserve: false,
+  }
 ) => {
+  const { noRequest, limit, reserve } = options
   const currentValueSerialNumber = currentTargetValue.split(/\n/)
   const lastPosition = length(currentValueSerialNumber) - 1
 
@@ -61,7 +66,11 @@ export const validateSerialNumberForEntry = async (
 
   const setSerialNumberModal = (error) => {
     currentValueSerialNumber.splice(lastPosition, 1)
-    return { serialNumbers: currentValueSerialNumber.join('\n'), error }
+    return {
+      error,
+      length: length(currentValueSerialNumber),
+      serialNumbers: currentValueSerialNumber.join('\n'),
+    }
   }
 
   if (isEmpty(currentValueSerialNumber[lastPosition])) {
@@ -72,11 +81,24 @@ export const validateSerialNumberForEntry = async (
     return setSerialNumberModal('Número de série já foi adicionado!')
   }
 
+  if (length(currentValueSerialNumber) > limit) {
+    return setSerialNumberModal('Limite atingido!')
+  }
+
   if (noRequest) return
 
   const { data } = await getSerial(currentValueSerialNumber[lastPosition])
 
-  if (data) {
+  if (reserve && !data) {
+    return setSerialNumberModal('Número de série não registrado!')
+  }
+
+  if (!reserve && data) {
     return setSerialNumberModal('Número de série já registrado!')
+  }
+
+  return {
+    length: length(currentValueSerialNumber),
+    serialNumbers: currentValueSerialNumber,
   }
 }
