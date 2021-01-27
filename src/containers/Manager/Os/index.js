@@ -23,8 +23,7 @@ const { Title } = Typography
 
 const showDeleteConfirm = ({ handleOnClickDelet, row }) => {
   confirm({
-    content:
-      'Todos os produtos desta reserva voltarão para estoque e não haverá histórico desta O.S.',
+    content: 'Todos os produtos desta reserva voltarão para estoque',
     cancelText: 'Não',
     icon: <ExclamationCircleOutlined />,
     okText: 'Sim',

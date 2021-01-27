@@ -52,7 +52,7 @@ export const buildQueryOs = applySpec({
 
 export const buildRedirectValueOs = applySpec({
   cnpj: pathOr('', ['cnpj']),
-  date: pathOr('', ['formatedDate']),
+  date: pathOr('', ['date']),
   id: pathOr('', ['key']),
   Os: pathOr('', ['os']),
   products: pathOr([], ['products']),
