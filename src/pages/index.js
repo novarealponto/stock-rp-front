@@ -55,7 +55,7 @@ import User from './User'
 import ECommerce from './ECommerce'
 import Mark from './Mark'
 import Reception from './Reception'
-import ProductType from './ProductType'
+import Reports from './Reports'
 
 class PagesRoute extends Component {
   state = {
@@ -117,6 +117,7 @@ class PagesRoute extends Component {
           <Route path="/logged/Os" component={Os} />
           <Route path="/logged/mark" component={Mark} />
           <Route path="/logged/reception" component={Reception} />
+          <Route path="/logged/reports" component={Reports} />
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
