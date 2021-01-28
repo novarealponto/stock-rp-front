@@ -67,6 +67,7 @@ const ReportOS = () => {
         prop('products'),
         map(
           applySpec({
+            key: prop('id'),
             missout: prop('missOut'),
             output: prop('output'),
             product: prop('name'),
