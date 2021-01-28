@@ -127,7 +127,6 @@ const renderFormItem = ({ children, label, name, span }) => (
 )
 
 const ReportOS = ({
-  from,
   handleSubmitSearch,
   onChangeTable,
   osList,

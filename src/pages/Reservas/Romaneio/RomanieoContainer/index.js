@@ -185,7 +185,7 @@ class RomanieoContainer extends Component {
   }
 
   componentDidMount = async () => {
-    await this.getAllTechnician()
+    await this.getAllTecnico()
   }
 
   getAllTecnico = async () => {

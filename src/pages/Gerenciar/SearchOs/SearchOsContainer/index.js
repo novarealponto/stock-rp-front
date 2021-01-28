@@ -188,7 +188,7 @@ class SearchOsDash extends Component {
 
   componentDidMount = async () => {
     await this.getAllItens()
-    await this.getAllTechnician()
+    await this.getAllTecnico()
     await this.getAllStatusExpedition()
 
     // eslint-disable-next-line array-callback-return

@@ -5,7 +5,7 @@ import { commerce, company, date, name, random } from 'faker'
 import ReportOSContainer from '../../../../containers/Report/Os'
 
 export default {
-  title: 'Containers/Repots',
+  title: 'Containers/Reports',
   component: ReportOSContainer,
 }
 
