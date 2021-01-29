@@ -105,7 +105,7 @@ const Supply = ({
     <>
       <Row justify="center">
         <Col>
-          <Title level={3}>Supply</Title>
+          <Title level={3}>Relatório de suprimentos</Title>
         </Col>
       </Row>
 
