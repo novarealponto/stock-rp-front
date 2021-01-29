@@ -20,11 +20,11 @@ const formRequireRules = [{
 }];
 
 const EditProduct = ({
-  initialValues,
   form,
   handleSubmit,
+  initialValues,
   marksList,
-  typesList,
+  typesList, 
 }) => (
   <Form form={form} onFinish={handleSubmit} initialValues={initialValues}>
     <Row justify="center">

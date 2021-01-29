@@ -62,8 +62,8 @@ const EditProduct = ({history, produtoUpdateValue}) => {
   return (
     <EditProductContainer
       form={form}
-      initialValues={produtoUpdateValue}
       handleSubmit={handleSubmit}
+      initialValues={produtoUpdateValue}
       marksList={marksList}
       typesList={typesList}
     />
