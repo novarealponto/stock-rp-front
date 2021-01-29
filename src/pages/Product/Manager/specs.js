@@ -1,12 +1,11 @@
 import { applySpec, pathOr } from 'ramda'
 
 export const buildDataSource = applySpec({
-    key: pathOr('', ['id']),
+    id: pathOr('', ['id']),
     brand: pathOr('', ['mark']),
     category: pathOr('', ['category']),
     column: pathOr('', ['coluna']),
     drawer: pathOr('', ['gaveta']),
-    key: pathOr('', ['key']),
     lobby: pathOr('', ['corredor']),
     product: pathOr('', ['name']),
     productDescription: pathOr('', ['description']),
@@ -27,7 +26,6 @@ export const buildQueryProduct = applySpec({
 
 export const buildRedirectValueProduct = applySpec({
     id: pathOr('', ['id']),
-    key: pathOr('', ['key']),
     mark: pathOr('', ['brand']),
     manufacturer: pathOr('', ['manufacturer']),
     category: pathOr('', ['category']),
@@ -39,7 +37,7 @@ export const buildRedirectValueProduct = applySpec({
     description: pathOr('', ['productDescription']),
     minimumStock: pathOr('', ['quantityMin']),
     type: pathOr('', ['type']),
-    serialNumer: pathOr(false, ['serialNumer']),
+    serialNumber: pathOr(false, ['serialNumber']),
     gaveta: pathOr('', ['drawer']),
     name: pathOr('', ['product']),
     type: pathOr('', ['type']),

@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'ramda';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import PropTypes from 'prop-types';
 
+import buildProduct from '../../../utils/productSpec';
 import EditProductContainer from '../../../containers/Product/Edit'
 import {
   getAllProductType,
   getMarca,
+  updateProduto
 } from '../../../services/produto';
 
-const EditProduct = () => {
+const success = () => message.success('Produto foi atualizado');
+const errorMessage = () => message.error('Houve um erro ao atualizar produto');
+
+const EditProduct = ({history, produtoUpdateValue}) => {
   const [form] = Form.useForm();
   const [marksList, setMarkList] = useState([])
   const [typesList, setTypesList] = useState([])
@@ -19,18 +24,6 @@ const EditProduct = () => {
     getAllMarca();
     getAllTipo();
   }, []);
-
-  const getAllTipo = async () => {
-    try {
-      const { data, status } = await getAllProductType();
-      if (status === 404 || status === 422 || status === 500) {
-        throw new Error('422 Unprocessable Entity!')
-      }
-      setTypesList(data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const getAllMarca = async () => {
     try {
@@ -44,10 +37,33 @@ const EditProduct = () => {
     }
   }
 
+  const getAllTipo = async () => {
+    try {
+      const { data, status } = await getAllProductType();
+      if (status === 404 || status === 422 || status === 500) {
+        throw new Error('422 Unprocessable Entity!')
+      }
+      setTypesList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleSubmit = async (formData) => {
+    try {
+      await updateProduto(buildProduct({...produtoUpdateValue, ...formData}));
+      history.push('/logged/product/manager')
+      success();
+    } catch (error) {
+      errorMessage();
+    }
+  }
+
   return (
     <EditProductContainer
       form={form}
-      // handleSubmit={handleSubmit}
+      initialValues={produtoUpdateValue}
+      handleSubmit={handleSubmit}
       marksList={marksList}
       typesList={typesList}
     />

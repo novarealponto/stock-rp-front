@@ -35,7 +35,7 @@ const AddProduct = ({
       <Col span={8}>
         <Form.Item
           label="Item"
-          name="item"
+          name="name"
           rules={formRequireRules}
         >
           <Input />
@@ -115,7 +115,7 @@ const AddProduct = ({
       <Col span={24}>
         <Form.Item
           label="Descrição"
-          name="descricao"
+          name="description"
         >
           <TextArea
             autosize={{ minRows: 2, maxRows: 4 }}

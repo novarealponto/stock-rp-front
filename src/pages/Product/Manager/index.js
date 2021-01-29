@@ -48,6 +48,7 @@ const Manager = ({ history, redirectValueProduto }) => {
     
     getProdutos(query).then(({ data: { rows, count: total } }) => {
       setDataSource(map(buildDataSource, rows))
+      console.log(rows)
 
       setTotal(total)
     })
@@ -57,6 +58,7 @@ const Manager = ({ history, redirectValueProduto }) => {
 
   const handleOnClickEdit = (productData) => {
     redirectValueProduto(buildRedirectValueProduct(productData))
+    console.log(productData)
 
     history.push('/logged/product/edit')
   }

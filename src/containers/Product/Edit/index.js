@@ -20,12 +20,13 @@ const formRequireRules = [{
 }];
 
 const EditProduct = ({
+  initialValues,
   form,
   handleSubmit,
   marksList,
   typesList,
 }) => (
-  <Form form={form} onFinish={handleSubmit}>
+  <Form form={form} onFinish={handleSubmit} initialValues={initialValues}>
     <Row justify="center">
       <Col>
         <Title level={3}>Atualizar Produto</Title>
@@ -34,8 +35,8 @@ const EditProduct = ({
     <Row gutter={[8, 8]}>
       <Col span={8}>
         <Form.Item
-          label="Item"
-          name="item"
+          label="Produto"
+          name="name"
           rules={formRequireRules}
         >
           <Input />
@@ -97,7 +98,7 @@ const EditProduct = ({
       <Col span={8}>
         <Form.Item
           label="Quant. min"
-          name="quantMin"
+          name="minimumStock"
           rules={formRequireRules}
         >
           <InputNumber min={1} />
@@ -106,7 +107,7 @@ const EditProduct = ({
       <Col span={8}>
         <Form.Item
           label="Número de série:"
-          name="serial"
+          name="serialNumber"
           valuePropName="checked"
         >
           <Switch />
@@ -115,7 +116,7 @@ const EditProduct = ({
       <Col span={24}>
         <Form.Item
           label="Descrição"
-          name="descricao"
+          name="description"
         >
           <TextArea
             autosize={{ minRows: 2, maxRows: 4 }}
@@ -164,7 +165,7 @@ const EditProduct = ({
             type="primary"
             style={{ marginTop: '20px' }}
           >
-            Salvar
+            Atualizar
           </Button>
         </Form.Item>
       </Col>
