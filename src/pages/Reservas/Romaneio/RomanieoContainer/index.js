@@ -185,10 +185,10 @@ class RomanieoContainer extends Component {
   }
 
   componentDidMount = async () => {
-    await this.getAllTechnician()
+    await this.getAllTecnico()
   }
 
-  getAllTechnician = async () => {
+  getAllTecnico = async () => {
     await getTecnico().then((resposta) =>
       this.setState({
         tecnicoArray: resposta.data,
@@ -329,7 +329,7 @@ class RomanieoContainer extends Component {
         let index = -1
 
         const linhaUnica =
-          data.productBase.product.category === 'equipamento' &&
+          data.productBase.product.category !== 'peca' &&
           data.productBase.product.serial
 
         if (linhaUnica) {
@@ -343,7 +343,8 @@ class RomanieoContainer extends Component {
         }
 
         let reserved =
-          data.reserved && data.productBase.product.category === 'peca'
+          (data.reserved || !!data.deletedAt) &&
+          data.productBase.product.category === 'peca'
 
         R.map((item) => {
           if (

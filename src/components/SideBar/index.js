@@ -652,10 +652,6 @@ class SideBar extends Component {
               <SettingOutlined />
               Produto
             </Menu.Item>
-            <Menu.Item disabled={!this.props.auth.addProd} key="productType">
-              <SettingOutlined />
-              Tipo de Produto
-            </Menu.Item>
             <Menu.Item
               disabled={!this.props.auth.addFonr}
               key="novoFornecedor_add"
@@ -739,18 +735,18 @@ class SideBar extends Component {
                 <FilePdfOutlined />
                 Romaneio
               </Menu.Item>
-              <Menu.Item disabled={!this.props.auth.gerROs} key="Rinterno_dash">
+              {/* <Menu.Item disabled={!this.props.auth.gerROs} key="Rinterno_dash">
                 <FileAddOutlined />
                 Recepção
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item disabled={!this.props.auth.addROs} key="Rexterno_dash">
                 <FileAddOutlined />
-                Externo
+                Saídas
               </Menu.Item>
-              <Menu.Item disabled={!this.props.auth.addRML} key="reservaML_dash">
+              {/* <Menu.Item disabled={!this.props.auth.addRML} key="reservaML_dash">
                 <PieChartOutlined />
                 E-Commerce
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item disabled={!this.props.auth.gerROs} key="Os_dash">
                 <UnorderedListOutlined />
                 Gerenciar Os
@@ -795,12 +791,12 @@ class SideBar extends Component {
               </Menu.Item>
             )}
 
-            {!this.props.auth.modulo && (
+            {/* {!this.props.auth.modulo && (
               <Menu.Item key="relatorioML_dash">
                 <PieChartOutlined />
                 E-Commerce
               </Menu.Item>
-            )}
+            )} */}
             {!this.props.auth.modulo && (
               <Menu.Item key="relatorioVendas_dash">
                 <ShoppingCartOutlined />
@@ -819,10 +815,10 @@ class SideBar extends Component {
                 Suprimentos
               </Menu.Item>
             )}
-            <Menu.Item key="relatorioInterno_dash">
+            {/* <Menu.Item key="relatorioInterno_dash">
               <UserOutlined />
               Interno
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item key="relatorioEmprestimo_dash">
               <RetweetOutlined />
               Empréstimo

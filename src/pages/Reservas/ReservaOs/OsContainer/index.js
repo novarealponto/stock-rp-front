@@ -21,6 +21,7 @@ import {
   getAllStatusExpedition,
 } from '../../../../services/statusExpedition'
 import moment from 'moment'
+import { pathOr } from 'ramda'
 import { PlusOutlined } from '@ant-design/icons'
 
 const { TextArea } = Input
@@ -42,6 +43,7 @@ class Rexterno extends Component {
     observacao: '',
     razaoSocial: '',
     cnpj: '',
+    trackId: '',
     data: '',
     serialNumber: '',
     status: 'Não selecionado',
@@ -147,10 +149,10 @@ class Rexterno extends Component {
             mensagem = 'Este equipamento não contém esse número de série'
             count++
           }
-          if (resp.data.reserved) {
+          if (resp.data.reserved || resp.data.deletedAt) {
             count++
             if (resp.data.deletedAt) {
-              if (resp.data.osParts) {
+              if (resp.data.osPart) {
                 mensagem = `Este equipamento ja foi liberado para a OS: ${resp.data.osPart.o.os}`
               } else if (resp.data.freeMarketPart) {
                 mensagem = `Este equipamento foi liberado para mercado livre com código de restreamento: ${resp.data.freeMarketPart.freeMarket.trackingCode}`
@@ -301,12 +303,18 @@ class Rexterno extends Component {
       loading: true,
     })
 
+    const document =
+      this.state.cnpj.replace(/\D/g, '').length === 14
+        ? { cnpj: this.state.cnpj }
+        : { cpf: this.state.cnpj }
+
     const values = {
+      ...document,
       razaoSocial: this.state.razaoSocial,
-      cnpj: this.state.cnpj,
       date: this.state.data,
       technicianId: this.state.technicianId,
       osParts: this.state.carrinho,
+      trackId: this.state.trackId,
       responsibleUser: 'modrp',
     }
 
@@ -315,10 +323,18 @@ class Rexterno extends Component {
     if (resposta.status === 422) {
       this.setState({
         messageError: true,
-        fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message,
+        fieldFalha: pathOr(
+          'Ocorreu um Error!',
+          ['data', 'fields', '0', 'field'],
+          resposta
+        ),
+        message: pathOr(
+          'Tente novamente mais tarde!',
+          ['data', 'fields', '0', 'message'],
+          resposta
+        ),
       })
-      message.error(this.state.message.message)
+      message.error(this.state.message)
       this.setState({
         loading: false,
         messageError: false,
@@ -328,6 +344,7 @@ class Rexterno extends Component {
       this.setState({
         razaoSocial: '',
         cnpj: '',
+        trackId: '',
         data: '',
         carrinho: [],
         serial: false,
@@ -566,12 +583,12 @@ class Rexterno extends Component {
       <div className="div-card-Os">
         {this.renderRedirect()}
         <div className="linhaTexto-Os">
-          <h1 className="h1-Os">Reserva técnicos externos</h1>
+          <h1 className="h1-Os">Reserva</h1>
         </div>
 
         <div className="div-linha-Os">
           <div className="div-rs1-Os">
-            <div className="div-textRs-Os">Razão social:</div>
+            <div className="div-textRs-Os">Nome do cliente:</div>
             <div className="div-inputs">
               <Input
                 readOnly={this.state.readOnly}
@@ -602,7 +619,7 @@ class Rexterno extends Component {
 
         <div className="div-linha1-Os">
           <div className="div-cnpj-Os">
-            <div className="div-text-Os">Cnpj:</div>
+            <div className="div-text-Os">CNPJ/CPF:</div>
             <div className="div-inputs">
               <Input
                 readOnly={this.state.readOnly}
@@ -674,6 +691,20 @@ class Rexterno extends Component {
                   </Option>
                 ))}
               </Select>
+            </div>
+          </div>
+        </div>
+
+        <div className="div-linha-Os">
+          <div className="div-rs1-Os">
+            <div className="div-textRs-Os">Código de rastreamento:</div>
+            <div className="div-inputs">
+              <Input
+                name="trackId"
+                value={this.state.trackId}
+                placeholder="Digite o código de rastreamento"
+                onChange={this.onChange}
+              />
             </div>
           </div>
         </div>
@@ -794,7 +825,9 @@ class Rexterno extends Component {
 
         {this.state.status !== 'CONSERTO' &&
         this.state.serial &&
-        this.state.categoria !== 'peca' ? (
+        (this.state.categoria !== 'peca' ||
+          this.state.status === 'ECOMMERCE' ||
+          this.state.status === 'RECEPÇÃO') ? (
           <div className="div-linha-Os">
             <div className="div-serial-AddKit">
               <div className="div-textSerial-AddKit">Número de série:</div>

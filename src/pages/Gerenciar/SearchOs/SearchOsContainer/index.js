@@ -96,7 +96,7 @@ class SearchOsDash extends Component {
     }
   }
 
-  getAllTechnician = async (name) => {
+  getAllTecnico = async (name) => {
     const query = {
       filters: {
         technician: {
@@ -188,7 +188,7 @@ class SearchOsDash extends Component {
 
   componentDidMount = async () => {
     await this.getAllItens()
-    await this.getAllTechnician()
+    await this.getAllTecnico()
     await this.getAllStatusExpedition()
 
     // eslint-disable-next-line array-callback-return
@@ -784,7 +784,7 @@ class SearchOsDash extends Component {
                   style={{ width: '100%' }}
                   onChange={this.onChangeSelect}
                   showSearch
-                  onSearch={(name) => this.getAllTechnician(name)}
+                  onSearch={(name) => this.getAllTecnico(name)}
                   placeholder="Nenhum tecnicos cadastrado"
                   optionFilterProp="children"
                   value={this.state.tecnico}
@@ -834,9 +834,11 @@ class SearchOsDash extends Component {
                 style={{ width: '100%' }}
                 onChange={this.onChangeStatus}
               >
-                {this.state.allStatus.map((item) => {
-                  return <Option value={item}>{item.toUpperCase()}</Option>
-                })}
+                {this.state.allStatus
+                  .filter((item) => item !== 'ECOMMERCE' && item !== 'RECEPÇÃO')
+                  .map((item) => {
+                    return <Option value={item}>{item.toUpperCase()}</Option>
+                  })}
               </Select>
               <this.modalStatus />
               {this.props.auth.addStatus ? (
