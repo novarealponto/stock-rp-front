@@ -15,6 +15,14 @@ setLocale({
   },
 })
 
+export const validateConfirmPassword = ({ getFieldValue }) => (_, value) => {
+  const confirmPassword = getFieldValue('newPassword')
+
+  if (confirmPassword && confirmPassword !== value) {
+    return Promise.reject(new Error('Nova senha estão diferente'))
+  }
+}
+
 export const validateCEP = async (form, value) => {
   try {
     const { status, data } = await getAddressByZipCode(value)
@@ -106,9 +114,31 @@ export const validateSerialNumberForEntry = async (
   }
 }
 
-export const validatePlate = async (value) => {
-  if (/\W/.test(value)) {
-    return Promise.reject(new Error('Digite apenas caracteres alfanumérico'))
+export const validateNewPassword = ({ getFieldValue, setFields }) => (
+  _,
+  value
+) => {
+  const confirmPassword = getFieldValue('confirmPassword')
+  const currentPassword = getFieldValue('currentPassword')
+
+  if (currentPassword === value) {
+    return Promise.reject(new Error('Nova senha dev ser diferente da antiga'))
+  }
+
+  if (confirmPassword && confirmPassword !== value) {
+    setFields([
+      {
+        errors: ['Nova senha estão diferente'],
+        name: ['confirmPassword'],
+      },
+    ])
+  } else {
+    setFields([
+      {
+        errors: [],
+        name: ['confirmPassword'],
+      },
+    ])
   }
 }
 
