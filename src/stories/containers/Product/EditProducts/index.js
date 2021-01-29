@@ -1,10 +1,10 @@
 import React from 'react';
 import { action } from '@storybook/addon-actions'
 import { commerce, company, random, vehicle } from 'faker'
-import EditProducts from '../../../../containers/Product/Edit';
 import { Form } from 'antd'
 
 import buildProduct from '../../../../utils/productSpec'
+import EditProducts from '../../../../containers/Product/Edit';
 
 export default {
     title: 'Containers/Products/EditProducts',
@@ -14,19 +14,19 @@ export default {
   const handleSubmitAction = action('On submit user form!');
 
   const initialValues = {
-    mark: company.companyName(),
     category: vehicle.model(), 
     coluna: random.number(),
-    prateleira: random.number(),
-    key: random.uuid(),
     corredor: random.number(),
-    mark: vehicle.manufacturer(),
-    name: commerce.productName(),
     description: commerce.productDescription(),
-    minimumStock: random.number(),
-    type: vehicle.type(),
-    serialNumber: random.float(),
+    mark: company.companyName(),
     gaveta: random.number(),
+    key: random.uuid(),
+    mark: vehicle.manufacturer(),
+    minimumStock: random.number(),
+    name: commerce.productName(),
+    prateleira: random.number(),
+    serialNumber: random.float(),
+    type: vehicle.type(),
     sku: random.float(),
   }
 
