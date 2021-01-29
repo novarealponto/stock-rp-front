@@ -54,6 +54,7 @@ import uuidValidate from 'uuid-validate'
 import User from './User'
 import ECommerce from './ECommerce'
 import Mark from './Mark'
+import Reception from './Reception'
 
 class PagesRoute extends Component {
   state = {
@@ -113,6 +114,7 @@ class PagesRoute extends Component {
           <Route path="/logged/provider" component={Provider} />
           <Route path="/logged/Os" component={Os} />
           <Route path="/logged/mark" component={Mark} />
+          <Route path="/logged/reception" component={Reception} />
           <Route
             path="/logged/gerenciarProduto"
             component={GerenciarProdutoRoute}
