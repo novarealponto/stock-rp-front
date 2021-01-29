@@ -56,6 +56,7 @@ import ECommerce from './ECommerce'
 import Mark from './Mark'
 import Reception from './Reception'
 import Reports from './Reports'
+import Loan from './Loan'
 
 class PagesRoute extends Component {
   state = {
@@ -109,7 +110,7 @@ class PagesRoute extends Component {
           <Route exact path="/logged/dash" component={Dash} />
           <Route path="/logged/E-Commerce" component={ECommerce} />
           <Route path="/logged/user" component={User} />
-          <Route path="/logged/provider" component={Provider} />
+          <Route exact path="/logged/loan" component={Loan} />
           <Route path="/logged/product" component={Product} />
           <Route path="/logged/entry" component={Entry} />
           <Route path="/logged/productType" component={ProductType} />
