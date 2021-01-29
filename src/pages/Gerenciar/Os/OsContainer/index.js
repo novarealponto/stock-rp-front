@@ -613,7 +613,7 @@ class OsDash extends Component {
               </div>
 
               <div className="div-cnpj-GOs">
-                <div className="div-text-GOs">Cnpj:</div>
+                <div className="div-text-GOs">Cnpj/Cpf:</div>
                 <Input
                   className="input-100"
                   style={{ width: "100%" }}

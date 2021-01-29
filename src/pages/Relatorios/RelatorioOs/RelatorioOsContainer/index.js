@@ -1,85 +1,103 @@
-import React, { Component } from "react";
-import "./index.css";
-import { DatePicker, Button, Input, Select, Spin } from "antd";
-import { getTecnico } from "../../../../services/tecnico";
-import { getTodasOs } from "../../../../services/reservaOs";
-import moment from "moment";
+import React, { Component } from 'react';
+import './index.css';
+import { DatePicker, Button, Input, Select, Spin } from 'antd';
+import { getTecnico } from '../../../../services/tecnico';
+import { getTodasOs } from '../../../../services/reservaOs';
+import { getAllStatusExpedition } from '../../../../services/statusExpedition';
+import moment from 'moment';
 
 const { Option } = Select;
 
 class GerenciarEntrada extends Component {
   state = {
     avancado: false,
-    os: "",
-    rs: "",
-    data: "",
-    tecnico: "",
+    os: '',
+    rs: '',
+    data: '',
+    tecnico: '',
+    status: '',
     tecnicoArray: [],
-    valueDate: { start: "2019/01/01" },
+    statusList: [],
+    valueDate: { start: '2019/01/01' },
     page: 1,
     total: 10,
     count: 0,
     show: 0,
     mais: {},
     OsArray: {
-      rows: []
+      rows: [],
+    },
+  };
+
+  getAllStatusExpedition = async () => {
+    const { status, data } = await getAllStatusExpedition();
+
+    if (status === 200) {
+      this.setState({
+        statusList: data,
+      });
     }
   };
 
   getAllOs = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const query = {
       filters: {
         os: {
           specific: {
-            deletedAt: { start: "2019/01/01" },
+            deletedAt: { start: '2019/01/01' },
             os: this.state.os,
             razaoSocial: this.state.rs,
-            date: this.state.valueDate
-          }
+            date: this.state.valueDate,
+          },
         },
         technician: {
           specific: {
-            name: this.state.tecnico
-          }
+            name: this.state.tecnico,
+          },
         },
         product: {
           specific: {
-            name: this.state.produto
-          }
-        }
+            name: this.state.produto,
+          },
+        },
+        osParts: {
+          specific: {
+            statusExpeditionId: this.state.status ?  this.state.status: undefined,
+          },
+        },
       },
       order: {
-        field: "deletedAt",
-        acendent: true
+        field: 'deletedAt',
+        acendent: true,
       },
       page: this.state.page,
       total: this.state.total,
       required: false,
-      paranoid: false
+      paranoid: false,
     };
 
-    await getTodasOs(query).then(resposta =>
+    await getTodasOs(query).then((resposta) =>
       this.setState({
         OsArray: resposta.data,
         page: resposta.data.page,
         count: resposta.data.count,
-        show: resposta.data.show
+        show: resposta.data.show,
       })
     );
 
     this.setState({
-      loading: false
+      loading: false,
     });
   };
 
-  changePages = pages => {
+  changePages = (pages) => {
     this.setState(
       {
-        page: pages
+        page: pages,
       },
       () => {
         this.getAllOs();
@@ -88,16 +106,16 @@ class GerenciarEntrada extends Component {
   };
 
   getAllTecnico = async () => {
-    await getTecnico().then(resposta =>
+    await getTecnico().then((resposta) =>
       this.setState({
-        tecnicoArray: resposta.data
+        tecnicoArray: resposta.data,
       })
     );
   };
 
-  onChangeTecnico = async value => {
+  onChangeTecnico = async (value) => {
     await this.setState({
-      tecnico: value
+      tecnico: value,
     });
 
     await this.getAllOs();
@@ -106,54 +124,61 @@ class GerenciarEntrada extends Component {
   componentDidMount = async () => {
     await this.getAllOs();
 
+    await this.getAllStatusExpedition();
     await this.getAllTecnico();
   };
 
   avancado = () => {
     this.setState({
-      avancado: !this.state.avancado
+      avancado: !this.state.avancado,
     });
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     await this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
 
     await this.getAllOs();
   };
 
-  searchDate = async e => {
+  onChangeStatus = async (status) => {
+    await this.setState({ status });
+
+    await this.getAllOs();
+  };
+
+  searchDate = async (e) => {
     if (!e[0] || !e[1]) return;
     await this.setState({
-      valueDate: { start: e[0]._d, end: e[1]._d }
+      valueDate: { start: e[0]._d, end: e[1]._d },
     });
 
     await this.getAllOs();
   };
 
-  formatDateFunct = date => {
-    moment.locale("pt-br");
-    const formatDate = moment(date).format("L");
-    const formatHours = moment(date).format("LT");
+  formatDateFunct = (date) => {
+    moment.locale('pt-br');
+    const formatDate = moment(date).format('L');
+    const formatHours = moment(date).format('LT');
     const dateformated = `${formatDate} ${formatHours}`;
     return dateformated;
   };
 
-  mais = async line => {
+  mais = async (line) => {
     await this.setState({
       mais: {
-        [line.id]: !this.state.mais[line.id]
+        [line.id]: !this.state.mais[line.id],
       },
       lineSelected: {
-        rows: [line]
-      }
+        rows: [line],
+      },
     });
   };
 
   test = () => {
     if (this.state.OsArray.rows.length !== 0) {
-      return this.state.OsArray.rows.map(line => (
+      return this.state.OsArray.rows.map((line) => (
         <div className="div-100-Gentrada">
           <div className="div-lines-ROs">
             <div className="cel-mais-cabecalho-ROs">
@@ -183,22 +208,34 @@ class GerenciarEntrada extends Component {
                   <Spin spinning={this.state.loading} />
                 </div>
               ) : (
-                this.state.lineSelected.rows.map(line => (
+                this.state.lineSelected.rows.map((line) => (
                   <div className="div-branco-mais-ROs">
                     <div className="div-normal-mais-ROs">
-                        <div style={{ display: "flex", flexDirection: "column",  width: '100%'}}>
-                          {line.products.map(valor => (
-                            <div style={{ display: "flex", width: '100%'}}>
-                              <div className="div-peca" contentEditable style={{ width: '30%' }}>{valor.name}</div>
-                              <div className="div-peca" style={{ width: '30%' }}>{valor.status}</div>
-                              <div className="div-peca" style={{ width: '10%' }}>{valor.amount}</div>
-                              <div className="div-peca" style={{ width: '10%' }}>{valor.missOut}</div>
-                              <div className="div-peca" style={{ width: '10%' }}>{valor.output}</div>
-                              <div className="div-peca" style={{ width: '10%' }}>{valor.return}</div>
+                      <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                        {line.products.map((valor) => (
+                          <div style={{ display: 'flex', width: '100%' }}>
+                            <div className="div-peca" contentEditable style={{ width: '30%' }}>
+                              {valor.name}
                             </div>
-                          ))}
-                        </div>
+                            <div className="div-peca" style={{ width: '30%' }}>
+                              {valor.status}
+                            </div>
+                            <div className="div-peca" style={{ width: '10%' }}>
+                              {valor.amount}
+                            </div>
+                            <div className="div-peca" style={{ width: '10%' }}>
+                              {valor.missOut}
+                            </div>
+                            <div className="div-peca" style={{ width: '10%' }}>
+                              {valor.output}
+                            </div>
+                            <div className="div-peca" style={{ width: '10%' }}>
+                              {valor.return}
+                            </div>
+                          </div>
+                        ))}
                       </div>
+                    </div>
                   </div>
                 ))
               )}
@@ -208,9 +245,7 @@ class GerenciarEntrada extends Component {
         </div>
       ));
     } else {
-      return (
-        <div className="div-naotemnada">Não há nenhuma reserva finalizada</div>
-      );
+      return <div className="div-naotemnada">Não há nenhuma reserva finalizada</div>;
     }
   };
 
@@ -274,8 +309,7 @@ class GerenciarEntrada extends Component {
           {this.state.page + 2}
         </Button>
       ) : null}
-      {this.state.page + 2 < this.state.count / this.state.total &&
-      this.state.page < 3 ? (
+      {this.state.page + 2 < this.state.count / this.state.total && this.state.page < 3 ? (
         <Button
           className="button"
           type="primary"
@@ -284,8 +318,7 @@ class GerenciarEntrada extends Component {
           {this.state.page + 3}
         </Button>
       ) : null}
-      {this.state.page + 3 < this.state.count / this.state.total &&
-      this.state.page < 2 ? (
+      {this.state.page + 3 < this.state.count / this.state.total && this.state.page < 2 ? (
         <Button
           className="button"
           type="primary"
@@ -316,7 +349,7 @@ class GerenciarEntrada extends Component {
                 <div className="div-text-Rtecnico">Os:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="os"
                   value={this.state.os}
                   placeholder="Digite a Os"
@@ -329,7 +362,7 @@ class GerenciarEntrada extends Component {
                 <div className="div-textRs-Os">Razão social:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="rs"
                   value={this.state.rs}
                   placeholder="Digite o razão social"
@@ -354,18 +387,15 @@ class GerenciarEntrada extends Component {
               <div className="div-tecnico-ROs">
                 <div className="div-text-Rtecnico">Técnico:</div>
                 {this.state.tecnicoArray.length === 0 ? (
-                  <Select
-                    value="Nenhum tecnico cadastrado"
-                    style={{ width: "100%" }}
-                  ></Select>
+                  <Select value="Nenhum tecnico cadastrado" style={{ width: '100%' }}></Select>
                 ) : (
                   <Select
                     value={this.state.tecnico}
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                     onChange={this.onChangeTecnico}
                   >
                     <Option value="">TODOS</Option>
-                    {this.state.tecnicoArray.map(valor => (
+                    {this.state.tecnicoArray.map((valor) => (
                       <Option value={valor.name}>{valor.name}</Option>
                     ))}
                   </Select>
@@ -378,7 +408,7 @@ class GerenciarEntrada extends Component {
                 <div className="div-text-GOs">Produto:</div>
                 <Input
                   className="input-100"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   name="produto"
                   value={this.state.produto}
                   placeholder="Digite o produto"
@@ -388,16 +418,19 @@ class GerenciarEntrada extends Component {
               </div>
 
               <div className="div-nSerie-GOs">
-                <div className="div-textRs-GOs">N° Serie:</div>
-                <Input
-                  className="input-100"
-                  style={{ width: "100%" }}
-                  name="nSerie"
-                  value={this.state.nSerie}
-                  placeholder="Digite o produto"
-                  onChange={this.onChange}
+                <div className="div-textRs-GOs">Status:</div>
+                <Select
+                  style={{ width: '100%' }}
+                  value={this.state.status}
+                  onChange={this.onChangeStatus}
                   allowClear
-                />
+                >
+                  {this.state.statusList.map(({status, id}) => (
+                    <Option key={id} value={id}>
+                      {status}
+                    </Option>
+                  ))}
+                </Select>
               </div>
             </div>
           </div>

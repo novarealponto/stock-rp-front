@@ -1,27 +1,17 @@
-import React, { Component } from "react";
-import "./index.css";
-import {
-  Input,
-  DatePicker,
-  InputNumber,
-  Button,
-  message,
-  Select,
-  Modal,
-} from "antd";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { validators, masks } from "./validators";
-import { newReservaOs } from "../../../../services/reservaOs";
-import { getProdutoByEstoque, getProdutos } from "../../../../services/produto";
-import { getTecnico } from "../../../../services/tecnico";
-import { getSerial } from "../../../../services/serialNumber";
-import {
-  addStatusExpedition,
-  getAllStatusExpedition,
-} from "../../../../services/statusExpedition";
-import moment from "moment";
-import { PlusOutlined } from "@ant-design/icons";
+import React, { Component } from 'react';
+import './index.css';
+import { Input, DatePicker, InputNumber, Button, message, Select, Modal } from 'antd';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { validators, masks } from './validators';
+import { newReservaOs } from '../../../../services/reservaOs';
+import { getProdutoByEstoque, getProdutos } from '../../../../services/produto';
+import { getTecnico } from '../../../../services/tecnico';
+import { getSerial } from '../../../../services/serialNumber';
+import { addStatusExpedition, getAllStatusExpedition } from '../../../../services/statusExpedition';
+import moment from 'moment';
+import { pathOr } from 'ramda';
+import { PlusOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -32,28 +22,29 @@ class Rexterno extends Component {
     serial: false,
     disp: 1,
     modalAddStatus: false,
-    numeroSerieTest: "",
+    numeroSerieTest: '',
     allStatus: [],
     tecnicoArray: [],
     itemArray: [],
     messageError: false,
     messageSuccess: false,
-    Os: "",
-    observacao: "",
-    razaoSocial: "",
-    cnpj: "",
-    data: "",
-    serialNumber: "",
-    status: "Não selecionado",
-    newStatus: "",
-    tecnico: "Não selecionado",
-    nomeProduto: "Não selecionado",
-    categoria: "",
-    productBaseId: "",
-    tecnicoId: "",
+    Os: '',
+    observacao: '',
+    razaoSocial: '',
+    cnpj: '',
+    trackId: '',
+    data: '',
+    serialNumber: '',
+    status: 'Não selecionado',
+    newStatus: '',
+    tecnico: 'Não selecionado',
+    nomeProduto: 'Não selecionado',
+    categoria: '',
+    productBaseId: '',
+    tecnicoId: '',
     quant: 1,
     carrinho: [],
-    estoque: "ESTOQUE",
+    estoque: 'ESTOQUE',
     fieldFalha: {
       Os: false,
       razaoSocial: false,
@@ -63,12 +54,12 @@ class Rexterno extends Component {
       serialNumber: false,
     },
     message: {
-      Os: "",
-      razaoSocial: "",
-      cnpj: "",
-      data: "",
-      technician: "",
-      serialNumber: "",
+      Os: '',
+      razaoSocial: '',
+      cnpj: '',
+      data: '',
+      technician: '',
+      serialNumber: '',
     },
   };
 
@@ -113,7 +104,7 @@ class Rexterno extends Component {
   };
 
   errorStatus = () => {
-    message.error("Por favor selecione um status");
+    message.error('Por favor selecione um status');
   };
 
   errorNumeroSerie = (value) => {
@@ -127,11 +118,7 @@ class Rexterno extends Component {
 
     const teste = this.state.numeroSerieTest.split(/\n/, 10);
 
-    if (
-      /\n/.test(
-        this.state.numeroSerieTest[this.state.numeroSerieTest.length - 1]
-      )
-    ) {
+    if (/\n/.test(this.state.numeroSerieTest[this.state.numeroSerieTest.length - 1])) {
       let count = 0;
 
       // eslint-disable-next-line array-callback-return
@@ -139,20 +126,20 @@ class Rexterno extends Component {
         if (valor === teste[teste.length - 2]) count++;
       });
 
-      let mensagem = "Este equipamento ja foi inserido nessa reserva";
+      let mensagem = 'Este equipamento ja foi inserido nessa reserva';
 
       const resp = await getSerial(teste[teste.length - 2]);
 
-      if (this.state.status !== "CONSERTO") {
+      if (this.state.status !== 'CONSERTO') {
         if (resp.data) {
           if (resp.data.productBase.product.name !== this.state.nomeProduto) {
-            mensagem = "Este equipamento não contém esse número de série";
+            mensagem = 'Este equipamento não contém esse número de série';
             count++;
           }
-          if (resp.data.reserved) {
+          if (resp.data.reserved || resp.data.deletedAt) {
             count++;
             if (resp.data.deletedAt) {
-              if (resp.data.osParts) {
+              if (resp.data.osPart) {
                 mensagem = `Este equipamento ja foi liberado para a OS: ${resp.data.osPart.o.os}`;
               } else if (resp.data.freeMarketPart) {
                 mensagem = `Este equipamento foi liberado para mercado livre com código de restreamento: ${resp.data.freeMarketPart.freeMarket.trackingCode}`;
@@ -162,7 +149,7 @@ class Rexterno extends Component {
             }
           }
         } else {
-          mensagem = "Este equipamento não consta na base de dados";
+          mensagem = 'Este equipamento não consta na base de dados';
           count++;
         }
       }
@@ -175,13 +162,13 @@ class Rexterno extends Component {
         const testeArray = teste.toString();
 
         this.setState({
-          numeroSerieTest: testeArray.replace(/,/gi, "\n"),
+          numeroSerieTest: testeArray.replace(/,/gi, '\n'),
         });
       }
     }
 
     this.setState({
-      quant: this.state.numeroSerieTest.split("\n").length - 1,
+      quant: this.state.numeroSerieTest.split('\n').length - 1,
     });
   };
 
@@ -190,9 +177,7 @@ class Rexterno extends Component {
 
     if (status === 200) {
       this.setState({
-        allStatus: data
-          .map((item) => item.status)
-          .filter((item) => item !== "EMPRESTIMO"),
+        allStatus: data.map((item) => item.status).filter((item) => item !== 'EMPRESTIMO'),
       });
     }
   };
@@ -209,7 +194,7 @@ class Rexterno extends Component {
         product: {
           specific: {
             name,
-            serial: this.state.status === "CONSERTO" ? true : undefined
+            serial: this.state.status === 'CONSERTO' ? true : undefined,
           },
         },
         stockBase: {
@@ -231,7 +216,7 @@ class Rexterno extends Component {
         itemArray: resposta.data,
       })
     );
-    this.setState({ categoria: "" });
+    this.setState({ categoria: '' });
   };
 
   onChangeItem = async (value, props) => {
@@ -245,7 +230,7 @@ class Rexterno extends Component {
   };
 
   success = () => {
-    message.success("A reserva foi efetuada");
+    message.success('A reserva foi efetuada');
   };
 
   error = (text) => {
@@ -303,13 +288,19 @@ class Rexterno extends Component {
       loading: true,
     });
 
+    const document =
+      this.state.cnpj.replace(/\D/g, '').length === 14
+        ? { cnpj: this.state.cnpj }
+        : { cpf: this.state.cnpj };
+
     const values = {
+      ...document,
       razaoSocial: this.state.razaoSocial,
-      cnpj: this.state.cnpj,
       date: this.state.data,
       technicianId: this.state.technicianId,
       osParts: this.state.carrinho,
-      responsibleUser: "modrp",
+      trackId: this.state.trackId,
+      responsibleUser: 'modrp',
     };
 
     const resposta = await newReservaOs(values);
@@ -317,10 +308,14 @@ class Rexterno extends Component {
     if (resposta.status === 422) {
       this.setState({
         messageError: true,
-        fieldFalha: resposta.data.fields[0].field,
-        message: resposta.data.fields[0].message,
+        fieldFalha: pathOr('Ocorreu um Error!', ['data', 'fields', '0', 'field'], resposta),
+        message: pathOr(
+          'Tente novamente mais tarde!',
+          ['data', 'fields', '0', 'message'],
+          resposta
+        ),
       });
-      message.error(this.state.message.message);
+      message.error(this.state.message);
       this.setState({
         loading: false,
         messageError: false,
@@ -328,16 +323,17 @@ class Rexterno extends Component {
     }
     if (resposta.status === 200) {
       this.setState({
-        razaoSocial: "",
-        cnpj: "",
-        data: "",
+        razaoSocial: '',
+        cnpj: '',
+        trackId: '',
+        data: '',
         carrinho: [],
         serial: false,
-        numeroSerieTest: "",
-        nomeProduto: "Não selecionado",
-        tecnico: "Não selecionado",
+        numeroSerieTest: '',
+        nomeProduto: 'Não selecionado',
+        tecnico: 'Não selecionado',
         messageSuccess: true,
-        status: "Não selecionado",
+        status: 'Não selecionado',
       });
       await this.success();
       this.setState({
@@ -350,15 +346,15 @@ class Rexterno extends Component {
   };
 
   disabledDate = (current) => {
-    return current && current < moment().subtract(1, "day");
+    return current && current < moment().subtract(1, 'day');
   };
 
   onChangeEstoque = async (valor) => {
     await this.setState({
       estoque: valor,
-      nomeProduto: "Não selecionado",
-      productBaseId: "",
-      serial: "",
+      nomeProduto: 'Não selecionado',
+      productBaseId: '',
+      serial: '',
       disp: 0,
     });
 
@@ -366,23 +362,20 @@ class Rexterno extends Component {
   };
 
   onChangeStatus = async (valor) => {
-    if (this.state.status === "CONSERTO" || valor === "CONSERTO") {
+    if (this.state.status === 'CONSERTO' || valor === 'CONSERTO') {
       await this.setState({
-        numeroSerieTest: "",
-        productBaseId: "",
+        numeroSerieTest: '',
+        productBaseId: '',
         estoque: null,
       });
     }
 
     await this.setState({
-      estoque:
-        valor !== "CONSERTO" && this.state.estoque === null
-          ? "ESTOQUE"
-          : this.state.estoque,
-      serial: valor === "CONSERTO",
+      estoque: valor !== 'CONSERTO' && this.state.estoque === null ? 'ESTOQUE' : this.state.estoque,
+      serial: valor === 'CONSERTO',
       status: valor,
-      serialNumber: "",
-      nomeProduto: "Não selecionado",
+      serialNumber: '',
+      nomeProduto: 'Não selecionado',
     });
 
     await this.getAllItens();
@@ -422,20 +415,20 @@ class Rexterno extends Component {
   };
 
   addCarrinho = async () => {
-    if (this.state.status === "Não selecionado")
-      return this.error("Status é obrigatório para essa ação ser realizada");
-    if (this.state.nomeProduto === "Não selecionado")
-      return this.error("O produto é obrigatório para essa ação ser realizada");
+    if (this.state.status === 'Não selecionado')
+      return this.error('Status é obrigatório para essa ação ser realizada');
+    if (this.state.nomeProduto === 'Não selecionado')
+      return this.error('O produto é obrigatório para essa ação ser realizada');
 
     const array = this.state.carrinho.map((value) => value.nomeProdutoCarrinho);
 
     if (array.filter((value) => value === this.state.nomeProduto).length > 0) {
-      this.error("Este item já foi selecionado");
+      this.error('Este item já foi selecionado');
       this.setState({
-        nomeProduto: "Não selecionado",
-        serialNumber: "",
-        observacao: "",
-        status: "Não selecionado",
+        nomeProduto: 'Não selecionado',
+        serialNumber: '',
+        observacao: '',
+        status: 'Não selecionado',
       });
       return;
     }
@@ -443,14 +436,11 @@ class Rexterno extends Component {
     if (
       this.state.serial &&
       !this.state.serialNumber &&
-      this.state.numeroSerieTest
-        .split(/\n/)
-        .filter((item) => (item ? item : null)).length !== this.state.quant &&
-      this.state.categoria !== "peca"
+      this.state.numeroSerieTest.split(/\n/).filter((item) => (item ? item : null)).length !==
+        this.state.quant &&
+      this.state.categoria !== 'peca'
     ) {
-      this.error(
-        "Quantidade de numero de serie não condiz com a quantidade adicionada"
-      );
+      this.error('Quantidade de numero de serie não condiz com a quantidade adicionada');
       return;
     }
 
@@ -459,12 +449,10 @@ class Rexterno extends Component {
       nomeProdutoCarrinho: this.state.nomeProduto,
     };
 
-    if (this.state.status === "CONSERTO") {
+    if (this.state.status === 'CONSERTO') {
       const serialNumbers =
         this.state.numeroSerieTest.length > 0
-          ? this.state.numeroSerieTest
-              .split(/\n/)
-              .filter((item) => (item ? item : null))
+          ? this.state.numeroSerieTest.split(/\n/).filter((item) => (item ? item : null))
           : null;
 
       itemAdd = {
@@ -488,14 +476,14 @@ class Rexterno extends Component {
 
     this.setState({
       carrinho: [itemAdd, ...this.state.carrinho],
-      nomeProduto: "Não selecionado",
+      nomeProduto: 'Não selecionado',
       quant: 1,
       serial: false,
-      numeroSerieTest: "",
-      serialNumber: "",
-      estoque: "ESTOQUE",
-      status: "Não selecionado",
-      observacao: "",
+      numeroSerieTest: '',
+      serialNumber: '',
+      estoque: 'ESTOQUE',
+      status: 'Não selecionado',
+      observacao: '',
     });
 
     await this.getAllItens();
@@ -543,11 +531,7 @@ class Rexterno extends Component {
           <div className="div-text-produtos">Status:</div>
           <Input
             allowClear={!this.state.fieldFalha.newStatus}
-            className={
-              this.state.fieldFalha.newStatus
-                ? "div-inputError-tecnico"
-                : "input-100"
-            }
+            className={this.state.fieldFalha.newStatus ? 'div-inputError-tecnico' : 'input-100'}
             placeholder="Digite o status"
             name="newStatus"
             value={this.state.newStatus}
@@ -568,24 +552,18 @@ class Rexterno extends Component {
       <div className="div-card-Os">
         {this.renderRedirect()}
         <div className="linhaTexto-Os">
-          <h1 className="h1-Os">Reserva técnicos externos</h1>
+          <h1 className="h1-Os">Reserva</h1>
         </div>
 
         <div className="div-linha-Os">
           <div className="div-rs1-Os">
-            <div className="div-textRs-Os">Razão social:</div>
+            <div className="div-textRs-Os">Nome do cliente:</div>
             <div className="div-inputs">
               <Input
                 readOnly={this.state.readOnly}
-                allowClear={
-                  !this.state.fieldFalha.razaoSocial && !this.state.readOnly
-                }
-                className={
-                  this.state.fieldFalha.razaoSocial
-                    ? "div-inputError-OS"
-                    : "input-100"
-                }
-                style={{ width: "100%" }}
+                allowClear={!this.state.fieldFalha.razaoSocial && !this.state.readOnly}
+                className={this.state.fieldFalha.razaoSocial ? 'div-inputError-OS' : 'input-100'}
+                style={{ width: '100%' }}
                 name="razaoSocial"
                 value={this.state.razaoSocial}
                 placeholder="Digite a razão social"
@@ -594,9 +572,7 @@ class Rexterno extends Component {
                 onFocus={this.onFocus}
               />
               {this.state.fieldFalha.razaoSocial ? (
-                <p className="div-feedbackError">
-                  {this.state.message.razaoSocial}
-                </p>
+                <p className="div-feedbackError">{this.state.message.razaoSocial}</p>
               ) : null}
             </div>
           </div>
@@ -604,15 +580,13 @@ class Rexterno extends Component {
 
         <div className="div-linha1-Os">
           <div className="div-cnpj-Os">
-            <div className="div-text-Os">Cnpj:</div>
+            <div className="div-text-Os">CNPJ/CPF:</div>
             <div className="div-inputs">
               <Input
                 readOnly={this.state.readOnly}
                 allowClear={!this.state.fieldFalha.cnpj && !this.state.readOnly}
-                className={
-                  this.state.fieldFalha.cnpj ? "div-inputError-OS" : "input-100"
-                }
-                style={{ width: "100%" }}
+                className={this.state.fieldFalha.cnpj ? 'div-inputError-OS' : 'input-100'}
+                style={{ width: '100%' }}
                 name="cnpj"
                 value={this.state.cnpj}
                 placeholder="Digite o cnpj"
@@ -631,9 +605,7 @@ class Rexterno extends Component {
             <div className="div-inputs">
               <DatePicker
                 disabledDate={this.disabledDate}
-                className={
-                  this.state.fieldFalha.data ? "div-inputError-OS" : "input-100"
-                }
+                className={this.state.fieldFalha.data ? 'div-inputError-OS' : 'input-100'}
                 onChange={this.onChangeData}
                 name="data"
                 onFocus={this.onFocus}
@@ -651,13 +623,9 @@ class Rexterno extends Component {
             <div className="div-text-Os">Técnico:</div>
             <div className="div-inputs">
               <Select
-                className={
-                  this.state.fieldFalha.technician
-                    ? "div-inputError-OS"
-                    : "input-100"
-                }
+                className={this.state.fieldFalha.technician ? 'div-inputError-OS' : 'input-100'}
                 defaultValue="Não selecionado"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 onChange={this.onChangeSelect}
                 onSearch={(name) => this.getAllTecnico(name)}
                 showSearch
@@ -667,9 +635,7 @@ class Rexterno extends Component {
                 name="technician"
                 onFocus={this.onFocusTecnico}
                 filterOption={(input, option) =>
-                  option.children
-                    .toLowerCase()
-                    .indexOf(input.toLowerCase()) >= 0
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
                 {this.state.tecnicoArray.map((valor) => (
@@ -682,18 +648,32 @@ class Rexterno extends Component {
           </div>
         </div>
 
+        <div className="div-linha-Os">
+          <div className="div-rs1-Os">
+            <div className="div-textRs-Os">Código de rastreamento:</div>
+            <div className="div-inputs">
+              <Input
+                name="trackId"
+                value={this.state.trackId}
+                placeholder="Digite o código de rastreamento"
+                onChange={this.onChange}
+              />
+            </div>
+          </div>
+        </div>
+
         <div className="linhaTextoPecas-Os">
           <h1 className="h1-Os">Reservar peças</h1>
         </div>
 
         <div className="div-linha-Os">
           <div className="div-numeroSerie-Os">
-            {this.state.status !== "CONSERTO" && (
+            {this.state.status !== 'CONSERTO' && (
               <>
                 <div className="div-text-Os">Estoque:</div>
                 <Select
                   value={this.state.estoque}
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   onChange={this.onChangeEstoque}
                 >
                   <Option value="ESTOQUE">ESTOQUE</Option>
@@ -704,10 +684,10 @@ class Rexterno extends Component {
 
           <div className="div-status-Os">
             <div className="div-text-Os">Status:</div>
-            <div style={{ display: "flex", width: "100%" }}>
+            <div style={{ display: 'flex', width: '100%' }}>
               <Select
                 value={this.state.status}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 onChange={this.onChangeStatus}
               >
                 {this.state.allStatus.map((item) => {
@@ -735,16 +715,13 @@ class Rexterno extends Component {
             <Select
               showSearch
               onSearch={(name) => this.getAllItens(name)}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               placeholder="Selecione o produto"
               optionFilterProp="children"
               value={this.state.nomeProduto}
               onChange={this.onChangeItem}
               filterOption={(input, option) => {
-                return (
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                );
+                return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
               }}
             >
               {this.state.itemArray.map((value) => (
@@ -759,9 +736,7 @@ class Rexterno extends Component {
             <div className="div-text-Os">Quant:</div>
             <InputNumber
               min={1}
-              max={
-                this.state.status !== "CONSERTO" ? this.state.disp : undefined
-              }
+              max={this.state.status !== 'CONSERTO' ? this.state.disp : undefined}
               defaultValue={this.state.quant}
               value={this.state.quant}
               onChange={this.onChangeQuant}
@@ -770,7 +745,7 @@ class Rexterno extends Component {
           </div>
         </div>
 
-        {this.state.status === "CONSERTO" ? (
+        {this.state.status === 'CONSERTO' ? (
           <div className="linha1-produtos">
             <div className="div-serialCon-Os">
               <div className="div-textSerial-Os">Número de série:</div>
@@ -799,9 +774,12 @@ class Rexterno extends Component {
           </div>
         ) : null}
 
-        {this.state.status !== "CONSERTO" &&
+        {this.state.status !== 'CONSERTO' &&
         this.state.serial &&
-        this.state.categoria !== "peca" ? (
+        (this.state.categoria !== 'peca' ||
+          this.state.status === 'CORREIOS' ||
+          this.state.status === 'ECOMMERCE' ||
+          this.state.status === 'RECEPÇÃO') ? (
           <div className="div-linha-Os">
             <div className="div-serial-AddKit">
               <div className="div-textSerial-AddKit">Número de série:</div>
@@ -819,9 +797,7 @@ class Rexterno extends Component {
               className="button"
               type="primary"
               onClick={
-                this.state.status === "Não selecionado"
-                  ? this.errorStatus
-                  : this.addCarrinho
+                this.state.status === 'Não selecionado' ? this.errorStatus : this.addCarrinho
               }
             >
               Adicionar
@@ -829,11 +805,7 @@ class Rexterno extends Component {
           </div>
         ) : (
           <div className="div-button-add-reservaOs">
-            <Button
-              className="button"
-              type="primary"
-              onClick={this.addCarrinho}
-            >
+            <Button className="button" type="primary" onClick={this.addCarrinho}>
               Adicionar
             </Button>
           </div>
@@ -853,9 +825,7 @@ class Rexterno extends Component {
             <div className="div-linhaSepareteProdutos-Os"></div>
             {this.state.carrinho.map((valor) => (
               <div className="div-linha-Os">
-                <label className="label-produto-Os">
-                  {valor.nomeProdutoCarrinho}
-                </label>
+                <label className="label-produto-Os">{valor.nomeProdutoCarrinho}</label>
                 <label className="label-quant-Os">{valor.amount} UN</label>
                 <Button
                   type="primary"
@@ -871,11 +841,7 @@ class Rexterno extends Component {
 
         {this.state.carrinho.length !== 0 ? (
           <div className="div-buttonSalvar-Os">
-            <Button
-              type="primary"
-              className="button"
-              onClick={this.saveTargetNewReservaOs}
-            >
+            <Button type="primary" className="button" onClick={this.saveTargetNewReservaOs}>
               Salvar
             </Button>
           </div>
