@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions'
 import { commerce, company, date, random } from 'faker'
 import { generate } from '@fnando/cnpj'
 
-import ManagerOsContainer from '../../../../containers/Manager/Os'
+import ManagerOsContainer from '../../../../containers/OS/Manager'
 
 export default {
   title: 'Containers/Os',

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 
-import ManagerContainer from '../../../containers/Manager/Os'
+import ManagerContainer from '../../../containers/OS/Manager'
 import {
   getTodasOs as getAllOsService,
   removeReservaOs,
