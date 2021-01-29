@@ -255,7 +255,7 @@ export const CreatePDFEmprestimo = async (type, rows) => {
   rows.forEach((row) => {
     if (type === 'Em Cliente' || type === 'Reservados') {
       const height = Math.max.apply(null, [
-        doc.splitTextToSize(row.product, 80).length,
+        doc.splitTextToSize(row.name || row.product, 80).length,
         doc.splitTextToSize(row.razaoSocial, 80).length,
         doc.splitTextToSize(row.serialNumber, 40).length,
       ])
@@ -289,7 +289,7 @@ export const CreatePDFEmprestimo = async (type, rows) => {
   rows.forEach((row) => {
     if (type === 'Em Cliente' || type === 'Reservados') {
       const height = Math.max.apply(null, [
-        doc.splitTextToSize(row.product, 80).length,
+        doc.splitTextToSize(row.name || row.product, 80).length,
         doc.splitTextToSize(row.razaoSocial, 80).length,
         doc.splitTextToSize(row.serialNumber, 40).length,
       ])
@@ -302,7 +302,7 @@ export const CreatePDFEmprestimo = async (type, rows) => {
       }
 
       addWrappedText({
-        text: row.product.trim(), // Put a really long string here
+        text: row.name ? row.name.trim() : row.product.trim(), // Put a really long string here
         textWidth: 80,
         doc,
         fontSize: '10',

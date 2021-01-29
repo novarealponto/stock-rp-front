@@ -57,6 +57,7 @@ import Mark from './Mark'
 import Reception from './Reception'
 import Reports from './Reports'
 import Loan from './Loan'
+import Romaneio from './Romaneio'
 
 class PagesRoute extends Component {
   state = {
@@ -109,6 +110,7 @@ class PagesRoute extends Component {
         <Switch>
           <Route exact path="/logged/dash" component={Dash} />
           <Route path="/logged/E-Commerce" component={ECommerce} />
+          <Route exact path="/logged/romaneio" component={Romaneio} />
           <Route path="/logged/user" component={User} />
           <Route exact path="/logged/loan" component={Loan} />
           <Route path="/logged/product" component={Product} />
