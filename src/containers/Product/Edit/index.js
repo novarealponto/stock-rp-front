@@ -19,22 +19,23 @@ const formRequireRules = [{
   required: true,
 }];
 
-const AddProduct = ({
+const EditProduct = ({
+  initialValues,
   form,
   handleSubmit,
   marksList,
   typesList,
 }) => (
-  <Form form={form} onFinish={handleSubmit}>
+  <Form form={form} onFinish={handleSubmit} initialValues={initialValues}>
     <Row justify="center">
       <Col>
-        <Title level={3}>Produto</Title>
+        <Title level={3}>Atualizar Produto</Title>
       </Col>
     </Row>
     <Row gutter={[8, 8]}>
       <Col span={8}>
         <Form.Item
-          label="Item"
+          label="Produto"
           name="name"
           rules={formRequireRules}
         >
@@ -47,20 +48,20 @@ const AddProduct = ({
           name="category"
           rules={formRequireRules}
         >
-          <Select placeholder="Selecione a categoria!">
-            <Option value="Equipamento">Equipamento</Option>
-            <Option value="Peca">Peca</Option>
-            <Option value="Acessorios">Acessórios</Option>
+          <Select placeholder="Selecione a categoria">
+            <Option value="acessorios">ACESSÓRIOS</Option>
+            <Option value="equipamento">EQUIPAMENTO</Option>
+            <Option value="peca">PEÇA</Option>
           </Select>
         </Form.Item>
       </Col>
       <Col span={8}>
         <Form.Item
-          label="Marcar"
+          label="Marca"
           name="mark"
           rules={formRequireRules}
         >
-          <Select placeholder="Selecione a marcar!">
+          <Select placeholder="Selecione a marca">
             {marksList && marksList.map(
               (item) => (
                 <Option
@@ -80,7 +81,7 @@ const AddProduct = ({
           name="type"
           rules={formRequireRules}
         >
-          <Select placeholder="Selecione o tipo!">
+          <Select placeholder="Selecione o tipo">
             {typesList && typesList.map(
               (item) => (
                 <Option
@@ -97,7 +98,7 @@ const AddProduct = ({
       <Col span={8}>
         <Form.Item
           label="Quant. min"
-          name="quantMin"
+          name="minimumStock"
           rules={formRequireRules}
         >
           <InputNumber min={1} />
@@ -106,7 +107,7 @@ const AddProduct = ({
       <Col span={8}>
         <Form.Item
           label="Número de série:"
-          name="serial"
+          name="serialNumber"
           valuePropName="checked"
         >
           <Switch />
@@ -164,7 +165,7 @@ const AddProduct = ({
             type="primary"
             style={{ marginTop: '20px' }}
           >
-            Salvar
+            Atualizar
           </Button>
         </Form.Item>
       </Col>
@@ -172,4 +173,4 @@ const AddProduct = ({
   </Form>
 );
 
-export default AddProduct;
+export default EditProduct;

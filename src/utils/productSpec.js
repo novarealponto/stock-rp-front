@@ -10,17 +10,18 @@ const lowerCase = value => value.toLocaleLowerCase()
 const toString = value => value.toString()
 
 const ProductSpec = {
+  id: pathOr('', ['id']),
   category: pipe(
     pathOr('', ['category']),
     lowerCase
   ),
-  description: pathOr('', ['descricao']),
+  description: pathOr('', ['description']),
   minimumStock: pipe(
     pathOr('1', ['quantMin']),
     toString,
   ),
   mark: pathOr('', ['mark']),
-  name: pathOr('', ['item']),
+  name: pathOr('', ['name']),
   type: pathOr('', ['type']),
   serial: getSerialNumber,
   responsibleUser: pathOr('modrp', ['responsibleUser']),
