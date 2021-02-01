@@ -14,20 +14,20 @@ export const buildDataSource = applySpec({
     pathOr([], ['products']),
     map(
       applySpec({
-        amount: pathOr('', ['amount']),
-        id: pathOr('', ['id']),
         key: pathOr('', ['id']),
-        missOut: pathOr('', ['missOut']),
-        name: pathOr('', ['name']),
-        output: pathOr('', ['output']),
         product: pathOr('', ['name']),
         quantity: pathOr('', ['amount']),
-        quantMax: pathOr('', ['quantMax']),
-        return: pathOr('', ['return']),
-        serial: pathOr('', ['serial']),
-        serialNumbers: pathOr('', ['serialNumbers']),
-        status: pathOr('', ['status']),
         technicianReserve: pathOr('', ['technicianReserve']),
+        serialNumbers: pathOr('', ['serialNumbers']),
+        name: pathOr('', ['name']),
+        serial: pathOr('', ['serial']),
+        id: pathOr('', ['id']),
+        amount: pathOr('', ['amount']),
+        output: pathOr('', ['output']),
+        missOut: pathOr('', ['missOut']),
+        return: pathOr('', ['return']),
+        quantMax: pathOr('', ['quantMax']),
+        status: pathOr('', ['status']),
       })
     )
   ),
@@ -52,7 +52,7 @@ export const buildQueryOs = applySpec({
 
 export const buildRedirectValueOs = applySpec({
   cnpj: pathOr('', ['cnpj']),
-  date: pathOr('', ['formatedDate']),
+  date: pathOr('', ['date']),
   id: pathOr('', ['key']),
   Os: pathOr('', ['os']),
   products: pathOr([], ['products']),

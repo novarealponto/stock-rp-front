@@ -18,7 +18,6 @@ const initialDataSource = []
 
 for (let key = 0; key < 100; key++) {
   initialDataSource.push({
-    key,
     brand: company.companyName(),
     category: vehicle.model(), 
     column: random.number(),
@@ -29,10 +28,10 @@ for (let key = 0; key < 100; key++) {
     product: commerce.productName(),
     productDescription: commerce.productDescription(),
     quantityMin: random.number(),
-    type: vehicle.type(),
     serialNumber: random.float(),
     shelf: random.number(),
     sku: random.float(),
+    type: vehicle.type(),
   })
 }
 
@@ -52,10 +51,10 @@ const Template = (args) => {
   return (
     <ManageProducts
       {...args}
-      visibleSearch={visibleSearch}
       dataSource={initialDataSource}
-      handleOnClickOpenSearchForm={handleOnClickOpenSearchForm}
       handleOnClickCloseSearchForm={handleOnClickCloseSearchForm}W
+      handleOnClickOpenSearchForm={handleOnClickOpenSearchForm}
+      visibleSearch={visibleSearch}
     />
   )
 }
