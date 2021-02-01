@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { Button, Table, Form } from 'antd';
-import styles from './style.module.css';
+import { Button, Col, Form, Row, Table, Typography } from 'antd';
 
 import ModalNewQuotation from '../../components/ModalNewQuotation';
+import styles from './style.module.css';
+
+const { Title } = Typography
 
 const columns = [
   {
@@ -58,21 +60,25 @@ const Quotation = ({ data, handleOk }) => {
 
   return (
     <div>
-      <h1>Cotação</h1>
+      <Row justify="center">
+        <Col>
+          <Title level={3}>Cotação</Title>
+        </Col>
+      </Row>
       <div className={styles.divDireita}>
-        <Button type="primary" onClick={showModal}>
-          Criar cotação
+        <Button onClick={showModal}>
+          Criar nova cotação
         </Button>
       </div>
       <ModalNewQuotation
         form={form}
         handleCancel={handleCancel}
         handleOk={handleOk}
-        visible={visible}
-        onChange={onChange}
         onBlur={onBlur}
-        onSearch={onSearch}
+        onChange={onChange}
         onFocus={onFocus}
+        onSearch={onSearch}
+        visible={visible}
       />
       <Table columns={columns} dataSource={data} size="middle" />
     </div>
