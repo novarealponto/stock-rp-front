@@ -109,9 +109,9 @@ const AddOs = () => {
   }, [status])
 
   const handleSubmit = async (formData) => {
-    getAllProdutoByEstoque()
     try {
       const { status } = await newReservaOs(buildOs(formData))
+      getAllProdutoByEstoque()
 
       if (status === 422 || status === 401 || status === 500) {
         throw new Error('422 Unprocessable Entity!')
@@ -165,7 +165,7 @@ const AddOs = () => {
     )
 
     getAllProdutoByEstoque()
-  }, [status])
+  }, [getAllProdutoByEstoque])
 
   return (
     <AddOsContainer
