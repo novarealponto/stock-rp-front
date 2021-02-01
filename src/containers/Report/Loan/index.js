@@ -15,6 +15,21 @@ import { SearchOutlined } from '@ant-design/icons'
 const { RangePicker } = DatePicker
 const { Title } = Typography
 
+const expandedRowRender = ({ product, observation }) => {
+  const columns = [
+    { dataIndex: 'product', title: 'Produto' },
+    { dataIndex: 'observation', title: 'Observação' },
+  ]
+
+  return (
+    <Table
+      columns={columns}
+      dataSource={[{ product, observation }]}
+      pagination={false}
+    />
+  )
+}
+
 const formItemList = [
   {
     children: <Input allowClear placeholder="Filtrar razão social" />,
@@ -100,6 +115,7 @@ const Loan = ({ dataSource, handleSubmitSearch, onChangeTable, pagination }) => 
       <Table
         columns={columns}
         dataSource={dataSource}
+        expandable={{ expandedRowRender }}
         onChange={onChangeTable}
         pagination={pagination}
       />

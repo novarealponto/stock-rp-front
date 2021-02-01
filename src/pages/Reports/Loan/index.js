@@ -43,6 +43,8 @@ const ReportLoan = () => {
         moment(date).format('L')
       ),
       key: prop('id'),
+      observation: prop('observation'),
+      product: prop('product'),
       razaoSocial: prop('razaoSocial'),
       return: pipe(prop('deletedAt'), (date) =>
         date ? moment(date).format('L') : '-'

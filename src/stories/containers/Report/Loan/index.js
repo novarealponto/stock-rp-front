@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import { action } from '@storybook/addon-actions'
-import { company, date, random } from 'faker'
+import { commerce, company, date, lorem, random } from 'faker'
 
 import ReportLoanContainer from '../../../../containers/Report/Loan'
 
@@ -16,6 +16,8 @@ for (let key = 0; key < 20; key++) {
   dataSource.push({
     date: moment(date.past()).format('L'),
     key,
+    product: commerce.productName(),
+    observation: lorem.text(),
     razaoSocial: company.companyName(),
     return: moment(date.past()).format('L'),
     serialNumber: random.number(),
