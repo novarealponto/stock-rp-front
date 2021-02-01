@@ -55,7 +55,7 @@ const AddUser = ({
         <Row gutter={[8, 8]}>
           <Col span={12}>
             <Form.Item label="Usuário" name="userName" rules={formRequireRules}>
-              <Input />
+              <Input placeholder="Digite o nome do usuário"/>
             </Form.Item>
           </Col>
 
@@ -69,7 +69,7 @@ const AddUser = ({
                 >
                   <Select
                     onChange={handleOnTypeAccountChange}
-                    placeholder="Selecione o tipo de conta!"
+                    placeholder="Selecione o tipo de conta"
                   >
                     {typeAccounts && typeAccounts.map(renderTypeAccountOptions)}
                   </Select>
