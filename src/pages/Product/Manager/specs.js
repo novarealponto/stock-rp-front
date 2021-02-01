@@ -25,13 +25,12 @@ export const buildQueryProduct = applySpec({
 })
 
 export const buildRedirectValueProduct = applySpec({
-    mark: pathOr('', ['brand']),
     category: pathOr('', ['category']),
     column: pathOr('', ['coluna']),
     drawer: pathOr('', ['gaveta']),
     key: pathOr('', ['id']),
     lobby: pathOr('', ['corredor']),
-    mark: pathOr('', ['mark']),
+    mark: pathOr('', ['brand']),
     product: pathOr('', ['name']),
     productDescription: pathOr('', ['description']),
     quantityMin: pathOr('', ['minimumStock']),
