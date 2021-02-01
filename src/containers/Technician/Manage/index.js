@@ -71,7 +71,7 @@ const Technician = ({
         </Col>
         <Col>
           <Button type="primary" onClick={goAddTechnician}>
-            Cadastrar um novo Técnico
+            Cadastrar um novo técnico
           </Button>
         </Col>
       </Row>

@@ -25,7 +25,7 @@ const EditTechinician = ({
 }) => {
   return (
     <div className={styles.container}>
-      <Title>Técnico</Title>
+      <Title level={3}>Técnico</Title>
       <Form
         form={form}
         layout="vertical"
