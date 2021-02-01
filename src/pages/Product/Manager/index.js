@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import { bindActionCreators } from 'redux'
 import { compose, map } from 'ramda'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
+
+import { buildDataSource, buildQueryProduct, buildRedirectValueProduct } from './specs'
 import { 
   getProdutos,
 } from '../../../services/produto'
-
 import ManagerContainer from '../../../containers/Product/Manage'
 import { redirectValueProduto } from '../../Gerenciar/Produto/ProdutoRedux/action'
-import { buildDataSource, buildQueryProduct, buildRedirectValueProduct } from './specs'
 
 const Manager = ({ history, redirectValueProduto }) => {
   const [dataSource, setDataSource] = useState([])
@@ -25,7 +25,6 @@ const Manager = ({ history, redirectValueProduto }) => {
         product: {
           specific: {
             name: product,
-            // SKU: sku,
             category,
           },
         },
@@ -48,7 +47,6 @@ const Manager = ({ history, redirectValueProduto }) => {
     
     getProdutos(query).then(({ data: { rows, count: total } }) => {
       setDataSource(map(buildDataSource, rows))
-      console.log(rows)
 
       setTotal(total)
     })
@@ -58,7 +56,6 @@ const Manager = ({ history, redirectValueProduto }) => {
 
   const handleOnClickEdit = (productData) => {
     redirectValueProduto(buildRedirectValueProduct(productData))
-    console.log(productData)
 
     history.push('/logged/product/edit')
   }
