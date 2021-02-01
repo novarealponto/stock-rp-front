@@ -1,48 +1,46 @@
 import { applySpec, pathOr } from 'ramda'
 
 export const buildDataSource = applySpec({
-    id: pathOr('', ['id']),
     brand: pathOr('', ['mark']),
     category: pathOr('', ['category']),
     column: pathOr('', ['coluna']),
     drawer: pathOr('', ['gaveta']),
+    id: pathOr('', ['id']),
+    key: pathOr('', ['id']),
     lobby: pathOr('', ['corredor']),
     product: pathOr('', ['name']),
     productDescription: pathOr('', ['description']),
     quantityMin: pathOr('', ['minimumStock']),
-    type: pathOr('', ['type']),
     serialNumber: pathOr(false, ['serial']),
     shelf: pathOr('', ['prateleira']),
     sku: pathOr('', ['sku']),
+    type: pathOr('', ['type']),
 })
 
 export const buildQueryProduct = applySpec({
-    product: pathOr('', ['product']),
-    category: pathOr('', ['category']),
     brand: pathOr('', ['brand']),
-    type: pathOr('', ['type']),
+    category: pathOr('', ['category']),
+    product: pathOr('', ['product']),
     sku: pathOr('', ['sku']),
+    type: pathOr('', ['type']),
 })
 
 export const buildRedirectValueProduct = applySpec({
-    id: pathOr('', ['id']),
-    mark: pathOr('', ['brand']),
-    manufacturer: pathOr('', ['manufacturer']),
-    category: pathOr('', ['category']),
     brand: pathOr('', ['brand']),
     category: pathOr('', ['category']),
     coluna: pathOr('', ['column']),
     corredor: pathOr('', ['lobby']),
-    product: pathOr('', ['product']),
     description: pathOr('', ['productDescription']),
-    minimumStock: pathOr('', ['quantityMin']),
-    type: pathOr('', ['type']),
-    serialNumber: pathOr(false, ['serialNumber']),
     gaveta: pathOr('', ['drawer']),
+    id: pathOr('', ['id']),
+    mark: pathOr('', ['brand']),
+    manufacturer: pathOr('', ['manufacturer']),
+    minimumStock: pathOr('', ['quantityMin']),
     name: pathOr('', ['product']),
-    type: pathOr('', ['type']),
-    serial: pathOr(false, ['serial']),
     prateleira: pathOr('', ['shelf']),
+    product: pathOr('', ['product']),
+    serial: pathOr(false, ['serial']),
+    serialNumber: pathOr(false, ['serialNumber']),
     sku: pathOr('', ['sku']),
-    manufacturer: pathOr('', ['manufacturer'])
+    type: pathOr('', ['type']),
 })

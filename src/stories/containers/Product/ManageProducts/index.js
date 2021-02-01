@@ -28,10 +28,10 @@ for (let key = 0; key < 100; key++) {
     product: commerce.productName(),
     productDescription: commerce.productDescription(),
     quantityMin: random.number(),
-    type: vehicle.type(),
     serialNumber: random.float(),
     shelf: random.number(),
     sku: random.float(),
+    type: vehicle.type(),
   })
 }
 
