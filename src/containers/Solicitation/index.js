@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import 'antd/dist/antd.css'
-import { Button, Table, Form } from 'antd'
+import { Button, Col, Form, Row, Table, Typography } from 'antd'
 import styles from './style.module.css'
 
 import ModalNewSolicitation from '../../components/ModalSolicitation'
 import ModalNewQuotation from '../../components/ModalNewQuotationSolicitation'
 import ModalQuotation from '../../components/ModalQuotation'
+
+const { Title } = Typography
 
 const columns = [
   {
@@ -88,10 +90,14 @@ const Solicitation = ({ data, handleOk }) => {
 
   return (
     <div>
-      <h1>Solicitação</h1>
+      <Row gutter={[0, 20]} justify="center">
+        <Col>
+          <Title level={3}>Solicitação</Title>
+        </Col>
+      </Row>
       <div className={styles.divDireita}>
-      <Button type="primary" onClick={showModal}>
-        Criar solicitação
+      <Button onClick={showModal}>
+        Criar nova solicitação
       </Button>
       </div>
       <ModalQuotation
