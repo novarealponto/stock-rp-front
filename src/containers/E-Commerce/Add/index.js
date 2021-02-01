@@ -72,7 +72,7 @@ const ECommerce = ({
     <>
       <Row gutter={[0, 20]} justify="center">
         <Col>
-          <Title level={3}>Reserva E-Commerce</Title>
+          <Title level={3}>Reserva E-commerce</Title>
         </Col>
       </Row>
 
@@ -99,7 +99,7 @@ const ECommerce = ({
               name="name"
               rules={[{ required: true }]}
             >
-              <Input placeholder="Digite o nome ou a razao social" />
+              <Input placeholder="Digite o nome ou a razão social" />
             </Form.Item>
           </Col>
           <Col span={6}>
