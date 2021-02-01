@@ -60,6 +60,10 @@ const Manager = ({ history, redirectValueProduto }) => {
     history.push('/logged/product/edit')
   }
 
+  const handleOnClickNewProduct = () => {
+    history.push('/logged/product/add')
+  }
+
   const handleProductSearch = (productSearchFormData) => {
     setQueryProduct(buildQueryProduct(productSearchFormData))
   }
@@ -74,6 +78,7 @@ const Manager = ({ history, redirectValueProduto }) => {
       handleOnChangeTable={handleOnChangeTable}
       handleOnClickCloseSearchForm={() => setVisibleSearch(false)}
       handleOnClickEdit={handleOnClickEdit}
+      handleOnClickNewProduct={handleOnClickNewProduct}
       handleOnClickOpenSearchForm={() => setVisibleSearch(true)}
       handleOnSearch={handleProductSearch}
       pagination={{ total }}
