@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
+import ReportLoan from './Loan'
 import ReportMissout from './Missout'
 import ReportOS from './Os'
 import ReportSolds from './Solds'
@@ -8,6 +9,7 @@ import ReportSupply from './Supply'
 
 const ReportsRoutes = () => (
   <Switch>
+    <Route component={ReportLoan} exact path="/logged/reports/loan" />
     <Route component={ReportMissout} exact path="/logged/reports/missout" />
     <Route component={ReportOS} exact path="/logged/reports/os" />
     <Route component={ReportSolds} exact path="/logged/reports/solds" />

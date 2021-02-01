@@ -1,4 +1,4 @@
-import { has, isEmpty, length, path } from 'ramda'
+import { has, isEmpty, length } from 'ramda'
 import { isValid as cnpjIsValid } from '@fnando/cnpj'
 import { isValid as cpfIsValid } from '@fnando/cpf'
 import { string, setLocale } from 'yup'
