@@ -45,7 +45,7 @@ const AddUser = ({
   )
 
   return (
-    <div className={styles.addUserContainer}>
+    <>
       <Form form={form} onFinish={handleSubmit}>
         <Row justify="center">
           <Col>
@@ -112,7 +112,7 @@ const AddUser = ({
           </Col>
         </Row>
       </Form>
-    </div>
+    </>
   )
 }
 

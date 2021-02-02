@@ -58,7 +58,7 @@ const ManageProducts = ({
   <>
     <Row justify="center">
       <Col>
-        <Title level={3}>Gerenciar Produtos</Title>
+        <Title level={3}>Gerenciar produtos</Title>
       </Col>
     </Row>
 
