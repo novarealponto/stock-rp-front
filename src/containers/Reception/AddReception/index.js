@@ -43,7 +43,7 @@ const AddReception = ({
     <>
       <Row justify="center">
         <Col>
-          <Title level={3}>Reserva Recepção</Title>
+          <Title level={3}>Reserva recepção</Title>
         </Col>
       </Row>
 
@@ -73,14 +73,14 @@ const AddReception = ({
                 disabledDate={(current) =>
                   current && current < moment().subtract(1, 'day')
                 }
-                placeholder="Selecione a Data"
+                placeholder="Selecione a data"
                 style={{ width: '100%' }}
               />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item label="Técnico" name="technician" rules={rules}>
-              <Select placeholder="Selecione o Técnico">
+              <Select placeholder="Selecione o técnico">
                 {map(
                   ({ key, name }) => (
                     <Option key={key} value={key}>
@@ -104,10 +104,10 @@ const AddReception = ({
 
         <Row gutter={20}>
           <Col span={20}>
-            <Form.Item label="Nome do produto" name="product">
+            <Form.Item label="Produto" name="product">
               <Select
                 onChange={handleChangeProduct}
-                placeholder="selecione um produto"
+                placeholder="Selecione um produto"
               >
                 {map(
                   ({ key, max, name, serial }) => (
