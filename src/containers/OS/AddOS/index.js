@@ -146,7 +146,7 @@ const AddOutput = ({
             </Form.Item>
           </Col>
           <Col span={14}>
-            <Form.Item label="Nome do produto" name="product">
+            <Form.Item label="Produto" name="product">
               <Select
                 onChange={handleChangeProduct}
                 placeholder="Selecione um produto"

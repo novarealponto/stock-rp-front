@@ -77,7 +77,7 @@ const Solds = ({ dataSource, handleSubmitSearch, onChangeTable, pagination }) =>
     <>
       <Row justify="center">
         <Col>
-          <Title level={3}>Relatório perda</Title>
+          <Title level={3}>Relatório vendas</Title>
         </Col>
       </Row>
 

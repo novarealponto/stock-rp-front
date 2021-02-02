@@ -34,7 +34,7 @@ const AddProduct = ({
     <Row gutter={[8, 8]}>
       <Col span={8}>
         <Form.Item
-          label="Item"
+          label="Produto"
           name="name"
           rules={formRequireRules}
         >

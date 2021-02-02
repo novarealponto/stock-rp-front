@@ -33,10 +33,10 @@ const Profile = ({
   };
 
   return (
-    <div className={styles.divMainProfile}>
+    <>
       <Row>
         <Col span={12} offset={6} align="center">
-        <Title level={2} style={{marginTop: '25px'}}>Perfil</Title>
+        <Title level={3}>Perfil</Title>
 
           <Card className={styles.cardPerfil}>
             <Avatar size={170} style={{ fontSize: '70px' }}>
@@ -108,7 +108,7 @@ const Profile = ({
           </Form>
         </Col>
       </Row>
-    </div>
+    </>
   );
 };
 

@@ -140,7 +140,7 @@ const ReportOS = ({
     <>
       <Row justify="center">
         <Col>
-          <Title level={3}>Relatório OS</Title>
+          <Title level={3}>Relatório Os</Title>
         </Col>
       </Row>
 
