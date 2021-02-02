@@ -113,12 +113,12 @@ const Manager = ({
     <Row justify="end" gutter={[0, 10]}>
       <Col>
         {visibleSearch ? (
-          <Button onClick={handleOnClickCloseSearchForm} type="primary">
+          <Button onClick={handleOnClickCloseSearchForm}>
             Ocultar
           </Button>
         ) : (
-          <Button onClick={handleOnClickOpenSearchForm} type="primary">
-            Avançado
+          <Button onClick={handleOnClickOpenSearchForm}>
+            Filtrar
           </Button>
         )}
       </Col>
