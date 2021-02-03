@@ -57,7 +57,7 @@ const routeList = ({ auth }) => [
   {
     component: EditarFornecedorSupRoute,
     exact: false,
-    path: '/logged/fornecedorSup/atializar',
+    path: '/logged/fornecedorSup/atualizar',
     permission: auth.permissions.suprimento,
   },
   {

@@ -9,7 +9,7 @@ class EditarFornecedorSupRoute extends Component {
       <Switch>
         <Route
           exact
-          path="/logged/fornecedorSup/atializar"
+          path="/logged/fornecedorSup/atualizar"
           component={EdiatrFornecedorSupPage}
         />
       </Switch>
