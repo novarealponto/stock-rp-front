@@ -1,7 +1,6 @@
 import axios from "axios";
-import { BACKEND_URL } from "./var";
 
-import { store } from "../App";
+import { BACKEND_URL } from "./var";
 
 export const signIn = async values => {
   let response = {};
@@ -19,20 +18,4 @@ export const signIn = async values => {
     });
 
   return response;
-};
-
-export const logout = async token => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  await axios.delete(`${BACKEND_URL}/oapi/logout`, {
-    params: { token },
-    headers: headers
-  });
-
-  return true;
 };
