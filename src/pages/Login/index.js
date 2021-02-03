@@ -1,33 +1,39 @@
-import React, { Component } from 'react';
-import uuidValidate from 'uuid-validate';
-import { has } from 'ramda';
-import { message } from 'antd';
-import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, { Component } from 'react'
+import { message } from 'antd'
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { verify } from 'jsonwebtoken'
+import { promisify } from 'util'
 
-import LoginContainer from '../../containers/Login';
-import { signIn } from '../../services/auth';
-import { onSubmit } from './LoginRedux/action';
+import LoginContainer from '../../containers/Login'
+import { signIn } from '../../services/auth'
+import { onSubmit } from './LoginRedux/action'
 
 class LoginPage extends Component {
   state = {
     authenticated: false,
-  };
+  }
 
-  verifyAuth = () => {
-    if (has('auth', this.props) && has('token', this.props.auth)) {
-      return this.setState({ authenticated: uuidValidate(this.props.auth.token) });
+  verifyAuth = async () => {
+    try {
+      await promisify(verify)(
+        this.props.auth.token,
+        process.env.REACT_APP_SECRET_KEY_JWT
+      )
+      await this.setState({ authenticated: true })
+    } catch (error) {
+      console.error(error)
     }
-  };
+  }
 
   success = () => {
-    message.success('Bem-vindo ao Estoque');
-  };
+    message.success('Bem-vindo ao Estoque')
+  }
 
   error = () => {
-    message.error('Inautorizado, confira username e senha por favor');
-  };
+    message.error('Inautorizado, confira username e senha por favor')
+  }
 
   handleSubmit = async ({ username, password }) => {
     try {
@@ -37,41 +43,41 @@ class LoginPage extends Component {
         typeAccount: {
           stock: true,
         },
-      });
+      })
 
       if (Number(status) === 401) {
-        throw new Error('User UNAUTHORIZED');
+        throw new Error('User UNAUTHORIZED')
       }
 
-      await this.props.onSubmit(data);
-      this.verifyAuth();
-      return this.state.authenticated && this.success();
+      await this.props.onSubmit(data)
+      this.verifyAuth()
+      return this.state.authenticated && this.success()
     } catch (error) {
-      return this.error();
+      return this.error()
     }
-  };
+  }
 
   componentDidMount = () => {
-    this.verifyAuth();
-  };
+    this.verifyAuth()
+  }
 
   render() {
     return this.state.authenticated ? (
       <Redirect to="/logged" />
     ) : (
       <LoginContainer onSubmit={this.handleSubmit} />
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
     auth: state.auth,
-  };
+  }
 }
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators({ onSubmit }, dispach);
+  return bindActionCreators({ onSubmit }, dispach)
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispacthToProps)(LoginPage)

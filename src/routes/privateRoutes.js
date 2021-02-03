@@ -3,50 +3,44 @@ import { Route, Redirect, Switch } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { verify } from 'jsonwebtoken'
+import { promisify } from 'util'
 
 import SideBar from '../components/SideBar'
-
 import PagesRoute from '../pages'
 import MobilePage from '../pages/Mobile/MobilePage'
 import { Logout } from '../pages/Login/LoginRedux/action'
-import { auth } from '../services/auth'
 import './index.css'
 
 class PrivateRoute extends Component {
   state = {
-    auth: true,
+    authenticated: true,
   }
 
   logout = async () => {
     await this.props.Logout(this.props.auth.token)
   }
 
-  auth = async () => {
-    const value = {
-      token: this.props.auth.token,
-      username: this.props.auth.username,
+  verifyAuth = async () => {
+    try {
+      await promisify(verify)(
+        this.props.auth.token,
+        process.env.REACT_APP_SECRET_KEY_JWT
+      )
+      return this.setState({ authenticated: true })
+    } catch (error) {
+      console.error(error)
+      return this.setState({ authenticated: false })
     }
-
-    let response = {}
-
-    response = await auth(value)
-    // .then((resp) =>
-    // this.setState({
-    //     auth: resp ? resp.data : false,
-    //   })
-    // );
-
-    this.setState({ auth: response.data })
-
-    return response
   }
 
   componentDidMount = async () => {
-    await this.auth()
+    await this.verifyAuth()
   }
 
+
   render() {
-    if (this.state.auth) {
+    if (this.state.authenticated) {
       if (!this.props.auth.tecnico) {
         return (
           <div className="div-main-route">
