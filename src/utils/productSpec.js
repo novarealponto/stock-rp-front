@@ -29,7 +29,7 @@ const ProductSpec = {
   coluna: pathOr('', ['coluna']),
   prateleira: pathOr('', ['prateleira']),
   gaveta: pathOr('', ['gaveta']),
-  modulo: pathOr('', ['modulo']),
+  modulo: pathOr(false, ['modulo']),
 }
 
 const buildProduct = applySpec(ProductSpec)
