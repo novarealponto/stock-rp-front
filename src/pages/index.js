@@ -1,176 +1,203 @@
-import React, { Component } from 'react'
-import { Route, Redirect, Switch } from 'react-router-dom'
+import React from 'react'
+import { compose, filter, map } from 'ramda'
 import { connect } from 'react-redux'
+import { Redirect, Route, Switch } from 'react-router-dom'
 
-import Dash from './Dash'
 import AddKitRoute from './Gerenciar/Kit'
 import CadastroFornecedorSupRoute from './Suprimentos/Cad.Fornecedor'
 import CadastroProdutosSupRoute from './Suprimentos/Cad.Produtos'
+import Dash from './Dash'
 import EditarFornecedorSupRoute from './Suprimentos/Edit.Fornecedor'
 import EntradaSupRoute from './Suprimentos/Entrada'
 import Entry from './Entry'
-import EmprestimoRoute from './Gerenciar/Emprestimo'
+import ECommerce from './ECommerce'
 import GerenciarCadastrosSupRoute from './Suprimentos/Ger.Cadastros'
-import GerenciarEntradaDashRoute from './Gerenciar/GerenciarEntrada'
-import GerenciarEntradaRoute from './Gerenciar/Entrada'
 import GerenciarEstoqueSupRoute from './Suprimentos/Ger.Estoque'
-import GerenciarFornecedorRoute from './Gerenciar/GerenciarFornecedores'
-import GerenciarProdutosDashRoute from './Gerenciar/GerenciarProdutos'
-import GerenciarProdutoRoute from './Gerenciar/Produto'
-import GerenciarTecnicoRoute from './Gerenciar/GerenciarTecnico'
-import GerenciarUsuarioRoute from './Gerenciar/GerenciarUsuarios'
-import NovaEntradaRoute from './Cadastros/NovaEntrada'
+import Loan from './Loan'
+import Mark from './Mark'
 import Os from './Os'
 import Profile from './Profile'
 import Product from './Product'
 import ProductType from './ProductType'
 import Provider from './Provider'
-import RelatorioComprasRoute from './Relatorios/RelatorioCompras'
-import RelatorioEmprestimoRoute from './Relatorios/RelatorioEmprestimo'
-import RelatorioGastosRoute from './Relatorios/RelatorioGastos'
-import RelatorioInternoRoute from './Relatorios/RelatorioInterno'
-import RelatorioMapRoute from './Relatorios/RelatorioMapeamento'
-import RelatorioMLRoute from './Relatorios/RelatorioML'
-import RelatorioOsRoute from './Relatorios/RelatorioOs'
-import RelatorioPerdaRoute from './Relatorios/RelatorioPerda'
-import RelatorioSuprimentosRoute from './Relatorios/RelatorioSuprimentos'
-import RelatorioVendasRoute from './Relatorios/RelatorioVendas'
-import ReservaExternoRoute from './Reservas/ReservaOs'
-import ReservaInternoRoute from './Reservas/ReservaInterno'
-import ReservaKitRoute from './Reservas/ReservaKit'
-import ReservaMLRoute from './Reservas/ReservaML'
-import RomanieoRoute from './Reservas/Romaneio'
+import Reception from './Reception'
+import Reports from './Reports'
+import Romaneio from './Romaneio'
 import SaidaSupRoute from './Suprimentos/Saida'
-import SearchOsRoute from './Gerenciar/SearchOs'
 import Stock from './Stock'
 import TechnicianRoute from './Technician'
 import TypeAcconuntRoute from './TypeAcconunt'
 import User from './User'
-import ECommerce from './ECommerce'
-import Mark from './Mark'
-import Reception from './Reception'
-import Reports from './Reports'
-import Loan from './Loan'
-import Romaneio from './Romaneio'
 
-class PagesRoute extends Component {
-  render() {
-    return (
-      <Switch>
-        <Route exact path="/logged/dash" component={Dash} />
-        <Route path="/logged/E-Commerce" component={ECommerce} />
-        <Route exact path="/logged/romaneio" component={Romaneio} />
-        <Route path="/logged/user" component={User} />
-        <Route exact path="/logged/loan" component={Loan} />
-        <Route path="/logged/product" component={Product} />
-        <Route path="/logged/entry" component={Entry} />
-        <Route path="/logged/productType" component={ProductType} />
-        <Route path="/logged/provider" component={Provider} />
-        <Route path="/logged/Os" component={Os} />
-        <Route path="/logged/mark" component={Mark} />
-        <Route path="/logged/reception" component={Reception} />
-        <Route path="/logged/reports" component={Reports} />
-        <Route
-          path="/logged/gerenciarProduto"
-          component={GerenciarProdutoRoute}
-        />
-        <Route path="/logged/entrada" component={NovaEntradaRoute} />
-        <Route exact path="/logged/stock/manager" component={Stock} />
-        <Route
-          path="/logged/gerenciarEntrada"
-          component={GerenciarEntradaRoute}
-        />
-        <Route path="/logged/reservaKit" component={ReservaKitRoute} />
-        <Route path="/logged/romaneio" component={RomanieoRoute} />
-        <Route path="/logged/Rexterno" component={ReservaExternoRoute} />
-        <Route path="/logged/reservaKitAdd" component={AddKitRoute} />
-        <Route path="/logged/reservaML" component={ReservaMLRoute} />
-        <Route path="/logged/relatorioOs" component={RelatorioOsRoute} />
-        <Route path="/logged/Rinterno" component={ReservaInternoRoute} />
-        <Route
-          path="/logged/relatorioEmprestimo"
-          component={RelatorioEmprestimoRoute}
-        />
-        <Route path="/logged/relatorioPerda" component={RelatorioPerdaRoute} />
-        <Route path="/logged/relatorioMap" component={RelatorioMapRoute} />
-        <Route path="/logged/relatorioML" component={RelatorioMLRoute} />
-        <Route
-          path="/logged/relatorioCompras"
-          component={RelatorioComprasRoute}
-        />
-        <Route path="/logged/relatorioGastos" component={RelatorioGastosRoute} />
-        <Route
-          path="/logged/relatorioInterno"
-          component={RelatorioInternoRoute}
-        />
-        <Route path="/logged/relatorioVendas" component={RelatorioVendasRoute} />
-        <Route
-          path="/logged/relatorioSuprimentos"
-          component={RelatorioSuprimentosRoute}
-        />
-        <Route path="/logged/searchOs" component={SearchOsRoute} />
-        <Route path="/logged/profile" component={Profile} />
-        <Route
-          path="/logged/gerenciarProdutosDash"
-          component={GerenciarProdutosDashRoute}
-        />
-        <Route
-          path="/logged/gerenciarFornecedor"
-          component={GerenciarFornecedorRoute}
-        />
-        <Route
-          path="/logged/gerenciarUsuario"
-          component={GerenciarUsuarioRoute}
-        />
-        <Route
-          path="/logged/gerenciarTecnico"
-          component={GerenciarTecnicoRoute}
-        />
-        <Route path="/logged/entradaDash" component={GerenciarEntradaDashRoute} />
-        <Route path="/logged/emprestimo" component={EmprestimoRoute} />
+const routeList = ({ auth }) => [
+  {
+    component: AddKitRoute,
+    exact: false,
+    path: '/logged/reservaKitAdd',
+    permission: true,
+  },
+  {
+    component: CadastroFornecedorSupRoute,
+    exact: false,
+    path: '/logged/cadastroFornecedorSup',
+    permission: auth.permissions.suprimento,
+  },
+  {
+    component: CadastroProdutosSupRoute,
+    exact: false,
+    path: '/logged/cadastroProdutosSup',
+    permission: auth.permissions.suprimento,
+  },
+  {
+    component: Dash,
+    exact: true,
+    path: '/logged/dash',
+    permission: true,
+  },
+  {
+    component: EditarFornecedorSupRoute,
+    exact: false,
+    path: '/logged/fornecedorSup/atializar',
+    permission: auth.permissions.suprimento,
+  },
+  {
+    component: EntradaSupRoute,
+    exact: false,
+    path: '/logged/entradaSup',
+    permission: auth.permissions.suprimento,
+  },
+  {
+    component: Entry,
+    exact: false,
+    path: '/logged/entry',
+    permission: true,
+  },
+  {
+    component: ECommerce,
+    exact: false,
+    path: '/logged/E-Commerce',
+    permission: true,
+  },
+  {
+    component: GerenciarCadastrosSupRoute,
+    exact: false,
+    path: '/logged/gerenciarCadastrosSup',
+    permission: auth.permissions.suprimento,
+  },
+  {
+    component: GerenciarEstoqueSupRoute,
+    exact: false,
+    path: '/logged/gerenciarEstoqueSup',
+    permission: auth.permissions.suprimento,
+  },
+  {
+    component: Loan,
+    exact: true,
+    path: '/logged/loan',
+    permission: true,
+  },
+  {
+    component: Mark,
+    exact: false,
+    path: '/logged/mark',
+    permission: true,
+  },
+  {
+    component: Os,
+    exact: false,
+    path: '/logged/Os',
+    permission: true,
+  },
+  {
+    component: Profile,
+    exact: false,
+    path: '/logged/profile',
+    permission: true,
+  },
+  {
+    component: Product,
+    exact: false,
+    path: '/logged/product',
+    permission: true,
+  },
+  {
+    component: ProductType,
+    exact: false,
+    path: '/logged/productType',
+    permission: true,
+  },
+  {
+    component: Provider,
+    exact: false,
+    path: '/logged/provider',
+    permission: true,
+  },
+  {
+    component: Reception,
+    exact: false,
+    path: '/logged/reception',
+    permission: true,
+  },
+  {
+    component: Reports,
+    exact: false,
+    path: '/logged/reports',
+    permission: true,
+  },
+  {
+    component: Romaneio,
+    exact: true,
+    path: '/logged/romaneio',
+    permission: true,
+  },
+  {
+    component: SaidaSupRoute,
+    exact: false,
+    path: '/logged/saidaSup',
+    permission: auth.permissions.suprimento,
+  },
+  {
+    component: Stock,
+    exact: false,
+    path: '/logged/stock/manager',
+    permission: true,
+  },
+  {
+    component: TechnicianRoute,
+    exact: false,
+    path: '/logged/technician',
+    permission: true,
+  },
+  {
+    component: TypeAcconuntRoute,
+    exact: false,
+    path: '/logged/typeAccount',
+    permission: true,
+  },
+  {
+    component: User,
+    exact: false,
+    path: '/logged/user',
+    permission: true,
+  },
+]
 
-        <Route path="/logged/technician/" component={TechnicianRoute} />
+const renderRoute = ({ component, exact, path }) => (
+  <Route component={component} exact={exact} path={path} />
+)
 
-        <Route path="/logged/typeAccount/" component={TypeAcconuntRoute} />
+const PagesRoute = ({auth}) => (
+  <Switch>
+    {map(
+      renderRoute,
+      filter(({ permission }) => permission, routeList({auth}))
+    )}
+    <Redirect to="/logged/dash" />
+  </Switch>
+)
 
-        {this.props.auth.permissions.suprimento && (
-          <Switch>
-            <Route path="/logged/saidaSup" component={SaidaSupRoute} />
-            <Route
-              path="/logged/gerenciarEstoqueSup"
-              component={GerenciarEstoqueSupRoute}
-            />
-            <Route
-              path="/logged/gerenciarCadastrosSup"
-              component={GerenciarCadastrosSupRoute}
-            />
-            <Route path="/logged/entradaSup" component={EntradaSupRoute} />
-            <Route
-              path="/logged/cadastroProdutosSup"
-              component={CadastroProdutosSupRoute}
-            />
-            <Route
-              path="/logged/cadastroFornecedorSup"
-              component={CadastroFornecedorSupRoute}
-            />
-            <Route
-              path="/logged/fornecedorSup/atializar"
-              component={EditarFornecedorSupRoute}
-            />
+const mapStateToProps = ({ auth }) => ({ auth })
 
-            <Redirect to="/logged/dash" />
-          </Switch>
-        )}
-        <Redirect to="/logged/dash" />
-      </Switch>
-    )
-  }
-}
+const enhanced = compose(connect(mapStateToProps))
 
-function mapStateToProps(state) {
-  return {
-    auth: state.auth,
-  }
-}
-
-export default connect(mapStateToProps)(PagesRoute)
+export default enhanced(PagesRoute)
