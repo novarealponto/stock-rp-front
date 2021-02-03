@@ -273,7 +273,7 @@ class ReservaKit extends Component {
   }
 
   renderRedirect = () => {
-    if (!this.props.auth.addKitOut) {
+    if (!this.props.auth.permissions.addKitOut) {
       return <Redirect to="/logged/dash" />
     }
 
@@ -626,7 +626,7 @@ class ReservaKit extends Component {
           <div className="div-avancado-buttons-kit">
             <div className="div-button-avancado-kit">
               {this.renderRedirect()}
-              {this.props.auth.addKit ? (
+              {this.props.auth.permissions.addKit ? (
                 <Button
                   className="button"
                   type="primary"
@@ -705,7 +705,7 @@ class ReservaKit extends Component {
           <div className="div-avancado-buttons-kit">
             <div className="div-button-avancado-kit">
               {this.renderRedirect()}
-              {this.props.auth.addKit ? (
+              {this.props.auth.permissions.addKit ? (
                 <Button
                   className="button"
                   type="primary"

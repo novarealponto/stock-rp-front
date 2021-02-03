@@ -371,7 +371,7 @@ class ReservaML extends Component {
   };
 
   renderRedirect = () => {
-    if (!this.props.auth.addRML) {
+    if (!this.props.auth.permissions.addRML) {
       return <Redirect to="/logged/dash" />;
     }
   };

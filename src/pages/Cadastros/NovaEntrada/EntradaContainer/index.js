@@ -359,7 +359,7 @@ class NovaEntrada extends Component {
   );
 
   renderRedirect = () => {
-    if (!this.props.auth.addEntr) {
+    if (!this.props.auth.permissions.addEntr) {
       return <Redirect to="/logged/dash" />;
     }
   };

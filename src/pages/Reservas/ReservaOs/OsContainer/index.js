@@ -527,7 +527,7 @@ class Rexterno extends Component {
   }
 
   renderRedirect = () => {
-    if (!this.props.auth.addROs) {
+    if (!this.props.auth.permissions.addROs) {
       return <Redirect to="/logged/dash" />
     }
   }
@@ -743,7 +743,7 @@ class Rexterno extends Component {
                 })}
               </Select>
               <this.modalStatus />
-              {this.props.auth.addStatus ? (
+              {this.props.auth.permissions.addStatus ? (
                 <Button
                   className="buttonadd-marca-produtos"
                   type="primary"

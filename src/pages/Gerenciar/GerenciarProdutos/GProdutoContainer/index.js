@@ -502,7 +502,7 @@ class GerenciarProdutos extends Component {
                 <p className="div-feedbackError">{this.state.message.mark}</p>
               ) : null}
             </div>
-            {this.props.auth.addMark ? (
+            {this.props.auth.permissions.addMark ? (
               <Button
                 className="buttonadd-marca-produtos"
                 type="primary"
@@ -548,7 +548,7 @@ class GerenciarProdutos extends Component {
                   <p className="div-feedbackError">{this.state.message.type}</p>
                 ) : null}
               </div>
-              {this.props.auth.addType ? (
+              {this.props.auth.permissions.addType ? (
                 <Button
                   className="buttonadd-marca-produtos"
                   type="primary"

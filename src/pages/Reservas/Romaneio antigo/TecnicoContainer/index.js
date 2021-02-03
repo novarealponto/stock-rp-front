@@ -926,7 +926,7 @@ class ReservaTecnico extends Component {
             </div>
             <div className="cel-data-cabecalho-Rtecnico">{line.formatedDate}</div>
             <div className="cel-acoes-cabecalho-Rtecnico">
-              {this.props.auth.delROs && !line.notDelet ? (
+              {this.props.auth.permissions.delROs && !line.notDelet ? (
                 <Tooltip placement="topLeft" title="Remover">
                   <Button
                     type="primary"
@@ -965,7 +965,7 @@ class ReservaTecnico extends Component {
                         <div
                           className="div-peca"
                           onClick={
-                            this.props.auth.addOutPut
+                            this.props.auth.permissions.addOutPut
                               ? () => this.openModalDetalhes(valor)
                               : null
                           }
@@ -979,7 +979,7 @@ class ReservaTecnico extends Component {
                         <div
                           className="div-peca"
                           onClick={
-                            this.props.auth.addOutPut
+                            this.props.auth.permissions.addOutPut
                               ? () => this.openModalDetalhes(valor)
                               : null
                           }
@@ -1004,7 +1004,7 @@ class ReservaTecnico extends Component {
   }
 
   renderRedirect = () => {
-    if (!this.props.auth.addOutPut) {
+    if (!this.props.auth.permissions.addOutPut) {
       return <Redirect to="/logged/dash" />
     }
   }

@@ -444,7 +444,7 @@ class GerenciarProdutoDash extends Component {
             <div className="cel-data-cabecalho-GCadastros">{line.mark}</div>
             <div className="cel-acoes-cabecalho-GCadastros">{line.type}</div>
             <div className="cel-edit-cabecalho-GCadastros">
-              {this.props.auth.addProd ? (
+              {this.props.auth.permissions.addProd ? (
                 <Tooltip placement="topLeft" title="Editar">
                   <EditOutlined
                     className="icon-edit"
@@ -494,7 +494,7 @@ class GerenciarProdutoDash extends Component {
               )}
             </div>
             <div className="cel-edit-cabecalho-GCadastros">
-              {this.props.auth.addUser ? (
+              {this.props.auth.permissions.addUser ? (
                 <Tooltip placement="topLeft" title="Editar">
                   <EditOutlined
                     className="icon-edit"
@@ -543,7 +543,7 @@ class GerenciarProdutoDash extends Component {
               {line.CNH.replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3')}
             </div>
             <div className="cel-edit-cabecalho-GCadastros">
-              {this.props.auth.addTec ? (
+              {this.props.auth.permissions.addTec ? (
                 <Tooltip placement="topLeft" title="Editar">
                   <EditOutlined
                     className="icon-edit"
@@ -594,7 +594,7 @@ class GerenciarProdutoDash extends Component {
               {line.telphone.replace(/(\d{2})(\d{4,5})(\d{4})/, '($1) $2-$3')}
             </div>
             <div className="cel-edit-cabecalho-GCadastros">
-              {this.props.auth.addFonr ? (
+              {this.props.auth.permissions.addFonr ? (
                 <Tooltip placement="topLeft" title="Editar">
                   <EditOutlined
                     className="icon-edit"

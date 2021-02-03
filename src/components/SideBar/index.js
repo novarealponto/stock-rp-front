@@ -44,7 +44,7 @@ const headersList = ({ auth, history, Logout }) => [
     children: (
       <ShopOutlined
         className={styles.iconHearder}
-        disabled={!auth.addEntr}
+        disabled={!auth.permissions.addEntr}
         onClick={() => history.push('/logged/entry/add')}
       />
     ),
@@ -113,6 +113,12 @@ const subMenuList = [
         key: 'user/manager',
         text: 'Usuário',
       },
+      {
+        disabled: false,
+        icon: <UserOutlined />,
+        key: 'typeAccount/manager',
+        text: 'Tipo de conta',
+      },
     ],
     title: (
       <span>
@@ -126,7 +132,7 @@ const subMenuList = [
     menuItemList: ({ auth }) => [
       {
         key: 'entry/add',
-        disabled: !auth.addEntr,
+        disabled: !auth.permissions.addEntr,
         icon: <ShoppingCartOutlined />,
         text: 'Nova',
       },
@@ -171,13 +177,13 @@ const subMenuList = [
         text: 'Romaneio',
       },
       {
-        disabled: !auth.addROs,
+        disabled: !auth.permissions.addROs,
         key: 'os/add',
         icon: <FileAddOutlined />,
         text: 'Saídas',
       },
       {
-        disabled: !auth.gerROs,
+        disabled: !auth.permissions.gerROs,
         key: 'os/manager',
         icon: <UnorderedListOutlined />,
         text: 'Gerenciar Os',
@@ -252,37 +258,37 @@ const subMenuList = [
     key: 'Suprimentos',
     menuItemList: ({ auth }) => [
       {
-        disabled: !auth.suprimento,
+        disabled: !auth.permissions.suprimento,
         key: 'cadastroProdutosSup/add',
         icon: <UnorderedListOutlined />,
         text: 'Cad. Produtos',
       },
       {
-        disabled: !auth.suprimento,
+        disabled: !auth.permissions.suprimento,
         key: 'cadastroFornecedorSup/add',
         icon: <UnorderedListOutlined />,
         text: 'Cad. Fornecedor',
       },
       {
-        disabled: !auth.suprimento,
+        disabled: !auth.permissions.suprimento,
         key: 'entradaSup/add',
         icon: <UnorderedListOutlined />,
         text: 'Entrada',
       },
       {
-        disabled: !auth.suprimento,
+        disabled: !auth.permissions.suprimento,
         key: 'saidaSup/add',
         icon: <UnorderedListOutlined />,
         text: 'Saida',
       },
       {
-        disabled: !auth.suprimento,
+        disabled: !auth.permissions.suprimento,
         key: 'gerenciarCadastrosSup/dash',
         icon: <UnorderedListOutlined />,
         text: 'Ger. Cadastros',
       },
       {
-        disabled: !auth.suprimento,
+        disabled: !auth.permissions.suprimento,
         key: 'gerenciarEstoqueSup/dash',
         icon: <UnorderedListOutlined />,
         text: 'Ger. Estoque',

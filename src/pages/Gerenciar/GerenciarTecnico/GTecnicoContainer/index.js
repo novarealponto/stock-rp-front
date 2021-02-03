@@ -454,7 +454,7 @@ class GerenciarTecnico extends Component {
                 <p className="div-feedbackError">{this.state.message.car}</p>
               ) : null}
             </div>
-            {this.props.auth.addCar ? (
+            {this.props.auth.permissions.addCar ? (
               <Button
                 className="buttonadd-marca-tecnico"
                 type="primary"

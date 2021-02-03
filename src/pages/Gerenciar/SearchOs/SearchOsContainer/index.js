@@ -87,7 +87,7 @@ class SearchOsDash extends Component {
   }
 
   renderRedirect = () => {
-    if (!this.props.auth.updateRos) {
+    if (!this.props.auth.permissions.updateRos) {
       return <Redirect to="/logged/dash" />
     }
 
@@ -841,7 +841,7 @@ class SearchOsDash extends Component {
                   })}
               </Select>
               <this.modalStatus />
-              {this.props.auth.addStatus ? (
+              {this.props.auth.permissions.addStatus ? (
                 <Button
                   className="buttonadd-marca-produtos"
                   type="primary"

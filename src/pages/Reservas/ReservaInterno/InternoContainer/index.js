@@ -360,7 +360,7 @@ class Rinterno extends Component {
   }
 
   renderRedirect = () => {
-    if (!this.props.auth.addROs) {
+    if (!this.props.auth.permissions.addROs) {
       return <Redirect to="/logged/dash" />
     }
   }
