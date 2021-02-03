@@ -8,7 +8,6 @@ import {
   usuarioUpdateValue,
   tecnicoUpdateValue
 } from "../pages/Gerenciar/Produto/ProdutoRedux/reduce";
-import { entradaUpdateValue } from "../pages/Gerenciar/Entrada/GerenciarEntradaRedux/reduce";
 import { providerUpdateValue } from "../pages/Suprimentos/Edit.Fornecedor/Redux/reduce";
 
 const appReducer = combineReducers({
@@ -19,7 +18,6 @@ const appReducer = combineReducers({
   fornecedorUpdateValue,
   usuarioUpdateValue,
   tecnicoUpdateValue,
-  entradaUpdateValue,
   providerUpdateValue
 });
 
