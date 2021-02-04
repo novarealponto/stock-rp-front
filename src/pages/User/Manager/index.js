@@ -1,75 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from "react-redux";
-import { bindActionCreators } from 'redux';
-import { compose, isEmpty, path, pathOr } from 'ramda';
-import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { compose, path, pathOr } from 'ramda'
+import { withRouter } from 'react-router-dom'
 
-import { redirectValueUsuario } from '../../Gerenciar/Produto/ProdutoRedux/action';
-import { getUsers } from '../../../services/usuario';
-import ManagerContainer from '../../../containers/User/Manager';
+import ManagerContainer from '../../../containers/User/Manager'
+import { getUsers } from '../../../services/usuario'
+import { redirectValueUsuario } from '../../Gerenciar/Produto/ProdutoRedux/action'
 
-const Manager = ({
-  auth,
-  history,
-  redirectValueUsuario,
-}) => {
+const Manager = ({ auth, history, redirectValueUsuario }) => {
+  const [current, setCurrent] = useState(1)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
-  const [shouldRequest, setShouldRequest] = useState(true)
+  const [searchValue, setSearchValue] = useState('')
+  const [total, setTotal] = useState(10)
 
-  useEffect(() => {
-    if (shouldRequest) {
-      getAllUsers({ total: 10 })
-    }
-  }, [
-    shouldRequest,
-  ])
-
-  const goToAddUser = () => history.push('/logged/user/add')
-  const goToUpdateUser = user => {
-    redirectValueUsuario(user)
-    history.push('/logged/user/edit')
-  }
-
-  const getAllUsers = async (query = {}) => {
-    try {
-      const { data } = await getUsers(query)
-      const rows = pathOr([], ['rows'], data)
-      setData(rows.map(row => ({ ...row, key: row.id })))
-      setLoading(false)
-      setShouldRequest(false)
-    } catch (error) {
-      setLoading(false)
-      setShouldRequest(false)
-    }
-  };
-
-  const handleSearch = async(username) => {
+  const getAllUsers = useCallback(async () => {
     setLoading(true)
+
     const query = {
       filters: {
         user: {
           specific: {
-            username,
+            username: searchValue,
             modulo: path(['modulo'], auth),
-          }
+          },
         },
       },
-      page: 1,
+      page: current,
       total: 10,
-    };
-
-    if (isEmpty(username)) {
-      return getAllUsers()
     }
 
-    return getAllUsers(query)
+    try {
+      const { data } = await getUsers(query)
+      const rows = pathOr([], ['rows'], data)
+      const count = pathOr(1, ['count'], data)
+      setData(rows.map((row) => ({ ...row, key: row.id })))
+      setLoading(false)
+      setTotal(count)
+    } catch (error) {
+      setLoading(false)
+    }
+  }, [current, searchValue])
+
+  const goToAddUser = () => history.push('/logged/user/add')
+
+  const goToUpdateUser = (user) => {
+    redirectValueUsuario(user)
+    history.push('/logged/user/edit')
   }
 
-  const handlePaginations = async ({ current }) => {
-    await getAllUsers({ total: 10, page: current })
+  const handlePaginations = ({ current }) => setCurrent(current)
+
+  const handleSearch = (username) => {
+    setSearchValue(username)
+    setCurrent(1)
   }
+
+  useEffect(() => {
+    getAllUsers()
+  }, [getAllUsers])
 
   return (
     <ManagerContainer
@@ -79,23 +70,19 @@ const Manager = ({
       handlePaginations={handlePaginations}
       handleSearch={handleSearch}
       loading={loading}
+      pagination={{ total, current }}
     />
   )
-};
+}
 
 const mapStateToProps = ({ auth }) => ({
   auth,
-});
+})
 
-const mapDispacthToProps = dispach => bindActionCreators(
-  { redirectValueUsuario },
-  dispach
-);
+const mapDispacthToProps = (dispach) =>
+  bindActionCreators({ redirectValueUsuario }, dispach)
 
-const enhanced = compose(
-  connect(mapStateToProps, mapDispacthToProps),
-  withRouter,
-);
+const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
 
 Manager.propTypes = {
   auth: PropTypes.shape({
@@ -105,6 +92,6 @@ Manager.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   redirectValueUsuario: PropTypes.func.isRequired,
-};
+}
 
-export default enhanced(Manager);
+export default enhanced(Manager)

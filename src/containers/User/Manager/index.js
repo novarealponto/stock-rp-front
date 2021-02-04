@@ -1,12 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { always, ifElse, pathEq } from 'ramda'
 import { Button, Col, Input, Row, Table, Tooltip, Typography } from 'antd'
 import {
-  EditOutlined,
   CheckCircleTwoTone,
   CloseCircleTwoTone,
+  EditOutlined,
 } from '@ant-design/icons'
-import { always, ifElse, pathEq } from 'ramda'
-import PropTypes from 'prop-types'
 
 import styles from './style.module.css'
 
@@ -56,6 +56,7 @@ const Manager = ({
   goToUpdateUser,
   handlePaginations,
   handleSearch,
+  pagination,
   loading,
 }) => {
   return (
@@ -85,6 +86,7 @@ const Manager = ({
             columns={columns(goToUpdateUser)}
             dataSource={data}
             onChange={handlePaginations}
+            pagination={pagination}
           />
         </Col>
       </Row>
