@@ -42,7 +42,7 @@ const Manager = () => {
   const [visibleModalSerialNumbers, setVisibleModalSerialNumbers] = useState(
     false
   )
-  const [visibleSearch, setVisibleSearch] = useState()
+  const [setVisibleSearch] = useState()
 
   useEffect(() => {
     const getAllStock = () => {

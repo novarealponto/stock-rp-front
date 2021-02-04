@@ -67,7 +67,6 @@ const EditUser = ({
     );
 
     return (
-      <>
         <Form form={form} onFinish={handleSubmit}>
           <Row justify="center">
             <Col>
@@ -132,7 +131,6 @@ const EditUser = ({
             </Col>
           </Row>
         </Form>
-      </>
     );
 };
 

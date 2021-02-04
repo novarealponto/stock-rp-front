@@ -5,9 +5,10 @@ import {
   EditTwoTone,
   SearchOutlined,
 } from '@ant-design/icons'
-import { Button, Col, Divider, Form, Input, Row, Typography } from 'antd'
+import { Button, Col, Form, Input, Row, Typography } from 'antd'
 
 import TableComponent from '../../../components/Table'
+
 const { Title } = Typography
 
 const Technician = ({
