@@ -1,897 +1,370 @@
-import React, { Component } from 'react'
-import { Menu, Tooltip } from 'antd'
-import './index.css'
-import { Redirect } from 'react-router-dom'
-import { Logout } from '../../pages/Login/LoginRedux/action'
-import { connect } from 'react-redux'
+import React, { useState } from 'react'
 import { bindActionCreators } from 'redux'
-import * as R from 'ramda'
-import uuidValidate from 'uuid-validate'
-
-import { auth } from '../../services/auth'
-import { hasNotifications } from '../../services/notificacao'
+import { compose, length, map } from 'ramda'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { Col, Divider, Layout, Menu, Row, Tooltip } from 'antd'
 import {
-  DollarCircleOutlined,
-  ShoppingOutlined,
-  UserOutlined,
-  LogoutOutlined,
-  StockOutlined,
-  RetweetOutlined,
-  AreaChartOutlined,
-  AppleOutlined,
-  FileSearchOutlined,
   AlertOutlined,
-  PieChartOutlined,
-  ShopOutlined,
+  AppleOutlined,
+  AreaChartOutlined,
+  BankOutlined,
   FileAddOutlined,
   FilePdfOutlined,
+  FileSearchOutlined,
+  LogoutOutlined,
   PushpinOutlined,
-  UserAddOutlined,
+  RetweetOutlined,
   SettingOutlined,
-  BankOutlined,
-  UnorderedListOutlined,
   ShoppingCartOutlined,
+  ShopOutlined,
+  StockOutlined,
+  UnorderedListOutlined,
+  UserAddOutlined,
+  UserOutlined,
 } from '@ant-design/icons'
 
-const SubMenu = Menu.SubMenu
+import styles from './style.module.css'
+import { Logout } from '../../pages/Login/LoginRedux/action'
 
-class SideBar extends Component {
-  state = {
-    notificacao: false,
-    current: '0',
-    redirect: false,
-    open: [],
-    auth: true,
-  }
+const { Sider } = Layout
+const { SubMenu } = Menu
 
-  hasNotifications = async () => {
-    await hasNotifications().then((resp) =>
-      this.setState({
-        notificacao: resp.data,
-      })
-    )
-  }
+const headersList = ({ auth, history, Logout }) => [
+  {
+    children: (
+      <StockOutlined
+        className={styles.iconHearder}
+        onClick={() => history.push('/logged/stock/manager')}
+      />
+    ),
+    title: 'Estoque',
+  },
+  {
+    children: (
+      <ShopOutlined
+        className={styles.iconHearder}
+        disabled={!auth.permissions.addEntr}
+        onClick={() => history.push('/logged/entry/add')}
+      />
+    ),
+    title: 'Entrada',
+  },
+  {
+    children: (
+      <UserOutlined
+        className={styles.iconHearder}
+        onClick={() => history.push('/logged/profile')}
+      />
+    ),
+    title: 'Perfil',
+  },
+  {
+    children: (
+      <LogoutOutlined
+        className={styles.iconHearder}
+        onClick={() => {
+          Logout()
+          history.push('/login')
+        }}
+      />
+    ),
+    title: 'Logout',
+  },
+]
 
-  auth = async () => {
-    const value = {
-      token: this.props.auth.token,
-      username: this.props.auth.username,
-    }
+const subMenuList = [
+  {
+    key: 'Cadastros',
+    menuItemList: () => [
+      {
+        disabled: false,
+        icon: <BankOutlined />,
+        key: 'provider/manager',
+        text: 'Fornecedor',
+      },
+      {
+        disabled: false,
+        icon: <SettingOutlined />,
+        key: 'mark/manager',
+        text: 'Marca',
+      },
+      {
+        disabled: false,
+        icon: <SettingOutlined />,
+        key: 'product/manager',
+        text: 'Produto',
+      },
+      {
+        disabled: false,
+        icon: <UserAddOutlined />,
+        key: 'technician/manager',
+        text: 'Técnico',
+      },
+      {
+        disabled: false,
+        icon: <SettingOutlined />,
+        key: 'productType/manager',
+        text: 'Tipo de produto',
+      },
+      {
+        disabled: false,
+        icon: <UserOutlined />,
+        key: 'user/manager',
+        text: 'Usuário',
+      },
+      {
+        disabled: false,
+        icon: <UserOutlined />,
+        key: 'typeAccount/manager',
+        text: 'Tipo de conta',
+      },
+    ],
+    title: (
+      <span>
+        <UserOutlined />
+        <span>Cadastros</span>
+      </span>
+    ),
+  },
+  {
+    key: 'Entrada',
+    menuItemList: ({ auth }) => [
+      {
+        key: 'entry/add',
+        disabled: !auth.permissions.addEntr,
+        icon: <ShoppingCartOutlined />,
+        text: 'Nova',
+      },
+      {
+        disabled: false,
+        key: 'entry/manager',
+        icon: <UnorderedListOutlined />,
+        text: 'Gerenciar',
+      },
+    ],
+    title: (
+      <span>
+        <ShopOutlined />
+        <span>Entrada</span>
+      </span>
+    ),
+  },
+  {
+    key: 'Estoque',
+    menuItemList: () => [
+      {
+        disabled: false,
+        key: 'stock/manager',
+        icon: <UnorderedListOutlined />,
+        text: 'Gerenciar',
+      },
+    ],
+    title: (
+      <span>
+        <StockOutlined />
+        <span>Estoque</span>
+      </span>
+    ),
+  },
+  {
+    key: 'Reserva',
+    menuItemList: ({ auth }) => [
+      {
+        disabled: false,
+        key: 'romaneio',
+        icon: <FilePdfOutlined />,
+        text: 'Romaneio',
+      },
+      {
+        disabled: !auth.permissions.addROs,
+        key: 'os/add',
+        icon: <FileAddOutlined />,
+        text: 'Saídas',
+      },
+      {
+        disabled: !auth.permissions.gerROs,
+        key: 'os/manager',
+        icon: <UnorderedListOutlined />,
+        text: 'Gerenciar Os',
+      },
+    ],
+    title: (
+      <span>
+        <PushpinOutlined />
+        <span>Reserva</span>
+      </span>
+    ),
+  },
+  {
+    key: 'Emprestimo',
+    title: (
+      <span>
+        <RetweetOutlined />
+        <span>Empréstimo</span>
+      </span>
+    ),
+    menuItemList: () => [
+      {
+        disabled: false,
+        key: 'loan',
+        icon: <UnorderedListOutlined />,
+        text: 'Gerenciar',
+      },
+    ],
+  },
+  {
+    key: 'Relatorios',
+    menuItemList: () => [
+      {
+        disabled: false,
+        key: 'reports/os',
+        icon: <FileSearchOutlined />,
+        text: 'Os',
+      },
+      {
+        disabled: false,
+        key: 'reports/missout',
+        icon: <AlertOutlined />,
+        text: 'Perda',
+      },
+      {
+        disabled: false,
+        key: 'reports/solds',
+        icon: <ShoppingCartOutlined />,
+        text: 'Vendas',
+      },
+      {
+        disabled: false,
+        key: 'reports/supply',
+        icon: <AppleOutlined />,
+        text: 'Suprimentos',
+      },
+      {
+        disabled: false,
+        key: 'reports/loan',
+        icon: <RetweetOutlined />,
+        text: 'Empréstimo',
+      },
+    ],
+    title: (
+      <span>
+        <AreaChartOutlined />
+        <span>Relatórios</span>
+      </span>
+    ),
+  },
+  {
+    key: 'Suprimentos',
+    menuItemList: ({ auth }) => [
+      {
+        disabled: !auth.permissions.suprimento,
+        key: 'cadastroProdutosSup/add',
+        icon: <UnorderedListOutlined />,
+        text: 'Cad. Produtos',
+      },
+      {
+        disabled: !auth.permissions.suprimento,
+        key: 'cadastroFornecedorSup/add',
+        icon: <UnorderedListOutlined />,
+        text: 'Cad. Fornecedor',
+      },
+      {
+        disabled: !auth.permissions.suprimento,
+        key: 'entradaSup/add',
+        icon: <UnorderedListOutlined />,
+        text: 'Entrada',
+      },
+      {
+        disabled: !auth.permissions.suprimento,
+        key: 'saidaSup/add',
+        icon: <UnorderedListOutlined />,
+        text: 'Saida',
+      },
+      {
+        disabled: !auth.permissions.suprimento,
+        key: 'gerenciarCadastrosSup/dash',
+        icon: <UnorderedListOutlined />,
+        text: 'Ger. Cadastros',
+      },
+      {
+        disabled: !auth.permissions.suprimento,
+        key: 'gerenciarEstoqueSup/dash',
+        icon: <UnorderedListOutlined />,
+        text: 'Ger. Estoque',
+      },
+    ],
+    title: (
+      <span>
+        <AppleOutlined />
+        <span>Suprimentos</span>
+      </span>
+    ),
+  },
+]
 
-    let response = {}
+const renderHeader = ({ children, title }) => (
+  <Col key={title} span={6}>
+    <Row justify="center">
+      <Tooltip placement="bottom" title={title}>
+        {children}
+      </Tooltip>
+    </Row>
+  </Col>
+)
 
-    response = await auth(value).then((resp) =>
-      this.setState({
-        auth: resp ? resp.data : false,
-      })
-    )
+const renderMenuItem = ({ history }) => ({ disabled, icon, key, text }) => (
+  <Menu.Item
+    disabled={disabled}
+    key={key}
+    onClick={() => history.push(`/logged/${key}`)}
+  >
+    {icon}
+    {text}
+  </Menu.Item>
+)
 
-    return response
-  }
+const renderSubMenu = ({ auth, history }) => ({ key, menuItemList, title }) => (
+  <SubMenu key={key} title={title}>
+    {map(renderMenuItem({ history }), menuItemList({ auth }))}
+  </SubMenu>
+)
 
-  hasAuth = R.has('auth')
-  hasToken = R.has('token')
+const SideBar = ({ auth, history, Logout }) => {
+  const [openKeys, setOpenKeys] = useState([])
 
-  forceLogout = async () => {
-    if (!this.hasAuth(this.props)) {
-      await this.logout()
-    } else if (!this.hasToken(this.props.auth)) {
-      await this.logout()
-    } else if (!uuidValidate(this.props.auth.token)) {
-      await this.logout()
-    }
-  }
+  return (
+    <Sider
+      style={{
+        overflow: 'auto',
+        height: '100vh',
+        position: 'fixed',
+        left: 0,
+      }}
+    >
+      <Row style={{ margin: '20px 0' }}>
+        {map(renderHeader, headersList({ auth, history, Logout }))}
+      </Row>
 
-  componentDidMount = async () => {
-    await this.forceLogout()
-  }
+      <Divider className={styles.divider} />
 
-  logout = async () => {
-    await this.props.Logout(this.props.auth.token)
-
-    this.setState({
-      current: 'logout',
-      redirect: true,
-    })
-  }
-
-  handleClickCompany = async (current, keyPath) => {
-    await this.auth()
-
-    if (!this.state.auth) {
-      await this.logout()
-      return
-    }
-
-    this.setState({
-      current,
-      redirect: true,
-      open: [keyPath],
-    })
-  }
-
-  changeRedirectState = () => {
-    this.setState({
-      redirect: false,
-    })
-  }
-
-  handleClickAtalhos = async (current, keyPath) => {
-    await this.auth()
-
-    if (!this.state.auth) {
-      await this.logout()
-      return
-    }
-
-    this.setState({
-      current,
-      redirect: true,
-      open: [keyPath],
-    })
-  }
-
-  handleClick = async (e) => {
-    await this.auth()
-
-    if (!this.state.auth) {
-      await this.logout()
-      return
-    }
-
-    this.setState({
-      current: e.key,
-      redirect: true,
-      open: [e.keyPath[1]],
-    })
-  }
-
-  render() {
-    if (this.state.redirect) {
-      this.changeRedirectState()
-      switch (this.state.current) {
-        case 'novoUsuario_add':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/user/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'novoTipoConta_add':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/novoTipoConta/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'newTechnician_add':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/technician/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'novoProduto_add':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/product/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'productType':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/productType/manager',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'novoFornecedor_add':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/novoFornecedor/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'gerenciarProduto_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/product/manager',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'entrada_add':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/entrada/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'entrada_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/gerenciarEntrada/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'estoque_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/stock/manager',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'reservaKit_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/reservaKit/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'reservaKit_add':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/reservaKitAdd/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'romaneio_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/romaneio/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'Rexterno_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/os/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'externo_add':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/externo/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'Rinterno_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/Rinterno/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'Os_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/os/manager',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'searchOs_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/searchOs/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'reservaML_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/reservaML/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'relatorioOs_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/relatorioOs/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'relatorioEmprestimo_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/relatorioEmprestimo/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'relatorioInterno_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/relatorioInterno/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'relatorioPerda_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/relatorioPerda/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'relatorioML_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/relatorioML/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'relatorioVendas_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/relatorioVendas/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'relatorioMap_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/relatorioMap/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'relatorioSup_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/RelatorioSuprimentos/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'relatorioCompras_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/RelatorioCompras/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'relatorioGastos_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/RelatorioGastos/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'profile_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/profile/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'gerenciarProdutosDash_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/gerenciarProdutosDash/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'gerenciarFornecedor_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/gerenciarFornecedor/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'gerenciarUsuario_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/gerenciarUsuario/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'gerenciarTecnico_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/gerenciarTecnico/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'gerenciarEntrada_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/entradaDash/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'emprestimo_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/emprestimo/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'gerenciarCadastrosSup_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/gerenciarCadastrosSup/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'gerenciarEstoqueSup_dash':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/gerenciarEstoqueSup/dash',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'cadastroFornecedorSup_add':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/cadastroFornecedorSup/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'cadastroProdutosSup_add':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/cadastroProdutosSup/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'entradaSup_add':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/entradaSup/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'saidaSup_add':
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: '/logged/saidaSup/add',
-                state: { from: this.props.location },
-              }}
-            />
-          )
-        case 'logout':
-          return <Redirect to="/login" />
-        default:
-          return <Redirect to="/logged/dash" />
-      }
-    }
-    return (
-      <div>
-        <div className="menuIcon">
-          <Tooltip placement="bottom" title={'Estoque'}>
-            <StockOutlined
-              className="menuIcon-icon"
-              onClick={() => this.handleClickCompany('estoque_dash', 'Entrada')}
-            />
-          </Tooltip>
-
-          <Tooltip placement="bottom" title={'Entrada'}>
-            <ShopOutlined
-              className="menuIcon-icon"
-              onClick={() => this.handleClickCompany('entrada_add')}
-            />
-          </Tooltip>
-
-          <Tooltip placement="bottom" title={'Perfil'}>
-            <UserOutlined
-              className="menuIcon-icon"
-              onClick={() => this.handleClickCompany('profile_dash')}
-            />
-          </Tooltip>
-          <Tooltip placement="bottom" title={'Logout'}>
-            <LogoutOutlined
-              key="logout"
-              className="menuIcon-icon"
-              onClick={() => this.logout()}
-            />
-          </Tooltip>
-        </div>
-
-        <Menu
-          className="menu"
-          theme="dark"
-          onClick={this.handleClick}
-          defaultOpenKeys={this.state.open}
-          selectedKeys={[this.state.current]}
-          mode="inline"
-        >
-          <SubMenu
-            key="Cadastros"
-            title={
-              <span>
-                <UserOutlined />
-                <span>Cadastros</span>
-              </span>
-            }
-          >
-            <Menu.Item disabled={!this.props.auth.addUser} key="novoUsuario_add">
-              <UserOutlined />
-              Usuário
-            </Menu.Item>
-            {!this.props.auth.modulo && (
-              <Menu.Item
-                disabled={!this.props.auth.addTec}
-                key="newTechnician_add"
-              >
-                <UserAddOutlined />
-                Técnico
-              </Menu.Item>
-            )}
-            <Menu.Item disabled={!this.props.auth.addProd} key="novoProduto_add">
-              <SettingOutlined />
-              Produto
-            </Menu.Item>
-            <Menu.Item
-              disabled={!this.props.auth.addFonr}
-              key="novoFornecedor_add"
-            >
-              <BankOutlined />
-              Fornecedor
-            </Menu.Item>
-            <Menu.Item key="gerenciarProduto_dash">
-              <UnorderedListOutlined />
-              Gerenciar
-            </Menu.Item>
-          </SubMenu>
-          <SubMenu
-            key="Entrada"
-            title={
-              <span>
-                <ShopOutlined />
-                <span>Entrada</span>
-              </span>
-            }
-          >
-            <Menu.Item disabled={!this.props.auth.addEntr} key="entrada_add">
-              <ShoppingCartOutlined />
-              Nova
-            </Menu.Item>
-            <Menu.Item key="entrada_dash">
-              <UnorderedListOutlined />
-              Gerenciar
-            </Menu.Item>
-          </SubMenu>
-          {/* <SubMenu
-            key="Compras"
-            title={
-              <span>
-                <ShopOutlined />
-                <span>Compras</span>
-              </span>
-            }
-          >
-            <Menu.Item disabled={!this.props.auth.addEntr} key="entrada_add">
-              <ShoppingCartOutlined />
-              Nova
-            </Menu.Item>
-          </SubMenu> */}
-          <SubMenu
-            key="Estoque"
-            title={
-              <span>
-                <StockOutlined />
-                <span>Estoque</span>
-              </span>
-            }
-          >
-            <Menu.Item key="estoque_dash">
-              <UnorderedListOutlined />
-              Gerenciar
-            </Menu.Item>
-          </SubMenu>
-
-          {!this.props.auth.modulo && (
-            <SubMenu
-              key="Reserva"
-              title={
-                <span>
-                  <PushpinOutlined />
-                  <span>Reserva</span>
-                </span>
-              }
-            >
-              <Menu.Item
-                disabled={!this.props.auth.addKitOut}
-                key="reservaKit_dash"
-              >
-                <ShoppingCartOutlined />
-                Kit
-              </Menu.Item>
-              <Menu.Item
-                disabled={!this.props.auth.addOutPut}
-                key="romaneio_dash"
-              >
-                <FilePdfOutlined />
-                Romaneio
-              </Menu.Item>
-              {/* <Menu.Item disabled={!this.props.auth.gerROs} key="Rinterno_dash">
-                <FileAddOutlined />
-                Recepção
-              </Menu.Item> */}
-              <Menu.Item disabled={!this.props.auth.addROs} key="Rexterno_dash">
-                <FileAddOutlined />
-                Saídas
-              </Menu.Item>
-              {/* <Menu.Item disabled={!this.props.auth.addRML} key="reservaML_dash">
-                <PieChartOutlined />
-                E-Commerce
-              </Menu.Item> */}
-              <Menu.Item disabled={!this.props.auth.gerROs} key="Os_dash">
-                <UnorderedListOutlined />
-                Gerenciar Os
-              </Menu.Item>
-            </SubMenu>
-          )}
-
-          <SubMenu
-            key="Emprestimo"
-            title={
-              <span>
-                <RetweetOutlined />
-                <span>{this.props.auth.modulo ? 'Modulo' : 'Empréstimo'}</span>
-              </span>
-            }
-          >
-            <Menu.Item key="emprestimo_dash">
-              <UnorderedListOutlined />
-              Gerenciar
-            </Menu.Item>
-          </SubMenu>
-
-          <SubMenu
-            key="Relatorios"
-            title={
-              <span>
-                <AreaChartOutlined />
-                <span>Relatórios</span>
-              </span>
-            }
-          >
-            {!this.props.auth.modulo && (
-              <Menu.Item key="relatorioOs_dash">
-                <FileSearchOutlined />
-                Os
-              </Menu.Item>
-            )}
-            {!this.props.auth.modulo && (
-              <Menu.Item key="relatorioPerda_dash">
-                <AlertOutlined />
-                Perda
-              </Menu.Item>
-            )}
-
-            {/* {!this.props.auth.modulo && (
-              <Menu.Item key="relatorioML_dash">
-                <PieChartOutlined />
-                E-Commerce
-              </Menu.Item>
-            )} */}
-            {!this.props.auth.modulo && (
-              <Menu.Item key="relatorioVendas_dash">
-                <ShoppingCartOutlined />
-                Vendas
-              </Menu.Item>
-            )}
-            {!this.props.auth.modulo && (
-              <Menu.Item key="relatorioMap_dash">
-                <FileSearchOutlined />
-                Mapeamento
-              </Menu.Item>
-            )}
-            {!this.props.auth.modulo && (
-              <Menu.Item key="relatorioSup_dash">
-                <AppleOutlined />
-                Suprimentos
-              </Menu.Item>
-            )}
-            {/* <Menu.Item key="relatorioInterno_dash">
-              <UserOutlined />
-              Interno
-            </Menu.Item> */}
-            <Menu.Item key="relatorioEmprestimo_dash">
-              <RetweetOutlined />
-              Empréstimo
-            </Menu.Item>
-
-            <Menu.Item key="relatorioCompras_dash">
-              <ShoppingOutlined />
-              Compras
-            </Menu.Item>
-            <Menu.Item key="relatorioGastos_dash">
-              <DollarCircleOutlined />
-              Gastos
-            </Menu.Item>
-          </SubMenu>
-
-          {!this.props.auth.modulo && (
-            <SubMenu
-              key="Suprimentos"
-              title={
-                <span>
-                  <AppleOutlined />
-                  <span>Suprimentos</span>
-                </span>
-              }
-            >
-              <Menu.Item
-                key="cadastroProdutosSup_add"
-                disabled={!this.props.auth.suprimento}
-              >
-                <UnorderedListOutlined />
-                Cad. Produtos
-              </Menu.Item>
-              <Menu.Item
-                key="cadastroFornecedorSup_add"
-                disabled={!this.props.auth.suprimento}
-              >
-                <UnorderedListOutlined />
-                Cad. Fornecedor
-              </Menu.Item>
-              <Menu.Item
-                key="entradaSup_add"
-                disabled={!this.props.auth.suprimento}
-              >
-                <UnorderedListOutlined />
-                Entrada
-              </Menu.Item>
-              <Menu.Item
-                key="saidaSup_add"
-                disabled={!this.props.auth.suprimento}
-              >
-                <UnorderedListOutlined />
-                Saida
-              </Menu.Item>
-              <Menu.Item
-                key="gerenciarCadastrosSup_dash"
-                disabled={!this.props.auth.suprimento}
-              >
-                <UnorderedListOutlined />
-                Ger. Cadastros
-              </Menu.Item>
-              <Menu.Item
-                key="gerenciarEstoqueSup_dash"
-                disabled={!this.props.auth.suprimento}
-              >
-                <UnorderedListOutlined />
-                Ger. Estoque
-              </Menu.Item>
-            </SubMenu>
-          )}
-        </Menu>
-      </div>
-    )
-  }
+      <Menu
+        mode="inline"
+        onOpenChange={(keys) => {
+          setOpenKeys(length(keys) === 2 ? [keys[1]] : keys)
+        }}
+        openKeys={openKeys}
+        theme="dark"
+      >
+        {map(renderSubMenu({ history, auth }), subMenuList)}
+      </Menu>
+    </Sider>
+  )
 }
 
-function mapDispacthToProps(dispach) {
-  return bindActionCreators({ Logout }, dispach)
-}
+const mapDispacthToProps = (dispatch) => bindActionCreators({ Logout }, dispatch)
+const mapStateToProps = ({ auth }) => ({ auth })
 
-function mapStateToProps(state) {
-  return {
-    auth: state.auth,
-  }
-}
+const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
 
-export default connect(mapStateToProps, mapDispacthToProps)(SideBar)
+export default enhanced(SideBar)

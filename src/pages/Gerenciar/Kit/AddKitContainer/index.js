@@ -35,7 +35,7 @@ class AddKit extends Component {
   }
 
   renderRedirect = () => {
-    if (!this.props.auth.addKit) {
+    if (!this.props.auth.permissions.addKit) {
       return <Redirect to="/logged/dash" />
     }
 

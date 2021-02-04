@@ -12,6 +12,7 @@ const INICIAL_STATE_AUTH = {
   userId: null,
   username: 'userName',
   validTonken: false,
+  permissions: {}
 };
 
 export function login(state = INICIAL_STATE_LOGIN, action) {

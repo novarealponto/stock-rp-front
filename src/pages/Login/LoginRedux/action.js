@@ -1,5 +1,4 @@
 import action from '../../../store/actions';
-import { logout as logoutService } from '../../../services/auth';
 
 export function onSubmit(value) {
   return (dispatch) => {
@@ -12,11 +11,9 @@ export function onSubmit(value) {
 
 export function Logout(value) {
   return (dispatch) => {
-    logoutService(value).then(
       dispatch({
         type: action.LOGIN.LOGOUT,
         payload: null,
       })
-    );
   };
 }
