@@ -183,7 +183,7 @@ const routeList = ({ auth }) => [
 ]
 
 const renderRoute = ({ component, exact, path }) => (
-  <Route component={component} exact={exact} path={path} />
+  <Route component={component} exact={exact} key={path} path={path} />
 )
 
 const PagesRoute = ({auth}) => (
