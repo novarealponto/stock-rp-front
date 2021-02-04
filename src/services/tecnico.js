@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { BACKEND_URL } from './var'
-import { store } from '../App'
+import { store } from '../store/configureStore'
 import jsPDF from 'jspdf'
 import * as R from 'ramda'
 import moment from 'moment/min/moment-with-locales'

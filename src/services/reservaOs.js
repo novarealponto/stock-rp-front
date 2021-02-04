@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BACKEND_URL } from "./var";
-import { store } from "../App";
+import { store } from '../store/configureStore';
 
 export const newReservaInterno = async (value) => {
   const storeObject = store.getState();

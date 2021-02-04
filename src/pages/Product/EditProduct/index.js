@@ -15,7 +15,7 @@ import {
 const success = () => message.success('Produto foi atualizado');
 const errorMessage = () => message.error('Houve um erro ao atualizar produto');
 
-const EditProduct = ({history, produtoUpdateValue}) => {
+const EditProduct = ({history, productReducer}) => {
   const [form] = Form.useForm();
   const [marksList, setMarkList] = useState([])
   const [typesList, setTypesList] = useState([])
@@ -51,7 +51,7 @@ const EditProduct = ({history, produtoUpdateValue}) => {
 
   const handleSubmit = async (formData) => {
     try {
-      await updateProduto(buildProduct({...produtoUpdateValue, ...formData}));
+      await updateProduto(buildProduct({...productReducer, ...formData}));
       history.push('/logged/product/manager')
       success();
     } catch (error) {
@@ -63,16 +63,16 @@ const EditProduct = ({history, produtoUpdateValue}) => {
     <EditProductContainer
       form={form}
       handleSubmit={handleSubmit}
-      initialValues={produtoUpdateValue}
+      initialValues={productReducer}
       marksList={marksList}
       typesList={typesList}
     />
   )
 }
 
-const mapStateToProps = ({ auth, produtoUpdateValue }) => ({
+const mapStateToProps = ({ auth, productReducer }) => ({
   auth,
-  produtoUpdateValue
+  productReducer
 })
 
 const enhanced = compose(

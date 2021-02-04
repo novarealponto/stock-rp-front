@@ -18,7 +18,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { split } from "ramda";
 import moment from "moment";
 
-import { redirectValueProvider } from "../../Edit.Fornecedor/Redux/action";
+import { setValueProvider } from "../../../../store/Actions/provider";
 import {
   UpdateSupProduct,
   GetSupProduct,
@@ -619,7 +619,7 @@ class GerenciarCadastrosSupPage extends Component {
 
   redirect = () => {
     if (this.state.redirect) {
-      this.props.redirectValueProvider(this.state.fornecedor);
+      this.props.setValueProvider(this.state.fornecedor);
       return (
         <Redirect
           push
@@ -827,7 +827,7 @@ class GerenciarCadastrosSupPage extends Component {
 }
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators({ redirectValueProvider }, dispach);
+  return bindActionCreators({ setValueProvider }, dispach);
 }
 
 function mapStateToProps(state) {

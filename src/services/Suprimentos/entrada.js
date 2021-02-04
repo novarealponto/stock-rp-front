@@ -1,5 +1,5 @@
 import axios from "axios";
-import { store } from "../../App";
+import { store } from '../../store/configureStore';
 import { BACKEND_URL } from "../var";
 
 export const NovaEntrada = async values => {

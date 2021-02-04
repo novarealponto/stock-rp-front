@@ -16,7 +16,7 @@ import { message, Form } from 'antd'
 import { withRouter } from 'react-router-dom'
 
 import UpdateOsContainer from '../../../containers/OS/UpdateOs'
-import { clearValueOs } from '../../Gerenciar/Os/OsRedux/action'
+import { clearValueOs } from '../../../store/Actions/os'
 import { getAllStatusExpedition } from '../../../services/statusExpedition'
 import { getProdutoByEstoque } from '../../../services/produto'
 import { getTecnico } from '../../../services/tecnico'
@@ -30,7 +30,7 @@ import {
   buildTechnician,
 } from './specs'
 
-const UpdateOS = ({ osUpdateValue, history, clearValueOs }) => {
+const UpdateOS = ({ osReducer, history, clearValueOs }) => {
   const [form] = Form.useForm()
   const [productList, setProductList] = useState([])
   const [status, setStatus] = useState('')
@@ -38,7 +38,7 @@ const UpdateOS = ({ osUpdateValue, history, clearValueOs }) => {
   const [technicianList, setTechnicianList] = useState([])
 
   const allowChanges = equals(
-    length(filter((item) => item.technicianReserve, osUpdateValue.products)),
+    length(filter((item) => item.technicianReserve, osReducer.products)),
     0
   )
 
@@ -83,7 +83,7 @@ const UpdateOS = ({ osUpdateValue, history, clearValueOs }) => {
   const handleSubmit = async (formData) => {
     try {
       const { status } = await updateReservaOs(
-        buildOsForUpdate({ ...osUpdateValue, ...formData })
+        buildOsForUpdate({ ...osReducer, ...formData })
       )
 
       if (status === 422 || status === 401 || status === 500) {
@@ -158,7 +158,7 @@ const UpdateOS = ({ osUpdateValue, history, clearValueOs }) => {
       form={form}
       goBack={() => history.push('manager')}
       handleSubmit={handleSubmit}
-      initialValues={buildInitialValues(osUpdateValue)}
+      initialValues={buildInitialValues(osReducer)}
       onChangeStatus={onChangeStatus}
       onPressEnterTextAreaSerialNumber={onPressEnterTextAreaSerialNumber}
       productList={productList}
@@ -172,7 +172,7 @@ const UpdateOS = ({ osUpdateValue, history, clearValueOs }) => {
 const mapDispacthToProps = (dispatch) =>
   bindActionCreators({ clearValueOs }, dispatch)
 
-const mapStateToProps = ({ osUpdateValue }) => ({ osUpdateValue })
+const mapStateToProps = ({ osReducer }) => ({ osReducer })
 
 const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
 

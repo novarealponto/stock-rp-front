@@ -8,7 +8,7 @@ import { promisify } from 'util'
 
 import LoginContainer from '../../containers/Login'
 import { signIn } from '../../services/auth'
-import { onSubmit } from './LoginRedux/action'
+import { logInAction } from '../../store/Actions/auth'
 
 class LoginPage extends Component {
   state = {
@@ -49,7 +49,7 @@ class LoginPage extends Component {
         throw new Error('User UNAUTHORIZED')
       }
 
-      await this.props.onSubmit(data)
+      await this.props.logInAction(data)
       this.verifyAuth()
       return this.state.authenticated && this.success()
     } catch (error) {
@@ -77,7 +77,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators({ onSubmit }, dispach)
+  return bindActionCreators({ logInAction }, dispach)
 }
 
 export default connect(mapStateToProps, mapDispacthToProps)(LoginPage)

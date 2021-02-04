@@ -1,6 +1,6 @@
-import action from '../../../../store/actions'
+import action from './typeActions'
 
-export function clearValueOs(value) {
+export const clearValueOs = () => {
   return (dispatch) =>
     dispatch({
       payload: null,
@@ -8,7 +8,7 @@ export function clearValueOs(value) {
     })
 }
 
-export function redirectValueOs(value) {
+export const setValueOs = (value) => {
   return (dispatch) =>
     dispatch({
       payload: value,

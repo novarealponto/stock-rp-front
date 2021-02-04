@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { BACKEND_URL } from './var'
-import { store } from '../App'
+import { store } from '../store/configureStore'
 
 
 export const getRelatorioML = async (query) => {
@@ -25,4 +25,4 @@ export const getRelatorioML = async (query) => {
     }
   })
   return response
-} 
+}

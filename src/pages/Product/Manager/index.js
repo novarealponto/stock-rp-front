@@ -5,13 +5,13 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 import { buildDataSource, buildQueryProduct, buildRedirectValueProduct } from './specs'
-import { 
+import {
   getProdutos,
 } from '../../../services/produto'
 import ManagerContainer from '../../../containers/Product/Manage'
-import { redirectValueProduto } from '../../Gerenciar/Produto/ProdutoRedux/action'
+import { setValueProduto } from '../../../store/Actions/product'
 
-const Manager = ({ history, redirectValueProduto }) => {
+const Manager = ({ history, setValueProduto }) => {
   const [dataSource, setDataSource] = useState([])
   const [page, setPage] = useState(1)
   const [queryProduct, setQueryProduct] = useState({})
@@ -44,7 +44,7 @@ const Manager = ({ history, redirectValueProduto }) => {
       required: true,
       total: 10,
     }
-    
+
     getProdutos(query).then(({ data: { rows, count: total } }) => {
       setDataSource(map(buildDataSource, rows))
 
@@ -55,7 +55,7 @@ const Manager = ({ history, redirectValueProduto }) => {
   const handleOnChangeTable = ({ current }) => setPage(current)
 
   const handleOnClickEdit = (productData) => {
-    redirectValueProduto(buildRedirectValueProduct(productData))
+    setValueProduto(buildRedirectValueProduct(productData))
 
     history.push('/logged/product/edit')
   }
@@ -90,7 +90,7 @@ const Manager = ({ history, redirectValueProduto }) => {
 const mapStateToProps = () => ({})
 
 const mapDispacthToProps = (dispatch) =>
-  bindActionCreators({ redirectValueProduto }, dispatch)
+  bindActionCreators({ setValueProduto }, dispatch)
 
 const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
 

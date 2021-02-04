@@ -9,16 +9,16 @@ import EditTechinicianContainer from '../../../containers/Technician/EditTechini
 import { getCars, updateTechnician } from '../../../services/tecnico'
 import buildTechnician from '../../../utils/technicianSpec'
 import buildInitialValueTechnician from './formTechnicianSpec'
-import { clearValueTecnico } from '../../Gerenciar/Produto/ProdutoRedux/action'
+import { clearValueTecnico } from '../../../store/Actions/technician'
 import { getRotation } from '../../../utils'
 
-const EditTechnician = ({ clearValueTecnico, history, tecnicoUpdateValue }) => {
+const EditTechnician = ({ clearValueTecnico, history, technicianReducer }) => {
   const [carList, setCarList] = useState([])
   const [form] = Form.useForm()
   const [rotation, setRotation] = useState('')
 
   useEffect(() => {
-    const { plate } = tecnicoUpdateValue
+    const { plate } = technicianReducer
 
     onChangeSelecCarList(plate)
     getAllCars()
@@ -39,7 +39,7 @@ const EditTechnician = ({ clearValueTecnico, history, tecnicoUpdateValue }) => {
 
   const handleSubmitUpadateTechnician = async (technicianFormData) => {
     try {
-      const { id } = tecnicoUpdateValue
+      const { id } = technicianReducer
 
       const { status } = await updateTechnician(
         buildTechnician({ ...technicianFormData, id })
@@ -59,7 +59,7 @@ const EditTechnician = ({ clearValueTecnico, history, tecnicoUpdateValue }) => {
     <EditTechinicianContainer
       form={form}
       carList={carList}
-      formInitialValues={buildInitialValueTechnician(tecnicoUpdateValue)}
+      formInitialValues={buildInitialValueTechnician(technicianReducer)}
       onChangeSelecCarList={onChangeSelecCarList}
       rotation={rotation}
       updateTechnician={handleSubmitUpadateTechnician}
@@ -67,7 +67,7 @@ const EditTechnician = ({ clearValueTecnico, history, tecnicoUpdateValue }) => {
   )
 }
 
-const mapStateToProps = ({ tecnicoUpdateValue }) => ({ tecnicoUpdateValue })
+const mapStateToProps = ({ technicianReducer }) => ({ technicianReducer })
 
 const mapDispacthToProps = (dispach) =>
   bindActionCreators({ clearValueTecnico }, dispach)

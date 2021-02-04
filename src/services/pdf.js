@@ -2,7 +2,7 @@ import jsPDF from "jspdf";
 import moment from "moment";
 import axios from "axios";
 import { BACKEND_URL } from "./var";
-import { store } from "../App";
+import { store } from '../store/configureStore';
 
 function addWrappedText({
   text,

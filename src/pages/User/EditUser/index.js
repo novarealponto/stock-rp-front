@@ -22,7 +22,7 @@ const successMessage = messageText => message.success(messageText);
 const errorMessage = messageText => message.error(messageText);
 
 const EditUser = ({
-  usuarioUpdateValue,
+  userReducer,
 }) => {
   const [allowCustomPermissions, setAllowCustomPermissions] = useState(false);
   const [form] = Form.useForm();
@@ -31,13 +31,13 @@ const EditUser = ({
 
   useEffect(() => {
     const handleSetForm = () => form.setFieldsValue({
-      ...usuarioUpdateValue.resource,
-      allowCustomPermissions: path(['customized'], usuarioUpdateValue),
-      userName: path(['username'], usuarioUpdateValue),
-      typeAccount: path(['typeName'], usuarioUpdateValue),
+      ...userReducer.resource,
+      allowCustomPermissions: path(['customized'], userReducer),
+      userName: path(['username'], userReducer),
+      typeAccount: path(['typeName'], userReducer),
     })
 
-    setAllowCustomPermissions(path(['customized'], usuarioUpdateValue))
+    setAllowCustomPermissions(path(['customized'], userReducer))
     if (shouldRequest) {
       handleSetForm()
       getAllTypeAccount()
@@ -45,7 +45,7 @@ const EditUser = ({
   }, [
     form,
     shouldRequest,
-    usuarioUpdateValue,
+    userReducer,
   ])
 
   const getAllTypeAccount = async () => {
@@ -100,7 +100,7 @@ const EditUser = ({
 
   const handleSubmit = async (formData) => {
     const userParser = {
-      id: path(['id'], usuarioUpdateValue),
+      id: path(['id'], userReducer),
       ...buildUser(formData),
     };
 
@@ -130,9 +130,9 @@ const EditUser = ({
 }
 
 const mapStateToProps = ({
-  usuarioUpdateValue,
+  userReducer,
 }) => ({
-  usuarioUpdateValue
+  userReducer
 });
 
 const enhanced = compose(
@@ -141,7 +141,7 @@ const enhanced = compose(
 );
 
 EditUser.propTypes = {
-  usuarioUpdateValue: PropTypes.shape({
+  userReducer: PropTypes.shape({
     customized: PropTypes.bool.isRequired,
     id: PropTypes.string.isRequired,
     resource: PropTypes.shape({

@@ -7,7 +7,7 @@ import { compose } from 'ramda'
 
 import ManagerContainer from '../../../containers/Technician/Manage'
 import { getAllTechnician as getAllTechnicianService } from '../../../services/tecnico'
-import { redirectValueTecnico } from '../../Gerenciar/Produto/ProdutoRedux/action'
+import { setValueTecnico } from '../../../store/Actions/technician'
 
 const initialStateQuery = {
   name: '',
@@ -15,7 +15,7 @@ const initialStateQuery = {
   dueDateCnh: '',
 }
 
-const Manager = ({ redirectValueTecnico, history }) => {
+const Manager = ({ setValueTecnico, history }) => {
   const [avancedSearch, setAvancedSearch] = useState(false)
   const [count, setCount] = useState(0)
   const [current, setCurrent] = useState(0)
@@ -65,7 +65,7 @@ const Manager = ({ redirectValueTecnico, history }) => {
   const goAddTechnician = () => history.push('add')
 
   const goToUpdateTechnician = (technicianForUpdate) => {
-    redirectValueTecnico(technicianForUpdate)
+    setValueTecnico(technicianForUpdate)
     history.push('edit')
   }
 
@@ -98,7 +98,7 @@ const Manager = ({ redirectValueTecnico, history }) => {
 }
 
 const mapDispacthToProps = (dispach) =>
-  bindActionCreators({ redirectValueTecnico }, dispach)
+  bindActionCreators({ setValueTecnico }, dispach)
 
 const enhanced = compose(
   connect(() => ({}), mapDispacthToProps),

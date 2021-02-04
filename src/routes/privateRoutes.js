@@ -9,7 +9,7 @@ import { promisify } from 'util'
 import SideBar from '../components/SideBar'
 import PagesRoute from '../pages'
 import MobilePage from '../pages/Mobile/MobilePage'
-import { Logout } from '../pages/Login/LoginRedux/action'
+import { logOutAction } from '../store/Actions/auth'
 import './index.css'
 
 class PrivateRoute extends Component {
@@ -18,7 +18,7 @@ class PrivateRoute extends Component {
   }
 
   logout = async () => {
-    await this.props.Logout(this.props.auth.token)
+    await this.props.logOutAction(this.props.auth.token)
   }
 
   verifyAuth = async () => {
@@ -72,7 +72,7 @@ class PrivateRoute extends Component {
 }
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators({ Logout }, dispach)
+  return bindActionCreators({ logOutAction }, dispach)
 }
 
 function mapStateToProps(state) {

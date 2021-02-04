@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BACKEND_URL } from "../var";
-import { store } from "../../App";
+import { store } from "../../store/configureStore";
 import moment from "moment";
 import jsPDF from "jspdf";
 
