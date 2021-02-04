@@ -1,50 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import { Form } from 'antd';
-import { action } from '@storybook/addon-actions';
+import React, { useEffect, useState } from 'react'
+import { Form } from 'antd'
+import { action } from '@storybook/addon-actions'
 import { path } from 'ramda'
 
-import buildUser from '../../../../utils/userSpec';
-import EditUser from '../../../../containers/User/EditUser';
-import PERMISSIONS from '../../../../utils/permissions';
+import { buildUser } from '../../../../utils/userSpec'
+import EditUser from '../../../../containers/User/EditUser'
+import PERMISSIONS from '../../../../utils/permissions'
 
 export default {
   title: 'Containers/User',
   component: EditUser,
-};
+}
 
-const handleOnTypeAccountChangeAction = action('On change type account form!');
-const handleSubmitAction = action('On submit user form!');
+const handleOnTypeAccountChangeAction = action('On change type account form!')
+const handleSubmitAction = action('On submit user form!')
 
 const Template = (args) => {
-  const [allowCustomPermissions, setAllowCustomPermissions] = useState(false);
-  const [form] = Form.useForm();
+  const [allowCustomPermissions, setAllowCustomPermissions] = useState(false)
+  const [form] = Form.useForm()
 
   useEffect(() => {
-    const handleSetForm = () => form.setFieldsValue({
-      ...args.userData.resource,
-      allowCustomPermissions: path(['userData', 'customized'], args),
-      userName: path(['userData', 'username'], args),
-      typeAccount: path(['userData', 'typeName'], args),
-    })
+    const handleSetForm = () =>
+      form.setFieldsValue({
+        ...args.userData.resource,
+        allowCustomPermissions: path(['userData', 'customized'], args),
+        userName: path(['userData', 'username'], args),
+        typeAccount: path(['userData', 'typeName'], args),
+      })
 
-    handleSetForm();
+    handleSetForm()
   }, [])
 
-  const handleSubmit = formData => {
+  const handleSubmit = (formData) => {
     handleSubmitAction({
       id: path(['userData', 'id'], args),
       ...buildUser(formData),
-    });
+    })
   }
 
-  const handleAllowSetCustomPermissions = () => (
+  const handleAllowSetCustomPermissions = () =>
     setAllowCustomPermissions(!allowCustomPermissions)
-  );
 
-  const handleOnTypeAccountChange = typeAccount => {
+  const handleOnTypeAccountChange = (typeAccount) => {
     handleOnTypeAccountChangeAction({ typeAccount })
     return form.setFieldsValue({ typeAccount })
-  };
+  }
 
   return (
     <EditUser
@@ -56,10 +56,10 @@ const Template = (args) => {
       handleSubmit={handleSubmit}
       permissions={PERMISSIONS}
     />
-  );
-};
+  )
+}
 
-export const EditAnUser = Template.bind({});
+export const EditAnUser = Template.bind({})
 
 EditAnUser.args = {
   userData: {
@@ -95,4 +95,4 @@ EditAnUser.args = {
     { typeName: 'Técnico' },
     { typeName: 'Laboratório' },
   ],
-};
+}

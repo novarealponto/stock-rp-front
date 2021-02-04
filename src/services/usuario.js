@@ -35,3 +35,12 @@ export const updateUsuario = (values) => {
       throw new Error(error)
     })
 }
+
+export const getUserById = (id) => {
+  return axiosInstance
+  .get('/user/getById', values)
+  .then((resp) => resp)
+  .catch((error) => {
+    throw new Error(error)
+  })
+}

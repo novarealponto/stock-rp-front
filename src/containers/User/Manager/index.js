@@ -23,7 +23,7 @@ const updateUserButton = (goToUpdateUser) => (_, user) => (
   <Tooltip placement="topLeft" title="Editar">
     <EditOutlined
       className="icon-edit"
-      onClick={() => goToUpdateUser(user)}
+      onClick={() => goToUpdateUser(id)}
       style={{ fontSize: '20px', color: '#08c' }}
       theme="outlined"
     />

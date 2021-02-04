@@ -1,32 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from "react-redux";
-import { Form, message } from 'antd';
-import { compose, pathOr } from 'ramda';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Form, message } from 'antd'
+import { compose, pathOr } from 'ramda'
+import PropTypes from 'prop-types'
 
 import {
   getResourcesByTypeAccount,
-  NovoUsuarioService
-} from '../../../services/usuario';
+  NovoUsuarioService,
+} from '../../../services/usuario'
 import { getTypeAccount } from '../../../services/typeAccount'
-import buildUser from '../../../utils/userSpec';
-import AddUserContainer from '../../../containers/User/AddUser';
-import PERMISSIONS from '../../../utils/permissions';
+import { buildUser } from '../../../utils/userSpec'
+import AddUserContainer from '../../../containers/User/AddUser'
+import PERMISSIONS from '../../../utils/permissions'
 
 const createUserText = 'Usuário cadastrado com sucesso!'
 const unableCreateUserText = 'Não foi possível cadastrar o usuário!'
-const unableSetThatAccountType = 'Não foi possível pegar as permissões desse tipo de conta!'
+const unableSetThatAccountType =
+  'Não foi possível pegar as permissões desse tipo de conta!'
 
-const successMessage = messageText => message.success(messageText);
-const errorMessage = messageText => message.error(messageText);
+const successMessage = (messageText) => message.success(messageText)
+const errorMessage = (messageText) => message.error(messageText)
 
-const AddUser = ({
-  allowAddTypeAccount,
-  history,
-}) => {
-  const [allowCustomPermissions, setAllowCustomPermissions] = useState(false);
-  const [form] = Form.useForm();
+const AddUser = ({ allowAddTypeAccount, history }) => {
+  const [allowCustomPermissions, setAllowCustomPermissions] = useState(false)
+  const [form] = Form.useForm()
   const [shouldRequest, setShouldRequest] = useState(true)
   const [typeAccounts, setTypeAccounts] = useState([])
 
@@ -34,9 +32,7 @@ const AddUser = ({
     if (shouldRequest) {
       getAllTypeAccount()
     }
-  }, [
-    shouldRequest,
-  ])
+  }, [shouldRequest])
 
   const getAllTypeAccount = async () => {
     let responseStatus = null
@@ -45,11 +41,11 @@ const AddUser = ({
         filters: {
           typeAccount: {
             specific: {
-              stock: true
-            }
-          }
-        }
-      };
+              stock: true,
+            },
+          },
+        },
+      }
 
       const { data, status } = await getTypeAccount(query)
       responseStatus = status
@@ -58,16 +54,13 @@ const AddUser = ({
     } catch (error) {
       setShouldRequest(false)
       console.log({ status: responseStatus, error })
-    };
-  };
+    }
+  }
 
-  const goToAddTypeAccount = () => (
-    history.push('/logged/typeAccount/add')
-  );
+  const goToAddTypeAccount = () => history.push('/logged/typeAccount/add')
 
-  const handleAllowSetCustomPermissions = () => (
+  const handleAllowSetCustomPermissions = () =>
     setAllowCustomPermissions(!allowCustomPermissions)
-  );
 
   const handleOnTypeAccountChange = async (typeAccount) => {
     try {
@@ -75,11 +68,11 @@ const AddUser = ({
         filters: {
           typeAccount: {
             specific: {
-              typeName: typeAccount
-            }
-          }
-        }
-      };
+              typeName: typeAccount,
+            },
+          },
+        },
+      }
 
       const { data } = await getResourcesByTypeAccount(query)
 
@@ -99,7 +92,7 @@ const AddUser = ({
           ...formData,
           allowCustomPermissions,
         })
-      );
+      )
       if (status === 422) {
         throw new Error('422 Unprocessable Entity!')
       }
@@ -108,7 +101,7 @@ const AddUser = ({
     } catch (error) {
       errorMessage(unableCreateUserText)
     }
-  };
+  }
 
   return (
     <AddUserContainer
@@ -126,22 +119,19 @@ const AddUser = ({
 }
 
 const mapStateToProps = ({ auth }) => {
-  const allowAddTypeAccount = pathOr(false, ['addTypeAccount'], auth);
-  return ({
+  const allowAddTypeAccount = pathOr(false, ['addTypeAccount'], auth)
+  return {
     allowAddTypeAccount,
-  });
-};
+  }
+}
 
-const enhanced = compose(
-  connect(mapStateToProps),
-  withRouter,
-);
+const enhanced = compose(connect(mapStateToProps), withRouter)
 
 AddUser.propTypes = {
   allowAddTypeAccount: PropTypes.bool.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-};
+}
 
-export default enhanced(AddUser);
+export default enhanced(AddUser)

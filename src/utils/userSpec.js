@@ -1,4 +1,4 @@
-import { applySpec, pathOr } from 'ramda'
+import { applySpec, concat, path, pathOr } from 'ramda'
 
 const UserSpec = {
   permissions: applySpec({
@@ -37,6 +37,41 @@ const UserSpec = {
   username: pathOr('', ['userName']),
 }
 
-const buildUser = applySpec(UserSpec)
+export const buildUser = applySpec(UserSpec)
 
-export default buildUser
+export const buildUserUpdate = (value) => {
+  console.log(value);
+  let pathResource = []
+
+  if (!value.resource) {
+    pathResource = ['typeAccount', 'resource']
+  } else {
+    pathResource = ['resource']
+  }
+
+  return applySpec({
+    id: pathOr('', ['id']),
+    userName: pathOr('', ['username']),
+    typeAccount: pathOr('', ['typeAccount', 'typeName']),
+    allowCustomPermissions: pathOr(false, ['customized']),
+    addTypeAccount: path(concat(pathResource, ['addTypeAccount'])),
+    addUser: path(concat(pathResource, ['addUser'])),
+    addTec: path(concat(pathResource, ['addTec'])),
+    addCar: path(concat(pathResource, ['addCar'])),
+    addMark: path(concat(pathResource, ['addMark'])),
+    addType: path(concat(pathResource, ['addType'])),
+    addStatus: path(concat(pathResource, ['addStatus'])),
+    addProd: path(concat(pathResource, ['addProd'])),
+    addFonr: path(concat(pathResource, ['addFonr'])),
+    addEntr: path(concat(pathResource, ['addEntr'])),
+    addKit: path(concat(pathResource, ['addKit'])),
+    addKitOut: path(concat(pathResource, ['addKitOut'])),
+    addOutPut: path(concat(pathResource, ['addOutPut'])),
+    addROs: path(concat(pathResource, ['addROs'])),
+    addRML: path(concat(pathResource, ['addRML'])),
+    gerROs: path(concat(pathResource, ['gerROs'])),
+    delROs: path(concat(pathResource, ['delROs'])),
+    updateRos: path(concat(pathResource, ['updateRos'])),
+    suprimento: path(concat(pathResource, ['suprimento'])),
+  })(value)
+}

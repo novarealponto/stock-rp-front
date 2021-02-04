@@ -1,79 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from "react-redux";
-import { Form, message } from 'antd';
-import { compose, path } from 'ramda';
-import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useState } from 'react'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Form, message } from 'antd'
+import { compose, path } from 'ramda'
+import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux'
 
 import {
   getResourcesByTypeAccount,
+  getUserById,
   updateUsuario,
-} from '../../../services/usuario';
+} from '../../../services/usuario'
 import { getTypeAccount } from '../../../services/typeAccount'
-import buildUser from '../../../utils/userSpec';
-import EditUserContainer from '../../../containers/User/EditUser';
-import PERMISSIONS from '../../../utils/permissions';
+import { buildUser, buildUserUpdate } from '../../../utils/userSpec'
+import EditUserContainer from '../../../containers/User/EditUser'
+import PERMISSIONS from '../../../utils/permissions'
+import { clearValueUsuario } from '../../../store/Actions/user'
 
 const createUserText = 'Usuário alterado com sucesso!'
 const unableCreateUserText = 'Não foi possível alterar o usuário!'
-const unableSetThatAccountType = 'Não foi possível pegar as permissões desse tipo de conta!'
+const unableSetThatAccountType =
+  'Não foi possível pegar as permissões desse tipo de conta!'
 
-const successMessage = messageText => message.success(messageText);
-const errorMessage = messageText => message.error(messageText);
+const successMessage = (messageText) => message.success(messageText)
+const errorMessage = (messageText) => message.error(messageText)
 
-const EditUser = ({
-  userReducer,
-}) => {
-  const [allowCustomPermissions, setAllowCustomPermissions] = useState(false);
-  const [form] = Form.useForm();
-  const [shouldRequest, setShouldRequest] = useState(true)
+const EditUser = ({ clearValueUsuario, userReducer }) => {
+  const [allowCustomPermissions, setAllowCustomPermissions] = useState(false)
+  const [form] = Form.useForm()
   const [typeAccounts, setTypeAccounts] = useState([])
 
-  useEffect(() => {
-    const handleSetForm = () => form.setFieldsValue({
-      ...userReducer.resource,
-      allowCustomPermissions: path(['customized'], userReducer),
-      userName: path(['username'], userReducer),
-      typeAccount: path(['typeName'], userReducer),
-    })
-
-    setAllowCustomPermissions(path(['customized'], userReducer))
-    if (shouldRequest) {
-      handleSetForm()
-      getAllTypeAccount()
-    }
-  }, [
-    form,
-    shouldRequest,
-    userReducer,
-  ])
-
-  const getAllTypeAccount = async () => {
+  const getAllTypeAccount = useCallback(async () => {
     let responseStatus = null
     try {
       const query = {
         filters: {
           typeAccount: {
             specific: {
-              stock: true
-            }
-          }
-        }
-      };
+              stock: true,
+            },
+          },
+        },
+      }
 
       const { data, status } = await getTypeAccount(query)
       responseStatus = status
       setTypeAccounts(data.rows)
-      setShouldRequest(false)
     } catch (error) {
-      setShouldRequest(false)
       console.log({ status: responseStatus, error })
-    };
-  };
+    }
+  }, [])
 
-  const handleAllowSetCustomPermissions = () => (
+  const handleAllowSetCustomPermissions = () =>
     setAllowCustomPermissions(!allowCustomPermissions)
-  );
 
   const handleOnTypeAccountChange = async (typeAccount) => {
     try {
@@ -81,11 +60,11 @@ const EditUser = ({
         filters: {
           typeAccount: {
             specific: {
-              typeName: typeAccount
-            }
-          }
-        }
-      };
+              typeName: typeAccount,
+            },
+          },
+        },
+      }
 
       const { data } = await getResourcesByTypeAccount(query)
 
@@ -102,10 +81,10 @@ const EditUser = ({
     const userParser = {
       id: path(['id'], userReducer),
       ...buildUser(formData),
-    };
+    }
 
     try {
-      const { status } = await updateUsuario(userParser);
+      const { status } = await updateUsuario(userParser)
 
       if (status === 422 || status === 500) {
         throw new Error('Unprocessable Entity!')
@@ -114,7 +93,18 @@ const EditUser = ({
     } catch (error) {
       errorMessage(unableCreateUserText)
     }
-  };
+  }
+
+  useEffect(() => {
+    getUserById(userReducer.id).then(({ data }) => {
+      form.setFieldsValue(buildUserUpdate(data))
+      setAllowCustomPermissions(!!path(['customized'], data))
+    })
+
+    getAllTypeAccount()
+
+    return () => clearValueUsuario()
+  }, [form, userReducer, getAllTypeAccount])
 
   return (
     <EditUserContainer
@@ -129,16 +119,14 @@ const EditUser = ({
   )
 }
 
-const mapStateToProps = ({
+const mapStateToProps = ({ userReducer }) => ({
   userReducer,
-}) => ({
-  userReducer
-});
+})
 
-const enhanced = compose(
-  connect(mapStateToProps),
-  withRouter,
-);
+const mapDispacthToProps = (dispach) =>
+  bindActionCreators({ clearValueUsuario }, dispach)
+
+const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
 
 EditUser.propTypes = {
   userReducer: PropTypes.shape({
@@ -177,6 +165,6 @@ EditUser.propTypes = {
     typeName: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
   }).isRequired,
-};
+}
 
-export default enhanced(EditUser);
+export default enhanced(EditUser)
