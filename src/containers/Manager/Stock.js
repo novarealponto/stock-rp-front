@@ -102,8 +102,10 @@ const Manager = ({
   formSendToAnalyze,
   handleOnCancelAnalysis,
   handleOnCancelSerialNumbers,
+  handleOnClickCloseSearchForm,
   handleOnClickExperiment,
   handleOnClickInfo,
+  handleOnClickOpenSearchForm,
   handleOnSearch,
   handleOnSearchSerialNumber,
   handleOnSubmitFormEntryStock,
@@ -114,6 +116,7 @@ const Manager = ({
   pagination,
   visibleModalAnalysis,
   visibleModalSerialNumbers,
+  visibleSearch
 }) => {
   return (
     <>
@@ -139,6 +142,22 @@ const Manager = ({
           <Title level={3}>Gerenciar estoque</Title>
         </Col>
       </Row>
+
+      <Row justify="end" gutter={[0, 10]}>
+      <Col>
+        {visibleSearch ? (
+          <Button onClick={handleOnClickCloseSearchForm}>
+            Ocultar
+          </Button>
+        ) : (
+          <Button onClick={handleOnClickOpenSearchForm}>
+            Filtrar
+          </Button>
+        )}
+      </Col>
+    </Row>
+
+    {visibleSearch && (
       <Form
         initialValues={{ product: '', stock: '', manufacturer: '' }}
         layout="vertical"
@@ -175,6 +194,7 @@ const Manager = ({
           </Col>
         </Row>
       </Form>
+      )}
       <Row>
         <Col span={24}>
           <Table

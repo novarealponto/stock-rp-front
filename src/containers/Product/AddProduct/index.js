@@ -34,11 +34,11 @@ const AddProduct = ({
     <Row gutter={[8, 8]}>
       <Col span={8}>
         <Form.Item
-          label="Item"
+          label="Produto"
           name="name"
           rules={formRequireRules}
         >
-          <Input />
+          <Input placeholder="Digite o nome do produto"/>
         </Form.Item>
       </Col>
       <Col span={8}>
@@ -47,7 +47,7 @@ const AddProduct = ({
           name="category"
           rules={formRequireRules}
         >
-          <Select placeholder="Selecione a categoria!">
+          <Select placeholder="Selecione a categoria">
             <Option value="Equipamento">Equipamento</Option>
             <Option value="Peca">Peca</Option>
             <Option value="Acessorios">Acessórios</Option>
@@ -56,11 +56,11 @@ const AddProduct = ({
       </Col>
       <Col span={8}>
         <Form.Item
-          label="Marcar"
+          label="Marca"
           name="mark"
           rules={formRequireRules}
         >
-          <Select placeholder="Selecione a marcar!">
+          <Select placeholder="Selecione a marca">
             {marksList && marksList.map(
               (item) => (
                 <Option
@@ -80,7 +80,7 @@ const AddProduct = ({
           name="type"
           rules={formRequireRules}
         >
-          <Select placeholder="Selecione o tipo!">
+          <Select placeholder="Selecione o tipo">
             {typesList && typesList.map(
               (item) => (
                 <Option
@@ -100,7 +100,7 @@ const AddProduct = ({
           name="quantMin"
           rules={formRequireRules}
         >
-          <InputNumber min={1} />
+          <InputNumber min={1} placeholder="0" />
         </Form.Item>
       </Col>
       <Col span={8}>
@@ -119,6 +119,7 @@ const AddProduct = ({
         >
           <TextArea
             autosize={{ minRows: 2, maxRows: 4 }}
+            placeholder="Digite uma descrição do produto"
             rows={4}
           />
         </Form.Item>
@@ -128,7 +129,7 @@ const AddProduct = ({
           label="Corredor"
           name="corredor"
         >
-          <Input />
+          <Input placeholder="0"/>
         </Form.Item>
       </Col>
       <Col span={6}>
@@ -136,7 +137,7 @@ const AddProduct = ({
           label="Coluna"
           name="coluna"
         >
-          <Input />
+          <Input placeholder="0"/>
         </Form.Item>
       </Col>
       <Col span={6}>
@@ -144,7 +145,7 @@ const AddProduct = ({
           label="Prateleira"
           name="prateleira"
         >
-          <Input />
+          <Input placeholder="0" />
         </Form.Item>
       </Col>
       <Col span={6}>
@@ -152,7 +153,7 @@ const AddProduct = ({
           label="Gaveta"
           name="gaveta"
         >
-          <Input />
+          <Input placeholder="0"/>
         </Form.Item>
       </Col>
     </Row>

@@ -38,7 +38,7 @@ const AddEntry = ({
 }) => (
   <>
     <Row justify="center">
-      <Title>Nova entrada</Title>
+      <Title level={3}>Nova entrada</Title>
     </Row>
 
     <Form form={form} layout="vertical" onFinish={handleSubmit}>

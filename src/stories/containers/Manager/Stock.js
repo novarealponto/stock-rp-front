@@ -20,8 +20,10 @@ const createObjSearchGlobal = (keys, value) => {
 }
 const handleOnCancelSerialNumberAction = action('handle onCancel serial number')
 const handleOnCancelAnalysisAction = action('handle onCancel analysis')
+const handleOnClickCloseSearchFormAction = action('on click close search')
 const handleOnClickIconAnalysisAction = action('handle onClick icon analysis')
 const handleOnClickIconInfoAction = action('handle onClick icon info')
+const handleOnClickOpenSearchFormAction = action('on click open search')
 const handleOnPressTextAraeaSerialNumberAction = action(
   'handle onPress textAraea serial number'
 )
@@ -71,6 +73,17 @@ const Template = () => {
   const [visibleModalSerialNumbers, setVisibleModalSerialNumbers] = useState(
     false
   )
+  const [visibleSearch, setVisibleSearch] = useState(false)
+
+  const handleOnClickCloseSearchForm = (eventClick) => {
+    handleOnClickCloseSearchFormAction(eventClick)
+    setVisibleSearch(false)
+  }
+
+  const handleOnClickOpenSearchForm = (eventClick) => {
+    handleOnClickOpenSearchFormAction(eventClick)
+    setVisibleSearch(true)
+  }
 
   const handleOnCancelAnalysis = (eventOnCancel) => {
     setVisibleModalAnalysis(false)
@@ -145,8 +158,10 @@ const Template = () => {
       formSearchSerialNumber={formSearchSerialNumber}
       handleOnCancelAnalysis={handleOnCancelAnalysis}
       handleOnCancelSerialNumbers={handleOnCancelSerialNumbers}
+      handleOnClickCloseSearchForm={handleOnClickCloseSearchForm}
       handleOnClickExperiment={handleOnClickExperiment}
       handleOnClickInfo={handleOnClickInfo}
+      handleOnClickOpenSearchForm={handleOnClickOpenSearchForm}
       handleOnSearch={handleOnSearch}
       handleOnSearchSerialNumber={handleOnSearchSerialNumber}
       handleOnSubmitFormEntryStock={handleOnSubmitFormEntryStock}
@@ -155,6 +170,7 @@ const Template = () => {
       row={row}
       visibleModalAnalysis={visibleModalAnalysis}
       visibleModalSerialNumbers={visibleModalSerialNumbers}
+      visibleSearch={visibleSearch}
     />
   )
 }

@@ -52,7 +52,7 @@ const Template = (args) => {
     <ManageProducts
       {...args}
       dataSource={initialDataSource}
-      handleOnClickCloseSearchForm={handleOnClickCloseSearchForm}W
+      handleOnClickCloseSearchForm={handleOnClickCloseSearchForm}
       handleOnClickOpenSearchForm={handleOnClickOpenSearchForm}
       visibleSearch={visibleSearch}
     />

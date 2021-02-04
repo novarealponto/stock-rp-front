@@ -324,7 +324,7 @@ const Manager = ({
     <>
       <Row justify="center">
         <Col>
-          <Title level={3}>Gerenciar Empréstimo</Title>
+          <Title level={3}>Gerenciar empréstimo</Title>
         </Col>
       </Row>
 
@@ -345,7 +345,7 @@ const Manager = ({
               style={{ fontSize: '30px' }}
             />
             <Button onClick={showSearch}>
-              {visibleSearch ? 'ocultar' : 'Avançado'}
+              {visibleSearch ? 'Ocultar' : 'Filtrar'}
             </Button>
           </Row>
         </Col>

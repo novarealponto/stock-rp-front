@@ -142,9 +142,9 @@ const fieldsForm = (form) => [
 const UpdateProvider = ({ form, handleSubmit, handleCancel, initialValues }) => {
   return (
     <>
-      <Row justify="center">
+       <Row justify="center">
         <Col>
-          <Title>Fornecedor</Title>
+          <Title level={3}>Fornecedor</Title>
         </Col>
       </Row>
 

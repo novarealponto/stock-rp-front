@@ -50,6 +50,7 @@ const ManageProducts = ({
   handleOnClickCloseSearchForm,
   handleOnClickEdit,
   handleOnClickOpenSearchForm,
+  handleOnClickNewProduct,
   handleOnSearch,
   pagination,
   visibleSearch,
@@ -57,21 +58,24 @@ const ManageProducts = ({
   <>
     <Row justify="center">
       <Col>
-        <Title level={3}>Gerenciar Produtos</Title>
+        <Title level={3}>Gerenciar produtos</Title>
       </Col>
     </Row>
 
     <Row justify="end" gutter={[0, 10]}>
       <Col>
         {visibleSearch ? (
-          <Button onClick={handleOnClickCloseSearchForm} type="primary">
+          <Button onClick={handleOnClickCloseSearchForm}>
             Ocultar
           </Button>
         ) : (
-          <Button onClick={handleOnClickOpenSearchForm} type="primary">
-            Avançado
+          <Button onClick={handleOnClickOpenSearchForm}>
+            Filtrar
           </Button>
         )}
+        <Button onClick={handleOnClickNewProduct} style={{marginLeft: '5px'}}>
+          Cadastrar novo produto
+        </Button>
       </Col>
     </Row>
 

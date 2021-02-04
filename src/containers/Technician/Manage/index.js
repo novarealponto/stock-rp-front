@@ -5,10 +5,11 @@ import {
   EditTwoTone,
   SearchOutlined,
 } from '@ant-design/icons'
-import { Button, Col, Divider, Form, Input, Row } from 'antd'
+import { Button, Col, Form, Input, Row, Typography } from 'antd'
 
-import styles from './style.module.css'
 import TableComponent from '../../../components/Table'
+
+const { Title } = Typography
 
 const Technician = ({
   avancedSearch,
@@ -64,14 +65,20 @@ const Technician = ({
   ]
 
   return (
-    <div className={styles.container}>
-      <Row justify="end" gutter={20}>
+    <>
+    <Row gutter={[0, 20]} justify="center">
+        <Col>
+          <Title level={3}>Gerenciar técnicos</Title>
+        </Col>
+      </Row>
+
+      <Row justify="end" gutter={[0, 10]}>
         <Col>
           <Button onClick={handleClickAvancedSearch}>Filtrar</Button>
         </Col>
         <Col>
-          <Button type="primary" onClick={goAddTechnician}>
-            Cadastrar um novo Técnico
+          <Button onClick={goAddTechnician} style={{marginLeft: '5px'}}>
+            Cadastrar novo técnico
           </Button>
         </Col>
       </Row>
@@ -90,17 +97,17 @@ const Technician = ({
           <Row gutter={24}>
             <Col span={7}>
               <Form.Item label="Técnico" name="name">
-                <Input />
+                <Input allowClear placeholder="Buscar técnico"/>
               </Form.Item>
             </Col>
             <Col span={7}>
               <Form.Item label="Placa" name="plate">
-                <Input />
+                <Input allowClear placeholder="Buscar placa"/>
               </Form.Item>
             </Col>
             <Col span={7}>
               <Form.Item label="Validade CNH" name="dueDateCnh">
-                <Input />
+                <Input allowClear placeholder="Buscar CNH"/>
               </Form.Item>
             </Col>
             <Col span={3}>
@@ -117,15 +124,13 @@ const Technician = ({
         </Form>
       )}
 
-      <Divider />
-
       <TableComponent
         columns={columns}
         data={data}
         onChange={onChangeTable}
         pagination={pagination}
       />
-    </div>
+    </>
   )
 }
 

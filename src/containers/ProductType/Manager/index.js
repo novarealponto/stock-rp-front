@@ -8,7 +8,7 @@ const columns = [
   {
     dataIndex: 'type',
     key: 'type',
-    title: 'Type',
+    title: 'Tipo',
   },
 ]
 
@@ -46,16 +46,19 @@ const Manager = ({
   visibleModalAddProductType,
 }) => {
   return (
-    <Row gutter={20}>
+    <>
+      <Row justify="center">
+        <Col>
+          <Title level={3}>Tipos de produto</Title>
+        </Col>
+      </Row>
+      <Row gutter={[8, 18]}>
       <ModalNewProductType
         closeModal={closeModalAddProductType}
         form={formAddProductType}
         saveModal={handleAddProductType}
         visible={visibleModalAddProductType}
       />
-      <Col span={24}>
-        <Title>Tipos de produto</Title>
-      </Col>
 
       <Col flex="auto">
         <Search
@@ -83,6 +86,7 @@ const Manager = ({
         />
       </Col>
     </Row>
+    </>
   )
 }
 

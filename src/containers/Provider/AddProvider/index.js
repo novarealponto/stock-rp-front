@@ -127,7 +127,7 @@ const AddProvider = ({ form, handleSubmit }) => {
     <>
       <Row justify="center">
         <Col>
-          <Title>Fornecedor</Title>
+          <Title level={3}>Fornecedor</Title>
         </Col>
       </Row>
 

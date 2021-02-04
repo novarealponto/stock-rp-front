@@ -42,6 +42,7 @@ const Manager = () => {
   const [visibleModalSerialNumbers, setVisibleModalSerialNumbers] = useState(
     false
   )
+  const [setVisibleSearch] = useState()
 
   useEffect(() => {
     const getAllStock = () => {
@@ -223,7 +224,9 @@ const Manager = () => {
       formSendToAnalyze={formSendToAnalyze}
       handleOnCancelAnalysis={handleOnCancelAnalysis}
       handleOnCancelSerialNumbers={handleOnCancelSerialNumbers}
+      handleOnClickCloseSearchForm={() => setVisibleSearch(false)}
       handleOnClickExperiment={handleOnClickExperiment}
+      handleOnClickOpenSearchForm={() => setVisibleSearch(true)}
       handleOnClickInfo={handleOnClickInfo}
       handleOnSearch={handleOnSearch}
       handleOnSearchSerialNumber={handleOnSearchSerialNumber}
