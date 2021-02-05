@@ -1,15 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { compose, path, pathOr } from 'ramda'
 import { withRouter } from 'react-router-dom'
 
 import ManagerContainer from '../../../containers/User/Manager'
 import { getUsers } from '../../../services/usuario'
-import { setValueUsuario } from '../../../store/Actions/user'
 
-const Manager = ({ auth, history, setValueUsuario }) => {
+const Manager = ({ auth, history }) => {
   const [current, setCurrent] = useState(1)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
@@ -47,8 +45,7 @@ const Manager = ({ auth, history, setValueUsuario }) => {
   const goToAddUser = () => history.push('/logged/user/add')
 
   const goToUpdateUser = (user) => {
-    setValueUsuario(user)
-    history.push('/logged/user/edit')
+    history.push(`/logged/user/edit/${user.id}` )
   }
 
   const handlePaginations = ({ current }) => setCurrent(current)
@@ -79,10 +76,7 @@ const mapStateToProps = ({ auth }) => ({
   auth,
 })
 
-const mapDispacthToProps = (dispach) =>
-  bindActionCreators({ setValueUsuario }, dispach)
-
-const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
+const enhanced = compose(connect(mapStateToProps), withRouter)
 
 Manager.propTypes = {
   auth: PropTypes.shape({
@@ -91,7 +85,6 @@ Manager.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  setValueUsuario: PropTypes.func.isRequired,
 }
 
 export default enhanced(Manager)

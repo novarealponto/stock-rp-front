@@ -19,7 +19,7 @@ const customizedIcon = ifElse(
   always(<CloseCircleTwoTone twoToneColor="#f01b0c" />)
 )
 
-const updateUserButton = (goToUpdateUser) => (_, user) => (
+const updateUserButton = (goToUpdateUser) => (_, id) => (
   <Tooltip placement="topLeft" title="Editar">
     <EditOutlined
       className="icon-edit"
