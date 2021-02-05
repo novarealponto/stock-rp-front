@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { BACKEND_URL } from './var'
-import { store } from '../store/configureStore'
+import axiosInstance from '../helpers/request'
 
 const url = (cep) => `https://viacep.com.br/ws/${cep}/json/`
 
@@ -8,105 +7,40 @@ export const getAddressByZipCode = (cep) => {
   return axios.get(url(cep.replace(/\D+/g, '')))
 }
 
-export const getAllFornecedor = async (query) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/company`, { headers: headers, params: { query } })
-    .then((resp) => {
-      response = resp
-    })
+export const getAllFornecedor = (query) => {
+  return axiosInstance
+    .get('/company', { params: { query } })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const getFornecedor = async (query) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/company/getAllFornecedor`, {
-      headers: headers,
+export const getFornecedor = (query) => {
+  return axiosInstance
+    .get('/company/getAllFornecedor', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const newProvider = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .post(`${BACKEND_URL}/api/company`, values, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const newProvider = (values) => {
+  return axiosInstance
+    .post('/company', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const updateFornecedor = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .put(`${BACKEND_URL}/api/company/update`, values, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const updateFornecedor = (values) => {
+  return axiosInstance
+    .put('/company/update', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }

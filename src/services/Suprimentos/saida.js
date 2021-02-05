@@ -1,58 +1,21 @@
-import axios from "axios";
-import { store } from '../../store/configureStore';
-import { BACKEND_URL } from "../var";
+import axiosInstance from '../../helpers/request'
 
-export const NovaSaida = async values => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .post(`${BACKEND_URL}/api/suprimentos/out`, values, {
-      headers: headers
+export const NovaSaida = values => {
+  return axiosInstance
+    .post('/suprimentos/out', values)
+    .then(resp => resp)
+    .catch((error) => {
+      throw new Error(error)
     })
-    .then(resp => {
-      response = resp;
-    })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
 };
 
-export const GetOut = async query => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/suprimentos/out`, {
-      headers: headers,
+export const GetOut = query => {
+  return axiosInstance
+    .get('/suprimentos/out', {
       params: { query }
     })
-    .then(resp => {
-      response = resp;
+    .then(resp => resp)
+    .catch((error) => {
+      throw new Error(error)
     })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
 };

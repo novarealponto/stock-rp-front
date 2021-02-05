@@ -1,440 +1,159 @@
-import axios from "axios";
-import { BACKEND_URL } from "./var";
-import { store } from '../store/configureStore';
+import axiosInstance from '../helpers/request'
 
-export const newReservaInterno = async (value) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .post(`${BACKEND_URL}/api/reserve/RInterno`, value, { headers: headers })
-    .then((resp) => {
-      response = resp;
-    })
+export const newReservaInterno = (value) => {
+  return axiosInstance
+    .post('/reserve/RInterno', value)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
-
-export const newReservaOs = async (values) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .post(`${BACKEND_URL}/api/reserve/OS`, values, { headers: headers })
-    .then((resp) => {
-      response = resp;
+      throw new Error(error)
     })
+}
+
+export const newReservaOs = (values) => {
+  return axiosInstance
+    .post('/reserve/OS', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
-
-export const updateReservaOs = async (values) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .put(`${BACKEND_URL}/api/reserve/OS`, values, { headers: headers })
-    .then((resp) => {
-      response = resp;
+      throw new Error(error)
     })
+}
+
+export const updateReservaOs = (values) => {
+  return axiosInstance
+    .put('/reserve/OS', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
+      throw new Error(error)
+    })
+}
 
-export const getOsByOs = async (value) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/reserve/getOsByOs`, {
-      headers,
+export const getOsByOs = (value) => {
+  return axiosInstance
+    .get('/reserve/getOsByOs', {
       params: { os: value },
     })
-    .then((resp) => {
-      response = resp;
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
+      throw new Error(error)
+    })
+}
 
-export const getTodasOs = async (query) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/reserve/Os`, {
-      headers: headers,
+export const getTodasOs = (query) => {
+  return axiosInstance
+    .get('/reserve/Os', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp;
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
+      throw new Error(error)
+    })
+}
 
-export const getAllOsPartsByParams = async (query) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/reserve/getAllOsPartsByParams`, {
-      headers: headers,
+export const getAllOsPartsByParams = (query) => {
+  return axiosInstance
+    .get('/reserve/getAllOsPartsByParams', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp;
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
+      throw new Error(error)
+    })
+}
 
-  console.log(response);
-  return response;
-};
-
-export const getAllOsParts = async (query) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/reserve/getAllOsParts`, {
-      headers: headers,
+export const getAllOsParts = (query) => {
+  return axiosInstance
+    .get('/reserve/getAllOsParts', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp;
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
+      throw new Error(error)
+    })
+}
 
-  console.log(response);
-  return response;
-};
-
-export const getAllOsPartsByParamsForReturn = async (query) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/reserve/getAllOsPartsByParams/return`, {
-      headers: headers,
+export const getAllOsPartsByParamsForReturn = (query) => {
+  return axiosInstance
+    .get('/reserve/getAllOsPartsByParams/return', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp;
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-
-  console.log(response);
-  return response;
-};
-
-export const associarEquipParaOsPart = async (values) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .put(
-      `${BACKEND_URL}/api/reserve/reservaTecnico/associarEquipParaOsPart`,
-      values,
-      { headers: headers }
-    )
-    .then((resp) => {
-      response = resp;
+      throw new Error(error)
     })
+}
+
+export const associarEquipParaOsPart = (values) => {
+  return axiosInstance
+    .put('/reserve/reservaTecnico/associarEquipParaOsPart', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
-
-export const associarEquipsParaOsPart = async (values) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .put(
-      `${BACKEND_URL}/api/reserve/reservaTecnico/associarEquipsParaOsPart`,
-      values,
-      { headers: headers }
-    )
-    .then((resp) => {
-      response = resp;
+      throw new Error(error)
     })
+}
+
+export const associarEquipsParaOsPart = (values) => {
+  return axiosInstance
+    .put('/reserve/reservaTecnico/associarEquipsParaOsPart', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
+      throw new Error(error)
+    })
+}
 
-export const getTodasOsInterno = async (query) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/reserve/RInterno`, {
-      headers: headers,
+export const getTodasOsInterno = (query) => {
+  return axiosInstance
+    .get('/reserve/RInterno', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp;
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
-
-export const baixaReservaOs = async (values) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .put(`${BACKEND_URL}/api/reserve/output`, values, { headers: headers })
-    .then((resp) => {
-      response = resp;
+      throw new Error(error)
     })
+}
+
+export const baixaReservaOs = (values) => {
+  return axiosInstance
+    .put('/reserve/output', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
-
-export const retornarBaixaReservaOs = async (values) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .put(`${BACKEND_URL}/api/reserve/returnOutput`, values, {
-      headers: headers,
+      throw new Error(error)
     })
-    .then((resp) => {
-      response = resp;
-    })
+}
+
+export const retornarBaixaReservaOs = (values) => {
+  return axiosInstance
+    .put('/reserve/returnOutput', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
+      throw new Error(error)
+    })
+}
 
-export const removeReservaOs = async (query) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .delete(`${BACKEND_URL}/api/reserve/Os`, {
-      headers: headers,
+export const removeReservaOs = (query) => {
+  return axiosInstance
+    .delete('/reserve/Os', {
       params: query,
     })
-    .then((resp) => {
-      response = resp;
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
-
-export const newConserto = async (values) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .post(`${BACKEND_URL}/api/conserto`, values, { headers: headers })
-    .then((resp) => {
-      response = resp;
+      throw new Error(error)
     })
+}
+
+export const newConserto = (values) => {
+  return axiosInstance
+    .post('/conserto', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
+      throw new Error(error)
+    })
+}
 
-export const checkout = async (value) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  try {
-    return await axios.put(
-      `${BACKEND_URL}/api/reserve/OS/finalizarCheckout`,
-      value,
-      {
-        headers: headers,
-      }
-    );
-  } catch (error) {
-    if (error.response) {
-      return error.response;
-    } else {
-      console.log("Error", error.message);
-    }
-  }
-};
+export const checkout = (value) => {
+  return axiosInstance
+    .put('/reserve/OS/finalizarCheckout', value)
+    .then((resp) => resp)
+    .catch((error) => {
+      throw new Error(error)
+    })
+}

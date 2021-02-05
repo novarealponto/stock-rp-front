@@ -1,167 +1,59 @@
-import axios from "axios";
-import { store } from '../../store/configureStore';
-import { BACKEND_URL } from "../var";
+import axiosInstance from '../../helpers/request'
 
-export const NewSupProduct = async values => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .post(`${BACKEND_URL}/api/suprimentos/product`, values, {
-      headers: headers
+export const NewSupProduct = values => {
+  return axiosInstance
+    .post('/suprimentos/product', values)
+    .then(resp => resp)
+    .catch((error) => {
+      throw new Error(error)
     })
-    .then(resp => {
-      response = resp;
-    })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
 };
 
-export const UpdateSupProduct = async values => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .put(`${BACKEND_URL}/api/suprimentos/product`, values, {
-      headers: headers
+export const UpdateSupProduct = values => {
+  return axiosInstance
+    .put('/suprimentos/product', values)
+    .then(resp => resp)
+    .catch((error) => {
+      throw new Error(error)
     })
-    .then(resp => {
-      response = resp;
-    })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
 };
 
-export const GetSupProduct = async query => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/suprimentos/product`, {
-      headers: headers,
+export const GetSupProduct = query => {
+  return axiosInstance
+    .get('/suprimentos/product', {
       params: { query }
     })
-    .then(resp => {
-      response = resp;
+    .then(resp => resp)
+    .catch((error) => {
+      throw new Error(error)
     })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
 };
 
-export const NewManufacturer = async values => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .post(`${BACKEND_URL}/api/suprimentos/manufacturer`, values, {
-      headers: headers
+export const NewManufacturer = values => {
+  return axiosInstance
+    .post('/suprimentos/manufacturer', values)
+    .then(resp => resp)
+    .catch((error) => {
+      throw new Error(error)
     })
-    .then(resp => {
-      response = resp;
-    })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
 };
 
-export const UpdateManufacturer = async values => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .put(`${BACKEND_URL}/api/suprimentos/manufacturer`, values, {
-      headers: headers
+export const UpdateManufacturer = values => {
+  return axiosInstance
+    .put('/suprimentos/manufacturer', values)
+    .then(resp => resp)
+    .catch((error) => {
+      throw new Error(error)
     })
-    .then(resp => {
-      response = resp;
-    })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
 };
 
-export const GetManufacturer = async query => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/suprimentos/manufacturer`, {
-      headers: headers,
+export const GetManufacturer = query => {
+  return axiosInstance
+    .get('/suprimentos/manufacturer', {
       params: { query }
     })
-    .then(resp => {
-      response = resp;
+    .then(resp => resp)
+    .catch((error) => {
+      throw new Error(error)
     })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
 };

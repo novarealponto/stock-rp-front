@@ -1,86 +1,32 @@
-import axios from "axios";
-import { BACKEND_URL } from "./var";
-import { store } from '../store/configureStore';
+import axiosInstance from '../helpers/request'
 
-export const newReservaTecnico = async (value) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .post(`${BACKEND_URL}/api/reserve/reservaTecnico`, value, {
-      headers: headers,
-    })
-    .then((resp) => {
-      response = resp;
-    })
+export const newReservaTecnico = (value) => {
+  return axiosInstance
+    .post('/reserve/reservaTecnico', value, {})
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
+      throw new Error(error)
+    })
+}
 
-export const getAllReservaTecnico = async (query) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/reserve/reservaTecnico`, {
-      headers: headers,
+export const getAllReservaTecnico = (query) => {
+  return axiosInstance
+    .get('/reserve/reservaTecnico', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp;
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
+      throw new Error(error)
+    })
+}
 
-export const getAllReservaTecnicoReturn = async (query) => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/reserve/reservaTecnico/return`, {
-      headers: headers,
+export const getAllReservaTecnicoReturn = (query) => {
+  return axiosInstance
+    .get('/reserve/reservaTecnico/return', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp;
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
+      throw new Error(error)
+    })
+}
