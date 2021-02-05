@@ -1,4 +1,4 @@
-import { applySpec, pathOr, pipe, prop } from 'ramda'
+import { applySpec, path, pipe, prop } from 'ramda'
 import moment from 'moment'
 
 const forceBoolean = (value) => !!value
@@ -8,8 +8,7 @@ const TechnicianSpec = {
   dueDateCnh: pipe(prop('CNH'), momentFormat),
   external: pipe(prop('external'), forceBoolean),
   name: prop('name'),
-  car: pipe(prop('plate')),
-  // responsibleUser: pathOr('modrp', ['responsibleUser'])
+  car: path(['cars','0', 'plate']),
 }
 
 const buildInitialValueTechnician = applySpec(TechnicianSpec)

@@ -5,7 +5,6 @@ import fornecedorReducer from './fornecedor'
 import osReducer from './os'
 import productReducer from './product'
 import providerReducer from './provider'
-import technicianReducer from './technician'
 import typeActions from '../Actions/typeActions'
 
 const appReducer = combineReducers({
@@ -14,7 +13,6 @@ const appReducer = combineReducers({
   osReducer,
   productReducer,
   providerReducer,
-  technicianReducer,
 })
 
 const rootReducer = (state, action) => {

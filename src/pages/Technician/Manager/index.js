@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Form } from 'antd'
 import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { compose } from 'ramda'
 
 import ManagerContainer from '../../../containers/Technician/Manage'
 import { getAllTechnician as getAllTechnicianService } from '../../../services/tecnico'
-import { setValueTecnico } from '../../../store/Actions/technician'
 
 const initialStateQuery = {
   name: '',
@@ -15,7 +12,7 @@ const initialStateQuery = {
   dueDateCnh: '',
 }
 
-const Manager = ({ setValueTecnico, history }) => {
+const Manager = ({ history }) => {
   const [avancedSearch, setAvancedSearch] = useState(false)
   const [count, setCount] = useState(0)
   const [current, setCurrent] = useState(0)
@@ -65,8 +62,7 @@ const Manager = ({ setValueTecnico, history }) => {
   const goAddTechnician = () => history.push('add')
 
   const goToUpdateTechnician = (technicianForUpdate) => {
-    setValueTecnico(technicianForUpdate)
-    history.push('edit')
+    history.push(`edit/${technicianForUpdate.id}`)
   }
 
   const handleClickAvancedSearch = () => setAvancedSearch(!avancedSearch)
@@ -97,11 +93,8 @@ const Manager = ({ setValueTecnico, history }) => {
   )
 }
 
-const mapDispacthToProps = (dispach) =>
-  bindActionCreators({ setValueTecnico }, dispach)
 
 const enhanced = compose(
-  connect(() => ({}), mapDispacthToProps),
   withRouter
 )
 
