@@ -7,7 +7,6 @@ export default {
     OS: 'CLEAR_OS',
     PROVIDER: 'CLEAR_PROVIDER',
     TECNICO: 'CLEAR_TECNICO',
-    USUARIO: 'CLEAR_USUARIO'
   },
   EDITAR: {
     PROVIDER: 'EDITAR_PROVIDER',
