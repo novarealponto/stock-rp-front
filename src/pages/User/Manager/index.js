@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom'
 
 import ManagerContainer from '../../../containers/User/Manager'
 import { getUsers } from '../../../services/usuario'
-import { setValueUsuario } from '../../../store/Actions/user';
+import { setValueUsuario } from '../../../store/Actions/user'
 
 const Manager = ({ auth, history, setValueUsuario }) => {
   const [current, setCurrent] = useState(1)
@@ -92,6 +92,6 @@ Manager.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   setValueUsuario: PropTypes.func.isRequired,
-};
+}
 
 export default enhanced(Manager)
