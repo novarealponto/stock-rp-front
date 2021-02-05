@@ -40,7 +40,6 @@ const UserSpec = {
 export const buildUser = applySpec(UserSpec)
 
 export const buildUserUpdate = (value) => {
-  console.log(value);
   let pathResource = []
 
   if (!value.resource) {
@@ -50,28 +49,28 @@ export const buildUserUpdate = (value) => {
   }
 
   return applySpec({
-    id: pathOr('', ['id']),
-    userName: pathOr('', ['username']),
-    typeAccount: pathOr('', ['typeAccount', 'typeName']),
-    allowCustomPermissions: pathOr(false, ['customized']),
-    addTypeAccount: path(concat(pathResource, ['addTypeAccount'])),
-    addUser: path(concat(pathResource, ['addUser'])),
-    addTec: path(concat(pathResource, ['addTec'])),
     addCar: path(concat(pathResource, ['addCar'])),
-    addMark: path(concat(pathResource, ['addMark'])),
-    addType: path(concat(pathResource, ['addType'])),
-    addStatus: path(concat(pathResource, ['addStatus'])),
-    addProd: path(concat(pathResource, ['addProd'])),
-    addFonr: path(concat(pathResource, ['addFonr'])),
     addEntr: path(concat(pathResource, ['addEntr'])),
+    addFonr: path(concat(pathResource, ['addFonr'])),
     addKit: path(concat(pathResource, ['addKit'])),
     addKitOut: path(concat(pathResource, ['addKitOut'])),
+    addMark: path(concat(pathResource, ['addMark'])),
     addOutPut: path(concat(pathResource, ['addOutPut'])),
-    addROs: path(concat(pathResource, ['addROs'])),
+    addProd: path(concat(pathResource, ['addProd'])),
     addRML: path(concat(pathResource, ['addRML'])),
-    gerROs: path(concat(pathResource, ['gerROs'])),
+    addROs: path(concat(pathResource, ['addROs'])),
+    addStatus: path(concat(pathResource, ['addStatus'])),
+    addTec: path(concat(pathResource, ['addTec'])),
+    addType: path(concat(pathResource, ['addType'])),
+    addTypeAccount: path(concat(pathResource, ['addTypeAccount'])),
+    addUser: path(concat(pathResource, ['addUser'])),
+    allowCustomPermissions: pathOr(false, ['customized']),
     delROs: path(concat(pathResource, ['delROs'])),
-    updateRos: path(concat(pathResource, ['updateRos'])),
+    gerROs: path(concat(pathResource, ['gerROs'])),
+    id: pathOr('', ['id']),
     suprimento: path(concat(pathResource, ['suprimento'])),
+    typeAccount: pathOr('', ['typeAccount', 'typeName']),
+    updateRos: path(concat(pathResource, ['updateRos'])),
+    userName: pathOr('', ['username']),
   })(value)
 }
