@@ -1,1 +1,1 @@
-export const BACKEND_URL = 'http://192.168.90.160:5000'
+export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
