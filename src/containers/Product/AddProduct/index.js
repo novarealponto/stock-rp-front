@@ -97,7 +97,7 @@ const AddProduct = ({
       <Col span={8}>
         <Form.Item
           label="Quant. min"
-          name="quantMin"
+          name="minimumStock"
           rules={formRequireRules}
         >
           <InputNumber min={1} placeholder="0" />
@@ -106,7 +106,7 @@ const AddProduct = ({
       <Col span={8}>
         <Form.Item
           label="Número de série:"
-          name="serial"
+          name="serialNumber"
           valuePropName="checked"
         >
           <Switch />

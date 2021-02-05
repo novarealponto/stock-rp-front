@@ -1,61 +1,78 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'ramda';
-import { Form, message } from 'antd';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState, useCallback } from 'react'
+import { connect } from 'react-redux'
+import { Form, message } from 'antd'
+import PropTypes from 'prop-types'
+import { compose, length, pathOr, pipe } from 'ramda'
 
-import buildProduct from '../../../utils/productSpec';
+import { buildProduct, buildProductUpdate } from '../../../utils/productSpec'
 import EditProductContainer from '../../../containers/Product/Edit'
 import {
   getAllProductType,
   getMarca,
-  updateProduto
-} from '../../../services/produto';
+  updateProduto,
+  getProductById,
+} from '../../../services/produto'
 
-const success = () => message.success('Produto foi atualizado');
-const errorMessage = () => message.error('Houve um erro ao atualizar produto');
+const success = () => message.success('Produto foi atualizado')
+const errorMessage = () => message.error('Houve um erro ao atualizar produto')
 
-const EditProduct = ({history, productReducer}) => {
-  const [form] = Form.useForm();
+const EditProduct = ({ history, productReducer }) => {
+  const [form] = Form.useForm()
   const [marksList, setMarkList] = useState([])
   const [typesList, setTypesList] = useState([])
 
-  useEffect(() => {
-    getAllMarca();
-    getAllTipo();
-  }, []);
-
-  const getAllMarca = async () => {
+  const getAllMarca = useCallback(async () => {
     try {
-      const { data, status } = await getMarca({});
+      const { data, status } = await getMarca({})
       if (status === 404 || status === 422 || status === 500) {
         throw new Error('422 Unprocessable Entity!')
       }
-      setMarkList(data);
+      setMarkList(data)
     } catch (error) {
       console.log(error)
     }
-  }
+  }, [])
 
-  const getAllTipo = async () => {
+  const getAllTipo = useCallback(async () => {
     try {
-      const { data, status } = await getAllProductType();
+      const { data, status } = await getAllProductType()
       if (status === 404 || status === 422 || status === 500) {
         throw new Error('422 Unprocessable Entity!')
       }
-      setTypesList(data);
+      setTypesList(data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const pathname = pipe(pathOr('', ['location', 'pathname']), (item) =>
+      item.split('/')
+    )(window)
+
+    const id = pathname[length(pathname) - 1]
+
+    getProductById(id).then(({ data }) => {
+      form.setFieldsValue(buildProductUpdate(data))
+    })
+
+    getAllMarca()
+    getAllTipo()
+  }, [form, getAllMarca, getAllTipo])
 
   const handleSubmit = async (formData) => {
+    const pathname = pipe(pathOr('', ['location', 'pathname']), (item) =>
+      item.split('/')
+    )(window)
+
+    const id = pathname[length(pathname) - 1]
+
     try {
-      await updateProduto(buildProduct({...productReducer, ...formData}));
+      await updateProduto(buildProduct({ ...productReducer, ...formData, id }))
       history.push('/logged/product/manager')
-      success();
+      success()
     } catch (error) {
-      errorMessage();
+      errorMessage()
     }
   }
 
@@ -72,17 +89,15 @@ const EditProduct = ({history, productReducer}) => {
 
 const mapStateToProps = ({ auth, productReducer }) => ({
   auth,
-  productReducer
+  productReducer,
 })
 
-const enhanced = compose(
-  connect(mapStateToProps),
-);
+const enhanced = compose(connect(mapStateToProps))
 
 EditProduct.propTypes = {
   auth: PropTypes.shape({
     modulo: PropTypes.bool.isRequired,
   }).isRequired,
-};
+}
 
 export default enhanced(EditProduct)

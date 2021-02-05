@@ -54,10 +54,8 @@ const Manager = ({ history, setValueProduto }) => {
 
   const handleOnChangeTable = ({ current }) => setPage(current)
 
-  const handleOnClickEdit = (productData) => {
-    setValueProduto(buildRedirectValueProduct(productData))
-
-    history.push('/logged/product/edit')
+  const handleOnClickEdit = (row) => {
+    history.push(`edit/${row.id}`)
   }
 
   const handleOnClickNewProduct = () => {

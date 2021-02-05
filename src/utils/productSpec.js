@@ -1,10 +1,4 @@
-import { applySpec, ifElse, pipe, pathOr } from 'ramda'
-
-const getSerialNumber = ifElse(
-  pathOr(false, ['serial']),
-  pathOr(false, ['serial']),
-  pathOr(false, ['modulo'])
-)
+import { applySpec, pipe, pathOr } from 'ramda'
 
 const lowerCase = value => value.toLocaleLowerCase()
 const toString = value => value.toString()
@@ -17,13 +11,13 @@ const ProductSpec = {
   ),
   description: pathOr('', ['description']),
   minimumStock: pipe(
-    pathOr('1', ['quantMin']),
+    pathOr('1', ['minimumStock']),
     toString,
   ),
   mark: pathOr('', ['mark']),
   name: pathOr('', ['name']),
   type: pathOr('', ['type']),
-  serial: getSerialNumber,
+  serial: pathOr(false, ['serialNumber']),
   responsibleUser: pathOr('modrp', ['responsibleUser']),
   corredor: pathOr('', ['corredor']),
   coluna: pathOr('', ['coluna']),
@@ -32,6 +26,29 @@ const ProductSpec = {
   modulo: pathOr(false, ['modulo']),
 }
 
-const buildProduct = applySpec(ProductSpec)
+const ProductSpecUpdate = {
+  id: pathOr('', ['id']),
+  category: pipe(
+    pathOr('', ['category']),
+    lowerCase
+  ),
+  description: pathOr('', ['description']),
+  minimumStock: pipe(
+    pathOr('1', ['minimumStock']),
+    toString,
+  ),
+  mark: pathOr('', ['mark', 'mark']),
+  name: pathOr('', ['name']),
+  type: pathOr('', ['equipType', 'type']),
+  serialNumber: pathOr(false, ['serial']),
+  responsibleUser: pathOr('modrp', ['responsibleUser']),
+  corredor: pathOr('', ['corredor']),
+  coluna: pathOr('', ['coluna']),
+  prateleira: pathOr('', ['prateleira']),
+  gaveta: pathOr('', ['gaveta']),
+  modulo: pathOr(false, ['modulo']),
+}
 
-export default buildProduct
+export const buildProduct = applySpec(ProductSpec)
+export const buildProductUpdate = applySpec(ProductSpecUpdate)
+

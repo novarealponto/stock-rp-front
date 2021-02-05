@@ -10,7 +10,7 @@ import {
   getMarca,
 } from '../../../services/produto';
 import AddProductContainer from '../../../containers/Product/AddProduct';
-import buildProduct from '../../../utils/productSpec';
+import { buildProduct } from '../../../utils/productSpec';
 
 const success = () => message.success('O cadastro foi efetuado');
 const errorMessage = () => message.error('O cadastro não foi efetuado');
