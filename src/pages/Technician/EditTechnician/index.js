@@ -74,8 +74,8 @@ const EditTechnician = ({ history }) => {
 
   return (
     <EditTechinicianContainer
-      form={form}
       carList={carList}
+      form={form}
       onChangeSelecCarList={onChangeSelecCarList}
       rotation={rotation}
       updateTechnician={handleSubmitUpadateTechnician}
