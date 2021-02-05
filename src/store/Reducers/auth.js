@@ -13,17 +13,10 @@ const initialState = {
 const auth = (state = initialState, action) => {
   switch (action.type) {
     case actions.AUTH.LOGIN:
-      let auth = {
+      return {
         ...state,
+        ...action.payload,
       }
-      if (action.payload.token) {
-        auth = {
-          ...auth,
-          ...action.payload,
-        }
-      }
-
-      return auth
 
     case actions.AUTH.LOGOUT:
       localStorage.clear()
