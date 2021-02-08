@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { connect } from 'react-redux'
 import { Form, message } from 'antd'
-import PropTypes from 'prop-types'
-import { compose, length, pathOr, pipe } from 'ramda'
+import { length, pathOr, pipe } from 'ramda'
 
 import { buildProduct, buildProductUpdate } from '../../../utils/productSpec'
 import EditProductContainer from '../../../containers/Product/Edit'
@@ -16,7 +14,7 @@ import {
 const success = () => message.success('Produto foi atualizado')
 const errorMessage = () => message.error('Houve um erro ao atualizar produto')
 
-const EditProduct = ({ history, productReducer }) => {
+const EditProduct = ({ history }) => {
   const [form] = Form.useForm()
   const [marksList, setMarkList] = useState([])
   const [typesList, setTypesList] = useState([])
@@ -68,7 +66,7 @@ const EditProduct = ({ history, productReducer }) => {
     const id = pathname[length(pathname) - 1]
 
     try {
-      await updateProduto(buildProduct({ ...productReducer, ...formData, id }))
+      await updateProduto(buildProduct({ ...formData, id }))
       history.push('/logged/product/manager')
       success()
     } catch (error) {
@@ -80,24 +78,10 @@ const EditProduct = ({ history, productReducer }) => {
     <EditProductContainer
       form={form}
       handleSubmit={handleSubmit}
-      initialValues={productReducer}
       marksList={marksList}
       typesList={typesList}
     />
   )
 }
 
-const mapStateToProps = ({ auth, productReducer }) => ({
-  auth,
-  productReducer,
-})
-
-const enhanced = compose(connect(mapStateToProps))
-
-EditProduct.propTypes = {
-  auth: PropTypes.shape({
-    modulo: PropTypes.bool.isRequired,
-  }).isRequired,
-}
-
-export default enhanced(EditProduct)
+export default EditProduct
