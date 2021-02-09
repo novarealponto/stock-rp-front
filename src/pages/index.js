@@ -25,6 +25,7 @@ import Reports from './Reports'
 import Romaneio from './Romaneio'
 import SaidaSupRoute from './Suprimentos/Saida'
 import Stock from './Stock'
+import Supply from './Supply'
 import TechnicianRoute from './Technician'
 import TypeAcconuntRoute from './TypeAcconunt'
 import User from './User'
@@ -161,6 +162,12 @@ const routeList = ({ auth }) => [
     exact: false,
     path: '/logged/stock/manager',
     permission: true,
+  },
+  {
+    component: Supply,
+    exact: false,
+    path: '/logged/supply',
+    permission: auth.permissions.suprimento,
   },
   {
     component: TechnicianRoute,
