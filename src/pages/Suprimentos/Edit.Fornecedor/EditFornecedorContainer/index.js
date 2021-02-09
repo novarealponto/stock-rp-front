@@ -7,7 +7,7 @@ import { Input, Button, message } from "antd";
 import * as R from "ramda";
 import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
 
-import { clearValueProvider } from "../Redux/action";
+import { clearValueProvider } from "../../../../store/Actions/provider";
 import { UpdateProvider } from "../../../../services/Suprimentos/fornecedor";
 import { getAddressByZipCode } from "../../../../services/fornecedores";
 import { masks } from "./validators";
@@ -16,17 +16,17 @@ class EditFornecedorPage extends Component {
   state = {
     redirect: false,
     loading: false,
-    id: this.props.providerUpdateValue.id,
-    razaoSocial: this.props.providerUpdateValue.razaoSocial,
-    cnpOuCpf: this.props.providerUpdateValue.cnpj,
-    rua: this.props.providerUpdateValue.street,
-    bairro: this.props.providerUpdateValue.neighborhood,
-    cidade: this.props.providerUpdateValue.city,
-    cep: this.props.providerUpdateValue.zipCode,
-    numero: this.props.providerUpdateValue.number,
-    uf: this.props.providerUpdateValue.state,
-    complemento: this.props.providerUpdateValue.complement,
-    contacts: this.props.providerUpdateValue.supContacts
+    id: this.props.providerReducer.id,
+    razaoSocial: this.props.providerReducer.razaoSocial,
+    cnpOuCpf: this.props.providerReducer.cnpj,
+    rua: this.props.providerReducer.street,
+    bairro: this.props.providerReducer.neighborhood,
+    cidade: this.props.providerReducer.city,
+    cep: this.props.providerReducer.zipCode,
+    numero: this.props.providerReducer.number,
+    uf: this.props.providerReducer.state,
+    complemento: this.props.providerReducer.complement,
+    contacts: this.props.providerReducer.supContacts
   };
 
   clearState = () => {
@@ -351,7 +351,7 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    providerUpdateValue: state.providerUpdateValue
+    providerReducer: state.providerReducer
   };
 }
 

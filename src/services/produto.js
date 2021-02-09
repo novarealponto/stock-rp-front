@@ -2,7 +2,7 @@ import axios from 'axios'
 import { BACKEND_URL } from './var'
 import jsPDF from 'jspdf'
 import moment from 'moment/min/moment-with-locales'
-import { store } from '../App'
+import { store } from '../store/configureStore'
 
 export const getProdutos = async (query) => {
   const storeObject = store.getState()

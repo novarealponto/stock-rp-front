@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 
 import ManagerContainer from '../../../containers/Provider/Manager'
 import { getAllFornecedor } from '../../../services/fornecedores'
-import { redirectValueFornecedor } from '../../Gerenciar/Produto/ProdutoRedux/action'
+import { setValueFornecedor } from '../../../store/Actions/fornecedor'
 
 const insertKey = (array, key) => {
   return map((item) => {
@@ -14,7 +14,7 @@ const insertKey = (array, key) => {
   }, array)
 }
 
-const Manager = ({ history, redirectValueFornecedor }) => {
+const Manager = ({ history, setValueFornecedor }) => {
   const [allProviders, setAllProviders] = useState([])
   const [pagination, setPagination] = useState({})
   const [page, setPage] = useState(1)
@@ -52,7 +52,7 @@ const Manager = ({ history, redirectValueFornecedor }) => {
   const goToAddProvider = () => history.push('add')
 
   const goToUpdateProvider = (provider) => {
-    redirectValueFornecedor(provider)
+    setValueFornecedor(provider)
     history.push('update')
   }
 
@@ -82,7 +82,7 @@ const Manager = ({ history, redirectValueFornecedor }) => {
 const mapStateToProps = () => ({})
 
 const mapDispacthToProps = (dispatch) =>
-  bindActionCreators({ redirectValueFornecedor }, dispatch)
+  bindActionCreators({ setValueFornecedor }, dispatch)
 
 const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
 

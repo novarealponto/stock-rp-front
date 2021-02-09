@@ -29,9 +29,9 @@ import {
   associarEquipsParaOsPart,
 } from '../../../services/reservaOs'
 import { updateSenha } from '../../../services/password'
-import { Logout } from '../../Login/LoginRedux/action'
+import { logOutAction } from '../../../store/Actions/auth'
 
-const Mobile = ({ auth, Logout }) => {
+const Mobile = ({ auth, logOutAction }) => {
   const [current, setCurrent] = useState(0)
   const [form] = Form.useForm()
   const [osList, setOsList] = useState([])
@@ -274,7 +274,7 @@ const Mobile = ({ auth, Logout }) => {
       handleClickBack={handleClickBack}
       handleClickCardOs={handleClickCardOs}
       handleClickCardProducts={handleClickCardProducts}
-      handleClickLogout={() => Logout(path(['token'], auth))}
+      handleClickLogout={() => logOutAction()}
       handleClickUserIcon={() => setVisibleDrawer(true)}
       handleCloseDrawer={() => setVisibleDrawer(false)}
       handleSubmit={handleSubmit}
@@ -293,7 +293,7 @@ const mapStateToProps = ({ auth }) => ({
   auth,
 })
 
-const mapDispacthToProps = (dispach) => bindActionCreators({ Logout }, dispach)
+const mapDispacthToProps = (dispach) => bindActionCreators({ logOutAction }, dispach)
 
 const enhanced = compose(connect(mapStateToProps, mapDispacthToProps))
 

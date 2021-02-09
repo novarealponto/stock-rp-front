@@ -1,6 +1,6 @@
-import actions from '../../../../store/actions'
+import actions from '../Actions/typeActions'
 
-const INICIAL_STATE_REDIRECT_OS = {
+const initialState = {
   cnpj: '',
   date: '',
   id: '',
@@ -11,13 +11,15 @@ const INICIAL_STATE_REDIRECT_OS = {
   technicianId: '',
 }
 
-export function osUpdateValue(state = INICIAL_STATE_REDIRECT_OS, action) {
+const osReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.CLEAR.OS:
-      return INICIAL_STATE_REDIRECT_OS
+      return initialState
     case actions.REDIRECT.OS:
       return { ...state, ...action.payload }
     default:
       return state
   }
 }
+
+export default osReducer

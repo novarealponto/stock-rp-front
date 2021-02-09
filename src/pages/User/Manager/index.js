@@ -7,9 +7,9 @@ import { withRouter } from 'react-router-dom'
 
 import ManagerContainer from '../../../containers/User/Manager'
 import { getUsers } from '../../../services/usuario'
-import { redirectValueUsuario } from '../../Gerenciar/Produto/ProdutoRedux/action'
+import { setValueUsuario } from '../../../store/Actions/user';
 
-const Manager = ({ auth, history, redirectValueUsuario }) => {
+const Manager = ({ auth, history, setValueUsuario }) => {
   const [current, setCurrent] = useState(1)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
@@ -47,7 +47,7 @@ const Manager = ({ auth, history, redirectValueUsuario }) => {
   const goToAddUser = () => history.push('/logged/user/add')
 
   const goToUpdateUser = (user) => {
-    redirectValueUsuario(user)
+    setValueUsuario(user)
     history.push('/logged/user/edit')
   }
 
@@ -80,7 +80,7 @@ const mapStateToProps = ({ auth }) => ({
 })
 
 const mapDispacthToProps = (dispach) =>
-  bindActionCreators({ redirectValueUsuario }, dispach)
+  bindActionCreators({ setValueUsuario }, dispach)
 
 const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
 
@@ -91,7 +91,7 @@ Manager.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  redirectValueUsuario: PropTypes.func.isRequired,
-}
+  setValueUsuario: PropTypes.func.isRequired,
+};
 
 export default enhanced(Manager)

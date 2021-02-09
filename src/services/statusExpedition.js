@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { BACKEND_URL } from './var'
-import { store } from '../App'
+import { store } from '../store/configureStore'
 
 
 export const addStatusExpedition = async (values) => {
@@ -25,7 +25,7 @@ export const addStatusExpedition = async (values) => {
     }
   })
   return response
-} 
+}
 
 export const getAllStatusExpedition = async (query) => {
   const storeObject = store.getState()

@@ -9,10 +9,10 @@ import {
   getTodasOs as getAllOsService,
   removeReservaOs,
 } from '../../../services/reservaOs'
-import { redirectValueOs } from '../../Gerenciar/Os/OsRedux/action'
+import { setValueOs } from '../../../store/Actions/os'
 import { buildDataSource, buildQueryOs, buildRedirectValueOs } from './specs'
 
-const Manager = ({ history, redirectValueOs }) => {
+const Manager = ({ history, setValueOs }) => {
   const [dataSource, setDataSource] = useState([])
   const [page, setPage] = useState(1)
   const [queryOs, setQueryOs] = useState({})
@@ -52,7 +52,7 @@ const Manager = ({ history, redirectValueOs }) => {
   const handleOnChangeTable = ({ current }) => setPage(current)
 
   const handleOnClickEdit = (osData) => {
-    redirectValueOs(buildRedirectValueOs(osData))
+    setValueOs(buildRedirectValueOs(osData))
 
     history.push('update')
   }
@@ -92,7 +92,7 @@ const Manager = ({ history, redirectValueOs }) => {
 const mapStateToProps = () => ({})
 
 const mapDispacthToProps = (dispatch) =>
-  bindActionCreators({ redirectValueOs }, dispatch)
+  bindActionCreators({ setValueOs }, dispatch)
 
 const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
 

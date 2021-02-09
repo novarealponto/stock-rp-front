@@ -25,12 +25,12 @@ import {
 } from '@ant-design/icons'
 
 import styles from './style.module.css'
-import { Logout } from '../../pages/Login/LoginRedux/action'
+import { logOutAction } from '../../store/Actions/auth'
 
 const { Sider } = Layout
 const { SubMenu } = Menu
 
-const headersList = ({ auth, history, Logout }) => [
+const headersList = ({ auth, history, logOutAction }) => [
   {
     children: (
       <StockOutlined
@@ -64,7 +64,7 @@ const headersList = ({ auth, history, Logout }) => [
       <LogoutOutlined
         className={styles.iconHearder}
         onClick={() => {
-          Logout()
+          logOutAction()
           history.push('/login')
         }}
       />
@@ -330,7 +330,7 @@ const renderSubMenu = ({ auth, history }) => ({ key, menuItemList, title }) => (
   </SubMenu>
 )
 
-const SideBar = ({ auth, history, Logout }) => {
+const SideBar = ({ auth, history, logOutAction }) => {
   const [openKeys, setOpenKeys] = useState([])
 
   return (
@@ -343,7 +343,7 @@ const SideBar = ({ auth, history, Logout }) => {
       }}
     >
       <Row style={{ margin: '20px 0' }}>
-        {map(renderHeader, headersList({ auth, history, Logout }))}
+        {map(renderHeader, headersList({ auth, history, logOutAction }))}
       </Row>
 
       <Divider className={styles.divider} />
@@ -362,7 +362,7 @@ const SideBar = ({ auth, history, Logout }) => {
   )
 }
 
-const mapDispacthToProps = (dispatch) => bindActionCreators({ Logout }, dispatch)
+const mapDispacthToProps = (dispatch) => bindActionCreators({ logOutAction }, dispatch)
 const mapStateToProps = ({ auth }) => ({ auth })
 
 const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)

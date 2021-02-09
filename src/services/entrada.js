@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { BACKEND_URL } from './var'
-import { store } from '../App'
+import { store } from '../store/configureStore'
 
 
 export const newEntrada = async (values) => {
@@ -73,7 +73,7 @@ export const deleteEntrada = async (id) => {
     }
   })
   return response
-} 
+}
 
 
 export const getEntrada = async (query) => {
@@ -98,4 +98,4 @@ export const getEntrada = async (query) => {
     }
   })
   return response
-} 
+}
