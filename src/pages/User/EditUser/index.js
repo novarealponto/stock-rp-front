@@ -1,79 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from "react-redux";
-import { Form, message } from 'antd';
-import { compose, path } from 'ramda';
-import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useState } from 'react'
+import { withRouter } from 'react-router-dom'
+import { Form, message } from 'antd'
+import { compose, length, path, pathOr, pipe } from 'ramda'
 
 import {
   getResourcesByTypeAccount,
+  getUserById,
   updateUsuario,
-} from '../../../services/usuario';
+} from '../../../services/usuario'
 import { getTypeAccount } from '../../../services/typeAccount'
-import buildUser from '../../../utils/userSpec';
-import EditUserContainer from '../../../containers/User/EditUser';
-import PERMISSIONS from '../../../utils/permissions';
+import { buildUser, buildUserUpdate } from '../../../utils/userSpec'
+import EditUserContainer from '../../../containers/User/EditUser'
+import PERMISSIONS from '../../../utils/permissions'
 
 const createUserText = 'Usuário alterado com sucesso!'
 const unableCreateUserText = 'Não foi possível alterar o usuário!'
-const unableSetThatAccountType = 'Não foi possível pegar as permissões desse tipo de conta!'
+const unableSetThatAccountType =
+  'Não foi possível pegar as permissões desse tipo de conta!'
 
-const successMessage = messageText => message.success(messageText);
-const errorMessage = messageText => message.error(messageText);
+const successMessage = (messageText) => message.success(messageText)
+const errorMessage = (messageText) => message.error(messageText)
 
-const EditUser = ({
-  userReducer,
-}) => {
-  const [allowCustomPermissions, setAllowCustomPermissions] = useState(false);
-  const [form] = Form.useForm();
-  const [shouldRequest, setShouldRequest] = useState(true)
+const EditUser = () => {
+  const [allowCustomPermissions, setAllowCustomPermissions] = useState(false)
+  const [form] = Form.useForm()
   const [typeAccounts, setTypeAccounts] = useState([])
 
-  useEffect(() => {
-    const handleSetForm = () => form.setFieldsValue({
-      ...userReducer.resource,
-      allowCustomPermissions: path(['customized'], userReducer),
-      userName: path(['username'], userReducer),
-      typeAccount: path(['typeName'], userReducer),
-    })
-
-    setAllowCustomPermissions(path(['customized'], userReducer))
-    if (shouldRequest) {
-      handleSetForm()
-      getAllTypeAccount()
-    }
-  }, [
-    form,
-    shouldRequest,
-    userReducer,
-  ])
-
-  const getAllTypeAccount = async () => {
+  const getAllTypeAccount = useCallback(async () => {
     let responseStatus = null
     try {
       const query = {
         filters: {
           typeAccount: {
             specific: {
-              stock: true
-            }
-          }
-        }
-      };
+              stock: true,
+            },
+          },
+        },
+      }
 
       const { data, status } = await getTypeAccount(query)
       responseStatus = status
       setTypeAccounts(data.rows)
-      setShouldRequest(false)
     } catch (error) {
-      setShouldRequest(false)
       console.log({ status: responseStatus, error })
-    };
-  };
+    }
+  }, [])
 
-  const handleAllowSetCustomPermissions = () => (
+  const handleAllowSetCustomPermissions = () =>
     setAllowCustomPermissions(!allowCustomPermissions)
-  );
 
   const handleOnTypeAccountChange = async (typeAccount) => {
     try {
@@ -81,11 +56,11 @@ const EditUser = ({
         filters: {
           typeAccount: {
             specific: {
-              typeName: typeAccount
-            }
-          }
-        }
-      };
+              typeName: typeAccount,
+            },
+          },
+        },
+      }
 
       const { data } = await getResourcesByTypeAccount(query)
 
@@ -99,13 +74,19 @@ const EditUser = ({
   }
 
   const handleSubmit = async (formData) => {
+    const pathname = pipe(pathOr('', ['location', 'pathname']), (item) =>
+      item.split('/')
+    )(window)
+
+    const id = pathname[length(pathname) - 1]
+
     const userParser = {
-      id: path(['id'], userReducer),
+      id,
       ...buildUser(formData),
-    };
+    }
 
     try {
-      const { status } = await updateUsuario(userParser);
+      const { status } = await updateUsuario(userParser)
 
       if (status === 422 || status === 500) {
         throw new Error('Unprocessable Entity!')
@@ -114,7 +95,22 @@ const EditUser = ({
     } catch (error) {
       errorMessage(unableCreateUserText)
     }
-  };
+  }
+
+  useEffect(() => {
+    const pathname = pipe(pathOr('', ['location', 'pathname']), (item) =>
+      item.split('/')
+    )(window)
+
+    const id = pathname[length(pathname) - 1]
+
+    getUserById(id).then(({ data }) => {
+      form.setFieldsValue(buildUserUpdate(data))
+      setAllowCustomPermissions(!!path(['customized'], data))
+    })
+
+    getAllTypeAccount()
+  }, [form, getAllTypeAccount])
 
   return (
     <EditUserContainer
@@ -129,54 +125,6 @@ const EditUser = ({
   )
 }
 
-const mapStateToProps = ({
-  userReducer,
-}) => ({
-  userReducer
-});
+const enhanced = compose(withRouter)
 
-const enhanced = compose(
-  connect(mapStateToProps),
-  withRouter,
-);
-
-EditUser.propTypes = {
-  userReducer: PropTypes.shape({
-    customized: PropTypes.bool.isRequired,
-    id: PropTypes.string.isRequired,
-    resource: PropTypes.shape({
-      addAccessories: PropTypes.bool.isRequired,
-      addAnalyze: PropTypes.bool.isRequired,
-      addCar: PropTypes.bool.isRequired,
-      addCompany: PropTypes.bool.isRequired,
-      addEntr: PropTypes.bool.isRequired,
-      addEntry: PropTypes.bool.isRequired,
-      addEquip: PropTypes.bool.isRequired,
-      addEquipType: PropTypes.bool.isRequired,
-      addFonr: PropTypes.bool.isRequired,
-      addKit: PropTypes.bool.isRequired,
-      addKitOut: PropTypes.bool.isRequired,
-      addMark: PropTypes.bool.isRequired,
-      addOutPut: PropTypes.bool.isRequired,
-      addPart: PropTypes.bool.isRequired,
-      addProd: PropTypes.bool.isRequired,
-      addRML: PropTypes.bool.isRequired,
-      addROs: PropTypes.bool.isRequired,
-      addStatus: PropTypes.bool.isRequired,
-      addTec: PropTypes.bool.isRequired,
-      addType: PropTypes.bool.isRequired,
-      addTypeAccount: PropTypes.bool.isRequired,
-      addUser: PropTypes.bool.isRequired,
-      delROs: PropTypes.bool.isRequired,
-      gerROs: PropTypes.bool.isRequired,
-      modulo: PropTypes.bool.isRequired,
-      suprimento: PropTypes.bool.isRequired,
-      tecnico: PropTypes.bool.isRequired,
-      updateRos: PropTypes.bool.isRequired,
-    }).isRequired,
-    typeName: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-  }).isRequired,
-};
-
-export default enhanced(EditUser);
+export default enhanced(EditUser)
