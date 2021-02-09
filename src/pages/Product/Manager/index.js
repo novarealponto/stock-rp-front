@@ -4,14 +4,13 @@ import { compose, map } from 'ramda'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import { buildDataSource, buildQueryProduct, buildRedirectValueProduct } from './specs'
+import { buildDataSource, buildQueryProduct } from './specs'
 import {
   getProdutos,
 } from '../../../services/produto'
 import ManagerContainer from '../../../containers/Product/Manage'
-import { setValueProduto } from '../../../store/Actions/product'
 
-const Manager = ({ history, setValueProduto }) => {
+const Manager = ({ history }) => {
   const [dataSource, setDataSource] = useState([])
   const [page, setPage] = useState(1)
   const [queryProduct, setQueryProduct] = useState({})

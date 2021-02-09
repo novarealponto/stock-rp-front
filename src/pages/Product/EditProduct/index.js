@@ -7,8 +7,8 @@ import EditProductContainer from '../../../containers/Product/Edit'
 import {
   getAllProductType,
   getMarca,
-  updateProduto,
   getProductById,
+  updateProduto,
 } from '../../../services/produto'
 
 const success = () => message.success('Produto foi atualizado')
