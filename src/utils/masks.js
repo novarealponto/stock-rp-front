@@ -1,6 +1,6 @@
 import { length } from 'ramda'
 
-export default (form, name, value) => {
+export const applyMask = (name, value) => {
   let valueMasked = value
 
   switch (name) {
@@ -67,5 +67,10 @@ export default (form, name, value) => {
     default:
   }
 
-  return form.setFieldsValue({ [name]: valueMasked })
+  return valueMasked
+}
+
+export default (form, name, value) => {
+  
+  return form.setFieldsValue({ [name]: applyMask(name, value) })
 }

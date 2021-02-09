@@ -8,7 +8,7 @@ import {
   validateCNPJ,
   validateEmail,
 } from '../../../../utils/validators'
-import masks from '../../../../utils/masks'
+import masks, { applyMask } from '../../../../utils/masks'
 
 const { Title } = Typography
 
@@ -171,6 +171,20 @@ const AddProviderSup = ({ form, handleSubmit }) => {
                           message: 'Telefone do contato é obrigatório',
                         },
                       ]}
+                      onChange={({ target: { value }}) => {
+                        const contacts = form.getFieldValue('contacts')
+
+                        contacts.splice(
+                          field.name,
+                          1,
+                          {
+                            ...contacts[field.name],
+                            telphone: applyMask('telphone', value)
+                          }
+                        )
+
+                        form.setFieldsValue({contacts})
+                      }}
                       label="Telefone"
                     >
                       <Input />
