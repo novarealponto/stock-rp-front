@@ -1,165 +1,65 @@
-import axios from 'axios'
-import { BACKEND_URL } from './var'
-import { store } from '../store/configureStore'
 import jsPDF from 'jspdf'
 import * as R from 'ramda'
 import moment from 'moment/min/moment-with-locales'
 
-export const getCars = async () => {
-  const storeObject = store.getState()
+import axiosInstance from '../helpers/request'
 
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/car`, { headers: headers, params: {} })
-    .then((resp) => {
-      response = resp
-    })
+export const getCars = () => {
+  return axiosInstance
+    .get('/car', { params: {} })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const getTecnico = async (query) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/technician`, {
-      headers: headers,
+export const getTecnico = (query) => {
+  return axiosInstance
+    .get('/technician', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const getAllTechnician = async (query) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/technician/getAllTechnician`, {
-      headers: headers,
+export const getAllTechnician = (query) => {
+  return axiosInstance
+    .get('/technician/getAllTechnician', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const newTechnician = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .post(`${BACKEND_URL}/api/technician`, values, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const newTechnician = (values) => {
+  return axiosInstance
+    .post('/technician', values)
+    .then((resp) => resp)
     .catch((error) => {
-      console.log(error.response)
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const updateTechnician = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .put(`${BACKEND_URL}/api/technician`, values, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const updateTechnician = (values) => {
+  return axiosInstance
+    .put('/technician', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const newCar = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .post(`${BACKEND_URL}/api/car`, values, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const newCar = (values) => {
+  return axiosInstance
+    .post('/car', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
 function title(doc) {

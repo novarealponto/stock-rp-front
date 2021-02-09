@@ -1,85 +1,30 @@
-import axios from "axios";
-import { store } from '../../store/configureStore';
-import { BACKEND_URL } from "../var";
+import axiosInstance from '../../helpers/request'
 
-export const NovoFornecedor = async values => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .post(`${BACKEND_URL}/api/suprimentos/provider`, values, {
-      headers: headers
+export const NovoFornecedor = (values) => {
+  return axiosInstance
+    .post('/suprimentos/provider', values, {})
+    .then((resp) => resp)
+    .catch((error) => {
+      throw new Error()
     })
-    .then(resp => {
-      response = resp;
+}
+
+export const UpdateProvider = (values) => {
+  return axiosInstance
+    .put('/suprimentos/provider', values, {})
+    .then((resp) => resp)
+    .catch((error) => {
+      throw new Error()
     })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
+}
 
-export const UpdateProvider = async values => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .put(`${BACKEND_URL}/api/suprimentos/provider`, values, {
-      headers: headers
+export const GetProvider = (query) => {
+  return axiosInstance
+    .get('/suprimentos/provider', {
+      params: { query },
     })
-    .then(resp => {
-      response = resp;
+    .then((resp) => resp)
+    .catch((error) => {
+      throw new Error()
     })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
-
-export const GetProvider = async query => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/suprimentos/provider`, {
-      headers: headers,
-      params: { query }
-    })
-    .then(resp => {
-      response = resp;
-    })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
+}

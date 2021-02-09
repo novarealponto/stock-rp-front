@@ -1,58 +1,21 @@
-import axios from "axios";
-import { store } from '../../store/configureStore';
-import { BACKEND_URL } from "../var";
+import axiosInstance from '../../helpers/request'
 
-export const NovaEntrada = async values => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .post(`${BACKEND_URL}/api/suprimentos/entrance`, values, {
-      headers: headers
+export const NovaEntrada = (values) => {
+  return axiosInstance
+    .post('/api/suprimentos/entrance', values, {})
+    .then((resp) => resp)
+    .catch((error) => {
+      throw new Error(error)
     })
-    .then(resp => {
-      response = resp;
+}
+
+export const GetEntrance = (query) => {
+  return axiosInstance
+    .get('/api/suprimentos/entrance', {
+      params: { query },
     })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
-
-export const GetEntrance = async query => {
-  const storeObject = store.getState();
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username
-  };
-
-  let response = {};
-
-  await axios
-    .get(`${BACKEND_URL}/api/suprimentos/entrance`, {
-      headers: headers,
-      params: { query }
+    .then((resp) => resp)
+    .catch((error) => {
+      throw new Error(error)
     })
-    .then(resp => {
-      response = resp;
-    })
-    .catch(error => {
-      if (error.response) {
-        response = error.response;
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-  return response;
-};
+}

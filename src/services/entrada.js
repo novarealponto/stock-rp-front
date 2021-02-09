@@ -1,101 +1,39 @@
-import axios from 'axios'
-import { BACKEND_URL } from './var'
-import { store } from '../store/configureStore'
+import axiosInstance from '../helpers/request'
 
-
-export const newEntrada = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios.post(`${BACKEND_URL}/api/entrance`, values, { headers: headers }).then(
-    resp => {
-      response = resp
-    }
-  ).catch((error) => {
-    if (error.response) {
-      response = error.response
-    } else {
-      console.log('Error', error.message);
-    }
-  })
-  return response
+export const newEntrada = (values) => {
+  return axiosInstance
+    .post('/entrance', values)
+    .then((resp) => resp)
+    .catch((error) => {
+      throw new Error(error)
+    })
 }
 
-export const updateEntrada = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios.put(`${BACKEND_URL}/api/entrance`, values, { headers: headers }).then(
-    resp => {
-      response = resp
-    }
-  ).catch((error) => {
-    if (error.response) {
-      response = error.response
-    } else {
-      console.log('Error', error.message);
-    }
-  })
-  return response
+export const updateEntrada = (values) => {
+  return axiosInstance
+    .put('/entrance', values)
+    .then((resp) => resp)
+    .catch((error) => {
+      throw new Error(error)
+    })
 }
 
-export const deleteEntrada = async (id) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios.delete(`${BACKEND_URL}/api/entrance`, { headers: headers, params: { id } }).then(
-    resp => {
-      response = resp
-    }
-  ).catch((error) => {
-    if (error.response) {
-      response = error.response
-    } else {
-      console.log('Error', error.message);
-    }
-  })
-  return response
+export const deleteEntrada = (id) => {
+  return axiosInstance
+    .delete('/entrance', { params: { id } })
+    .then((resp) => resp)
+    .catch((error) => {
+      throw new Error(error)
+    })
 }
 
-
-export const getEntrada = async (query) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios.get(`${BACKEND_URL}/api/entrance`, { headers: headers, params: { query } }).then(
-    resp => {
-      response = resp
-    }
-  ).catch((error) => {
-    if (error.response) {
-      response = error.response
-    } else {
-      console.log('Error', error.message);
-    }
-  })
-  return response
+export const getEntrada = (query) => {
+  return axiosInstance
+    .get('/entrance', { params: { query } })
+    .then((resp) => {
+      return resp
+    })
+    .catch((error) => {
+      throw new Error(error)
+    })
 }

@@ -1,350 +1,133 @@
-import axios from 'axios'
-import { BACKEND_URL } from './var'
 import jsPDF from 'jspdf'
 import moment from 'moment/min/moment-with-locales'
-import { store } from '../store/configureStore'
 
-export const getProdutos = async (query) => {
-  const storeObject = store.getState()
+import axiosInstance from '../helpers/request'
 
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/product`, { headers: headers, params: { query } })
-    .then((resp) => {
-      response = resp
-    })
+export const getProdutos = (query) => {
+  return axiosInstance
+    .get('/product', { params: { query } })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const getEquips = async (query) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/product/getEquipsByEntrance`, {
-      headers: headers,
+export const getEquips = (query) => {
+  return axiosInstance
+    .get('/product/getEquipsByEntrance', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const getItens = async (query) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/product/getAllNames`, {
-      headers: headers,
+export const getItens = (query) => {
+  return axiosInstance
+    .get('/product/getAllNames', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const getMarca = async (query) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/mark`, { headers: headers, params: { query } })
-    .then((resp) => {
-      response = resp
-    })
+export const getMarca = (query) => {
+  return axiosInstance
+    .get('/api/mark', { params: { query } })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const getFabricante = async (peca) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/manufacturer`, {
-      headers: headers,
+export const getFabricante = (peca) => {
+  return axiosInstance
+    .get('/manufacturer', {
       params: { query: peca },
     })
-    .then((resp) => {
-      response = resp
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const getAllProductType = async () => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/equipModel/getAllType`, {
-      headers: headers,
-      params: {},
-    })
-    .then((resp) => {
-      response = resp
-    })
+export const getAllProductType = () => {
+  return axiosInstance
+    .get('/equipModel/getAllType')
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const newMarca = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .post(`${BACKEND_URL}/api/mark`, values, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const newMarca = (values) => {
+  return axiosInstance
+    .post('/api/mark', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const newProductType = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .post(`${BACKEND_URL}/api/equipModel/addType`, values, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const newProductType = (values) => {
+  return axiosInstance
+    .post('/equipModel/addType', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const newFabricante = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .post(`${BACKEND_URL}/api/manufacturer`, values, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const newFabricante = (values) => {
+  return axiosInstance
+    .post('/manufacturer', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const newProduto = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .post(`${BACKEND_URL}/api/product`, values, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const newProduto = (values) => {
+  return axiosInstance
+    .post('/product', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const updateProduto = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .put(`${BACKEND_URL}/api/product`, values, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const updateProduto = (values) => {
+  return axiosInstance
+    .put('/product', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const getProdutoByEstoque = async (query) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/product/getProductByStockBase`, {
-      headers: headers,
+export const getProdutoByEstoque = (query) => {
+  return axiosInstance
+    .get('/product/getProductByStockBase', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const GetRelatVendas = async (query) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/product/getAllVendas`, {
-      headers: headers,
+export const GetRelatVendas = (query) => {
+  return axiosInstance
+    .get('/product/getAllVendas', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
 function addWrappedText({
@@ -482,7 +265,7 @@ function title(doc) {
   })
 }
 
-export const CreatePDF = async (products) => {
+export const CreatePDF = (products) => {
   var doc = new jsPDF({
     orientation: 'l',
     unit: 'mm',

@@ -1,113 +1,45 @@
-import axios from 'axios'
-import { BACKEND_URL } from './var'
-import { store } from '../store/configureStore'
 import jsPDF from 'jspdf'
 import moment from 'moment'
+import axiosInstance from '../helpers/request'
 
-export const addEprestimo = async (value) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .post(`${BACKEND_URL}/api/emprestimo`, value, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const addEprestimo = (value) => {
+  return axiosInstance
+    .post('/emprestimo', value)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const updateEprestimo = async (value) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .put(`${BACKEND_URL}/api/emprestimo`, value, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const updateEprestimo = (value) => {
+  return axiosInstance
+    .put('/emprestimo', value)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const getEprestimoService = async (query) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .get(`${BACKEND_URL}/api/emprestimo`, {
-      headers: headers,
+export const getEprestimoService = (query) => {
+  return axiosInstance
+    .get('/emprestimo', {
       params: { query },
     })
-    .then((resp) => {
-      response = resp
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const deleteEmprestimoService = async (value) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .delete(`${BACKEND_URL}/api/emprestimo`, {
-      headers: headers,
+export const deleteEmprestimoService = (value) => {
+  return axiosInstance
+    .delete('/emprestimo', {
       params: value,
     })
-    .then((resp) => {
-      response = resp
-    })
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
 function addWrappedText({

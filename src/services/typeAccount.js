@@ -1,53 +1,18 @@
-import axios from 'axios'
+import axiosInstance from '../helpers/request'
 
-import { BACKEND_URL } from './var'
-import { store } from '../store/configureStore'
-
-export const newTypeAccount = async (values) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios
-    .post(`${BACKEND_URL}/api/typeAccount`, values, { headers: headers })
-    .then((resp) => {
-      response = resp
-    })
+export const newTypeAccount = (values) => {
+  return axiosInstance
+    .post('/typeAccount', values)
+    .then((resp) => resp)
     .catch((error) => {
-      if (error.response) {
-        response = error.response
-      } else {
-        console.log('Error', error.message)
-      }
+      throw new Error(error)
     })
-  return response
 }
 
-export const getTypeAccount = async (query) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios.get(`${BACKEND_URL}/api/typeAccount`, { headers: headers, params: { query } }).then(
-    resp => {
-      response = resp
-    }
+export const getTypeAccount = (query) => {
+  return axiosInstance.get('/typeAccount', { params: { query } }).then(
+    resp => resp
   ).catch((error) => {
-    if (error.response) {
-      response = error.response
-    } else {
-      console.log('Error', error.message);
-    }
+    throw new Error(error)
   })
-  return response
 }
