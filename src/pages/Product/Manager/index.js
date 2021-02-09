@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { bindActionCreators } from 'redux'
-import { compose, map } from 'ramda'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { map } from 'ramda'
 
 import { buildDataSource, buildQueryProduct } from './specs'
 import {
@@ -84,11 +81,4 @@ const Manager = ({ history }) => {
   )
 }
 
-const mapStateToProps = () => ({})
-
-const mapDispacthToProps = (dispatch) =>
-  bindActionCreators({ setValueProduto }, dispatch)
-
-const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
-
-export default enhanced(Manager)
+export default Manager

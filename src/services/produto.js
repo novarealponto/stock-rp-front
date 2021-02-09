@@ -131,27 +131,11 @@ export const GetRelatVendas = (query) => {
 }
 
 export const getProductById = async (id) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios.get(`${BACKEND_URL}/api/product/getByIdProducts`, { headers: headers, params: { id } }).then(
-    resp => {
-      response = resp
-    }
-  ).catch((error) => {
-    if (error.response) {
-      response = error.response
-    } else {
-      console.log('Error', error.message);
-    }
-  })
-  return response
+  return axiosInstance.get('/product/getByIdProducts', { params: { id } })
+    .then((resp) => resp)
+    .catch((error) => {
+      throw new Error(error)
+    })
 }
 
 
