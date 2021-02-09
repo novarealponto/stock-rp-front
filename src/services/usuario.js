@@ -44,3 +44,30 @@ export const getUserById = (id) => {
     throw new Error(error)
   })
 }
+<<<<<<< HEAD
+=======
+
+export const getUserById = async (id) => {
+  const storeObject = store.getState()
+
+  const headers = {
+    token: storeObject.auth.token,
+    username: storeObject.auth.username,
+  }
+
+  let response = {}
+
+  await axios.get(`${BACKEND_URL}/api/user/getById`, { headers: headers, params: { id } }).then(
+    resp => {
+      response = resp
+    }
+  ).catch((error) => {
+    if (error.response) {
+      response = error.response
+    } else {
+      console.log('Error', error.message);
+    }
+  })
+  return response
+}
+>>>>>>> 7c53950... chore: all changes

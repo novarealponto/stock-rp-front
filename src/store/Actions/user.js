@@ -7,3 +7,11 @@ export const setValueUsuario = (value) => {
       type: action.REDIRECT.USUARIO,
     })
 }
+
+export const clearValueUsuario = () => {
+  return (dispatch) =>
+    dispatch({
+      payload: null,
+      type: action.CLEAR.USUARIO,
+    })
+}

@@ -40,6 +40,10 @@ const UserSpec = {
 export const buildUser = applySpec(UserSpec)
 
 export const buildUserUpdate = (value) => {
+<<<<<<< HEAD
+=======
+  console.log(value);
+>>>>>>> 7c53950... chore: all changes
   let pathResource = []
 
   if (!value.resource) {
@@ -49,6 +53,7 @@ export const buildUserUpdate = (value) => {
   }
 
   return applySpec({
+<<<<<<< HEAD
     addCar: path(concat(pathResource, ['addCar'])),
     addEntr: path(concat(pathResource, ['addEntr'])),
     addFonr: path(concat(pathResource, ['addFonr'])),
@@ -72,5 +77,30 @@ export const buildUserUpdate = (value) => {
     typeAccount: pathOr('', ['typeAccount', 'typeName']),
     updateRos: path(concat(pathResource, ['updateRos'])),
     userName: pathOr('', ['username']),
+=======
+    id: pathOr('', ['id']),
+    userName: pathOr('', ['username']),
+    typeAccount: pathOr('', ['typeAccount', 'typeName']),
+    allowCustomPermissions: pathOr(false, ['customized']),
+    addTypeAccount: path(concat(pathResource, ['addTypeAccount'])),
+    addUser: path(concat(pathResource, ['addUser'])),
+    addTec: path(concat(pathResource, ['addTec'])),
+    addCar: path(concat(pathResource, ['addCar'])),
+    addMark: path(concat(pathResource, ['addMark'])),
+    addType: path(concat(pathResource, ['addType'])),
+    addStatus: path(concat(pathResource, ['addStatus'])),
+    addProd: path(concat(pathResource, ['addProd'])),
+    addFonr: path(concat(pathResource, ['addFonr'])),
+    addEntr: path(concat(pathResource, ['addEntr'])),
+    addKit: path(concat(pathResource, ['addKit'])),
+    addKitOut: path(concat(pathResource, ['addKitOut'])),
+    addOutPut: path(concat(pathResource, ['addOutPut'])),
+    addROs: path(concat(pathResource, ['addROs'])),
+    addRML: path(concat(pathResource, ['addRML'])),
+    gerROs: path(concat(pathResource, ['gerROs'])),
+    delROs: path(concat(pathResource, ['delROs'])),
+    updateRos: path(concat(pathResource, ['updateRos'])),
+    suprimento: path(concat(pathResource, ['suprimento'])),
+>>>>>>> 7c53950... chore: all changes
   })(value)
 }
