@@ -16,15 +16,15 @@ const manufacturerList = []
 
 for (let key = 0; key < 30; key++) {
   dataSource.push({
-    key,
     code: key,
-    product: commerce.productName(),
+    createdAt: moment(date.past()).format('L'),
+    exporadic: random.boolean(),
+    key,
     manufacturer: company.companyName(),
     manufacturerId: key,
     minimumQuantity: random.number({ max: 20 }),
-    createdAt: moment(date.past()).format('L'),
+    product: commerce.productName(),
     unit: ['UNID', 'PÇ', 'CX', 'LT'][random.number({ max: 4 })],
-    exporadic: random.boolean(),
   })
 
   manufacturerList.push({
@@ -34,10 +34,10 @@ for (let key = 0; key < 30; key++) {
 }
 
 const Template = (args) => {
-  const [visibleModalRegister, setVisibleModalRegister] = useState(false)
-  const [visibleModalUpdate, setVisibleModalUpdate] = useState(false)
   const [formRegister] = Form.useForm()
   const [formUpdate] = Form.useForm()
+  const [visibleModalRegister, setVisibleModalRegister] = useState(false)
+  const [visibleModalUpdate, setVisibleModalUpdate] = useState(false)
 
   const handleClickOnCancel = () => {
     setVisibleModalRegister(false)
@@ -56,13 +56,13 @@ const Template = (args) => {
   return (
     <ManagerSupplyProductContainer
       {...args}
+      formRegister={formRegister}
+      formUpdate={formUpdate}
+      handleClickEditSupplyProduct={handleClickEditSupplyProduct}
+      handleClickNewSupplyProduct={handleClickNewSupplyProduct}
       handleClickOnCancel={handleClickOnCancel}
       visibleModalRegister={visibleModalRegister}
       visibleModalUpdate={visibleModalUpdate}
-      formRegister={formRegister}
-      formUpdate={formUpdate}
-      handleClickNewSupplyProduct={handleClickNewSupplyProduct}
-      handleClickEditSupplyProduct={handleClickEditSupplyProduct}
     />
   )
 }
@@ -71,10 +71,10 @@ export const Manager = Template.bind({})
 
 Manager.args = {
   dataSource,
-  handleOnSearch: action('handle On Search'),
-  manufacturerList,
-  pagination: { showSizeChanger: false },
   handleOnChangeTable: action('handle Change Table'),
+  handleOnSearch: action('handle On Search'),
   handleSubmitRegister: action('handle Submit Register'),
   handleSubmitUpdate: action('handle Submit Update'),
+  manufacturerList,
+  pagination: { showSizeChanger: false },
 }

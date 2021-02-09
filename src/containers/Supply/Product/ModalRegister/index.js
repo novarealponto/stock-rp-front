@@ -32,11 +32,11 @@ const rules = [{ required: true }]
 
 const ModalRegisterSupplyProduct = ({
   form,
-  visible,
   handleCancel,
+  handleSubmit,
   manufacturerList,
   title,
-  handleSubmit,
+  visible,
 }) => {
   return (
     <Modal
