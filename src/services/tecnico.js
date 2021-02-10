@@ -420,7 +420,7 @@ export const createPDF = async (technician, data) => {
 
 export const getTechnicianById = (id) => {
   return axiosInstance
-    .post('/technician/getById', { params: { id } })
+    .get('/technician/getById', { params: { id } })
     .then((resp) => resp)
     .catch((error) => {
       throw new Error(error)

@@ -8,7 +8,7 @@ import Manager from './Manager'
 const Technician = () => (
   <Switch>
     <Route exact path="/logged/technician/add" component={AddTechnician} />
-    <Route path="/logged/technician/edit" component={EditTechnician} />
+    <Route path="/logged/technician/edit/:id" component={EditTechnician} />
     <Route exact path="/logged/technician/manager" component={Manager} />
     <Redirect to="/logged/technician/manager"  />
   </Switch>

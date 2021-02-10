@@ -13,18 +13,13 @@ import buildTechnician from '../../../utils/technicianSpec'
 import buildInitialValueTechnician from './formTechnicianSpec'
 import { getRotation } from '../../../utils'
 
-const EditTechnician = ({ history }) => {
+const EditTechnician = ({ history, match }) => {
   const [carList, setCarList] = useState([])
   const [form] = Form.useForm()
   const [rotation, setRotation] = useState('')
 
   useEffect(() => {
-    const pathname = pipe(
-      pathOr('', ['location', 'pathname']),
-      split('/')
-    )(window)
-
-    const id = pathname[length(pathname) - 1]
+    const { id } = match.params
 
     getTechnicianById(id).then(({ data }) => {
       const initialValue = buildInitialValueTechnician(data)
@@ -49,12 +44,7 @@ const EditTechnician = ({ history }) => {
 
   const handleSubmitUpadateTechnician = async (technicianFormData) => {
     try {
-      const pathname = pipe(
-        pathOr('', ['location', 'pathname']),
-        split('/')
-      )(window)
-
-      const id = pathname[length(pathname) - 1]
+      const { id } = match.params
 
       const { status } = await updateTechnician(
         buildTechnician({
