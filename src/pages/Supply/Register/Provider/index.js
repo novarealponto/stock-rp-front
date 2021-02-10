@@ -22,7 +22,6 @@ const AddProviderSup = () => {
       form.resetFields()
       message.success(messageSuccessText)
     } catch (err) {
-      console.log(err)
       message.error(messageErrorText)
     }
   }

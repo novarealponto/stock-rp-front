@@ -126,15 +126,15 @@ const AddProviderSup = ({ form, handleSubmit }) => {
                   <Col span={8}>
                     <Form.Item
                       {...field}
-                      name={[field.name, 'name']}
                       fieldKey={[field.fieldKey, 'name']}
+                      label="Nome"
+                      name={[field.name, 'name']}
                       rules={[
                         {
-                          required: true,
                           message: 'Nome do contato é obrigatório',
+                          required: true,
                         },
                       ]}
-                      label="Nome"
                     >
                       <Input />
                     </Form.Item>
@@ -142,20 +142,20 @@ const AddProviderSup = ({ form, handleSubmit }) => {
                   <Col span={8}>
                     <Form.Item
                       {...field}
-                      name={[field.name, 'email']}
                       fieldKey={[field.fieldKey, 'email']}
+                      label="Email"
+                      name={[field.name, 'email']}
                       rules={[
                         {
-                          required: true,
                           message: 'Email do contato é obrigatório',
+                          required: true,
                         },
                         {
+                          message: 'Formato de email incorreto',
                           validator: async (_, value) =>
                             await validateEmail(value),
-                          message: 'Formato de email incorreto',
                         },
                       ]}
-                      label="Email"
                     >
                       <Input />
                     </Form.Item>
@@ -163,14 +163,9 @@ const AddProviderSup = ({ form, handleSubmit }) => {
                   <Col span={7}>
                     <Form.Item
                       {...field}
-                      name={[field.name, 'telphone']}
                       fieldKey={[field.fieldKey, 'telphone']}
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Telefone do contato é obrigatório',
-                        },
-                      ]}
+                      label="Telefone"
+                      name={[field.name, 'telphone']}
                       onChange={({ target: { value }}) => {
                         const contacts = form.getFieldValue('contacts')
 
@@ -182,10 +177,14 @@ const AddProviderSup = ({ form, handleSubmit }) => {
                             telphone: applyMask('telphone', value)
                           }
                         )
-
                         form.setFieldsValue({contacts})
                       }}
-                      label="Telefone"
+                      rules={[
+                        {
+                          message: 'Telefone do contato é obrigatório',
+                          required: true,
+                        },
+                      ]}
                     >
                       <Input />
                     </Form.Item>
