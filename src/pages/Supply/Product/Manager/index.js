@@ -122,7 +122,7 @@ const ManagerSupplyProduct = () => {
 
   useEffect(() => {
     getAllSupplyProduct()
-  }, [getAllSupplyProduct, getAllManufaturer])
+  }, [getAllSupplyProduct])
 
   return (
     <ManagerSupplyProductContainer
