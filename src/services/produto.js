@@ -36,7 +36,7 @@ export const getItens = (query) => {
 
 export const getMarca = (query) => {
   return axiosInstance
-    .get('/api/mark', { params: { query } })
+    .get('/mark', { params: { query } })
     .then((resp) => resp)
     .catch((error) => {
       throw new Error(error)
@@ -131,14 +131,13 @@ export const GetRelatVendas = (query) => {
 }
 
 export const getProductById = async (id) => {
-  return axiosInstance.get('/product/getByIdProducts', { params: { id } })
-    .then((resp) => resp)
-    .catch((error) => {
-      throw new Error(error)
-    })
+  try { 
+    const response = await axiosInstance.get('/product/getByIdProducts', { params: { id } })
+    return response 
+    } catch (error) {
+    throw new Error(error)
+  } 
 }
-
-
 
 function addWrappedText({
   text,

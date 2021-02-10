@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { Form, message } from 'antd'
-import { length, pathOr, pipe } from 'ramda'
+import { compose } from 'ramda'
+import { withRouter } from 'react-router-dom'
 
 import { buildProduct, buildProductUpdate } from '../../../utils/productSpec'
 import EditProductContainer from '../../../containers/Product/Edit'
@@ -14,7 +15,7 @@ import {
 const success = () => message.success('Produto foi atualizado')
 const errorMessage = () => message.error('Houve um erro ao atualizar produto')
 
-const EditProduct = ({ history }) => {
+const EditProduct = ({ history, match }) => {
   const [form] = Form.useForm()
   const [marksList, setMarkList] = useState([])
   const [typesList, setTypesList] = useState([])
@@ -44,11 +45,7 @@ const EditProduct = ({ history }) => {
   }, [])
 
   useEffect(() => {
-    const pathname = pipe(pathOr('', ['location', 'pathname']), (item) =>
-      item.split('/')
-    )(window)
-
-    const id = pathname[length(pathname) - 1]
+    const { id } = match.params
 
     getProductById(id).then(({ data }) => {
       form.setFieldsValue(buildProductUpdate(data))
@@ -59,13 +56,9 @@ const EditProduct = ({ history }) => {
   }, [form, getAllMarca, getAllTipo])
 
   const handleSubmit = async (formData) => {
-    const pathname = pipe(pathOr('', ['location', 'pathname']), (item) =>
-      item.split('/')
-    )(window)
-
-    const id = pathname[length(pathname) - 1]
-
     try {
+      const { id } = match.params
+
       await updateProduto(buildProduct({ ...formData, id }))
       history.push('/logged/product/manager')
       success()
@@ -84,4 +77,6 @@ const EditProduct = ({ history }) => {
   )
 }
 
-export default EditProduct
+const enhanced = compose(withRouter)
+
+export default enhanced(EditProduct)
