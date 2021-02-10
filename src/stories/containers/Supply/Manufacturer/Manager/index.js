@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { action } from '@storybook/addon-actions'
-import { commerce, company, date, random } from 'faker'
+import { company, date } from 'faker'
 import { Form } from 'antd'
 import moment from 'moment'
 
@@ -11,23 +11,13 @@ export default {
   component: ManagerSupplyManufacturerContainer,
 }
 
-const dataSource = []
-const manufacturerList = []
-
-for (let key = 0; key < 30; key++) {
-  dataSource.push({
-    code: key,
-    createdAt: moment(date.past()).format('L'),
-    key,
-    manufacturer: company.companyName(),
-    manufacturerId: key,
-  })
-
-  manufacturerList.push({
-    id: key,
-    name: company.companyName(),
-  })
-}
+const dataSource = new Array(30).fill(null).map((_, key) => ({
+  code: key,
+  createdAt: moment(date.past()).format('L'),
+  key,
+  manufacturer: company.companyName(),
+  manufacturerId: key,
+}))
 
 const Template = (args) => {
   const [formRegister] = Form.useForm()
