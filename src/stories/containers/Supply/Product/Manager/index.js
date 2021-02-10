@@ -11,11 +11,7 @@ export default {
   component: ManagerSupplyProductContainer,
 }
 
-const dataSource = []
-const manufacturerList = []
-
-for (let key = 0; key < 30; key++) {
-  dataSource.push({
+const dataSource = new Array(30).fill(null).map((_, index) => ({
     code: key,
     createdAt: moment(date.past()).format('L'),
     exporadic: random.boolean(),
@@ -25,13 +21,12 @@ for (let key = 0; key < 30; key++) {
     minimumQuantity: random.number({ max: 20 }),
     product: commerce.productName(),
     unit: ['UNID', 'PÇ', 'CX', 'LT'][random.number({ max: 4 })],
-  })
-
-  manufacturerList.push({
+  }))
+const manufacturerList = new Array(30).fill(null).map((_, index) => ({
     id: key,
     name: company.companyName(),
-  })
-}
+  }))
+
 
 const Template = (args) => {
   const [formRegister] = Form.useForm()
