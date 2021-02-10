@@ -11,7 +11,7 @@ export default {
   component: ManagerSupplyProductContainer,
 }
 
-const dataSource = new Array(30).fill(null).map((_, index) => ({
+const dataSource = new Array(30).fill(null).map((_, key) => ({
     code: key,
     createdAt: moment(date.past()).format('L'),
     exporadic: random.boolean(),
@@ -22,7 +22,7 @@ const dataSource = new Array(30).fill(null).map((_, index) => ({
     product: commerce.productName(),
     unit: ['UNID', 'PÇ', 'CX', 'LT'][random.number({ max: 4 })],
   }))
-const manufacturerList = new Array(30).fill(null).map((_, index) => ({
+const manufacturerList = new Array(30).fill(null).map((_, key) => ({
     id: key,
     name: company.companyName(),
   }))
