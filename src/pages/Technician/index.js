@@ -1,15 +1,16 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 
 import AddTechnician from './AddTechnician'
 import EditTechnician from './EditTechnician'
-import Manage from './Manage'
+import Manager from './Manager'
 
 const Technician = () => (
   <Switch>
     <Route exact path="/logged/technician/add" component={AddTechnician} />
-    <Route exact path="/logged/technician/edit" component={EditTechnician} />
-    <Route exact path="/logged/technician/manager" component={Manage} />
+    <Route path="/logged/technician/edit/:id" component={EditTechnician} />
+    <Route exact path="/logged/technician/manager" component={Manager} />
+    <Redirect to="/logged/technician/manager"  />
   </Switch>
 )
 

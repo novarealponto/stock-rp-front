@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import { Form, message } from 'antd'
-import { connect } from 'react-redux'
-import { compose } from 'ramda'
-import { bindActionCreators } from 'redux'
+import { compose, length, pipe, pathOr, split } from 'ramda'
 import { withRouter } from 'react-router-dom'
 
 import EditTechinicianContainer from '../../../containers/Technician/EditTechinician'
-import { getCars, updateTechnician } from '../../../services/tecnico'
+import {
+  getCars,
+  updateTechnician,
+  getTechnicianById,
+} from '../../../services/tecnico'
 import buildTechnician from '../../../utils/technicianSpec'
 import buildInitialValueTechnician from './formTechnicianSpec'
-import { clearValueTecnico } from '../../../store/Actions/technician'
 import { getRotation } from '../../../utils'
 
-const EditTechnician = ({ clearValueTecnico, history, technicianReducer }) => {
+const EditTechnician = ({ history, match }) => {
   const [carList, setCarList] = useState([])
   const [form] = Form.useForm()
   const [rotation, setRotation] = useState('')
 
   useEffect(() => {
-    const { plate } = technicianReducer
+    const { id } = match.params
 
-    onChangeSelecCarList(plate)
+    getTechnicianById(id).then(({ data }) => {
+      const initialValue = buildInitialValueTechnician(data)
+      form.setFieldsValue(initialValue)
+      onChangeSelecCarList(initialValue.car)
+    })
     getAllCars()
   }, [])
 
@@ -39,16 +44,18 @@ const EditTechnician = ({ clearValueTecnico, history, technicianReducer }) => {
 
   const handleSubmitUpadateTechnician = async (technicianFormData) => {
     try {
-      const { id } = technicianReducer
+      const { id } = match.params
 
       const { status } = await updateTechnician(
-        buildTechnician({ ...technicianFormData, id })
+        buildTechnician({
+          ...technicianFormData,
+          id,
+        })
       )
 
       if (status !== 200) throw new Error()
 
       messageSucess('Técnico cadastrado com sucesso')
-      clearValueTecnico()
       history.push('manager')
     } catch (error) {
       messageError('Houve um erro ao cadastrar técnico')
@@ -57,9 +64,8 @@ const EditTechnician = ({ clearValueTecnico, history, technicianReducer }) => {
 
   return (
     <EditTechinicianContainer
-      form={form}
       carList={carList}
-      formInitialValues={buildInitialValueTechnician(technicianReducer)}
+      form={form}
       onChangeSelecCarList={onChangeSelecCarList}
       rotation={rotation}
       updateTechnician={handleSubmitUpadateTechnician}
@@ -67,11 +73,6 @@ const EditTechnician = ({ clearValueTecnico, history, technicianReducer }) => {
   )
 }
 
-const mapStateToProps = ({ technicianReducer }) => ({ technicianReducer })
-
-const mapDispacthToProps = (dispach) =>
-  bindActionCreators({ clearValueTecnico }, dispach)
-
-const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
+const enhanced = compose(withRouter)
 
 export default enhanced(EditTechnician)

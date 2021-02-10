@@ -417,3 +417,12 @@ export const createPDF = async (technician, data) => {
 
   doc.save(`ROMANEIO_${moment(data).format('L')}.pdf`)
 }
+
+export const getTechnicianById = (id) => {
+  return axiosInstance
+    .get('/technician/getById', { params: { id } })
+    .then((resp) => resp)
+    .catch((error) => {
+      throw new Error(error)
+    })
+}

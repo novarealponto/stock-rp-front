@@ -18,7 +18,6 @@ const { Title } = Typography
 const EditTechinician = ({
   carList,
   form,
-  formInitialValues,
   onChangeSelecCarList,
   rotation,
   updateTechnician,
@@ -31,7 +30,6 @@ const EditTechinician = ({
         layout="vertical"
         name="newTechnician"
         onFinish={updateTechnician}
-        initialValues={formInitialValues}
       >
         <Row gutter={24}>
           <Col span={16}>
