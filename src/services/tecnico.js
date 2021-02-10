@@ -418,27 +418,11 @@ export const createPDF = async (technician, data) => {
   doc.save(`ROMANEIO_${moment(data).format('L')}.pdf`)
 }
 
-export const getTechnicianById = async (id) => {
-  const storeObject = store.getState()
-
-  const headers = {
-    token: storeObject.auth.token,
-    username: storeObject.auth.username,
-  }
-
-  let response = {}
-
-  await axios.get(`${BACKEND_URL}/api/technician/getById`, { headers: headers, params: { id } }).then(
-    resp => {
-      response = resp
-    }
-  ).catch((error) => {
-    if (error.response) {
-      response = error.response
-    } else {
-      console.log('Error', error.message);
-    }
-  })
-  return response
+export const getTechnicianById = (id) => {
+  return axiosInstance
+    .post('/technician/getById', { params: { id } })
+    .then((resp) => resp)
+    .catch((error) => {
+      throw new Error(error)
+    })
 }
-
