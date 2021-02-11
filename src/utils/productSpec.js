@@ -1,37 +1,54 @@
-import { applySpec, ifElse, pipe, pathOr } from 'ramda'
-
-const getSerialNumber = ifElse(
-  pathOr(false, ['serial']),
-  pathOr(false, ['serial']),
-  pathOr(false, ['modulo'])
-)
+import { applySpec, pathOr, pipe } from 'ramda'
 
 const lowerCase = value => value.toLocaleLowerCase()
 const toString = value => value.toString()
 
 const ProductSpec = {
-  id: pathOr('', ['id']),
   category: pipe(
     pathOr('', ['category']),
     lowerCase
   ),
-  description: pathOr('', ['description']),
-  minimumStock: pipe(
-    pathOr('1', ['quantMin']),
-    toString,
-  ),
-  mark: pathOr('', ['mark']),
-  name: pathOr('', ['name']),
-  type: pathOr('', ['type']),
-  serial: getSerialNumber,
-  responsibleUser: pathOr('modrp', ['responsibleUser']),
-  corredor: pathOr('', ['corredor']),
   coluna: pathOr('', ['coluna']),
-  prateleira: pathOr('', ['prateleira']),
+  corredor: pathOr('', ['corredor']),
+  description: pathOr('', ['description']),
   gaveta: pathOr('', ['gaveta']),
+  id: pathOr('', ['id']),
+  mark: pathOr('', ['mark']),
+  minimumStock: pipe(
+    pathOr('1', ['minimumStock']),
+    toString,
+    ),
   modulo: pathOr(false, ['modulo']),
+  name: pathOr('', ['name']),
+  prateleira: pathOr('', ['prateleira']),
+  responsibleUser: pathOr('modrp', ['responsibleUser']),
+  serial: pathOr(false, ['serialNumber']),
+  type: pathOr('', ['type']),
 }
 
-const buildProduct = applySpec(ProductSpec)
+const ProductSpecUpdate = {
+  category: pipe(
+    pathOr('', ['category']),
+    lowerCase
+  ),
+  coluna: pathOr('', ['coluna']),
+  corredor: pathOr('', ['corredor']),
+  description: pathOr('', ['description']),
+  gaveta: pathOr('', ['gaveta']),
+  id: pathOr('', ['id']),
+  mark: pathOr('', ['mark', 'mark']),
+  minimumStock: pipe(
+    pathOr('1', ['minimumStock']),
+    toString,
+  ),
+  modulo: pathOr(false, ['modulo']),
+  name: pathOr('', ['name']),
+  prateleira: pathOr('', ['prateleira']),
+  responsibleUser: pathOr('modrp', ['responsibleUser']),
+  serialNumber: pathOr(false, ['serial']),
+  type: pathOr('', ['equipType', 'type']),
+}
 
-export default buildProduct
+export const buildProduct = applySpec(ProductSpec)
+export const buildProductUpdate = applySpec(ProductSpecUpdate)
+

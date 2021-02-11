@@ -1,17 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { bindActionCreators } from 'redux'
-import { compose, map } from 'ramda'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { map } from 'ramda'
 
-import { buildDataSource, buildQueryProduct, buildRedirectValueProduct } from './specs'
+import { buildDataSource, buildQueryProduct } from './specs'
 import {
   getProdutos,
 } from '../../../services/produto'
 import ManagerContainer from '../../../containers/Product/Manage'
-import { setValueProduto } from '../../../store/Actions/product'
 
-const Manager = ({ history, setValueProduto }) => {
+const Manager = ({ history }) => {
   const [dataSource, setDataSource] = useState([])
   const [page, setPage] = useState(1)
   const [queryProduct, setQueryProduct] = useState({})
@@ -54,10 +50,8 @@ const Manager = ({ history, setValueProduto }) => {
 
   const handleOnChangeTable = ({ current }) => setPage(current)
 
-  const handleOnClickEdit = (productData) => {
-    setValueProduto(buildRedirectValueProduct(productData))
-
-    history.push('/logged/product/edit')
+  const handleOnClickEdit = (row) => {
+    history.push(`edit/${row.id}`)
   }
 
   const handleOnClickNewProduct = () => {
@@ -87,11 +81,4 @@ const Manager = ({ history, setValueProduto }) => {
   )
 }
 
-const mapStateToProps = () => ({})
-
-const mapDispacthToProps = (dispatch) =>
-  bindActionCreators({ setValueProduto }, dispatch)
-
-const enhanced = compose(connect(mapStateToProps, mapDispacthToProps), withRouter)
-
-export default enhanced(Manager)
+export default Manager
