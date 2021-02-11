@@ -141,10 +141,12 @@ const Romaneio = () => {
       filters: {
         os: {
           specific: {
-            date: {
-              start: search.date,
-              end: search.date,
-            },
+            date: search.date
+              ? {
+                  start: search.date,
+                  end: search.date,
+                }
+              : undefined,
           },
         },
         product: {
