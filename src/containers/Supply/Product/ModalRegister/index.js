@@ -65,7 +65,13 @@ const ModalRegisterSupplyProduct = ({
         </Form.Item>
 
         <Form.Item label="Fabricante" name="manufacturerId" rules={rules}>
-          <Select placeholder="Selecione o fabricante">
+          <Select
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            placeholder="Selecione o fabricante"
+            showSearch
+          >
             {map(
               ({ id, name }) => (
                 <Option key={id} value={id}>

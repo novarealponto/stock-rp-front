@@ -23,7 +23,9 @@ const ManagerSupplyProduct = () => {
   const [visibleModalRegister, setVisibleModalRegister] = useState(false)
 
   const getAllManufaturer = useCallback(() => {
-    GetManufacturer().then(({ data: { rows } }) => setManufacturerList(rows))
+    GetManufacturer({ total: null }).then(({ data: { rows } }) =>
+      setManufacturerList(rows)
+    )
   }, [])
 
   const getAllSupplyProduct = useCallback(() => {
