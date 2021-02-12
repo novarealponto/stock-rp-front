@@ -31,8 +31,13 @@ const ModalRegisterSupplyOutput = ({
       <Form {...layout} form={form} onFinish={handleSubmit}>
         <Form.Item label="Produto" name="productId" rules={rules}>
           <Select
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
             onChange={(_, { amount }) => setMax(amount)}
+            optionFilterProp="children"
             placeholder="Selecione o produto"
+            showSearch
           >
             {map(
               ({ id, name, amount }) => (
