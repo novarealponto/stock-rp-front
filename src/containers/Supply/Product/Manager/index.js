@@ -18,7 +18,7 @@ const { Title } = Typography
 const columns = ({ handleClickEditSupplyProduct }) => [
   {
     dataIndex: 'code',
-    title: 'código',
+    title: 'Código',
   },
   {
     dataIndex: 'product',

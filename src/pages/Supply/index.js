@@ -1,13 +1,18 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
+import SupplyEntryRoutes from './Entry'
 import SupplyManufacurerRoutes from './Manufacurer'
 import SupplyProductRoutes from './Product'
 
 const SupplyRoutes = () => (
   <Switch>
-    <Route path='/logged/supply/manufacurer' component={SupplyManufacurerRoutes}/>
-    <Route path='/logged/supply/product' component={SupplyProductRoutes}/>
+    <Route component={SupplyEntryRoutes} path="/logged/supply/entry" />
+    <Route
+      component={SupplyManufacurerRoutes}
+      path="/logged/supply/manufacurer"
+    />
+    <Route component={SupplyProductRoutes} path="/logged/supply/product" />
   </Switch>
 )
 

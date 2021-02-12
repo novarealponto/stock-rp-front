@@ -1,32 +1,23 @@
 import React, { useState } from 'react'
 import { action } from '@storybook/addon-actions'
-import { commerce, company, date, random } from 'faker'
+import { company, date } from 'faker'
 import { Form } from 'antd'
 import moment from 'moment'
 
-import ManagerSupplyProductContainer from '../../../../../containers/Supply/Product/Manager'
+import ManagerSupplyManufacturerContainer from '../../../../containers/Supply/Manufacturer/Manager'
 
 export default {
-  title: 'Containers/Supply/Product',
-  component: ManagerSupplyProductContainer,
+  title: 'Containers/Supply/Manufacturer',
+  component: ManagerSupplyManufacturerContainer,
 }
 
 const dataSource = new Array(30).fill(null).map((_, key) => ({
-    code: key,
-    createdAt: moment(date.past()).format('L'),
-    exporadic: random.boolean(),
-    key,
-    manufacturer: company.companyName(),
-    manufacturerId: key,
-    minimumQuantity: random.number({ max: 20 }),
-    product: commerce.productName(),
-    unit: ['UNID', 'PÇ', 'CX', 'LT'][random.number({ max: 4 })],
-  }))
-const manufacturerList = new Array(30).fill(null).map((_, key) => ({
-    id: key,
-    name: company.companyName(),
-  }))
-
+  code: key,
+  createdAt: moment(date.past()).format('L'),
+  key,
+  manufacturer: company.companyName(),
+  manufacturerId: key,
+}))
 
 const Template = (args) => {
   const [formRegister] = Form.useForm()
@@ -41,20 +32,20 @@ const Template = (args) => {
     formUpdate.resetFields()
   }
 
-  const handleClickEditSupplyProduct = (row) => {
+  const handleClickEditSupplyManufacturer = (row) => {
     formUpdate.setFieldsValue(row)
     setVisibleModalUpdate(true)
   }
 
-  const handleClickNewSupplyProduct = () => setVisibleModalRegister(true)
+  const handleClickNewSupplyManufacturer = () => setVisibleModalRegister(true)
 
   return (
-    <ManagerSupplyProductContainer
+    <ManagerSupplyManufacturerContainer
       {...args}
       formRegister={formRegister}
       formUpdate={formUpdate}
-      handleClickEditSupplyProduct={handleClickEditSupplyProduct}
-      handleClickNewSupplyProduct={handleClickNewSupplyProduct}
+      handleClickEditSupplyManufacturer={handleClickEditSupplyManufacturer}
+      handleClickNewSupplyManufacturer={handleClickNewSupplyManufacturer}
       handleClickOnCancel={handleClickOnCancel}
       visibleModalRegister={visibleModalRegister}
       visibleModalUpdate={visibleModalUpdate}
@@ -70,6 +61,5 @@ Manager.args = {
   handleOnSearch: action('handle On Search'),
   handleSubmitRegister: action('handle Submit Register'),
   handleSubmitUpdate: action('handle Submit Update'),
-  manufacturerList,
   pagination: { showSizeChanger: false },
 }
