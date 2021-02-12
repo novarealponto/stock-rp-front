@@ -56,11 +56,10 @@ const Manager = ({ history }) => {
   }
 
   useEffect(() => {
-    getAllTechnician()
-  }, [
-    current,
-    stateQuery
-  ])
+    const fetchTechnician = () => getAllTechnician()
+
+    fetchTechnician()
+  }, [])
   const goAddTechnician = () => history.push('add')
 
   const goToUpdateTechnician = (technicianForUpdate) => {

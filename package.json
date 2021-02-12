@@ -1,18 +1,18 @@
 {
-  "name": "front-lab",
-  "version": "0.1.0",
+  "name": "Stock RP Front",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "4.0.5",
     "@fnando/cnpj": "0.1.1",
     "@fnando/cpf": "0.1.1",
-    "antd": "^4.10.0",
+    "antd": "4.10.0",
     "axios": "0.18.1",
     "classnames": "2.2.6",
     "howler": "2.2.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "8.5.1",
     "jspdf": "1.5.3",
-    "moment": "2.29.1",
+    "moment": "^2.29.1",
     "ramda": "0.26.1",
     "react": "16.8.6",
     "react-dom": "16.8.6",
@@ -26,7 +26,7 @@
     "redux-promise": "0.6.0",
     "redux-thunk": "2.3.0",
     "uuid-validate": "0.0.3",
-    "yup": "^0.32.8"
+    "yup": "0.32.8"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -52,20 +52,20 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.1.5",
-    "@storybook/addon-essentials": "^6.1.5",
-    "@storybook/addon-links": "^6.1.5",
-    "@storybook/node-logger": "^6.1.5",
-    "@storybook/preset-create-react-app": "^3.1.5",
-    "@storybook/react": "^6.1.5",
-    "@types/antd": "^1.0.0",
-    "babel-loader": "^8.2.2",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-config-node": "^4.1.0",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "faker": "^5.1.0",
-    "prettier": "^2.1.2"
+    "@storybook/addon-actions": "6.1.5",
+    "@storybook/addon-essentials": "6.1.5",
+    "@storybook/addon-links": "6.1.5",
+    "@storybook/node-logger": "6.1.5",
+    "@storybook/preset-create-react-app": "3.1.5",
+    "@storybook/react": "6.1.5",
+    "@types/antd": "1.0.0",
+    "babel-loader": "8.2.2",
+    "eslint-config-airbnb": "18.2.0",
+    "eslint-config-node": "4.1.0",
+    "eslint-config-prettier": "6.15.0",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "3.1.4",
+    "faker": "5.1.0",
+    "prettier": "2.1.2"
   }
 }
