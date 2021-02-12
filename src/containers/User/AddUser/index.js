@@ -12,7 +12,6 @@ import {
 import { PlusOutlined } from '@ant-design/icons'
 import PropTypes from 'prop-types'
 
-import styles from './style.module.css'
 import CardPermissions from '../../../components/CardPermissions'
 
 const { Title } = Typography

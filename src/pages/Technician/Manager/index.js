@@ -20,10 +20,6 @@ const Manager = ({ history }) => {
   const [formQuery] = Form.useForm()
   const [stateQuery, setStateQuery] = useState(initialStateQuery)
 
-  useEffect(() => {
-    getAllTechnician()
-  }, [current, stateQuery])
-
   const getAllTechnician = () => {
     const { name, CNH, plate } = stateQuery
 
@@ -59,6 +55,12 @@ const Manager = ({ history }) => {
     })
   }
 
+  useEffect(() => {
+    getAllTechnician()
+  }, [
+    current,
+    stateQuery
+  ])
   const goAddTechnician = () => history.push('add')
 
   const goToUpdateTechnician = (technicianForUpdate) => {

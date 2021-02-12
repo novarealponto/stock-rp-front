@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Form, message } from 'antd'
-import { compose, length, pipe, pathOr, split } from 'ramda'
+import { compose } from 'ramda'
 import { withRouter } from 'react-router-dom'
 
 import EditTechinicianContainer from '../../../containers/Technician/EditTechinician'
@@ -27,7 +27,7 @@ const EditTechnician = ({ history, match }) => {
       onChangeSelecCarList(initialValue.car)
     })
     getAllCars()
-  }, [])
+  }, [match])
 
   const getAllCars = async () => {
     const { data } = await getCars()

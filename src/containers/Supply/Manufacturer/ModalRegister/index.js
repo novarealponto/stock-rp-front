@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Input, InputNumber, Modal, Switch } from 'antd'
+import { Form, Input, Modal } from 'antd'
 
 const rules = [{ required: true }]
 

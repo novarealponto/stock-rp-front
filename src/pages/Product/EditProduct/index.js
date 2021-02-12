@@ -53,7 +53,7 @@ const EditProduct = ({ history, match }) => {
 
     getAllMarca()
     getAllTipo()
-  }, [form, getAllMarca, getAllTipo])
+  }, [form, getAllMarca, getAllTipo, match])
 
   const handleSubmit = async (formData) => {
     try {

@@ -9,7 +9,7 @@ import { newTypeAccount } from '../../../services/typeAccount'
 const createTypeAccountText = 'Tipo de conta cadastrado com sucesso!'
 const unableCreateTypeAccountText = 'Não foi possível cadastrar o tipo de conta!'
 
-const AddTypeAccount = ({}) => {
+const AddTypeAccount = () => {
   const [form] = Form.useForm()
 
   const handleSubmit = async (typeAccountFormData) => {
