@@ -132,7 +132,7 @@ export const GetRelatVendas = (query) => {
 
 export const getProductById = async (id) => {
   try { 
-    const response = await axiosInstance.get('/product/getByIdProducts', { params: { id } })
+    const response = await axiosInstance.get(`/product/getByIdProducts/${id}`)
     return response 
     } catch (error) {
     throw new Error(error)

@@ -38,7 +38,7 @@ export const updateUsuario = (values) => {
 
 export const getUserById = (id) => {
   return axiosInstance
-  .get('/user/getById', { params: { id } })
+  .get(`/user/getByIdUser/${id}`)
   .then((resp) => resp)
   .catch((error) => {
     throw new Error(error)
