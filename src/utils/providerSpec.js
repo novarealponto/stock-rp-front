@@ -4,6 +4,7 @@ const ProviderSpec = {
   city: pathOr('', ['city']),
   cnpj: pathOr('', ['cnpj']),
   complement: pathOr('', ['complement']),
+  contacts: pathOr('', ['contacts']),
   email: pathOr('', ['email']),
   nameContact: pathOr('', ['nameContact']),
   neighborhood: pathOr('', ['neighborhood']),

@@ -4,7 +4,7 @@ import styles from './style.module.css'
 const Dash = () => {
   return (
     <div className={styles.bgWrapperDash}>
-      <img src="../../bgDash1.png" className={styles.imageDash} alt="dash banner" />
+      <img src="../../bgDash1.png" className={styles.imageDash} alt='bg-dash' />
     </div>
   );
 };
