@@ -45,7 +45,7 @@ const Manager = ({ auth, history }) => {
   const goToAddUser = () => history.push('/logged/user/add')
 
   const goToUpdateUser = (user) => {
-    history.push(`/logged/user/edit/${user.id}` )
+    history.push(`/logged/user/edit/${user.id}`)
   }
 
   const handlePaginations = ({ current }) => setCurrent(current)

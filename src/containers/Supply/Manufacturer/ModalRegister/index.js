@@ -23,7 +23,7 @@ const ModalRegisterSupplyManufacturer = ({
         <Form.Item label="Fabricante" name="manufacturer" rules={rules}>
           <Input placeholder="Digite o fabricante" />
         </Form.Item>
-        </Form>
+      </Form>
     </Modal>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useCalback, useEffect, useState } from 'react'
 import { Form } from 'antd'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'ramda'
@@ -20,7 +20,7 @@ const Manager = ({ history }) => {
   const [formQuery] = Form.useForm()
   const [stateQuery, setStateQuery] = useState(initialStateQuery)
 
-  const getAllTechnician = () => {
+  const getAllTechnician = useCalback(() => {
     const { name, CNH, plate } = stateQuery
 
     const query = {
@@ -53,7 +53,7 @@ const Manager = ({ history }) => {
       )
       setCount(count)
     })
-  }
+  }, [current, stateQuery])
 
   useEffect(() => {
     const fetchTechnician = () => getAllTechnician()
@@ -79,6 +79,10 @@ const Manager = ({ history }) => {
     setCurrent(0)
   }
 
+  useEffect(() => {
+    getAllTechnician()
+  }, [getAllTechnician])
+
   return (
     <ManagerContainer
       avancedSearch={avancedSearch}
@@ -94,9 +98,6 @@ const Manager = ({ history }) => {
   )
 }
 
-
-const enhanced = compose(
-  withRouter
-)
+const enhanced = compose(withRouter)
 
 export default enhanced(Manager)
