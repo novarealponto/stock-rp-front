@@ -40,7 +40,7 @@ const Manager = ({ auth, history }) => {
     } catch (error) {
       setLoading(false)
     }
-  }, [current, searchValue])
+  }, [auth, current, searchValue])
 
   const goToAddUser = () => history.push('/logged/user/add')
 

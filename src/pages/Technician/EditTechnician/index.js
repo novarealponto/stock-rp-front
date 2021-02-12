@@ -27,7 +27,7 @@ const EditTechnician = ({ history, match }) => {
       onChangeSelecCarList(initialValue.car)
     })
     getAllCars()
-  }, [match])
+  }, [form, match])
 
   const getAllCars = async () => {
     const { data } = await getCars()
