@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf'
 import * as R from 'ramda'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 
 import axiosInstance from '../helpers/request'
 

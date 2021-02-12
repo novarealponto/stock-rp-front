@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 
 import axiosInstance from '../helpers/request'
 
@@ -131,12 +131,12 @@ export const GetRelatVendas = (query) => {
 }
 
 export const getProductById = async (id) => {
-  try { 
+  try {
     const response = await axiosInstance.get(`/product/getByIdProducts/${id}`)
-    return response 
+    return response
     } catch (error) {
     throw new Error(error)
-  } 
+  }
 }
 
 function addWrappedText({
