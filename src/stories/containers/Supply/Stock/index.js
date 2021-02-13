@@ -14,8 +14,8 @@ export default {
 const dataSource = new Array(30).fill(null).map((_, key) => ({
   key,
   outputs: new Array(3).fill(null).map((_, key) => ({
-    key,
     date: moment(date.past()).format('L'),
+    key,
     quantity: random.number({ max: 10 }),
     razaoSocial: company.companyName(),
   })),
