@@ -33,8 +33,8 @@ const Manager = () => {
   const [formEntryStock] = Form.useForm()
   const [formSearchSerialNumber] = Form.useForm()
   const [formSendToAnalyze] = Form.useForm()
-  const [page, setPage] = useState(1)
-  const [pagination, setPagination] = useState({})
+  const [current, setCurrent] = useState(1)
+  const [pagination, setPagination] = useState({ current })
   const [querySerialNumbers, setQuerySerialNumbers] = useState({})
   const [queryStock, setQueryStock] = useState({})
   const [row, setRow] = useState({})
@@ -42,7 +42,7 @@ const Manager = () => {
   const [visibleModalSerialNumbers, setVisibleModalSerialNumbers] = useState(
     false
   )
-  const [setVisibleSearch] = useState()
+  const [visibleSearch, setVisibleSearch] = useState(false)
 
   useEffect(() => {
     const getAllStock = () => {
@@ -65,16 +65,16 @@ const Manager = () => {
             },
           },
         },
-        page,
+        page: current,
         total: 10,
       }
       stock(query).then(({ data: { rows, count: total } }) => {
-        setPagination({ total })
+        setPagination({ total, current })
         setDataSource(map(buildStoks, rows))
       })
     }
     getAllStock()
-  }, [queryStock, page, visibleModalAnalysis])
+  }, [current, queryStock, visibleModalAnalysis])
 
   useEffect(() => {
     const getAllEquips = () => {
@@ -129,7 +129,10 @@ const Manager = () => {
     setVisibleModalSerialNumbers(true)
   }
 
-  const handleOnSearch = (query) => setQueryStock(query)
+  const handleOnSearch = (query) => {
+    setCurrent(1)
+    setQueryStock(query)
+    }
 
   const handleOnSearchSerialNumber = (serialNumber) =>
     setQuerySerialNumbers({ ...querySerialNumbers, serialNumber })
@@ -194,7 +197,7 @@ const Manager = () => {
     }
   }
 
-  const onChangeTable = ({ current, pageSize }) => setPage(current)
+  const onChangeTable = ({ current }) => setCurrent(current)
 
   const onPressEnterTextAreaSerialNumber = async ({ target, analysis }) => {
     const currentTargetValue = target.value
@@ -238,6 +241,7 @@ const Manager = () => {
       row={row}
       visibleModalAnalysis={visibleModalAnalysis}
       visibleModalSerialNumbers={visibleModalSerialNumbers}
+      visibleSearch={visibleSearch}
     />
   )
 }
