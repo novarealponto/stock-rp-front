@@ -38,9 +38,12 @@ const Mobile = ({ auth, logOutAction }) => {
   const [osSelected, setOsSelected] = useState(null)
   const [products, setProducts] = useState([])
   const [productsSelected, setProductsSelected] = useState([])
+  const [queryValues, setQueryValues] = useState({})
   const [visibleDrawer, setVisibleDrawer] = useState(false)
 
   const getAllOs = useCallback(async () => {
+    const { os, razaoSocial } = queryValues
+
     const query = {
       filters: {
         os: {
@@ -53,6 +56,8 @@ const Mobile = ({ auth, logOutAction }) => {
                     start: moment(),
                   }
                 : undefined,
+            os,
+            razaoSocial,
           },
         },
         technician: {
@@ -80,7 +85,7 @@ const Mobile = ({ auth, logOutAction }) => {
     if (status === 200) {
       setOsList(rows)
     }
-  }, [auth])
+  }, [auth, queryValues])
 
   const getAllReservaTecnicoReturn = useCallback(async () => {
     const query = {
@@ -277,6 +282,7 @@ const Mobile = ({ auth, logOutAction }) => {
       handleClickLogout={() => logOutAction()}
       handleClickUserIcon={() => setVisibleDrawer(true)}
       handleCloseDrawer={() => setVisibleDrawer(false)}
+      handleSearchOS={setQueryValues}
       handleSubmit={handleSubmit}
       handleSubmitNewPassword={handleSubmitNewPassword}
       osList={osList}
@@ -293,7 +299,8 @@ const mapStateToProps = ({ auth }) => ({
   auth,
 })
 
-const mapDispacthToProps = (dispach) => bindActionCreators({ logOutAction }, dispach)
+const mapDispacthToProps = (dispach) =>
+  bindActionCreators({ logOutAction }, dispach)
 
 const enhanced = compose(connect(mapStateToProps, mapDispacthToProps))
 
