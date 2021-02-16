@@ -1,4 +1,4 @@
-import React, { useCalback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Form } from 'antd'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'ramda'
@@ -20,7 +20,7 @@ const Manager = ({ history }) => {
   const [formQuery] = Form.useForm()
   const [stateQuery, setStateQuery] = useState(initialStateQuery)
 
-  const getAllTechnician = useCalback(() => {
+  const getAllTechnician = useCallback(() => {
     const { name, CNH, plate } = stateQuery
 
     const query = {

@@ -45,7 +45,7 @@ const AddProduct = ({
       if (status === 404 || status === 422 || status === 500) {
         throw new Error('422 Unprocessable Entity!')
       }
-      setMarkList(data);
+      setMarkList(data.rows);
     } catch (error) {
       console.log(error)
     }
