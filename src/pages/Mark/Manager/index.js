@@ -25,7 +25,7 @@ const Manager = () => {
       },
     }
 
-    getAllMarksService(query).then(({ data }) => setDataSource(data))
+    getAllMarksService(query).then(({ data }) => setDataSource(data.rows))
   }, [searchValue])
 
   const handleCancelCreateMark = () => {
