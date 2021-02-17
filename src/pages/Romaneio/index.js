@@ -423,11 +423,12 @@ const Romaneio = () => {
     }
   }
 
-  const handleSubmitNewReservaTecnico = async ({ accessSecurity }) => {
+  const handleSubmitNewReservaTecnico = async ({ type, accesscode }) => {
     const { technician, date } = search
 
     const { status } = await newReservaTecnico({
-      accessSecurity,
+      type,
+      accesscode,
       technician,
       rows: productsForExpedition,
       data: date ? date : null,

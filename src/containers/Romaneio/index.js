@@ -7,6 +7,7 @@ import {
   Form,
   Input,
   Modal,
+  Radio,
   Row,
   Select,
   Table,
@@ -88,20 +89,29 @@ const OutputContainer = ({
 
       <Modal
         onCancel={handleCancel}
-        onOk={() => {
-          form.submit()
-          handleCancel()
-        }}
+        onOk={() => form.submit()}
         title="Confirmação do técnico"
         visible={visible}
       >
-        <Form form={form} onFinish={handleSubmitNewReservaTecnico}>
+        <Form
+          form={form}
+          onFinish={(formData) => {
+            handleSubmitNewReservaTecnico(formData)
+            handleCancel()
+          }}
+        >
+          <Form.Item name="type" label="Tipo" rules={[{ required: true }]}>
+            <Radio.Group>
+              <Radio value="password">Senha</Radio>
+              <Radio value="cardId">Crachá</Radio>
+            </Radio.Group>
+          </Form.Item>
           <Form.Item
             label="Chave de acesso"
-            name="accessSecurity"
+            name="accesscode"
             rules={[{ required: true }]}
           >
-            <Input placeholder="Insira a chave de acesso" />
+            <Input.Password  placeholder="Insira a chave de acesso" />
           </Form.Item>
         </Form>
       </Modal>
