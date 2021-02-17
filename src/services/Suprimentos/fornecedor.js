@@ -28,3 +28,12 @@ export const GetProvider = (query) => {
       throw new Error()
     })
 }
+
+export const getProviderById = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/suprimentos/getByIdProvider/${id}`)
+    return response
+    } catch (error) {
+    throw new Error(error)
+  }
+}

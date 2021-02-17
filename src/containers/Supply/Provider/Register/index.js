@@ -122,7 +122,9 @@ const AddProviderSup = ({ form, handleSubmit }) => {
           {(fields, { add, remove }) => (
             <>
               {fields.map((field) => (
-                <Row gutter={[20, 8]}>
+                <Row gutter={[20, 8]} 
+                  key={[field.fieldKey, 'name']}
+                >
                   <Col span={8}>
                     <Form.Item
                       {...field}

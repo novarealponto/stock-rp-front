@@ -4,8 +4,6 @@ import { connect } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
 import AddKitRoute from './Gerenciar/Kit'
-import CadastroFornecedorSupRoute from './Supply/Register/Provider'
-import CadastroProdutosSupRoute from './Suprimentos/Cad.Produtos'
 import Dash from './Dash'
 import EditarFornecedorSupRoute from './Suprimentos/Edit.Fornecedor'
 import EntradaSupRoute from './Suprimentos/Entrada'
@@ -36,18 +34,6 @@ const routeList = ({ auth }) => [
     exact: false,
     path: '/logged/reservaKitAdd',
     permission: true,
-  },
-  {
-    component: CadastroFornecedorSupRoute,
-    exact: false,
-    path: '/logged/cadastroFornecedorSup',
-    permission: auth.permissions.suprimento,
-  },
-  {
-    component: CadastroProdutosSupRoute,
-    exact: false,
-    path: '/logged/cadastroProdutosSup',
-    permission: auth.permissions.suprimento,
   },
   {
     component: Dash,
