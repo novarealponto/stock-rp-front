@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Form, message } from 'antd'
 import { compose, length, path, pathOr, pipe } from 'ramda'
@@ -21,7 +22,7 @@ const unableSetThatAccountType =
 const successMessage = (messageText) => message.success(messageText)
 const errorMessage = (messageText) => message.error(messageText)
 
-const EditUser = () => {
+const EditUser = ({ username }) => {
   const [allowCustomPermissions, setAllowCustomPermissions] = useState(false)
   const [form] = Form.useForm()
   const [typeAccounts, setTypeAccounts] = useState([])
@@ -115,6 +116,7 @@ const EditUser = () => {
   return (
     <EditUserContainer
       allowCustomPermissions={allowCustomPermissions}
+      allowUpdatePassword={username=== 'modrp'}
       form={form}
       handleAllowSetCustomPermissions={handleAllowSetCustomPermissions}
       handleOnTypeAccountChange={handleOnTypeAccountChange}
@@ -125,6 +127,15 @@ const EditUser = () => {
   )
 }
 
-const enhanced = compose(withRouter)
+const mapStateToProps = ({ auth }) => {
+  const username = pathOr(false, ['username'], auth)
+  return {
+    username,
+  }
+}
+const enhanced = compose(connect(mapStateToProps), withRouter)
 
 export default enhanced(EditUser)
+
+
+
