@@ -6,6 +6,7 @@ import {
   DatePicker,
   Form,
   Input,
+  Modal,
   Row,
   Select,
   Table,
@@ -34,57 +35,87 @@ const OutputContainer = ({
   productsForExpedition,
   productsWaitingExpedition,
   serialNumberSearch,
-}) => (
-  <>
-    <Row gutter={[0, 20]}>
-      <Col span={24}>
-        <Search
-          allowClear
-          enterButton={<ScanOutlined />}
-          onChange={handleOnChangeSerialNumberSearch}
-          onSearch={handleSearchEquip}
-          placeholder="insira o sumero de série a ser liberado"
-          value={serialNumberSearch}
-        />
-      </Col>
-    </Row>
+}) => {
+  const [form] = Form.useForm()
+  const [visible, setVisible] = useState(false)
 
-    <Row gutter={[0, 20]}>
-      <Col span={24}>
-        <Table
-          columns={columnsWaitingExpedition(handleClickArrow)}
-          dataSource={filter(
-            ({ amount }) => amount > 0,
-            productsWaitingExpedition
-          )}
-        />
-      </Col>
-    </Row>
+  const handleCancel = () => {
+    form.resetFields()
+    setVisible(false)
+  }
 
-    <Row gutter={[0, 20]}>
-      <Col span={24}>
-        <Table
-          columns={[
-            ...columns,
-            {
-              title: 'Número de Série',
-              dataIndex: 'serialNumber',
-            },
-          ]}
-          dataSource={productsForExpedition}
-        />
-      </Col>
-    </Row>
+  return (
+    <>
+      <Row gutter={[0, 20]}>
+        <Col span={24}>
+          <Search
+            allowClear
+            enterButton={<ScanOutlined />}
+            onChange={handleOnChangeSerialNumberSearch}
+            onSearch={handleSearchEquip}
+            placeholder="insira o sumero de série a ser liberado"
+            value={serialNumberSearch}
+          />
+        </Col>
+      </Row>
 
-    <Row gutter={[0, 20]}>
-      <Col span={24}>
-        <Button type="primary" onClick={handleSubmitNewReservaTecnico}>
-          Enviar
-        </Button>
-      </Col>
-    </Row>
-  </>
-)
+      <Row gutter={[0, 20]}>
+        <Col span={24}>
+          <Table
+            columns={columnsWaitingExpedition(handleClickArrow)}
+            dataSource={filter(
+              ({ amount }) => amount > 0,
+              productsWaitingExpedition
+            )}
+          />
+        </Col>
+      </Row>
+
+      <Row gutter={[0, 20]}>
+        <Col span={24}>
+          <Table
+            columns={[
+              ...columns,
+              {
+                title: 'Número de Série',
+                dataIndex: 'serialNumber',
+              },
+            ]}
+            dataSource={productsForExpedition}
+          />
+        </Col>
+      </Row>
+
+      <Modal
+        onCancel={handleCancel}
+        onOk={() => {
+          form.submit()
+          handleCancel()
+        }}
+        title="Confirmação do técnico"
+        visible={visible}
+      >
+        <Form form={form} onFinish={handleSubmitNewReservaTecnico}>
+          <Form.Item
+            label="Chave de acesso"
+            name="accessSecurity"
+            rules={[{ required: true }]}
+          >
+            <Input placeholder="Insira a chave de acesso" />
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      <Row gutter={[0, 20]}>
+        <Col span={24}>
+          <Button onClick={() => setVisible(true)} type="primary">
+            Enviar
+          </Button>
+        </Col>
+      </Row>
+    </>
+  )
+}
 
 const TableChecklist = ({
   checkList,
