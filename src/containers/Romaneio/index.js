@@ -13,7 +13,7 @@ import {
   Table,
   Typography,
 } from 'antd'
-import { ScanOutlined } from '@ant-design/icons'
+import { PrinterTwoTone, ScanOutlined } from '@ant-design/icons'
 
 import ModalExpeditionSerialNumber from './Components/ModalExpeditionSerialNumber'
 import ModalSemNumeroSerie from './Components/ModalSemNumeroSerie'
@@ -30,6 +30,7 @@ const { Title } = Typography
 
 const OutputContainer = ({
   handleClickArrow,
+  handleClickPrint,
   handleOnChangeSerialNumberSearch,
   handleSearchEquip,
   handleSubmitNewReservaTecnico,
@@ -100,18 +101,21 @@ const OutputContainer = ({
             handleCancel()
           }}
         >
-          <Form.Item name="type" label="Tipo" rules={[{ required: true }]}>
-            <Radio.Group>
-              <Radio value="password">Senha</Radio>
-              <Radio value="cardId">Crachá</Radio>
-            </Radio.Group>
-          </Form.Item>
+          <Row justify="space-between">
+            <Form.Item name="type" label="Tipo" rules={[{ required: true }]}>
+              <Radio.Group>
+                <Radio value="password">Senha</Radio>
+                <Radio value="cardId">Crachá</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <PrinterTwoTone onClick={handleClickPrint} style={{ fontSize: 26 }} />
+          </Row>
           <Form.Item
             label="Chave de acesso"
             name="accesscode"
             rules={[{ required: true }]}
           >
-            <Input.Password  placeholder="Insira a chave de acesso" />
+            <Input.Password placeholder="Insira a chave de acesso" />
           </Form.Item>
         </Form>
       </Modal>
@@ -176,6 +180,7 @@ const Romaneio = ({
   handleClickArrow,
   handleClickIconExpeditionSerialNumber,
   handleClickPlusIcon,
+  handleClickPrint,
   handleOkModalExpeditionSerialNumber,
   handleOnChangeSerialNumberSearch,
   handleSearchEquip,
@@ -329,6 +334,7 @@ const Romaneio = ({
       {serviço === 'saida' && (
         <OutputContainer
           handleClickArrow={handleClickArrow}
+          handleClickPrint={handleClickPrint}
           handleOnChangeSerialNumberSearch={handleOnChangeSerialNumberSearch}
           handleSearchEquip={handleSearchEquip}
           handleSubmitNewReservaTecnico={handleSubmitNewReservaTecnico}
