@@ -56,6 +56,7 @@ const ManagerProviderSupply = ({ history }) => {
 
   const handleProviderSearch = (providerSearchFormData) => {
     setQueryProvider(providerSearchFormData)
+    setPage(1)
   }
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Col, Form, Input, Row, Table, DatePicker, Typography } from 'antd'
+import { Button, Col, DatePicker, Form, Input, Row, Table, Typography } from 'antd'
 import {
   EditTwoTone,
   SearchOutlined,
