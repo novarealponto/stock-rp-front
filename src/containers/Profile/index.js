@@ -15,7 +15,7 @@ const Profile = ({
   username,
 }) => {
   const validatorPassword = (passwordPropName, shouldBeEqual = false) => ({ getFieldValue }) => {
-    const validator = (rule, value) => {
+    const validator = (value) => {
       if (shouldBeEqual) {
         if (!value || getFieldValue(passwordPropName) === value) {
           return Promise.resolve();
@@ -62,7 +62,7 @@ const Profile = ({
               <Input readOnly value={username} />
             </Form.Item>
             <Form.Item label="Tipo de conta:">
-              <Input readOnly value={typeAccount} />
+              <Input readOnly value={typeAccount.typeName} />
             </Form.Item>
             {edit && (
               <>

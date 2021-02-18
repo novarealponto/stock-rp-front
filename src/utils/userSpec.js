@@ -38,7 +38,7 @@ const UserSpec = {
     updateRos: pathOr(false, ['updateRos']),
   }),
   responsibleUser: pathOr('modrp', ['responsibleUser']),
-  typeName: pathOr('', ['typeAccount']),
+  typeAccount: pathOr('', ['typeAccount']),
   username: pathOr('', ['userName']),
 }
 
