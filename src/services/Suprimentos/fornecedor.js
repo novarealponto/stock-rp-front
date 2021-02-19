@@ -31,7 +31,7 @@ export const GetProvider = (query) => {
 
 export const getProviderById = async (id) => {
   try {
-    const response = await axiosInstance.get(`/suprimentos/getByIdProvider/${id}`)
+    const response = await axiosInstance.get(`/suprimentos/provider/getProviderById/${id}`)
     return response
     } catch (error) {
     throw new Error(error)

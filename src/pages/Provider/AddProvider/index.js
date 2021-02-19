@@ -2,7 +2,7 @@ import React from 'react'
 import { Form, message } from 'antd'
 
 import AddProviderContainer from '../../../containers/Provider/AddProvider'
-import buildProvider from '../../../utils/providerSpec'
+import  { buildProvider } from '../../../utils/providerSpec'
 import { newProvider } from '../../../services/fornecedores'
 
 const messageErrorText = 'Erro ao cadastrar fornecedor'

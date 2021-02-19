@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Form, message } from 'antd'
 
-import buildProvider from '../../../utils/providerSpec'
+import  { buildProvider } from '../../../utils/providerSpec'
 import UpdateProviderContainer from '../../../containers/Provider/UpdateProvider'
 import { clearValueFornecedor } from '../../../store/Actions/fornecedor'
 import { updateFornecedor } from '../../../services/fornecedores'
