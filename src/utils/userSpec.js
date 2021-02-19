@@ -1,6 +1,13 @@
-import { applySpec, concat, path, pathOr } from 'ramda'
+import { applySpec, concat, ifElse, path, pathOr } from 'ramda'
 
 const UserSpec = {
+  customized: pathOr(false, ['allowCustomPermissions']),
+  modulo: pathOr(false, ['suprimento']),
+  password: ifElse(
+    pathOr(false, ['password']),
+    path(['password']),
+    () => undefined
+  ),
   permissions: applySpec({
     addAccessories: pathOr(false, ['addAccessories']),
     addAnalyze: pathOr(false, ['addAnalyze']),
@@ -30,8 +37,6 @@ const UserSpec = {
     tecnico: pathOr(false, ['tecnico']),
     updateRos: pathOr(false, ['updateRos']),
   }),
-  customized: pathOr(false, ['allowCustomPermissions']),
-  modulo: pathOr(false, ['suprimento']),
   responsibleUser: pathOr('modrp', ['responsibleUser']),
   typeName: pathOr('', ['typeAccount']),
   username: pathOr('', ['userName']),
