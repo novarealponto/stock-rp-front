@@ -16,10 +16,23 @@ const ReportOS = () => {
   const [total, setTotal] = useState(10)
 
   const getAllOs = useCallback(() => {
-    const { date, os, product, razaoSocial, status, technician } = queryValues
+    const {
+      date,
+      os,
+      product,
+      razaoSocial,
+      serialNumber,
+      status,
+      technician,
+    } = queryValues
 
     const query = {
       filters: {
+        equip: {
+          specific: {
+            serialNumber: serialNumber ? serialNumber: undefined,
+          },
+        },
         os: {
           specific: {
             date: date

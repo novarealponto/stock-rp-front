@@ -89,7 +89,7 @@ const formItemList = ({ statusList, technicianList }) => [
     children: <RangePicker allowClear style={{ width: '100%' }} />,
     label: 'Data',
     name: 'date',
-    span: 7,
+    span: 8,
   },
   {
     children: (
@@ -106,7 +106,15 @@ const formItemList = ({ statusList, technicianList }) => [
     ),
     label: 'Status',
     name: 'status',
-    span: 7,
+    span: 8,
+  },
+  {
+    children: (
+      <Input allowClear placeholder="Filtrar número de série"/>
+    ),
+    label: 'Número de série',
+    name: 'serialNumber',
+    span: 12,
   },
   {
     children: (
