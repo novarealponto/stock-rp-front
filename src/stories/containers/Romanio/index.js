@@ -204,6 +204,7 @@ const Template = (args) => {
 export const Romaneio = Template.bind({})
 
 Romaneio.args = {
+  handleClickPrint: action('handle click print'),
   handleOkModalExpeditionSerialNumber: action(
     'Click ok in modal expedition serial number'
   ),

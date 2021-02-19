@@ -16,6 +16,7 @@ import {
 } from 'ramda'
 import { message } from 'antd'
 
+import createPDF from '../../helpers/pdf'
 import RomaneioContainer from '../../containers/Romaneio'
 import {
   associarEquipParaOsPart,
@@ -176,6 +177,9 @@ const Romaneio = () => {
     getOsPartsArrayReturn({ produto })
     setVisibleModalExpeditionProducts(true)
   }
+
+  const handleClickPrint = () =>
+    createPDF({ rows: productsForExpedition, technician: search.technician })
 
   const handleOkModalExpeditionSerialNumber = async ({
     oId,
@@ -481,6 +485,7 @@ const Romaneio = () => {
         handleClickIconExpeditionSerialNumber
       }
       handleClickPlusIcon={handleClickPlusIcon}
+      handleClickPrint={handleClickPrint}
       handleOkModalExpeditionSerialNumber={handleOkModalExpeditionSerialNumber}
       handleOnChangeSerialNumberSearch={handleOnChangeSerialNumberSearch}
       handleSearchEquip={handleSearchEquip}
