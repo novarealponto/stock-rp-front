@@ -1,14 +1,14 @@
 import React from 'react'
 import { Form, message } from 'antd'
 
-import AddProviderSupContainer from '../../../../containers/Supply/Register/Provider'
+import AddProviderSupContainer from '../../../../containers/Supply/Provider/Register'
 import buildProvider from '../../../../utils/providerSpec'
 import { NovoFornecedor } from '../../../../services/Suprimentos/fornecedor'
 
 const messageErrorText = 'Erro ao cadastrar fornecedor'
 const messageSuccessText = 'Fornecedor cadastrado com sucesso'
 
-const AddProviderSup = () => {
+const AddProviderSup = ({history}) => {
   const [form] = Form.useForm()
 
   const handleSubmit = async (providerFormData) => {
@@ -20,6 +20,7 @@ const AddProviderSup = () => {
       }
 
       form.resetFields()
+      history.push('/logged/supply/provider/manager')
       message.success(messageSuccessText)
     } catch (err) {
       message.error(messageErrorText)
