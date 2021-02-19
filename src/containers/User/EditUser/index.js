@@ -1,4 +1,4 @@
-import React from  'react';
+import React from 'react'
 import {
   Button,
   Card,
@@ -10,22 +10,25 @@ import {
   Select,
   Switch,
   Typography,
-} from 'antd';
-import PropTypes from 'prop-types';
+} from 'antd'
+import PropTypes from 'prop-types'
 
-import styles from './style.module.css';
+import styles from './style.module.css'
 
-const { Title } = Typography;
-const { Option } = Select;
-const requiredMessage = 'Este campo é obrigatório!';
+const { Title } = Typography
+const { Option } = Select
+const requiredMessage = 'Este campo é obrigatório!'
 
-const formRequireRules = [{
-  message: requiredMessage,
-  required: true,
-}];
+const formRequireRules = [
+  {
+    message: requiredMessage,
+    required: true,
+  },
+]
 
 const EditUser = ({
   allowCustomPermissions,
+  allowUpdatePassword,
   form,
   handleAllowSetCustomPermissions,
   handleOnTypeAccountChange,
@@ -33,77 +36,59 @@ const EditUser = ({
   permissions,
   typeAccounts,
 }) => {
-    const renderCheckbox = ({
-      label,
-      name,
-      value,
-    }) => (
-      <Col
-        className={styles.checkBoxheight}
-        span={12}
-        key={name}
-      >
-        <Form.Item
-          name={name}
-          valuePropName="checked"
-        >
-          <Checkbox
-            disabled={!allowCustomPermissions}
-            checked={value}
-          >
-            {label}
-          </Checkbox>
-        </Form.Item>
-      </Col>
-    );
 
-    const renderTypeAccountOptions = (typeAccountItem, index) => (
-      <Option
-        key={index}
-        value={typeAccountItem.typeName}
-      >
-        {typeAccountItem.typeName}
-      </Option>
-    );
+  const renderCheckbox = ({ label, name, value }) => (
+    <Col className={styles.checkBoxheight} span={12} key={name}>
+      <Form.Item name={name} valuePropName="checked">
+        <Checkbox disabled={!allowCustomPermissions} checked={value}>
+          {label}
+        </Checkbox>
+      </Form.Item>
+    </Col>
+  )
 
-    return (
-        <Form form={form} onFinish={handleSubmit}>
-          <Row justify="center">
-            <Col>
-              <Title level={3}>Alterar usuário</Title>
-            </Col>
-          </Row>
+  const renderTypeAccountOptions = (typeAccountItem, index) => (
+    <Option key={index} value={typeAccountItem.typeName}>
+      {typeAccountItem.typeName}
+    </Option>
+  )
+
+  return (
+    <Form form={form} onFinish={handleSubmit}>
+      <Row justify="center">
+        <Col>
+          <Title level={3}>Alterar usuário</Title>
+        </Col>
+      </Row>
+      <Row gutter={[8, 8]}>
+        <Col span={12}>
+          <Form.Item label="Usuário" name="userName" rules={formRequireRules}>
+            <Input readOnly />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
           <Row gutter={[8, 8]}>
-            <Col span={12}>
+            <Col flex="1 1 200px">
               <Form.Item
-                label="Usuário"
-                name="userName"
+                label="Tipo de conta"
+                name="typeAccount"
                 rules={formRequireRules}
               >
-                <Input readOnly />
+                <Select
+                  onChange={handleOnTypeAccountChange}
+                  placeholder="Selecione o tipo de conta!"
+                >
+                  {typeAccounts && typeAccounts.map(renderTypeAccountOptions)}
+                </Select>
               </Form.Item>
             </Col>
-
-            <Col span={12}>
-              <Row gutter={[8, 8]}>
-                <Col flex="1 1 200px">
-                  <Form.Item
-                    label="Tipo de conta"
-                    name="typeAccount"
-                    rules={formRequireRules}
-                  >
-                    <Select
-                      onChange={handleOnTypeAccountChange}
-                      placeholder="Selecione o tipo de conta!"
-                    >
-                      {typeAccounts && typeAccounts.map(renderTypeAccountOptions)}
-                    </Select>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Col>
           </Row>
+        </Col>
+      </Row>
 
+      <Row>
+        <Col span={12}>
           <Form.Item
             label="Habilitar customização:"
             name="allowCustomPermissions"
@@ -111,28 +96,39 @@ const EditUser = ({
           >
             <Switch onChange={handleAllowSetCustomPermissions} />
           </Form.Item>
+        </Col>
 
-          <Card>
-            <Row>
-              {permissions && permissions.map(renderCheckbox)}
-            </Row>
-          </Card>
-          <Row justify="end">
-            <Col>
-              <Form.Item>
-                <Button
-                  htmlType="submit"
-                  type="primary"
-                  style={{ marginTop: '20px' }}
-                >
-                  Salvar
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-    );
-};
+        {allowUpdatePassword && (
+          <Col span={12}>
+            <Form.Item
+              label="Atualizar senha:"
+              name="password"
+            >
+              <Input.Password placeholder="Nova senha" />
+            </Form.Item>
+          </Col>
+        )}
+      </Row>
+
+      <Card>
+        <Row>{permissions && permissions.map(renderCheckbox)}</Row>
+      </Card>
+      <Row justify="end">
+        <Col>
+          <Form.Item>
+            <Button
+              htmlType="submit"
+              type="primary"
+              style={{ marginTop: '20px' }}
+            >
+              Salvar
+            </Button>
+          </Form.Item>
+        </Col>
+      </Row>
+    </Form>
+  )
+}
 
 EditUser.propTypes = {
   allowCustomPermissions: PropTypes.bool.isRequired,
@@ -144,13 +140,13 @@ EditUser.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       label: PropTypes.string,
-    }),
+    })
   ).isRequired,
   typeAccounts: PropTypes.arrayOf(
     PropTypes.shape({
       typeName: PropTypes.string.isRequired,
-    }).isRequired,
+    }).isRequired
   ),
-};
+}
 
-export default EditUser;
+export default EditUser
