@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Route, Redirect, Switch } from 'react-router-dom'
-
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { verify } from 'jsonwebtoken'
 import { promisify } from 'util'
+import { isEmpty } from 'ramda'
 
 import SideBar from '../components/SideBar'
 import PagesRoute from '../pages'
@@ -40,7 +40,7 @@ class PrivateRoute extends Component {
 
 
   render() {
-    if (this.state.authenticated) {
+    if (this.state.authenticated && !isEmpty(this.props.auth)) {
       if (!this.props.auth.tecnico) {
         return (
           <div className="div-main-route">

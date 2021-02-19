@@ -425,7 +425,7 @@ const Romaneio = () => {
 
   const handleSubmitNewReservaTecnico = async () => {
     const { technician, date } = search
-
+    
     const { status } = await newReservaTecnico({
       technician,
       rows: productsForExpedition,
