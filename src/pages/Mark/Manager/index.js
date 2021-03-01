@@ -9,10 +9,12 @@ import {
 } from '../../../services/produto'
 
 const Manager = () => {
+  const [current, setCurrent] = useState (1)
   const [dataSource, setDataSource] = useState([])
   const [formCreateMark] = Form.useForm()
   const [searchValue, setSearchValue] = useState('')
   const [visibleCreateMark, setVisibleCreateMark] = useState(false)
+  const [total, setTotal] = useState(10)
 
   const getAllMarks = useCallback(() => {
     const query = {
@@ -23,10 +25,15 @@ const Manager = () => {
           },
         },
       },
+      total: 10,
+      page: current,
     }
 
-    getAllMarksService(query).then(({ data }) => setDataSource(data.rows))
-  }, [searchValue])
+    getAllMarksService(query).then(({ data: { rows, count } }) => {
+      setDataSource(rows)
+      setTotal(count)
+    })
+  }, [current, searchValue])
 
   const handleCancelCreateMark = () => {
     formCreateMark.resetFields()
@@ -54,18 +61,27 @@ const Manager = () => {
     }
   }
 
+  const handleOnSearch = (searchValue) => {
+    setCurrent(1)
+    setSearchValue(searchValue)
+  }
+
   useEffect(() => {
     getAllMarks()
   }, [getAllMarks])
+
+  console.log(total);
 
   return (
     <ManagerContainer
       dataSource={dataSource}
       formCreateMark={formCreateMark}
       handleCancelCreateMark={handleCancelCreateMark}
+      handleChangeTable={({ current }) => setCurrent(current)}
       handleOkCreateMark={handleOkCreateMark}
       handleOnClickNewMark={() => setVisibleCreateMark(true)}
-      handleOnSearch={(searchValue) => setSearchValue(searchValue)}
+      handleOnSearch={handleOnSearch}
+      pagination={{ total , showSizeChanger: false, current }}
       visibleCreateMark={visibleCreateMark}
     />
   )
