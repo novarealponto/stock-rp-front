@@ -41,7 +41,7 @@ const AddProduct = ({
 
   const getAllMarca = async () => {
     try {
-      const { data, status } = await getMarca({});
+      const { data, status } = await getMarca({ total: null });
       if (status === 404 || status === 422 || status === 500) {
         throw new Error('422 Unprocessable Entity!')
       }
