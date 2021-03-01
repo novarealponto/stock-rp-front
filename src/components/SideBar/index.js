@@ -259,39 +259,33 @@ const subMenuList = [
     menuItemList: ({ auth }) => [
       {
         disabled: !auth.permissions.suprimento,
-        key: 'cadastroProdutosSup/add',
+        key: 'supply/product/manager',
         icon: <UnorderedListOutlined />,
-        text: 'Cad. Produtos',
+        text: 'Produtos',
       },
       {
         disabled: !auth.permissions.suprimento,
-        key: 'cadastroFornecedorSup/add',
+        key: 'supply/manufacurer/manager',
         icon: <UnorderedListOutlined />,
-        text: 'Cad. Fornecedor',
+        text: 'Fabricantes',
       },
       {
         disabled: !auth.permissions.suprimento,
-        key: 'entradaSup/add',
+        key: 'supply/entry/manager',
         icon: <UnorderedListOutlined />,
         text: 'Entrada',
       },
       {
         disabled: !auth.permissions.suprimento,
-        key: 'saidaSup/add',
+        key: 'supply/output/manager',
         icon: <UnorderedListOutlined />,
         text: 'Saida',
       },
       {
         disabled: !auth.permissions.suprimento,
-        key: 'gerenciarCadastrosSup/dash',
+        key: 'supply/stock/manager',
         icon: <UnorderedListOutlined />,
-        text: 'Ger. Cadastros',
-      },
-      {
-        disabled: !auth.permissions.suprimento,
-        key: 'gerenciarEstoqueSup/dash',
-        icon: <UnorderedListOutlined />,
-        text: 'Ger. Estoque',
+        text: 'Estoque',
       },
     ],
     title: (
