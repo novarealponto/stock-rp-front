@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Button,
   Col,
@@ -9,14 +9,14 @@ import {
   Select,
   Switch,
   Typography,
-} from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+} from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 
-import styles from './style.module.css';
-import Modal from '../../../components/Modal';
-import { validatePlate } from '../../../utils/validators';
+import styles from './style.module.css'
+import Modal from '../../../components/Modal'
+import { validatePlate } from '../../../utils/validators'
 
-const { Title } = Typography;
+const { Title } = Typography
 
 const ModalNewCar = ({ closeModal, form, saveModal, title, visible }) => {
   return (
@@ -57,8 +57,8 @@ const ModalNewCar = ({ closeModal, form, saveModal, title, visible }) => {
         </Row>
       </Form>
     </Modal>
-  );
-};
+  )
+}
 
 const AddTechinician = ({
   carList,
@@ -106,19 +106,25 @@ const AddTechinician = ({
           <Col span={10}>
             <div className={styles.divWrapperCar}>
               <Form.Item
-                style={{ width: "calc(100% - 42px)" }}
+                style={{ width: 'calc(100% - 42px)' }}
                 name="car"
                 label="Carro"
                 rules={[{ required: true }]}
               >
                 <Select
                   allowClear
+                  filterOption={(input, option) =>
+                    option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                    0
+                  }
                   onChange={onChangeSelecCarList}
+                  optionFilterProp="children"
                   placeholder="Selecione um carro"
+                  showSearch
                 >
                   {carList.map((car) => (
                     <Select.Option key={car.plate} value={car.plate}>
-                      {car.model} ({car.plate})
+                      {`${car.model} (${car.plate})`}
                     </Select.Option>
                   ))}
                 </Select>
@@ -161,7 +167,7 @@ const AddTechinician = ({
         visible={visibleModalNewCar}
       />
     </div>
-  );
-};
+  )
+}
 
-export default AddTechinician;
+export default AddTechinician
