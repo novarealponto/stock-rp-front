@@ -163,8 +163,13 @@ const AddOutput = ({
           <Col span={14}>
             <Form.Item label="Produto" name="product">
               <Select
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 onChange={handleChangeProduct}
+                optionFilterProp="children"
                 placeholder="Selecione um produto"
+                showSearch
               >
                 {map(
                   ({ category, key, max, name, serial }) => (
