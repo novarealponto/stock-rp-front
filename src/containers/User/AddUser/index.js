@@ -67,8 +67,13 @@ const AddUser = ({
                   rules={formRequireRules}
                 >
                   <Select
+                    filterOption={(input, option) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
                     onChange={handleOnTypeAccountChange}
+                    optionFilterProp="children"
                     placeholder="Selecione o tipo de conta"
+                    showSearch
                   >
                     {typeAccounts && typeAccounts.map(renderTypeAccountOptions)}
                   </Select>

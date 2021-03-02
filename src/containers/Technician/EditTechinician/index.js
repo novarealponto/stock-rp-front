@@ -13,6 +13,7 @@ import {
 
 import styles from './style.module.css'
 
+const { Option } = Select
 const { Title } = Typography
 
 const EditTechinician = ({
@@ -62,13 +63,18 @@ const EditTechinician = ({
             >
               <Select
                 allowClear
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 onChange={onChangeSelecCarList}
+                optionFilterProp="children"
                 placeholder="Selecione um carro"
+                showSearch
               >
                 {carList.map((car) => (
-                  <Select.Option key={car.plate} value={car.plate}>
-                    {car.model} ({car.plate})
-                  </Select.Option>
+                  <Option key={car.plate} value={car.plate}>
+                    {`${car.model} (${car.plate})`}
+                  </Option>
                 ))}
               </Select>
             </Form.Item>

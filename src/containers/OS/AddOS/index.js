@@ -108,7 +108,14 @@ const AddOutput = ({
           </Col>
           <Col span={8}>
             <Form.Item label="Técnico" name="technician" rules={rules}>
-              <Select placeholder="Selecione o técnico">
+              <Select
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                optionFilterProp="children"
+                placeholder="Selecione o técnico"
+                showSearch
+              >
                 {map(
                   ({ key, name }) => (
                     <Option key={key} value={key}>
@@ -133,7 +140,15 @@ const AddOutput = ({
         <Row gutter={20}>
           <Col span={8}>
             <Form.Item label="Status" name="status">
-              <Select onChange={onChangeStatus} placeholder="Selecione um status">
+              <Select
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                onChange={onChangeStatus}
+                optionFilterProp="children"
+                placeholder="Selecione um status"
+                showSearch
+              >
                 {map(
                   ({ key, status }) => (
                     <Option key={key} value={status}>
@@ -148,8 +163,13 @@ const AddOutput = ({
           <Col span={14}>
             <Form.Item label="Produto" name="product">
               <Select
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 onChange={handleChangeProduct}
+                optionFilterProp="children"
                 placeholder="Selecione um produto"
+                showSearch
               >
                 {map(
                   ({ category, key, max, name, serial }) => (

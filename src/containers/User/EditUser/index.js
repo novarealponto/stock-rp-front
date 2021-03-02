@@ -36,7 +36,6 @@ const EditUser = ({
   permissions,
   typeAccounts,
 }) => {
-
   const renderCheckbox = ({ label, name, value }) => (
     <Col className={styles.checkBoxheight} span={12} key={name}>
       <Form.Item name={name} valuePropName="checked">
@@ -76,8 +75,14 @@ const EditUser = ({
                 rules={formRequireRules}
               >
                 <Select
+                  filterOption={(input, option) =>
+                    option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                    0
+                  }
                   onChange={handleOnTypeAccountChange}
+                  optionFilterProp="children"
                   placeholder="Selecione o tipo de conta!"
+                  showSearch
                 >
                   {typeAccounts && typeAccounts.map(renderTypeAccountOptions)}
                 </Select>
@@ -100,10 +105,7 @@ const EditUser = ({
 
         {allowUpdatePassword && (
           <Col span={12}>
-            <Form.Item
-              label="Atualizar senha:"
-              name="password"
-            >
+            <Form.Item label="Atualizar senha:" name="password">
               <Input.Password placeholder="Nova senha" />
             </Form.Item>
           </Col>

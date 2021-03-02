@@ -120,7 +120,7 @@ const UpdateOs = ({
               <Select
                 disabled={!allowChanges}
                 filterOption={(input, option) =>
-                  option.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
                 optionFilterProp="children"
                 placeholder="Selecione o Técnico"
@@ -150,7 +150,15 @@ const UpdateOs = ({
         <Row gutter={20}>
           <Col span={8}>
             <Form.Item label="Status" name="status">
-              <Select onChange={onChangeStatus} placeholder="Selecione um status">
+              <Select
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                onChange={onChangeStatus}
+                optionFilterProp="children"
+                placeholder="Selecione um status"
+                showSearch
+              >
                 {map(
                   ({ key, status }) => (
                     <Option key={key} value={status}>
@@ -165,8 +173,13 @@ const UpdateOs = ({
           <Col span={14}>
             <Form.Item label="Produto" name="product">
               <Select
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 onChange={handleChangeProduct}
-                placeholder="selecione um produto"
+                optionFilterProp="children"
+                placeholder="Selecione um produto"
+                showSearch
               >
                 {map(
                   ({ category, key, max, name, serial }) => (
