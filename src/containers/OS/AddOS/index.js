@@ -140,7 +140,15 @@ const AddOutput = ({
         <Row gutter={20}>
           <Col span={8}>
             <Form.Item label="Status" name="status">
-              <Select onChange={onChangeStatus} placeholder="Selecione um status">
+              <Select
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                onChange={onChangeStatus}
+                optionFilterProp="children"
+                placeholder="Selecione um status"
+                showSearch
+              >
                 {map(
                   ({ key, status }) => (
                     <Option key={key} value={status}>
