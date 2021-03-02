@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Form, message } from 'antd'
-import { has } from 'ramda'
+import { has, length, split } from 'ramda'
 
 import AddEntyContainer from '../../../containers/Entry/AddEntry'
 import buildEntry from '../../../utils/entrySpec'
@@ -73,9 +73,13 @@ const AddEntry = () => {
     try {
       const response = await validateSerialNumberForEntry(currentTargetValue)
 
+      form.setFieldsValue({ amountAdded: response.length })
       if (has('error', response)) {
         const { error, serialNumbers } = response
-        form.setFieldsValue({ serialNumbers })
+        form.setFieldsValue({
+          serialNumbers,
+          amountAdded: length(split('\n', serialNumbers)),
+        })
         message.error(error)
       }
     } catch (error) {
