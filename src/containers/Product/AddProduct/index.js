@@ -64,7 +64,14 @@ const AddProduct = ({ form, handleSubmit, marksList, typesList }) => (
       </Col>
       <Col span={8}>
         <Form.Item label="Tipo" name="type" rules={formRequireRules}>
-          <Select placeholder="Selecione o tipo">
+          <Select
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            optionFilterProp="children"
+            placeholder="Selecione o tipo"
+            showSearch
+          >
             {typesList &&
               typesList.map((item) => (
                 <Option key={item.type} value={item.type}>
