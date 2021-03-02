@@ -120,7 +120,7 @@ const UpdateOs = ({
               <Select
                 disabled={!allowChanges}
                 filterOption={(input, option) =>
-                  option.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
                 optionFilterProp="children"
                 placeholder="Selecione o Técnico"

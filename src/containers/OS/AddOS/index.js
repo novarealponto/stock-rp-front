@@ -108,7 +108,14 @@ const AddOutput = ({
           </Col>
           <Col span={8}>
             <Form.Item label="Técnico" name="technician" rules={rules}>
-              <Select placeholder="Selecione o técnico">
+              <Select
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                optionFilterProp="children"
+                placeholder="Selecione o técnico"
+                showSearch
+              >
                 {map(
                   ({ key, name }) => (
                     <Option key={key} value={key}>
