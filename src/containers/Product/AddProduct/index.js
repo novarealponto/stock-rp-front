@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Button,
   Col,
@@ -9,22 +9,19 @@ import {
   Select,
   Switch,
   Typography,
-} from 'antd';
+} from 'antd'
 
-const { Title } = Typography;
-const { Option } = Select;
-const { TextArea } = Input;
-const formRequireRules = [{
-  message: 'Este campo é obrigatório!',
-  required: true,
-}];
+const { Title } = Typography
+const { Option } = Select
+const { TextArea } = Input
+const formRequireRules = [
+  {
+    message: 'Este campo é obrigatório!',
+    required: true,
+  },
+]
 
-const AddProduct = ({
-  form,
-  handleSubmit,
-  marksList,
-  typesList,
-}) => (
+const AddProduct = ({ form, handleSubmit, marksList, typesList }) => (
   <Form form={form} onFinish={handleSubmit}>
     <Row justify="center">
       <Col>
@@ -33,20 +30,12 @@ const AddProduct = ({
     </Row>
     <Row gutter={[8, 8]}>
       <Col span={8}>
-        <Form.Item
-          label="Produto"
-          name="name"
-          rules={formRequireRules}
-        >
-          <Input placeholder="Digite o nome do produto"/>
+        <Form.Item label="Produto" name="name" rules={formRequireRules}>
+          <Input placeholder="Digite o nome do produto" />
         </Form.Item>
       </Col>
       <Col span={8}>
-        <Form.Item
-          label="Categoria"
-          name="category"
-          rules={formRequireRules}
-        >
+        <Form.Item label="Categoria" name="category" rules={formRequireRules}>
           <Select placeholder="Selecione a categoria">
             <Option value="Equipamento">Equipamento</Option>
             <Option value="Peca">Peca</Option>
@@ -55,42 +44,33 @@ const AddProduct = ({
         </Form.Item>
       </Col>
       <Col span={8}>
-        <Form.Item
-          label="Marca"
-          name="mark"
-          rules={formRequireRules}
-        >
-          <Select placeholder="Selecione a marca">
-            {marksList && marksList.map(
-              (item) => (
-                <Option
-                  key={item.mark}
-                  value={item.mark}
-                >
+        <Form.Item label="Marca" name="mark" rules={formRequireRules}>
+          <Select
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            optionFilterProp="children"
+            placeholder="Selecione a marca"
+            showSearch
+          >
+            {marksList &&
+              marksList.map((item) => (
+                <Option key={item.mark} value={item.mark}>
                   {item.mark}
                 </Option>
-              )
-            )}
+              ))}
           </Select>
         </Form.Item>
       </Col>
       <Col span={8}>
-        <Form.Item
-          label="Tipo"
-          name="type"
-          rules={formRequireRules}
-        >
+        <Form.Item label="Tipo" name="type" rules={formRequireRules}>
           <Select placeholder="Selecione o tipo">
-            {typesList && typesList.map(
-              (item) => (
-                <Option
-                  key={item.type}
-                  value={item.type}
-                >
+            {typesList &&
+              typesList.map((item) => (
+                <Option key={item.type} value={item.type}>
                   {item.type}
                 </Option>
-              )
-            )}
+              ))}
           </Select>
         </Form.Item>
       </Col>
@@ -113,10 +93,7 @@ const AddProduct = ({
         </Form.Item>
       </Col>
       <Col span={24}>
-        <Form.Item
-          label="Descrição"
-          name="description"
-        >
+        <Form.Item label="Descrição" name="description">
           <TextArea
             autosize={{ minRows: 2, maxRows: 4 }}
             placeholder="Digite uma descrição do produto"
@@ -125,52 +102,36 @@ const AddProduct = ({
         </Form.Item>
       </Col>
       <Col span={6}>
-        <Form.Item
-          label="Corredor"
-          name="corredor"
-        >
-          <Input placeholder="0"/>
-        </Form.Item>
-      </Col>
-      <Col span={6}>
-        <Form.Item
-          label="Coluna"
-          name="coluna"
-        >
-          <Input placeholder="0"/>
-        </Form.Item>
-      </Col>
-      <Col span={6}>
-        <Form.Item
-          label="Prateleira"
-          name="prateleira"
-        >
+        <Form.Item label="Corredor" name="corredor">
           <Input placeholder="0" />
         </Form.Item>
       </Col>
       <Col span={6}>
-        <Form.Item
-          label="Gaveta"
-          name="gaveta"
-        >
-          <Input placeholder="0"/>
+        <Form.Item label="Coluna" name="coluna">
+          <Input placeholder="0" />
+        </Form.Item>
+      </Col>
+      <Col span={6}>
+        <Form.Item label="Prateleira" name="prateleira">
+          <Input placeholder="0" />
+        </Form.Item>
+      </Col>
+      <Col span={6}>
+        <Form.Item label="Gaveta" name="gaveta">
+          <Input placeholder="0" />
         </Form.Item>
       </Col>
     </Row>
     <Row justify="end">
       <Col>
         <Form.Item>
-          <Button
-            htmlType="submit"
-            type="primary"
-            style={{ marginTop: '20px' }}
-          >
+          <Button htmlType="submit" type="primary" style={{ marginTop: '20px' }}>
             Salvar
           </Button>
         </Form.Item>
       </Col>
     </Row>
   </Form>
-);
+)
 
-export default AddProduct;
+export default AddProduct
