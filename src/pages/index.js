@@ -5,14 +5,9 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 
 import AddKitRoute from './Gerenciar/Kit'
 import CadastroFornecedorSupRoute from './Supply/Register/Provider'
-import CadastroProdutosSupRoute from './Suprimentos/Cad.Produtos'
 import Dash from './Dash'
-import EditarFornecedorSupRoute from './Suprimentos/Edit.Fornecedor'
-import EntradaSupRoute from './Suprimentos/Entrada'
 import Entry from './Entry'
 import ECommerce from './ECommerce'
-import GerenciarCadastrosSupRoute from './Suprimentos/Ger.Cadastros'
-import GerenciarEstoqueSupRoute from './Suprimentos/Ger.Estoque'
 import Loan from './Loan'
 import Mark from './Mark'
 import Os from './Os'
@@ -23,7 +18,6 @@ import Provider from './Provider'
 import Reception from './Reception'
 import Reports from './Reports'
 import Romaneio from './Romaneio'
-import SaidaSupRoute from './Suprimentos/Saida'
 import Stock from './Stock'
 import Supply from './Supply'
 import TechnicianRoute from './Technician'
@@ -44,28 +38,10 @@ const routeList = ({ auth }) => [
     permission: auth.permissions.suprimento,
   },
   {
-    component: CadastroProdutosSupRoute,
-    exact: false,
-    path: '/logged/cadastroProdutosSup',
-    permission: auth.permissions.suprimento,
-  },
-  {
     component: Dash,
     exact: true,
     path: '/logged/dash',
     permission: true,
-  },
-  {
-    component: EditarFornecedorSupRoute,
-    exact: false,
-    path: '/logged/fornecedorSup/atualizar',
-    permission: auth.permissions.suprimento,
-  },
-  {
-    component: EntradaSupRoute,
-    exact: false,
-    path: '/logged/entradaSup',
-    permission: auth.permissions.suprimento,
   },
   {
     component: Entry,
@@ -77,24 +53,6 @@ const routeList = ({ auth }) => [
     component: ECommerce,
     exact: false,
     path: '/logged/E-Commerce',
-    permission: true,
-  },
-  {
-    component: GerenciarCadastrosSupRoute,
-    exact: false,
-    path: '/logged/gerenciarCadastrosSup',
-    permission: auth.permissions.suprimento,
-  },
-  {
-    component: GerenciarEstoqueSupRoute,
-    exact: false,
-    path: '/logged/gerenciarEstoqueSup',
-    permission: auth.permissions.suprimento,
-  },
-  {
-    component: Loan,
-    exact: true,
-    path: '/logged/loan',
     permission: true,
   },
   {
@@ -150,12 +108,6 @@ const routeList = ({ auth }) => [
     exact: true,
     path: '/logged/romaneio',
     permission: true,
-  },
-  {
-    component: SaidaSupRoute,
-    exact: false,
-    path: '/logged/saidaSup',
-    permission: auth.permissions.suprimento,
   },
   {
     component: Stock,
